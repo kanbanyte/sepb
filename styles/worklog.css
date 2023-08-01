@@ -1,0 +1,51 @@
+table {
+	width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table thead {
+	background-color: #BED7EF;
+	/* ref: https://www.w3schools.com/css/css_background.asp */
+}
+
+/* #region overrides default extension for .md to .pdf */
+h1 {
+	text-align: center;
+}
+
+blockquote {
+	border-color: #F87474;
+}
+
+/* #endregion */
+
+blockquote p,
+blockquote ul {
+	/* Change the color */
+	color: #F87474;
+}
+
+blockquote ul {
+	/* Remove default bullets */
+	list-style: none;
+}
+
+blockquote ul li::before {
+	/* Add content: \2022 is the CSS Code/unicode for a bullet */
+	content: "\2022";
+	/* Change the color */
+	color: #F87474;
+	/* If you want it to be bold */
+	font-weight: bold;
+	/* Needed to add space between the bullet and the text */
+	display: inline-block;
+	/* Also needed for space (tweak if needed) */
+	width: 1em;
+	/* Also needed for space (tweak if needed) */
+	margin-left: -1em;
+}
+
+mark {
+	background-color: #00ccff;
+}
