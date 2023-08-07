@@ -1,0 +1,432 @@
+<link rel="stylesheet" href="../styles/styles.css" type="text/css">
+
+<!-- TOC ignore:true -->
+# Robot Vision System For A Pick And Place Task
+<!--
+	Co-Author: @dau501
+	Editor(s):
+	Year: 2023
+-->
+
+*[Note:*
+*This is a sample/template document for the Test Plan.*\
+*Please improve, adapt and adjust to your project needs.]*
+
+`TEST PLAN`
+
+<!-- TOC ignore:true -->
+## Industry Project 24
+|Name|Position|Email|
+|:-|:-|:-|
+|@Slothman1|Team Leader/Client Liaison|id@swin.student.edu.au|
+|@dau501|Development Manager/Planning Manager|id@swin.student.edu.au|
+|@finnmcgearey|Support Manager/Developer|id@swin.student.edu.au|
+|@vkach|Quality Manager/Developer|id@swin.student.edu.au|
+|@NickMcK14|Support Manager/Developer|id@swin.student.edu.au|
+|@Huy-GV|Quality Manager/Developer|id@swin.student.edu.au|
+
+<!-- TOC ignore:true -->
+# Document Sign Off
+|Name|Position|Signature|Date|
+|:-|:-|:-|:-|
+|@Slothman1|Team Leader/Client Liaison|student\_signature(&emsp;)|DD/MM/2023|
+|@dau501|Development Manager/Planning Manager|student\_signature(&emsp;)|DD/MM/2023|
+|@finnmcgearey|Support Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
+|@vkach|Quality Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
+|@NickMcK14|Support Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
+|@Huy-GV|Quality Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
+
+<div class="page"/><!-- page break -->
+
+<!-- TOC ignore:true -->
+# Table of Contents
+<!-- TOC -->
+
+* [Introduction](#introduction)
+	* [Purpose of the test plan](#purpose-of-the-test-plan)
+	* [Scope](#scope)
+	* [References Material](#references-material)
+	* [Objective](#objective)
+	* [Resources Required](#resources-required)
+	* [Environment Requirements](#environment-requirements)
+* [Test Items](#test-items)
+	* [Features to be Tested](#features-to-be-tested)
+	* [Test Cases](#test-cases)
+		* [Functional Test Cases](#functional-test-cases)
+		* [Non-functional Testing](#non-functional-testing)
+	* [Features not to be Tested](#features-not-to-be-tested)
+* [Strategy](#strategy)
+	* [Roles and Responsibilities](#roles-and-responsibilities)
+	* [Test Deliverables](#test-deliverables)
+	* [Schedule](#schedule)
+	* [Risk and Contingency](#risk-and-contingency)
+	* [Testing Tasks](#testing-tasks)
+* [Pass/Fail Criteria](#passfail-criteria)
+	* [Product Level](#product-level)
+	* [Testing Stages](#testing-stages)
+	* [Suspension criteria and resumption requirements](#suspension-criteria-and-resumption-requirements)
+		* [Suspension Criteria](#suspension-criteria)
+		* [Resumption Requirements](#resumption-requirements)
+	* [Approvals](#approvals)
+
+<!-- /TOC -->
+
+# Introduction
+## Purpose of the test plan
+The test plan is a document designed to outline the scope, resources, approach, strategy and criteria for all testing activities carried out during and
+after the development of the system.
+The plan will clearly identify the features that are to be tested and the features which will not be and the stages at which tests are to be carried out.
+
+## Scope
+Testing will be carried out at several stages of the life cycle as the system is developed.
+Testing will ensure system defects, bugs to be caught early in the development and
+helps the team reevaluate their approach to developing a particular aspect of the project.
+The test plan is currently limited to high-level test cases and assumptions as the system architecture and features have still not reached a low-level design.
+As many aspects of the system are still unknown the test plan shall act as a high-level guide for testing at the moment and
+will be further updated as the system is developed over time.
+The system to be tested is the Smart Glass Remote Guidance System.
+The system will be tested using unit tests and usability tests.
+
+Constraints/Assumptions
+* The team is restrained to testing the system on the Vuzix M100 smart glasses.
+* The system must remain portable during testing.
+* The system will be tested under the assumption that the users have full access to WiFi
+* Both users have the system already setup on the devices at both ends of the transmission.
+
+The team will be following a four level testing strategy.
+This will allow the project to be tested at different development stages at maximum efficiency.
+* Unit Testing
+* System Testing
+* Integration Testing
+* Acceptance Testing
+
+## References Material
+The following document has been created according to the details specified in the documents below.
+The documents below will provide further information on the project.
+* Project Plan
+* Software Quality Assurance Plan
+* Software Requirements Specification
+* IEEE 829 Standard template (Test Plan)
+
+## Objective
+Carry out appropriate tests at appropriate stages of development.
+The test plan shall act as a guideline for performing these different types of tests required for maintaining the quality and efficiency of the system.
+
+## Resources Required
+* 2 Smart Glasses
+* May require Smart mobiles (for higher processing power)
+* 2 users acting as Operator and Instructor
+* A ruler (for point of reference)
+* Hotspot or WiFi
+* Glove (to identify the users hand)
+* IDE (to create and run unit tests)
+
+## Environment Requirements
+* 2 smart glasses (updated with current system software)
+* May require smart phones (for higher processing power)
+* Hotspot or WiFi
+* Single coloured background (to aid Hand gesture recognition)
+* Gloves (to aid Hand gesture recognition)
+* A ruler (for point of reference)
+
+# Test Items
+The product to be tested is the Smart Glass Based Remote Guidance System
+
+## Features to be Tested
+* The system must be able to establish connection when both devices are turned on.
+* Both users must be able to end the connection.
+* The instructor must be able to send his hand gestures to the operator's glasses in real time.
+* The operator must be able to view the instructors hand gestures during live video stream.
+* The instructor must be able to take a screenshot during the live video streaming between the operator and instructor.
+* The instructor must be capable of annotating the image taken.
+* The instructor must also be able to share the annotated image.
+* The operator must be able to view shared image.
+* The operator must be able to dismiss shared picture.
+* The system must be able to identify a piece of meat and assess its quality via colour and dimensions.
+
+## Test Cases
+### Functional Test Cases
+<!--
+1. Test Case(s)
+	1. Steps
+* Expected Results
+-->
+
+#### Establish Communication
+1. Check if connection is established between devices
+	1. User turns on the device
+	2. System automatically tries to establish a connection with the other device
+* Connection is established between the two devices when the device is switched on
+
+#### Send video feed
+1. Check if instructor can send video feed\
+Preconditions:
+Connection between users has to be established
+	1. Instructor clicks Send video
+* Video stream connection is successfully setup and video feed would stream between both users
+
+#### View video feed
+1. Check if user can view operator's video feed\
+Preconditions:
+Connection between users has to be established
+	1. System automatically broadcasts video stream to both users.
+* Both users can view the operator's video feed on their displays
+
+#### Send hand gestures
+1. Check if Instructor can send hand gestures to Operator\
+Preconditions:
+The system has to have the video feed of the operator
+	1. System automatically send instructor's hand gestures when application starts up
+* The system should start obtaining the video feed of the operator and the video feed of the instructor.\
+The video feed of the instructor is then processed to obtain footage only of the instructor's hand and not the background surroundings.
+The image of the hands should then be superimposed on the operator's video feed and then sent back to the operator.
+Both users should see video feed of both the operator's feed and the instructor's hand gestures to both users
+
+#### Make sketch
+1. Check if instructor can capture image\
+Preconditions:
+Instructor must have video feed to capture image from
+	1. Instructor performs "screenshot" hand signal
+* System captures image of video stream
+2. Check if instructor can draw sketch on image
+	1. Draw sketch on image by using their fingers
+* System registers finger movements and overlays it onto image
+
+#### Send sketch
+1. Check if instructor can send sketched image to operator\
+Preconditions:
+Instructor has created sketch using "Make a sketch" function
+	1. Instructor performs "wave forward" hand signal
+* System sends image to the operator
+
+#### View sketch
+1. Check if operator can view image\
+Preconditions:
+Operator device must receive image
+	1. System automatically replaces operator's video feed with sketched image
+* Operator can view sketched image
+
+#### Dismiss sketch
+1. Check if operator can dismiss image after viewing\
+Preconditions:
+Operator device must receive image
+	1. Operator performs "wave-away" hand signal
+* System dismisses image, and view goes back to operator video feed
+
+### Non-functional Testing
+#### Testing Goal
+The purpose of the following test cases is to make sure that the application we develop would not only be functional but be user friendly with a small learning curve,
+allowing the average user to quickly adapt to the user interface.
+
+#### Testing Procedure
+The test would be performed on a set of participants, who will be asked to perform basic tasks using the applications.
+Upon completing the task, the user would be expected to be able to give feedback on the difficulty of the task and
+what their suggestion to improve the user interface would be.
+
+#### Pass/Fail Criteria
+The tasks given are very simple and would have constant pass criteria.
+Each task should be completed before 30 seconds and would have a difficulty goal of being less than 5(1 being very easy, and 10 being very hard)
+
+#### Testing Constants
+All of the tests will be carried out on the application on the Smart Glasses, using sample data provided to them.
+
+#### Testing Assumptions
+The tests will be carried out in pairs of participants where on of the participants will play the role of the "operator" while the other acts as the "instructor".
+
+Non-functional test cases:
+
+Test Case(s)
+1. Check if user can take a screenshot
+2. Check if user can make a sketch
+3. Check if user can send sketch
+4. Check if user can dismiss the sketch
+5. Check if user can send video
+
+Steps
+1. Perform "screenshot" action
+2. User users finger to sketch on image
+3. User performs "wave-forward" action
+4. User performs "wave-away" action
+5. User clicks send" video feed"
+
+Expected Results
+1. User must see screenshot on display
+2. User must see image with draw path of his/her finger
+3. Operator must acknowledge that a screenshot was received
+4. User must see the sketch being removed from the operator's display
+5. User must see video feed
+
+## Features not to be Tested
+Since all the features are being implemented for the first time and are all capable of being tested.
+There are currently no features that will not be tested.
+
+# Strategy
+As stated the project will be tested following a four-level testing strategy
+* Unit Testing\
+This stage of testing will be carried out during the initial coding stage when there are multiple modules of code being developed by different members of the team.
+This will be carried out by generating multiple unit tests to test pieces of code.
+Will help detect errors early on.
+* Integration Testing\
+This stage of testing will be carried out when the system reaches a low-level design and all prior unit tests have been passed.
+Multiple modules of the system will be tested together using appropriate test cases.
+This will confirm if various modules function effectively altogether.
+* System Testing\
+This stage will be carried out when the system reaches a functional level performing the core functions it was developed for.
+This will ensure if specified requirements are reached and product works.
+The system will undergo usability testing according to the non-functional test cases.
+* Acceptance Testing\
+The last stage of testing to make sure the client is happy with the product and all requirements have been achieved successfully.
+
+## Roles and Responsibilities
+* Unit Testing\
+Must be carried out by individual developers on a continuous basis by creating unit tests throughout the development of the system.
+* Integration Testing\
+May be carried out by the developers as well the team leader/testing managers by using appropriate test cases.
+* System Testing\
+Must be carried out by a separate testing team under supervision of the team leader.
+Users testing the system are preferred to be candidates who have experience with testing systems and interfaces.
+* Acceptance Testing\
+Must be carried out by separate testing team as well the team leader under supervision of the client.
+Requires the users to be non - developers.
+
+## Test Deliverables
+* Test Plan
+* Test Cases
+* Defect/Enhancement logs
+* Test Reports
+* Usability Test Guide
+
+## Schedule
+Features to test:
+* Establish communication
+* Sending and viewing video feed
+* Sending hand gestures
+* Making,sending,viewing and dismissing sketches
+
+Estimated Testing: Semester 2
+
+## Risk and Contingency
+Risks associated with testing:
+
+#### Risks
+1. May be shortage of time which may result in less time for testing.
+2. Requirements may change during development.
+3. Team member leaves
+4. Design lack flexibility to make changes
+
+#### Contingency
+1. Carry out tests frequently as the system is developed instead of assigning a particular date.
+2. Keep updating requirements from client as frequent as possible to avoid last minute chaos.
+3. Have each module worked on and tested by 2 members.
+4. When designing allow room for accommodating changes.
+
+## Testing Tasks
+* Testing scenarios shall be taken from the client and documented.\
+The test scenarios will be required before creating the test cases.
+* Test cases shall be created for individual features of the system.
+* Required resources shall be accounted for before carrying out the tests.
+* Bugs will be logged and reported
+
+# Pass/Fail Criteria
+## Product Level
+Instructor and operator can switch roles upon accepting the connected user's request.
+
+Test Case Pass/Fail Criteria:
+* Pairing the glasses over a wireless connection/ Bluetooth connection
+	* Pass Criteria
+		* Glasses are paired up with a stable wireless connection with a third device acting as a server.
+	* Fail Criteria
+		* Glasses don't pair up successfully or connection isn't stable enough.
+* Instructor can see hand gestures on operator's video feed.
+	* Pass Criteria
+		* Request sent from operator glasses and accepted by instructor glasses.
+	* Fail Criteria
+		* Request isn't sent or doesn't prompt instructor with video request.
+* Receiving and viewing operator video feed from operator glasses on instructor glasses
+	* Pass Criteria
+		* Video is sent with a delay of less than 1000ms and a minimum frame rate of 20.
+	* Fail Criteria
+		* Video sent, has loss of frames.
+* Sending hand gestures from instructor glasses
+	* Pass Criteria
+		* Instructor can see hand gestures on operator's video feed.
+	* Fail Criteria
+		* Instructor's video feed does not show hand gestures.
+* Receiving only hand gestures (without video) from instructor glasses and viewing them on operator video feed.
+	* Pass Criteria
+		* Operator can see instructor's hand gestures on operator video feed.
+	* Fail Criteria
+		* Instructor's hand gestures are not shown at all/ or not shown clearly on operator's video stream.
+* Make sketch
+	* Pass Criteria
+		* Instructor can capture a still image of video feed and draw a sketch on it using his/her finger.
+	* Fail Criteria
+		* Instructor can capture a still image of video feed and draw a sketch on it using his/her finger.
+* Send sketch
+	* Pass Criteria
+		* Instructor is able to send a saved image of a sketch to the instructor.
+	* Fail Criteria
+		* Unable to save sketched image/ send it to instructor
+* View sketch
+	* Pass Criteria
+		* Operator can download and view sketched image.
+	* Fail Criteria
+		* Operator is unable to view image.
+* Dismiss sketch
+	* Pass Criteria
+		* Operator is able to dismiss image after viewing
+	* Fail Criteria
+		* Operator is unable to dismiss image after viewing
+
+## Testing Stages
+During each development stage test will be conducted and judged according to the following criteria.
+
+Testing level pass/fail criteria:
+* Unit Testing
+	* Pass criteria
+		* All unit tests have been passed successfully
+		* At least 70% of all code written has been covered during testing.
+		* All bugs and errors found have been logged and been accounted for.
+	* Fail criteria
+		* Not all unit tests have been passed
+		* Not enough code written has been included in testing.
+* Integration Testing
+	* Pass criteria
+		* 90% of all modules developed have been tested.
+		* Modules perform their assigned function successfully when tested together.
+		* All issues have been logged and corrected
+	* Fail criteria
+		* Modules fail to carry out their function when put together.
+		* Too many critical issues found.
+* System Testing
+	* Pass criteria
+		* Entire System has been tested.
+		* 100% of all specified requirements have been successfully achieved.
+		* Minor Issues found have been logged and fixed.
+		* 100% of all system features functioning appropriately.
+	* Fail criteria
+		* Not all specified requirements have been achieved.
+		* Critical issues and defects found during the test.
+		* System features are not functioning accurately.
+* Acceptance Testing
+	* Pass criteria
+		* When client is satisfied with the product.
+	* Fail criteria
+		* Does not achieve the requirements specified.
+		* Critical issues found by client.
+		* Does not satisfy the client.
+
+## Suspension criteria and resumption requirements
+### Suspension Criteria
+* The design of the system is found to be defective.
+* The client has changed his mind about the specified requirements.
+* The module tested is found to have critical issues which have to be fixed before proceeding further.
+
+### Resumption Requirements
+* All critical issues found have been fixed.
+* Modified or fixed modules have passed testing successfully.
+* The new changes have gained the approval of the testing manager as well as the Team Leader.
+
+## Approvals
+* Both the Team leader and the Testing manager must agree to the completion of a testing level before moving on to the next level.
+* Any changes or addition to the system features would have to be approved by the client.
