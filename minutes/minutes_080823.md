@@ -1,0 +1,28 @@
+## Meeting Minutes
+### Meeting Information
+* **Date:** DD/MM/2023
+* **Time:** 00:00 (24hr)
+* **Location:** MS Teams
+* **Attendees:** @Danaclocs, @Slothman1, @dau501, @finnmcgearey, @vkach, @NickMcK14, @Huy-GV
+
+### Agenda Items
+|Agenda Item|Discussion|
+|:-|:-|
+|Criteria discussion|The idea of modifying the pre-made criteria is allowed, however the details are yet to be confirmed|
+|Discussion of client meeting|the details of what is to be discussed in the client meeting on the 09/08 were discussed|
+|Conversation on the documents|the discussed priority is of ensuring that work has begun on the practical portion of the project,
+and while not neglecting the documents filler can be done currently and filled in properly later|
+
+### Action Items
+|Action Item|Assigned To|Due Date|
+|:-|:-|:-|
+|Display Dataset or an "alpha" version of the model|@Slothman1, @Huy-GV|15/08/2023|
+|Submit versions of the documents|@Slothman1, @dau501, @finnmcgearey, @vkach, @NickMcK14, @Huy-GV|20/08/2023|
+
+### Next Meeting Information
+* **Date:** 15/08/2023
+* **Time:** 10:00 (24hr)
+* **Location:** MS Teams
+
+### Additional Notes
+for the dataset, it was briefly discussed that a smaller dataset (~100) is applicable though more is always preferred.
