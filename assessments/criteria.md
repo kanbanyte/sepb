@@ -31,12 +31,11 @@
 |Requirements Specification and System Architecture Design and Research: revision|Process/Product|5%|<br/>|
 |Test Plan, Usability Evaluation Plan; Testing, Test Report, Usability Evaluation Report; Quality Assurance, and Version-Controlled Repository|Process/Product|15%|<br/>|
 |Detailed System Design, Implementation, System/Software Documentation, Final Product Prototype and Demonstration|Product|35%|<br/>|
-|Technical Documentation for Client (User Manual, Technical and Installation Manual); Software Product Deployment and Delivery|Process/Product|5%|<br/>|
-|Meeting Minutes|Process|5%|<br/>|
+|Technical Documentation for Client<br/>(User Manual, Technical and Installation Manual);<br/>Software Product Deployment and Delivery|Process/Product|5%|<br/>|
 |Final Presentation and Expo|Presentation|10% (fixed)|<br/>|
-|Individual Task Contribution Records (Worklogs, peer reviews)|Process|5%|<br/>|
+|Individual Task Contribution Records<br/>(Worklogs, Meeting Minutes, peer reviews)|Process|10%|<br/>|
 |Individual Self-Assessment|Process|15% (fixed)|<br/>|
-|Individual Contribution Adjustment (incorporating Peer Review outcomes etc)|Process|Compulsory<br/>(Up to +/- 60% adjustment)|<br/>|
+|Individual Contribution Adjustment<br/>(incorporating Peer Review outcomes etc)|Process|Compulsory<br/>(Up to +/- 60% adjustment)|<br/>|
 |Total|<br/>|100%|<br/>|
 
 |Rationale for Assessment Template Adjustments (if applicable):|
