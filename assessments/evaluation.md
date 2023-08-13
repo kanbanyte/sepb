@@ -82,6 +82,7 @@ This section outlines various factors that contribute to the usability evaluatio
 As the project aims to improve the robot arm that aids a human operator in assembling chips and
 all the pick-and-place tasks are executed by the robot arm, only a single participant is required.
 
+<!-- TOC ignore:true -->
 ### Environment
 The experiment will be conducted in the Factory of the Future at Swinburne University, at the area where the robot arm and assembly chain is located.
 The working space, which includes the robotic arm, the item trays and and the human operator will have full lighting.
@@ -91,6 +92,7 @@ The working space, which includes the robotic arm, the item trays and and the hu
 A new depth camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
 Other tools include the items to be assembled, a conveyor belt that delivers a shell, and the robot arm, all of which already exist.
 
+<!-- TOC ignore:true -->
 ### Measures
 The metrics used involve precision rate, recall rate (also known as True Positive Rate) and time-to-complete a pick-and-place cycle.
 Precision measures how conservative the system is when identifying the presence of an item.
@@ -99,6 +101,7 @@ Recall is used a metric to gauge false-negative cases (skipping a slot that actu
 which whether the aid of objection detection technology is fully utilised.
 Finally, the time consumed to complete a pick-and-place cycle, with a vision system incorporated, remains similar, if not superior, to the pre-existing system.
 
+<!-- TOC ignore:true -->
 ### Satisfaction Assessment
 After the experiment, the participant would be asked to fill a form detailing their experience with the system.
 In particular, they will be prompted to comment on the safety and speed and efficiency in the comparison with the original system.
