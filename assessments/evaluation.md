@@ -67,9 +67,9 @@
 # Executive Summary
 The document specifies the methodology by which usability is evaluated and explains how the results are interpreted.
 The evaluation process involves the usage of a prototype and a participant in a controlled environment that closely emulates practical setting.
-The evaluation methodology encompasses both quantitative and qualitative measures, incorporating user feedback and performance metrics
-to identify areas of improvement from the prototype.
-The collected data is analyzed and serves as guide to further develop the prototype into a complete and satisfactory end-product.
+The evaluation methodology encompasses both quantitative and qualitative measures,
+incorporating user feedback and performance metrics to identify areas of improvement from the prototype.
+The collected data is analysed and serves as guide to further develop the prototype into a complete and satisfactory end-product.
 
 # Methodology
 The factors mentioned below must be achieved to ensure a successful usability test.
