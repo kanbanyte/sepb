@@ -74,17 +74,19 @@ Usability metrics like scenario completion rate, error rate, subject evaluations
 time taken on tasks must be gathered to help identify potential issues in the system.
 Recommendations to resolve these issues are included in the usability test report to conclude the usability evaluation.
 
-## Methodology
-This section outlines various factors that contribute to the usability evaluation process,
-all of which are tailored to the specific characteristics of the system.
+# Methodology
+This section outlines various factors that contribute to the usability evaluation process, all of which are tailored to the specific characteristics of the system.
 
-### Number of participants
-As the project aims to improve the robot arm that aids a human operator in assembling chips and all the pick-and-place tasks are executedby the robot arm, only a single participant is required.
+<!-- TOC ignore:true -->
+### Number of Participants
+As the project aims to improve the robot arm that aids a human operator in assembling chips and
+all the pick-and-place tasks are executed by the robot arm, only a single participant is required.
 
 ### Environment
 The experiment will be conducted in the Factory of the Future at Swinburne University, at the area where the robot arm and assembly chain is located.
 The working space, which includes the robotic arm, the item trays and and the human operator will have full lighting.
 
+<!-- TOC ignore:true -->
 ### Tools
 A new depth camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
 Other tools include the items to be assembled, a conveyor belt that delivers a shell, and the robot arm, all of which already exist.
@@ -93,14 +95,13 @@ Other tools include the items to be assembled, a conveyor belt that delivers a s
 The metrics used involve precision rate, recall rate (also known as True Positive Rate) and time-to-complete a pick-and-place cycle.
 Precision measures how conservative the system is when identifying the presence of an item.
 Recall measures how sensitive the system is when identifying items that are actually present.
-Recall is used a metric to gauge false-negative cases (skipping a slot that actually holds the item to be moved), which whether the
-aid of objection detection technology is fully utilized.
-Finally, the time consumed to complete a pick-and-place cycle, with a vision system incorporated, remains similar, if not superior, to
-the pre-existing system.
+Recall is used a metric to gauge false-negative cases (skipping a slot that actually holds the item to be moved),
+which whether the aid of objection detection technology is fully utilised.
+Finally, the time consumed to complete a pick-and-place cycle, with a vision system incorporated, remains similar, if not superior, to the pre-existing system.
 
 ### Satisfaction Assessment
 After the experiment, the participant would be asked to fill a form detailing their experience with the system.
-In particular, they will be prompted to comment on the safety and speed and effciency in the comparison with the original system.
+In particular, they will be prompted to comment on the safety and speed and efficiency in the comparison with the original system.
 
 # Participants
 The end user of the Vuzix Smart Glass would be an employee or trainee working with an instructor in a training program.
