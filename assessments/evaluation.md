@@ -65,14 +65,11 @@
 <!-- /TOC -->
 
 # Executive Summary
-Usability evaluations are a significant process to be completed in achieving the best possible prototype.
-A prototype can match the requirement specifications collected from the client but might not always meet the expectations of the end-user.
-There can be certain non-functional requirements that can only be gathered by validating the prototype with a user.
-The prototype must be tested with participants of the target demographic who will wind up using the product in the workplace.
-Demographic questionnaires can help identify the target user group.
-Usability metrics like scenario completion rate, error rate, subject evaluations and
-time taken on tasks must be gathered to help identify potential issues in the system.
-Recommendations to resolve these issues are included in the usability test report to conclude the usability evaluation.
+The document specifies the methodology by which usability is evaluated and explains how the results are interpreted.
+The evaluation process involves the usage of a prototype and a participant in a controlled environment that closely emulates practical setting.
+The evaluation methodology encompasses both quantitative and qualitative measures,
+incorporating user feedback and performance metrics to identify areas of improvement from the prototype.
+The collected data is analysed and serves as guide to further develop the prototype into a complete and satisfactory end-product.
 
 # Methodology
 The factors mentioned below must be achieved to ensure a successful usability test.
