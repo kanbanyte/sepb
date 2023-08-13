@@ -165,7 +165,10 @@ non-critical errors are errors which the user can recover from but could potenti
 Post-test satisfaction questionnaires are a method of collecting subjective evaluations at the end of the session.
 
 ## Time on Task
-Time taken to complete each scenario is recorded.
+Measuring time on task is pivotal in assessing the usability of the Robot Vision System for the Pick and Place Task.\
+By observing participants as they complete representative task scenarios, valuable insights into user efficiency and system adaptation will be gained.
+Analysis of the collected time data will inform system enhancements, aligning with user proficiency and satisfaction.
+This data-driven approach ensures continual refinement and optimisation of the system's performance.
 
 # Usability Goals
 The usability goals for this usability evaluation would be a completion rate of 100% and an error-free rate of 80%.
