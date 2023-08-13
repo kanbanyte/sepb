@@ -157,9 +157,10 @@ time of completion will be used to calculate usability performance on tasks.
 A scenario is completed when the user has gotten the expected output or when the user requests assistance and cannot complete the task due to usability issues.
 
 ## Errors
-There are two types of errors being critical and non-critical errors.
-Critical errors are those of which prevent the user from getting the expected output and
-non-critical errors are errors which the user can recover from but could potentially give an unexpected outcome.
+In evaluating the usability of the Robot Vision System for the Pick and Place Task, errors will be a focal point of assessment.\
+These errors encompass positioning inaccuracies, object recognition failures, communication glitches, and execution deviations.\
+Categorised by severity-critical, major, and minor-these errors will be logged in real-time and analysed to glean insights for enhancement.
+This approach ensures a robust usability evaluation that informs iterative refinement of the system's performance and reliability.
 
 ## Subjective Evaluations
 Post-test satisfaction questionnaires are a method of collecting subjective evaluations at the end of the session.
