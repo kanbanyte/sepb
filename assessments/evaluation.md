@@ -135,7 +135,7 @@ They will note any troubles the participant has in assembling the device, and an
 <!-- TOC ignore:true -->
 ### Assistant
 The assistant will answer any questions the participant has during the test in order to help them.
-Additionally, they should be able to rectify any problems the cobot has in performing its tasks, such as restarting it should it encounter an error.
+Additionally, they should be able to rectify any problems the cobot has in performing its tasks, such as restarting the system should an error arise.
 
 <!-- TOC ignore:true -->
 ### Trainer
