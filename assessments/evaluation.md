@@ -127,16 +127,22 @@ Additionally, any inaccuracies in the cobot's function will be noted to rectify 
 Following the evaluation, the participant will be questioned on any specific issues they experienced, and potentially what they think could be improved for easier use.
 
 # Roles
-Members of the team will be assigned roles that they must carry out during the experiment.
+During the evaluation, team members will be given roles to allow for better observation recording, training of the participant, and
+assisting the participant should they require anything during the evaluation.
 
-#### Trainer
-Gives the participant a brief training session before the test.
+<!-- TOC ignore:true -->
+### Observer
+The observer will record the cobot's and participant's performance during the evaluation.
+They will note any troubles the participant has in assembling the device, and any inaccuracies the cobot has in picking and placing any objects.
 
-#### Facilitator
-Briefs the participant on how the test will be conducted and will be available to respond to the participant's requests.
+<!-- TOC ignore:true -->
+### Assistant
+The assistant will answer any questions the participant has during the test in order to help them.
+Additionally, they should be able to rectify any problems the cobot has in performing its tasks, such as restarting the system should an error arise.
 
-#### Test Observer
-Logs down participant feedback, while analysing application issues.
+<!-- TOC ignore:true -->
+### Trainer
+The trainer will explain the evaluation test to the participant and answer any pre-emptive questions so that the participant understands what they need to do.
 
 # Usability Tasks
 As the goal of this project is the automation of a pick and place task, the resultant system will require limited human interaction.\
