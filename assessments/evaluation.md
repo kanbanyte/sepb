@@ -104,13 +104,9 @@ After the experiment, the participant would be asked to fill a form detailing th
 In particular, they will be prompted to comment on the safety and speed and efficiency in the comparison with the original system.
 
 # Participants
-The end user of the Vuzix Smart Glass would be an employee or trainee working with an instructor in a training program.
-Apart from basic experience with technology, the participant would not be expected to have any additional technology skills.
-
-Participants have the responsibility to complete tasks given to them while giving feedback by talking about their thought process while doing the task.
-Participants are also asked to complete a demographic questionnaire pre-evaluation, and satisfaction questionnaire post evaluation.
-The experiment would be a simulation of a real-life training scenario, therefore the participants would be students imitating the role of the operator and instructor.
-Participant recruitment would be done through social media.
+The primary user of the system is an operator who undertakes the task of assembling items delivered by a robot.\
+The operator does not need to manually assist the robot in any way unless the items have fallen over or are not correctly positioned,
+in which cases the robot will halt entirely and await a manual restart.
 
 # Training
 The participant will receive an introduction to the objectives of the pick-and-place task and their assigned role.\
