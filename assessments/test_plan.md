@@ -140,7 +140,7 @@ The following features will undergo testing:
 * The system identifies the presence of shells on from their stack before determining which to pick up.
 * The system identifies the presence of batteries on from their stack before determining which to pick up.
 * The system stops when items are not correctly positioned (e.g. fallen over, being outside of their allocated tray/stack, etc.).
-* The annotated image resulting from the inference are recorded for subsequent review.
+* The annotated images resulting from the inference are recorded for subsequent review.
 
 ## Test Cases
 ### Functional Test Cases
