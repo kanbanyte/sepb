@@ -72,29 +72,36 @@ incorporating user feedback and performance metrics to identify areas of improve
 The collected data is analysed and serves as guide to further develop the prototype into a complete and satisfactory end-product.
 
 # Methodology
-The factors mentioned below must be achieved to ensure a successful usability test.
+This section outlines various factors that contribute to the usability evaluation process, all of which are tailored to the specific characteristics of the system.
 
-#### Number of participants
-A healthy number of participants would be needed to collect sufficient data to create the best possible interface.
-A minimum of 4 participants would be needed for this experiment.
+<!-- TOC ignore:true -->
+### Number of Participants
+As the project aims to improve the robot arm that aids a human operator in assembling chips and
+all the pick-and-place tasks are executed by the robot arm, only a single participant is required.
 
-#### Environment
-The experiment will be conducted in the Swinburne usability testing lab in the SA building.
-The lab has a test room where the participant will undertake the test and the control room where the observers will be watching and logging the test.
+<!-- TOC ignore:true -->
+### Environment
+The experiment will be conducted in the Factory of the Future at Swinburne University, at the area where the robot arm and assembly chain is located.
+The working space, which includes the robotic arm, the item trays and and the human operator will have full lighting.
 
-#### Tools
-"Morae Recorder" and "Morae Observer" would be used to observe and record participant feedback while tracking the time taken to complete each task.
+<!-- TOC ignore:true -->
+### Tools
+A new depth camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
+Other tools include the items to be assembled, a conveyor belt that delivers a shell, and the robot arm, all of which already exist.
 
-#### Measures
-Completion rate, error rate and subjective evaluations would be used as metrics to measure user performance to evaluate the application.
+<!-- TOC ignore:true -->
+### Measures
+The metrics used involve precision rate, recall rate (also known as True Positive Rate) and time-to-complete a pick-and-place cycle.
+Precision measures how conservative the system is when identifying the presence of an item.
+Recall measures how sensitive the system is when identifying items that are actually present.
+Recall is used a metric to gauge false-negative cases (skipping a slot that actually holds the item to be moved),
+which whether the aid of objection detection technology is fully utilised.
+Finally, the time consumed to complete a pick-and-place cycle, with a vision system incorporated, remains similar, if not superior, to the pre-existing system.
 
-#### Demographic Information
-A demographic questionnaire would be handed over to the participant right before the test,
-to ensure that the participant belongs to the target user group that would use the product.
-
-#### Satisfaction Assessment
-After the experiment, the participant would be handed a satisfaction questionnaire where they would inform us about what problems they found with the interface and
-the suggestions they must fix these problems.
+<!-- TOC ignore:true -->
+### Satisfaction Assessment
+After the experiment, the participant would be asked to fill a form detailing their experience with the system.
+In particular, they will be prompted to comment on the safety and speed and efficiency in the comparison with the original system.
 
 # Participants
 The end user of the Vuzix Smart Glass would be an employee or trainee working with an instructor in a training program.
