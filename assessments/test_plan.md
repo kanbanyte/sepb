@@ -50,7 +50,7 @@
 	* [Resources Required](#resources-required)
 	* [Environment Requirements](#environment-requirements)
 * [Test Items](#test-items)
-	* [Features to be Tested](#features-to-be-tested)
+	* [Tested Features](#tested-features)
 	* [Test Cases](#test-cases)
 		* [Functional Test Cases](#functional-test-cases)
 		* [Non-functional Testing](#non-functional-testing)
@@ -135,17 +135,15 @@ As the robot arm already posseses the ability to precisely pick and move items t
 the testing strategy centers around assessing its proficiency in selecting items that are currently available,
 as opposed to the pre-existing trial-and-error approach across the entirety of the trays.
 
-## Features to be Tested
-* The system must be able to establish connection when both devices are turned on.
-* Both users must be able to end the connection.
-* The instructor must be able to send his hand gestures to the operator's glasses in real time.
-* The operator must be able to view the instructors hand gestures during live video stream.
-* The instructor must be able to take a screenshot during the live video streaming between the operator and instructor.
-* The instructor must be capable of annotating the image taken.
-* The instructor must also be able to share the annotated image.
-* The operator must be able to view shared image.
-* The operator must be able to dismiss shared picture.
-* The system must be able to identify a piece of meat and assess its quality via colour and dimensions.
+## Tested Features
+The following features will undergo testing:
+* The system establishes a stable connection between the camera and robot arm controller software.
+* The system inititates an image capture and inference request to the model before the robot arm resets to its initial position.
+* The system identifies the presence of chips on both trays before determining which to pick up.
+* The system identifies the presence of shells on from their stack before determining which to pick up.
+* The system identifies the presence of batteries on from their stack before determining which to pick up.
+* The system stops when items are not correctly positioned (e.g., fallen over, being outside of their allocated tray/stack etc.).
+* The annotated images resulting from the inference are recorded for subsequent review.
 
 ## Test Cases
 ### Functional Test Cases
