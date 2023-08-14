@@ -261,21 +261,20 @@ Since all the features are being implemented for the first time and are all capa
 There are currently no features that will not be tested.
 
 # Strategy
-As stated the project will be tested following a four-level testing strategy
+To ensure the successful implementation of the Robot Vision System for the Pick and Place Task, a comprehensive testing strategy will be employed.
+This strategy encompasses a structured approach to testing that spans different phases of development.
 * Unit Testing\
-This stage of testing will be carried out during the initial coding stage when there are multiple modules of code being developed by different members of the team.
-This will be carried out by generating multiple unit tests to test pieces of code.
-Will help detect errors early on.
+Unit tests will be conducted to validate the individual components of the vision system.\
+This includes testing algorithms related to object detection, position estimation, and robot control.
 * Integration Testing\
-This stage of testing will be carried out when the system reaches a low-level design and all prior unit tests have been passed.
-Multiple modules of the system will be tested together using appropriate test cases.
-This will confirm if various modules function effectively altogether.
+Integration tests will focus on verifying the interaction between different modules of the vision system.\
+This will include testing the integration of computer vision algorithms with the Robot Operating System (ROS2).
 * System Testing\
-This stage will be carried out when the system reaches a functional level performing the core functions it was developed for.
-This will ensure if specified requirements are reached and product works.
-The system will undergo usability testing according to the non-functional test cases.
+System tests will evaluate the overall performance of the Robot Vision System for the Pick and Place Task.\
+The vision system will be tested with various object positions to ensure accurate pick and place operations.
 * Acceptance Testing\
-The last stage of testing to make sure the client is happy with the product and all requirements have been achieved successfully.
+Acceptance tests will be conducted in collaboration with the client to ensure that the vision system meets the specified requirements and
+fulfils the intended pick and place tasks.
 
 ## Roles and Responsibilities
 * Unit Testing\
