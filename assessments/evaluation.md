@@ -104,7 +104,7 @@ After the experiment, the participant would be asked to fill a form detailing th
 In particular, they will be prompted to comment on the safety and speed and efficiency in the comparison with the original system.
 
 # Participants
-The primary user of the system is an operator who undertakes the task of assembling items delivered by a robot.
+The primary user of the system is an operator who undertakes the task of assembling items delivered by a robot.\
 The operator does not need to manually assist the robot in any way unless the items have fallen over or are not correctly positioned,
 in which cases the robot will halt entirely and await a manual restart.
 
