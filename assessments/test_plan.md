@@ -320,11 +320,14 @@ Risks associated with testing:
 4. When designing allow room for accommodating changes.
 
 ## Testing Tasks
-* Testing scenarios shall be taken from the client and documented.\
-The test scenarios will be required before creating the test cases.
-* Test cases shall be created for individual features of the system.
-* Required resources shall be accounted for before carrying out the tests.
-* Bugs will be logged and reported
+* Develop comprehensive unit test cases for individual components of the vision system,
+including object detection algorithms, position estimation, and robot control mechanisms.
+* Execute unit tests to verify the correctness of algorithms and identify any deviations from expected behaviour.
+* Conduct integration tests to ensure seamless communication between computer vision modules and the Robot Operating System (ROS2).
+* Validate data exchange, synchronisation, and compatibility among integrated components.
+* Work closely with the client to conduct acceptance tests, verifying that the vision system meets the specified requirements and objectives.
+* Obtain client approval on the system's performance and functionality.
+* Review and validate the accuracy and comprehensiveness of documentation, ensuring that it effectively guides users and developers.
 
 # Pass/Fail Criteria
 ## Product Level
