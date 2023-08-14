@@ -417,9 +417,12 @@ Testing level pass/fail criteria:
 
 ## Suspension criteria and resumption requirements
 ### Suspension Criteria
-* The design of the system is found to be defective.
-* The client has changed his mind about the specified requirements.
-* The module tested is found to have critical issues which have to be fixed before proceeding further.
+The testing process will be halted if at least one of the below criterias is met:
+* The requirements have been changed.
+* A critical error affecting multiple test cases has been discovered.
+* The system design is found to be inappropriate.
+* The system design or implementation undergoes a significant change.
+* Involved hardware or testing resources become defective or unavailable.
 
 ### Resumption Requirements
 * All critical issues found have been fixed.
