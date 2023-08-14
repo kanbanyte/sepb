@@ -140,9 +140,9 @@ As the goal of this project is the automation of a pick and place task, the resu
 As such, what will be evaluated will be limited to the tasks that system completes.
 
 These tasks include:
-* picking up the correct objects and placing them in the correct position on the assembly tray.
-* picking up and placing the assembly tray in the ready position when all parts and accumulated and placed in the assembly tray.
-* identifying when the assembly tray is empty and returning it to its original position.
+* Picking up the correct objects and placing them in the correct position on the assembly tray.
+* Picking up and placing the assembly tray in the ready position when all parts and accumulated and placed in the assembly tray.
+* Identifying when the assembly tray is empty and returning it to its original position.
 
 # Usability Metrics
 Usability requirements can be evaluated using usability metrics like scenario completion rates, error rates, subject evaluations and
