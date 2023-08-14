@@ -289,11 +289,12 @@ Must be carried out by separate testing team as well the team leader under super
 Requires the users to be non - developers.
 
 ## Test Deliverables
+The following key deliverables will be produced as part of the testing process:
 * Test Plan
-* Test Cases
-* Defect/Enhancement logs
-* Test Reports
-* Usability Test Guide
+* Unit Test Cases and Results
+* Integration Test Report
+* System Test Scenarios and Outcomes
+* Acceptance Test Documentation
 
 ## Schedule
 Features to test:
