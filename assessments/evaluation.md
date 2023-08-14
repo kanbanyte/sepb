@@ -160,7 +160,11 @@ This allows the system to be evaluated and any shortcomings be identified and im
 The following sections will be used to identify and categories metrics, and define how they will be assessed.
 
 ## Scenario Completion
-A scenario is completed when the user has gotten the expected output or when the user requests assistance and cannot complete the task due to usability issues.
+The completion of the scenario requires that the system is able to correctly identify:
+* The correct chip required, pick it up, and place it in the correct position on the assembly tray.
+* The location of the next available battery and case, pick them up and place them in the correct position on the assembly tray.
+* All present parts on the assembly tray, pick up the tray and place it in the ready position on the work surface.
+* The empty assembly tray once the worker has used all the parts, pick up the tray and return it to its original position on the work surface.
 
 ## Errors
 In evaluating the usability of the Robot Vision System for the Pick and Place Task, errors will be a focal point of assessment.\
