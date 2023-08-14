@@ -133,16 +133,14 @@ The test plan shall act as a guideline for performing these different types of t
 The product to be tested is the Smart Glass Based Remote Guidance System
 
 ## Features to be Tested
-* The system must be able to establish connection when both devices are turned on.
-* Both users must be able to end the connection.
-* The instructor must be able to send his hand gestures to the operator's glasses in real time.
-* The operator must be able to view the instructors hand gestures during live video stream.
-* The instructor must be able to take a screenshot during the live video streaming between the operator and instructor.
-* The instructor must be capable of annotating the image taken.
-* The instructor must also be able to share the annotated image.
-* The operator must be able to view shared image.
-* The operator must be able to dismiss shared picture.
-* The system must be able to identify a piece of meat and assess its quality via colour and dimensions.
+The following features will undergo testing:
+* The system establishes a stable connection between the camera and robot arm controller software.
+* The system inititates an image capture and inference request to the model before the robot arm resets to its initial position.
+* The system identifies the presence of chips on both trays before determining which to pick up.
+* The system identifies the presence of shells on from their stack before determining which to pick up.
+* The system identifies the presence of batteries on from their stack before determining which to pick up.
+* The system stops when items are not correctly positioned (e.g. fallen over, being outside of their allocated tray/stack, etc.).
+* The annotated image resulting from the inference are recorded for subsequent review.
 
 ## Test Cases
 ### Functional Test Cases
