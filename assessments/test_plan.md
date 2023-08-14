@@ -132,14 +132,14 @@ The test plan shall act as a guideline for performing these different types of t
 # Test Items
 The product to be tested is the Smart Glass Based Remote Guidance System
 
-## Features to be Tested
+## Tested Features
 The following features will undergo testing:
 * The system establishes a stable connection between the camera and robot arm controller software.
 * The system inititates an image capture and inference request to the model before the robot arm resets to its initial position.
 * The system identifies the presence of chips on both trays before determining which to pick up.
 * The system identifies the presence of shells on from their stack before determining which to pick up.
 * The system identifies the presence of batteries on from their stack before determining which to pick up.
-* The system stops when items are not correctly positioned (e.g. fallen over, being outside of their allocated tray/stack, etc.).
+* The system stops when items are not correctly positioned (e.g., fallen over, being outside of their allocated tray/stack etc.).
 * The annotated images resulting from the inference are recorded for subsequent review.
 
 ## Test Cases
