@@ -151,11 +151,11 @@ Usability requirements can be evaluated using usability metrics like scenario co
 time of completion will be used to calculate usability performance on tasks.
 
 ## Scenario Completion
-The completion of the scenario requires that the system is able to:
-* Correctly identify the correct chip required, pick it up, and place it in the correct position on the assembly tray.
-* Correctly identify the location of the next available battery and case, pick them up and place them in the correct position on the assembly tray.
-* Identify that all parts are present on the assembly tray, pick up the tray and place it in the ready position on the work surface.
-* Identify that the assembly tray is empty once the worker has used all the parts, pick up the tray and return it to its original position on the work surface.
+The completion of the scenario requires that the system is able to correctly identify:
+* The correct chip required, pick it up, and place it in the correct position on the assembly tray.
+* The location of the next available battery and case, pick them up and place them in the correct position on the assembly tray.
+* All present parts on the assembly tray, pick up the tray and place it in the ready position on the work surface.
+* The empty assembly tray once the worker has used all the parts, pick up the tray and return it to its original position on the work surface.
 
 ## Errors
 There are two types of errors being critical and non-critical errors.
