@@ -147,7 +147,7 @@ The task descriptions will be reviewed by the project supervisor, and client.
 Their acceptance would be documented.
 
 # Usability Metrics
-To ensure that the above mentioned tasks are completed to a satisfactory level, a series of usability metrics will be employed.
+To ensure that the above mentioned tasks are completed to a satisfactory level, a series of usability metrics will be employed.\
 This allows the system to be evaluated and and any shortcomings and identified and improved.
 
 The following sections will be used to identify and categories metrics, and define how they will be assessed.
