@@ -122,12 +122,16 @@ The test plan shall act as a guideline for performing these different types of t
 * IDE (to create and run unit tests)
 
 ## Environment Requirements
-* 2 smart glasses (updated with current system software)
-* May require smart phones (for higher processing power)
-* Hotspot or WiFi
-* Single coloured background (to aid Hand gesture recognition)
-* Gloves (to aid Hand gesture recognition)
-* A ruler (for point of reference)
+The test environment is situated at the Factory of the Future's operation desk, housing the robot arm and assembly line.\
+The following equipment and items are required:
+* Depth camera mounted above the working desk.
+* Adequate illumination for optimal depth camera performance.
+* URe5 robot arm.
+* x2 chip trays.
+* A functional conveyor belt that delivers the shell.
+* A battery stack.
+* A front shell stack.
+* A white tray on which the shells, battery and chip are delivered to the human operator.
 
 # Test Items
 The product to be tested is the robot arm upgraded with object detection technology.
