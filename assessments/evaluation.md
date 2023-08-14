@@ -110,6 +110,12 @@ The participant will be given a brief overview of how the Vuzix Smart Glass work
 where the buttons are located and hand gestures to trigger functions as the participant might not have any prior experience using the product.
 
 # Procedure
+The evaluation test will take place at the Factory of the Future, where the cobot is located.
+The environment contains various components for the cobot to place in front of the participant to assemble into the completed device.
+
+Prior to the evaluation, the trainer will explain to the participant how the test will be conducted.
+
+
 Participants will undertake the usability evaluation test at the Swinburne Usability Laboratory located in the AS building.
 The lab has a test room and a control room separated by a two-way mirror.
 The test room is equipped with a computer, webcam and a microphone connected to another computer in the control room.
