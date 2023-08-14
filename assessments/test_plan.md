@@ -278,16 +278,31 @@ The system will undergo usability testing according to the non-functional test c
 The last stage of testing to make sure the client is happy with the product and all requirements have been achieved successfully.
 
 ## Roles and Responsibilities
+* Team Leader and Client Liaison\
+Coordinate and oversee the testing process.\
+Communicate testing progress and results to the client.
+* Development Manager and Planning Manager\
+Define testing milestones and timelines.\
+Allocate resources for testing activities.
+* Support Manager and Developer\
+Assist in preparing the testing environment.\
+Execute unit tests and provide feedback on functionality.
+* Quality Manager and Developer\
+Conduct thorough testing of the vision system.\
+Perform integration testing to ensure seamless functionality.\
+Identify and document defects and issues.
 * Unit Testing\
-Must be carried out by individual developers on a continuous basis by creating unit tests throughout the development of the system.
+Developers will create and execute unit tests for individual vision components.\
+Test cases will cover object detection accuracy, position estimation, and algorithmic correctness.
 * Integration Testing\
-May be carried out by the developers as well the team leader/testing managers by using appropriate test cases.
+Integration tests will be carried out by the quality team.\
+Ensure seamless communication between computer vision algorithms and ROS2.
 * System Testing\
-Must be carried out by a separate testing team under supervision of the team leader.
-Users testing the system are preferred to be candidates who have experience with testing systems and interfaces.
+The entire vision system will be subjected to rigorous system tests.\
+Various object positions will be tested to validate pick and place accuracy.
 * Acceptance Testing\
-Must be carried out by separate testing team as well the team leader under supervision of the client.
-Requires the users to be non - developers.
+Collaborate with the client to conduct acceptance tests.\
+Ensure that the vision system meets client requirements and expectations.
 
 ## Test Deliverables
 * Test Plan
