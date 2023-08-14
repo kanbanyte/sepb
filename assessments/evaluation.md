@@ -113,8 +113,8 @@ The experiment would be a simulation of a real-life training scenario, therefore
 Participant recruitment would be done through social media.
 
 # Training
-The participant will be given a brief overview of how the Vuzix Smart Glass works,
-where the buttons are located and hand gestures to trigger functions as the participant might not have any prior experience using the product.
+The participant will receive an introduction to the objectives of the pick-and-place task and their assigned role.\
+Additionally, they will be instructed on assembling the device using the provided parts and guided on maintaining a safe distance from the cobot during its operation.
 
 # Procedure
 Participants will undertake the usability evaluation test at the Swinburne Usability Laboratory located in the AS building.
