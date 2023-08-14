@@ -130,7 +130,10 @@ The test plan shall act as a guideline for performing these different types of t
 * A ruler (for point of reference)
 
 # Test Items
-The product to be tested is the Smart Glass Based Remote Guidance System
+The product to be tested is the robot arm upgraded with object detection technology.
+As the robot arm already posseses the ability to precisely pick and move items to the human operator,
+the testing strategy centers around assessing its proficiency in selecting items that are currently available,
+as opposed to the pre-existing trial-and-error approach across the entirety of the trays.
 
 ## Features to be Tested
 * The system must be able to establish connection when both devices are turned on.
