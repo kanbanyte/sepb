@@ -309,11 +309,12 @@ Collaborate with the client to conduct acceptance tests.\
 Ensure that the vision system meets client requirements and expectations.
 
 ## Test Deliverables
+The following key deliverables will be produced as part of the testing process:
 * Test Plan
-* Test Cases
-* Defect/Enhancement logs
-* Test Reports
-* Usability Test Guide
+* Unit Test Cases and Results
+* Integration Test Report
+* System Test Scenarios and Outcomes
+* Acceptance Test Documentation
 
 ## Schedule
 Features to test:
