@@ -110,24 +110,14 @@ The participant will be given a brief overview of how the Vuzix Smart Glass work
 where the buttons are located and hand gestures to trigger functions as the participant might not have any prior experience using the product.
 
 # Procedure
-The evaluation test will take place at the Factory of the Future, where the cobot is located.
-The environment contains various components for the cobot to place in front of the participant to assemble into the completed device.
+The evaluation test will take place at the Factory of the Future.
+The environment contains the cobot, various components for assembling, and the ZED2 camera for detecting the components.
+Prior to the evaluation, the participant will be trained to assemble the components, and the function of the cobot will be explained.
 
-Prior to the evaluation, the trainer will explain to the participant how the test will be conducted.
+During the test, the participant will be observed and any difficulties they have will be noted.
+Additionally, any inaccuracies in the cobot's function will be noted to rectify in the future.
 
-
-Participants will undertake the usability evaluation test at the Swinburne Usability Laboratory located in the AS building.
-The lab has a test room and a control room separated by a two-way mirror.
-The test room is equipped with a computer, webcam and a microphone connected to another computer in the control room.
-A software called Morae Observer and Morae Recorder would be used to record user feedback from the control room.
-
-Before the experiment,
-the participant is briefed on how the experiment will be conducted with a short training session to introduce the hand gestures needed to trigger certain functions.
-Informed consent would inform the participant that they can leave at any time, how they will be recorded while keeping their identity protected.
-
-The participant will fill out a demographic questionnaire before the test,
-a post-task questionnaire after completing each task and a post-test satisfaction questionnaire.
-To get a verbal record which could be reviewed, the participant would be asked to read the task aloud and think aloud while doing the task.
+Following the evaluation, the participant will be questioned on any specific issues they experienced, and potentially what they think could be improved for easier use.
 
 # Roles
 Members of the team will be assigned roles that they must carry out during the experiment.
