@@ -106,9 +106,8 @@ The experiment would be a simulation of a real-life training scenario, therefore
 Participant recruitment would be done through social media.
 
 # Training
-The participant will be briefed on what the purpose of the pick-and-place task is and what their role is.
-They will also be taught how to assemble the device from the parts once they are placed in front of them, and
-will be informed on where to stand so as to be at a safe distance from the cobot when it is operating.
+The participant will receive an introduction to the objectives of the pick-and-place task and their assigned role.\
+Additionally, they will be instructed on assembling the device using the provided parts and guided on maintaining a safe distance from the cobot during its operation.
 
 # Procedure
 Participants will undertake the usability evaluation test at the Swinburne Usability Laboratory located in the AS building.
