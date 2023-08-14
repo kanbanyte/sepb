@@ -154,8 +154,10 @@ These tasks include:
 * Identifying when the assembly tray is empty and returning it to its original position.
 
 # Usability Metrics
-Usability requirements can be evaluated using usability metrics like scenario completion rates, error rates, subject evaluations and
-time of completion will be used to calculate usability performance on tasks.
+To ensure that the above mentioned tasks are completed to a satisfactory level, a series of usability metrics will be employed.\
+This allows the system to be evaluated and any shortcomings be identified and improved during the testing phase.
+
+The following sections will be used to identify and categories metrics, and define how they will be assessed.
 
 ## Scenario Completion
 A scenario is completed when the user has gotten the expected output or when the user requests assistance and cannot complete the task due to usability issues.
