@@ -110,11 +110,11 @@ The participant will be given a brief overview of how the Vuzix Smart Glass work
 where the buttons are located and hand gestures to trigger functions as the participant might not have any prior experience using the product.
 
 # Procedure
-The evaluation test will take place at the Factory of the Future.
-The environment contains the cobot, various components for assembling, and the ZED2 camera for detecting the components.
+The evaluation test will take place at the Factory of the Future.\
+The environment contains the cobot, various components for assembling, and the ZED2 camera for detecting the components.\
 Prior to the evaluation, the participant will be trained to assemble the components, and the function of the cobot will be explained.
 
-During the test, the participant will be observed and any difficulties they have will be noted.
+During the test, the participant will be observed and any difficulties they have will be noted.\
 Additionally, any inaccuracies in the cobot's function will be noted to rectify in the future.
 
 Following the evaluation, the participant will be questioned on any specific issues they experienced, and potentially what they think could be improved for easier use.
