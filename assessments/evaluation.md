@@ -166,7 +166,9 @@ Critical errors are those of which prevent the user from getting the expected ou
 non-critical errors are errors which the user can recover from but could potentially give an unexpected outcome.
 
 ## Subjective Evaluations
-Post-test satisfaction questionnaires are a method of collecting subjective evaluations at the end of the session.
+Subjective evaluations form a vital facet of the usability assessment for the Robot Vision System's Pick and Place Task.\
+Analysing feedback trends will guide iterative improvements, seamlessly integrating user perspectives into the development process.
+This holistic approach drives continual enhancements to the system's usability.
 
 ## Time on Task
 Time taken to complete each scenario is recorded.
