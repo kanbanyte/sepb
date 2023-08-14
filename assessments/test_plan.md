@@ -50,7 +50,7 @@
 	* [Resources Required](#resources-required)
 	* [Environment Requirements](#environment-requirements)
 * [Test Items](#test-items)
-	* [Features to be Tested](#features-to-be-tested)
+	* [Tested Features](#tested-features)
 	* [Test Cases](#test-cases)
 		* [Functional Test Cases](#functional-test-cases)
 		* [Non-functional Testing](#non-functional-testing)
