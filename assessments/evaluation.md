@@ -136,15 +136,13 @@ Briefs the participant on how the test will be conducted and will be available t
 Logs down participant feedback, while analysing application issues.
 
 # Usability Tasks
-The tasks are common tasks which every end user would expect to do while using the application.
-The tasks aren't same for each participant with some playing the role of the operator,
-while others play the role of the instructor, and would be given different tasks accordingly.
+As the goal of this project is the automation of a pick and place task, the resultant system will require limited human interaction.
+As such, what will be evaluated will be limited to the tasks that system completes.
 
-The tasks include sketching,
-taking screenshots and sending video feed which are significant as it will be the most basic tasks which will be done every time the smart glasses are used.
-All of the tasks in the tests would be significant which end users of the application must not find any issues with.
-The task descriptions will be reviewed by the project supervisor, and client.
-Their acceptance would be documented.
+These tasks include:
+* picking up the correct objects and placing them in the correct position on the assembly tray.
+* picking up and placing the assembly tray in the ready position when all parts and accumulated and placed in the assembly tray.
+* identifying when the assembly tray is empty and returning it to its original position.
 
 # Usability Metrics
 Usability requirements can be evaluated using usability metrics like scenario completion rates, error rates, subject evaluations and
