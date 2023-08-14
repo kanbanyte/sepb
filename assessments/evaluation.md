@@ -136,7 +136,7 @@ Briefs the participant on how the test will be conducted and will be available t
 Logs down participant feedback, while analysing application issues.
 
 # Usability Tasks
-As the goal of this project is the automation of a pick and place task, the resultant system will require limited human interaction.
+As the goal of this project is the automation of a pick and place task, the resultant system will require limited human interaction.\
 As such, what will be evaluated will be limited to the tasks that system completes.
 
 These tasks include:
