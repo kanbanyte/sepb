@@ -54,7 +54,7 @@
 	* [Test Cases](#test-cases)
 		* [Functional Test Cases](#functional-test-cases)
 		* [Non-functional Testing](#non-functional-testing)
-	* [Features not to be Tested](#features-not-to-be-tested)
+	* [Untested Features](#untested-features)
 * [Strategy](#strategy)
 	* [Roles and Responsibilities](#roles-and-responsibilities)
 	* [Test Deliverables](#test-deliverables)
