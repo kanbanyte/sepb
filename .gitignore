@@ -9,6 +9,7 @@
 /**/.vs/
 /**/obj/
 /**/x64/
+/**/install/
 # Ignore the following User-specific file types.
 /**/*.vcxproj.*
 /**/*.csproj.*
