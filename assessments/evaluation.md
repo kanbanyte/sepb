@@ -43,34 +43,24 @@
 # Table of Contents
 <!-- TOC -->
 
-- [Executive Summary](#executive-summary)
-- [Methodology](#methodology)
-- [Participants](#participants)
-- [Training](#training)
-- [Procedure](#procedure)
-- [Roles](#roles)
-- [Usability Tasks](#usability-tasks)
-- [Usability Metrics](#usability-metrics)
-    - [1. Scenario Completion](#1-scenario-completion)
-    - [2. Errors](#2-errors)
-    - [3. Subjective Evaluations](#3-subjective-evaluations)
-    - [4. Time on Task](#4-time-on-task)
-- [Usability Goals](#usability-goals)
-- [Problem Severity](#problem-severity)
-    - [1. Impact Ranking](#1-impact-ranking)
-            - [1.1. High](#11-high)
-            - [1.2. Moderate](#12-moderate)
-            - [1.3. Low](#13-low)
-    - [2. Frequency ranking](#2-frequency-ranking)
-            - [2.1. High](#21-high)
-            - [2.2. Moderate](#22-moderate)
-            - [2.3. Low](#23-low)
-    - [3. Severity Ranking](#3-severity-ranking)
-            - [3.1. Severity 1](#31-severity-1)
-            - [3.2. Severity 2](#32-severity-2)
-            - [3.3. Severity 3](#33-severity-3)
-            - [3.4. Severity 4](#34-severity-4)
-- [Reporting Results](#reporting-results)
+* [Executive Summary](#executive-summary)
+* [Methodology](#methodology)
+* [Participants](#participants)
+* [Training](#training)
+* [Procedure](#procedure)
+* [Roles](#roles)
+* [Usability Tasks](#usability-tasks)
+* [Usability Metrics](#usability-metrics)
+    * [Scenario Completion](#scenario-completion)
+    * [Errors](#errors)
+    * [Subjective Evaluations](#subjective-evaluations)
+    * [Time on Task](#time-on-task)
+* [Usability Goals](#usability-goals)
+* [Problem Severity](#problem-severity)
+    * [Impact Ranking](#impact-ranking)
+    * [Frequency ranking](#frequency-ranking)
+    * [Severity Ranking](#severity-ranking)
+* [Reporting Results](#reporting-results)
 
 <!-- /TOC -->
 
@@ -209,7 +199,7 @@ Issues that negatively affect the user's experience noticeably but which may not
 They might make users more frustrated and less productive.
 
 #### Low
-Non critical errors that have a minimal negative impact on the user's experience. \
+Non critical errors that have a minimal negative impact on the user's experience.\
 They may cause slight confusion or inconvenience for the user, but they don't significantly hinder users from achieving their goal.
 
 ## Frequency ranking
