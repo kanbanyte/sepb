@@ -43,7 +43,7 @@
 <!-- TOC -->
 
 * [Introduction](#introduction)
-	* [Purpose of the test plan](#purpose-of-the-test-plan)
+	* [Purpose](#purpose)
 	* [Scope](#scope)
 	* [References Material](#references-material)
 	* [Objective](#objective)
