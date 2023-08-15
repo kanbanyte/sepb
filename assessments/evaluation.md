@@ -58,7 +58,7 @@
 * [Usability Goals](#usability-goals)
 * [Problem Severity](#problem-severity)
 	* [Impact ranking](#impact-ranking)
-	* [Frequency ranking](#frequency-ranking)
+	* [Frequency Ranking](#frequency-ranking)
 	* [Severity Ranking](#severity-ranking)
 * [Reporting Results](#reporting-results)
 
