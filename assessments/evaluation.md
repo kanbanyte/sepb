@@ -216,7 +216,7 @@ These issues have a severe negative impact on usability and heavily impact a use
 These issues often lead to task failure and user frustration.
 
 #### Medium Severity
-These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.
+These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.\
 While not critical, these issues still need to be addressed to ensure a smoother user experience.
 
 #### Low Severity
