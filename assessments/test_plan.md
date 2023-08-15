@@ -351,8 +351,10 @@ including object detection algorithms, position estimation, and robot control me
 * Review and validate the accuracy and comprehensiveness of documentation, ensuring that it effectively guides users and developers.
 
 # Pass/Fail Criteria
-These criteria help make sure that the project meets the necessary requirements as well as ensuring the project is at an acceptable standard of quality.\
-The following criteria provide clear guidelines for assessing whether the system meets the desired level of functionality, performance and other relevant attributes whilst under test.
+These criteria help make sure that the project meets the necessary requirements as well as ensuring the project is at an acceptable standard of quality.
+The following criteria provide clear guidelines for assessing whether the system meets the desired level of functionality, performance and
+other relevant attributes whilst under test.
+
 ## Product Level
 Instructor and operator can switch roles upon accepting the connected user's request.
 
