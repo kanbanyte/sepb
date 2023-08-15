@@ -261,7 +261,7 @@ Expected Results
 4. User must see the sketch being removed from the operator's display
 5. User must see video feed
 
-## Features not to be Tested
+## Untested Features
 There are currently no features that won't be tested.\
 This is because all features are being introduced for the first time.\
 All introduced features can be tested and therefore will be tested.
