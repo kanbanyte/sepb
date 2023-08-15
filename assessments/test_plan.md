@@ -326,19 +326,20 @@ Features to test:
 Estimated Testing: Semester 2
 
 ## Risk and Contingency
-Risks associated with testing:
+The risks and contingencies associated with testing include the following:
 
 #### Risks
-1. May be shortage of time which may result in less time for testing.
-2. Requirements may change during development.
-3. Team member leaves
-4. Design lack flexibility to make changes
+1. Team members leave our become unable to work through illness or injury
+2. Time pressures may result in less time being allocated to testing
+3. Not all possible scenarios are able to be tested
+4. The scope of testing could end up going beyond the project's boundaries, resulting in time and resource overruns
 
 #### Contingency
-1. Carry out tests frequently as the system is developed instead of assigning a particular date.
-2. Keep updating requirements from client as frequent as possible to avoid last minute chaos.
-3. Have each module worked on and tested by 2 members.
-4. When designing allow room for accommodating changes.
+1. Have tasks delegated to at least 2 team members members.
+2. Set realistic time frames for testing activities during project planning and	if timelines become constrained, 
+	prioritize testing activities based on problem severity
+3. Create comprehensive test plans that use techniques like equivalence partitioning.
+4. Clearly define the scope of testing in the test plan and establish a process to assess and approve any changes to the scope
 
 ## Testing Tasks
 * Develop comprehensive unit test cases for individual components of the vision system,
