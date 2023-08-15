@@ -198,14 +198,19 @@ A non-critical error which causes the user to have a larger time on task despite
 A user encounters a minor non-critical error.
 
 ## Frequency ranking
-#### High
-Greater than 30% of the participants encountered the issue
+Ranking problem frequency is valuable for understanding whether an issue is an isolated incident or a recurring problem.
 
-#### Moderate
-13%-29% of the participants encountered the issue
+#### Frequent Occurrence
+Greater than 20-50% of the participants encountered the issue across multiple sessions.
+These problems must be addressed to ensure usability is maintained.
 
-#### Low
-Less than 13% of the participants encountered the issue
+#### Moderate Occurrence
+10%-20% of the participants encountered the issue.
+These issues still impact user experience and should be addressed to improve usability.
+
+#### Rare Occurrence
+Less than 10% of the participants encountered the issue.
+These problems may only affect a small subset of users, but they are still worth addressing to enhance the product's usability.
 
 ## Severity Ranking
 #### Severity 1
