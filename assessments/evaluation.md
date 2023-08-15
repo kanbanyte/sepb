@@ -205,7 +205,7 @@ Greater than 20-50% of the participants encountered the issue across multiple se
 These problems must be addressed to ensure usability is maintained.
 
 #### Moderate Occurrence
-10%-20% of the participants encountered the issue.
+10-20% of the participants encountered the issue.
 These issues still impact user experience and should be addressed to improve usability.
 
 #### Rare Occurrence
