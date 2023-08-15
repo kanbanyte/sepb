@@ -449,9 +449,10 @@ The testing process will be halted if at least one of the below criterias is met
 * Involved hardware or testing resources become defective or unavailable.
 
 ### Resumption Requirements
-* All critical issues found have been fixed.
-* Modified or fixed modules have passed testing successfully.
-* The new changes have gained the approval of the testing manager as well as the Team Leader.
+* The design has been adjusted or redesign to suit the needs of the project.
+* The error has been fixed, or a work-around has been identified.
+* A new system design is finalised and ready for testing.
+* Any problematic hardware has been replaced with an adequate alternative.
 
 ## Approvals
 * Both the Team leader and the Testing manager must agree to the completion of a testing level before moving on to the next level.
