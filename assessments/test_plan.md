@@ -150,6 +150,9 @@ The following features will undergo testing:
 * The annotated images resulting from the inference are recorded for subsequent review.
 
 ## Test Cases
+The creation of well-structured test cases in important for evaluating software.\
+This section outlines the creation of both functional and non-functional test cases, designed to assess the system's ability to perform the specified requirements.
+
 ### Functional Test Cases
 <!--
 1. Test Case(s)
