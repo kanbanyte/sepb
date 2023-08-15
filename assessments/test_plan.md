@@ -101,12 +101,12 @@ This will allow the project to be tested at different development stages at maxi
 * Acceptance Testing
 
 ## References Material
-The following document has been created according to the details specified in the documents below.
-The documents below will provide further information on the project.
+Previously produced documents have been referenced to ensure that the testing that is conducted satisfies the requirements in these documents.
+These documents can provide further information if required:
 * Project Plan
 * Software Quality Assurance Plan
 * Software Requirements Specification
-* IEEE 829 Standard template (Test Plan)
+* Detailed Design and Implementation Report
 
 ## Objective
 Carry out appropriate tests at appropriate stages of development.
