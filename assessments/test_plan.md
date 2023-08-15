@@ -337,7 +337,7 @@ The risks and contingencies associated with testing include the following:
 #### Contingency
 1. Have tasks delegated to at least 2 team members members.
 2. Set realistic time frames for testing activities during project planning and	if timelines become constrained, 
-	prioritize testing activities based on problem severity
+prioritize testing activities based on problem severity
 3. Create comprehensive test plans that use techniques like equivalence partitioning.
 4. Clearly define the scope of testing in the test plan and establish a process to assess and approve any changes to the scope
 
