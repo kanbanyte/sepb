@@ -208,18 +208,20 @@ Greater than 30% of the participants encountered the issue
 Less than 13% of the participants encountered the issue
 
 ## Severity Ranking
-#### Severity 1
-An issue with high severity and high impact preventing the user from completing the task.
-This kind of issue must be fixed as quickly as possible.
+Categorizing usability issues by severity is important as it allows the team to prioritize problem-solving efforts, 
+enabling the team to focus resources on addressing critical user experience problems first.
 
-#### Severity 2
-An issue with moderate to high frequency with moderate impact which doesn't allow the user to complete the task efficiently.
+#### High Severity
+These issues have a severe negative impact on usability and heavily impact a user's ability to achieve their goals.
+These issues often lead to task failure and user frustration.
 
-#### Severity 3
-An issue with either moderate frequency with low impact or low frequency with moderate impact that might frustrate some users.
+#### Medium Severity
+These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.
+ While not critical, these issues still need to be addressed to ensure a smoother user experience.
 
-#### Severity 4
-An issue with low frequency and low impact that might increase user satisfaction if the problem is to be resolved.
+#### Low Severity
+These issues have minimal impact on usability and do not significantly hinder users from completing their tasks. 
+They may however reduce the quality of a user's experience and therefore should be addressed and fixed.
 
 # Reporting Results
 The usability evaluation test will be concluded with a usability test report presenting the results with the usability metrics compared with the usability goals and
