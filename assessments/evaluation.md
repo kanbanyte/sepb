@@ -188,14 +188,19 @@ The error-free rate is the percentage of participants who complete the task with
 Problems that are seen during the testing must be classified under severity which is dependent on impact and frequency.
 
 ## Impact ranking
+Ranking problems helps prioritize which issues need immediate attention and which ones can be addressed later.
+
 #### High
-A critical error which prevents the user from completing the task.
+Critical errors that have a significant negative effect on the user experience.
+High impact errors lead to frustration, task failure, and a substantial reduction in user satisfaction.
 
 #### Moderate
-A non-critical error which causes the user to have a larger time on task despite the task being completed.
+Issues that negatively affect the user's experience noticeably but which may not be as serious as high impact problems.
+They might make users more frustrated and less productive.
 
 #### Low
-A user encounters a minor non-critical error.
+Non critical errors that have a minimal negative impact on the user's experience. 
+They may cause slight confusion or inconvenience for the user, but they don't significantly hinder users from achieving their goal.
 
 ## Frequency ranking
 #### High
