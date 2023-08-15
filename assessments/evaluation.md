@@ -208,11 +208,11 @@ Greater than 30% of the participants encountered the issue
 Less than 13% of the participants encountered the issue
 
 ## Severity Ranking
-Categorizing usability issues by severity is important as it allows the team to prioritize problem-solving efforts, 
+Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts, 
 enabling the team to focus resources on addressing critical user experience problems first.
 
 #### High Severity
-These issues have a severe negative impact on usability and heavily impact a user's ability to achieve their goals.
+These issues have a severe negative impact on usability and heavily impact a user's ability to achieve their goals.\
 These issues often lead to task failure and user frustration.
 
 #### Medium Severity
@@ -220,7 +220,7 @@ These problems have a moderate impact on usability, causing inconvenience reduce
 While not critical, these issues still need to be addressed to ensure a smoother user experience.
 
 #### Low Severity
-These issues have minimal impact on usability and do not significantly hinder users from completing their tasks. 
+These issues have minimal impact on usability and do not significantly hinder users from completing their tasks. \
 They may however reduce the quality of a user's experience and therefore should be addressed and fixed.
 
 # Reporting Results
