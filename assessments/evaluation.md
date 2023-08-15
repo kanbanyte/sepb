@@ -217,7 +217,7 @@ These issues often lead to task failure and user frustration.
 
 #### Medium Severity
 These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.
- While not critical, these issues still need to be addressed to ensure a smoother user experience.
+While not critical, these issues still need to be addressed to ensure a smoother user experience.
 
 #### Low Severity
 These issues have minimal impact on usability and do not significantly hinder users from completing their tasks. 
