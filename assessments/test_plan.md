@@ -116,9 +116,9 @@ The test plan shall act as a guideline for performing these different types of t
 The following items will be require to ensure that the system is testable:
 * A computer capable of communicating with the depth camera, and running the machine learning algorithm to detect where parts are located.
 * Software that is able to communicate with the robot arm and move it.
-* AA batteries
-* Chips for assembly
-* Front shells for assembly
+* AA batteries.
+* Chips for assembly.
+* Front shells for assembly.
 * A participant to act as the worker assembling the parts provided by the system.
 
 ## Environment Requirements
