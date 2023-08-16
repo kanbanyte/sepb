@@ -88,7 +88,7 @@ Development of the overall system is still in progress, so additional tests may 
 
 <!-- TOC ignore:true -->
 ### Methods of Testing
-Different methods of testing will be conducted at various stages in development.
+Different methods of testing will be conducted at various stages in development.\
 These include:
 * Unit testing
 * Integration testing
