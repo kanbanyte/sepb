@@ -220,7 +220,7 @@ These problems have a moderate impact on usability, causing inconvenience reduce
 While not critical, these issues still need to be addressed to ensure a smoother user experience.
 
 #### Low Severity
-These issues have minimal impact on usability and do not significantly hinder users from completing their tasks. \
+These issues have minimal impact on usability and do not significantly hinder users from completing their tasks.\
 They may however reduce the quality of a user's experience and therefore should be addressed and fixed.
 
 # Reporting Results
