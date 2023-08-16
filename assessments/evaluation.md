@@ -227,5 +227,5 @@ An issue with either moderate frequency with low impact or low frequency with mo
 An issue with low frequency and low impact that might increase user satisfaction if the problem is to be resolved.
 
 # Reporting Results
-The usability evaluation test will be concluded with a usability test report presenting the results with the usability metrics compared with the usability goals and
-recommendations resolve the problems.
+Upon conclusion of testing the Test results will be summarised in a clear and concise way with appropriate captions and information in a report.
+The Report will cover the successfulness of the test, and where applicable improvements suggested.
