@@ -79,26 +79,21 @@ functional and non functional test cases, as well as the pass and fail criteria 
 Additionally, the test plan will highlight the features that will not be tested to allow for a more efficient testing process.
 
 ## Scope
-Testing will be carried out at several stages of the life cycle as the system is developed.
-Testing will ensure system defects, bugs to be caught early in the development and
-helps the team reevaluate their approach to developing a particular aspect of the project.
-The test plan is currently limited to high-level test cases and assumptions as the system architecture and features have still not reached a low-level design.
-As many aspects of the system are still unknown the test plan shall act as a high-level guide for testing at the moment and
-will be further updated as the system is developed over time.
-The system to be tested is the Smart Glass Remote Guidance System.
-The system will be tested using unit tests and usability tests.
+The scope of the test plan will encompass testing of the computer vision system and of the cobot's movement both individually and together to ensure optimal function.
+Development of the overall system is still in progress, so additional tests may be required and some may not be necessary in the future.
 
-Constraints/Assumptions
-* The team is restrained to testing the system on the Vuzix M100 smart glasses.
-* The system must remain portable during testing.
-* The system will be tested under the assumption that the users have full access to WiFi
-* Both users have the system already setup on the devices at both ends of the transmission.
+<!-- TOC ignore:true -->
+### Constraints
+* Testing of the cobot's movement can be done in a simulated environment, however must ultimately be performed at the F.o.F.
+* Testing the integration of the vision system will the movement system will need to be done at the F.o.F.
 
-The team will be following a four level testing strategy.
-This will allow the project to be tested at different development stages at maximum efficiency.
-* Unit Testing
+<!-- TOC ignore:true -->
+### Methods of Testing
+Different methods of testing will be conducted at various stages in development.\
+These include:
+* Unit testing
+* Integration testing
 * System Testing
-* Integration Testing
 * Acceptance Testing
 
 ## References Material
