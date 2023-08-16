@@ -150,6 +150,9 @@ The following features will undergo testing:
 * The annotated images resulting from the inference are recorded for subsequent review.
 
 ## Test Cases
+The creation of well-structured test cases in important for evaluating software.\
+This section outlines the creation of both functional and non-functional test cases, designed to assess the system's ability to perform the specified requirements.
+
 ### Functional Test Cases
 <!--
 1. Test Case(s)
@@ -317,13 +320,12 @@ The following key deliverables will be produced as part of the testing process:
 * Acceptance Test Documentation
 
 ## Schedule
-Features to test:
-* Establish communication
-* Sending and viewing video feed
-* Sending hand gestures
-* Making,sending,viewing and dismissing sketches
-
-Estimated Testing: Semester 2
+Testing will be conducted and completed throughout semester 2.\
+The schedule for testing will be as follows:
+* Test cobot's movement/test accuracy of vision system
+* Test integration of the movement and vision systems
+* Test the overall system's performance in completing the pick and place task
+* Fine tune system to perform its tasks within an acceptable threshold
 
 ## Risk and Contingency
 Risks associated with testing:
