@@ -105,8 +105,8 @@ The documents below will provide further information on the project.
 * IEEE 829 Standard template (Test Plan)
 
 ## Objective
-Carry out appropriate tests at appropriate stages of development.
-The test plan shall act as a guideline for performing these different types of tests required for maintaining the quality and efficiency of the system.
+The objective of the testing plan is to outline the tests required and the strategy for conducting and completing testing.\
+This will ensure the system is functional at a quality level and in the most efficient manner possible.
 
 ## Resources Required
 * 2 Smart Glasses
