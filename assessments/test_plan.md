@@ -43,7 +43,7 @@
 <!-- TOC -->
 
 * [Introduction](#introduction)
-	* [Purpose of the test plan](#purpose-of-the-test-plan)
+	* [Purpose](#purpose)
 	* [Scope](#scope)
 	* [References Material](#references-material)
 	* [Objective](#objective)
@@ -72,10 +72,11 @@
 <!-- /TOC -->
 
 # Introduction
-## Purpose of the test plan
-The test plan is a document designed to outline the scope, resources, approach, strategy and criteria for all testing activities carried out during and
-after the development of the system.
-The plan will clearly identify the features that are to be tested and the features which will not be and the stages at which tests are to be carried out.
+## Purpose
+The purpose of the test plan is to clearly state the required features and functions of the system to test and the strategy by which they will be tested.
+The test plan will allow for a more efficient testing process to prepare the developed system for its final release by outlining test features,
+functional and non functional test cases, as well as the pass and fail criteria for these tests.
+Additionally, the test plan will highlight the features that will not be tested to allow for a more efficient testing process.
 
 ## Scope
 Testing will be carried out at several stages of the life cycle as the system is developed.
