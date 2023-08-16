@@ -76,7 +76,7 @@
 The purpose of the test plan is to clearly state the required features and functions of the system to test and the strategy by which they will be tested.
 The test plan will allow for a more efficient testing process to prepare the developed system for its final release by outlining test features,
 functional and non functional test cases, as well as the pass and fail criteria for these tests.
-Additionally, the test plan will highlight the features that will not be tested to allow for a swifter testing process.
+Additionally, the test plan will highlight the features that will not be tested to allow for a more efficient testing process.
 
 ## Scope
 Testing will be carried out at several stages of the life cycle as the system is developed.
