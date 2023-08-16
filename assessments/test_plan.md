@@ -328,18 +328,20 @@ Estimated Testing: Semester 2
 ## Risk and Contingency
 The risks and contingencies associated with testing include the following:
 
-#### Risks
-1. Team members leave our become unable to work through illness or injury
-2. Time pressures may result in less time being allocated to testing
-3. Not all possible scenarios are able to be tested
-4. The scope of testing could end up going beyond the project's boundaries, resulting in time and resource overruns
+<!-- TOC ignore:true -->
+### Risks
+1. Team members leave our become unable to work through illness or injury.
+2. Time pressures may result in less time being allocated to testing.
+3. Not all possible scenarios are able to be tested.
+4. The scope of testing could end up going beyond the project's boundaries, resulting in time and resource overruns.
 
-#### Contingency
+<!-- TOC ignore:true -->
+### Contingencies
 1. Have tasks delegated to at least 2 team members members.
-2. Set realistic time frames for testing activities during project planning and	if timelines become constrained, 
-prioritize testing activities based on problem severity
+2. Set realistic time frames for testing activities during project planning and
+if timelines become constrained, prioritise testing activities based on problem severity.
 3. Create comprehensive test plans that use techniques like equivalence partitioning.
-4. Clearly define the scope of testing in the test plan and establish a process to assess and approve any changes to the scope
+4. Clearly define the scope of testing in the test plan and establish a process to assess and approve any changes to the scope.
 
 ## Testing Tasks
 * Develop comprehensive unit test cases for individual components of the vision system,
