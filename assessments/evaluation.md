@@ -185,7 +185,7 @@ The completion rate is the percentage of participants who successfully complete 
 The error-free rate is the percentage of participants who complete the task without both critical and non-critical errors.
 
 # Problem Severity
-Problems that are seen during the testing must be classified under severity which is dependent on impact and frequency.
+Problems that are discovered during the  testing procedures will be classified based on severity, of which are influenced by impact and frequency.
 
 ## Impact Ranking
 Ranking problems helps prioritize which issues need immediate attention and which ones can be addressed later.
