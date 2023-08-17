@@ -109,13 +109,13 @@ The objective of the testing plan is to outline the tests required and the strat
 This will ensure the system is functional at a quality level and in the most efficient manner possible.
 
 ## Resources Required
-* 2 Smart Glasses
-* May require Smart mobiles (for higher processing power)
-* 2 users acting as Operator and Instructor
-* A ruler (for point of reference)
-* Hotspot or WiFi
-* Glove (to identify the users hand)
-* IDE (to create and run unit tests)
+The following items will be require to ensure that the system is testable:
+* A computer capable of communicating with the depth camera, and running the machine learning algorithm to detect where parts are located.
+* Software that is able to communicate with the robot arm and move it.
+* AA batteries.
+* Chips for assembly.
+* Front shells for assembly.
+* A participant to act as the worker assembling the parts provided by the system.
 
 ## Environment Requirements
 The test environment is situated at the Factory of the Future's operation desk, housing the robot arm and assembly line.\
