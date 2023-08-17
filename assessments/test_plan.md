@@ -72,6 +72,10 @@
 <!-- /TOC -->
 
 # Introduction
+This document will outline its purpose, the scope and objective of testing, as well as the specific features and cases that will be tested.
+The strategy for testing will be explained including the responsibilities of each role, test deliverables, the schedule for testing, and risks and contingency plans.\
+Finally, the pass and fail criteria will be expounded to demonstrate the process for the final stages of testing.
+
 ## Purpose of the test plan
 The test plan is a document designed to outline the scope, resources, approach, strategy and criteria for all testing activities carried out during and
 after the development of the system.
