@@ -156,66 +156,54 @@ This section outlines the creation of both functional and non-functional test ca
 * Expected Results
 -->
 
-#### Establish Communication
-1. Check if connection is established between devices
-	1. User turns on the device
-	2. System automatically tries to establish a connection with the other device
-* Connection is established between the two devices when the device is switched on
+#### Establish connection with Robot Arm
+1. Check if the connection between the PC and robot arm.\
+Steps:
+	1. Turn on robot arm.
+	2. Ping the robot to ensure that it is on the same network and able to connect.
+	3. Run initialisation commands from PC to set up the robot arm.
+* The robot arm is able to receive instructions from the PC.
 
-#### Send video feed
-1. Check if instructor can send video feed\
-Preconditions:
-Connection between users has to be established
-	1. Instructor clicks Send video
-* Video stream connection is successfully setup and video feed would stream between both users
+#### Set up depth camera
+1. Check the connection between the PC and the depth camera.\
+Steps:
+	1. Turn on the depth camera and connect it to the PC.
+	2. Start camera software to ensure that PC is receiving a signal from the camera.
+* The PC is able to receive image data from the depth camera.
 
-#### View video feed
-1. Check if user can view operator's video feed\
+#### Intialise Machine Learning (ML) Model
+1. Check if the ML model can receive data from camera.\
 Preconditions:
-Connection between users has to be established
-	1. System automatically broadcasts video stream to both users.
-* Both users can view the operator's video feed on their displays
+Connection between the PC and the depth camera has been established.\
+Steps:
+	1. Intialise ML model and ensure that it is receiving data from the depth camera.
+	2. Verify that the model is able to detect objects in the image data as required.
+* The ML model is able to recognise the required objects and provide locations for them.
 
-#### Send hand gestures
-1. Check if Instructor can send hand gestures to Operator\
+#### Connect ML model and Robot arm through PC
+1. Check that the ML model is able to send locations to the robot arm.\
 Preconditions:
-The system has to have the video feed of the operator
-	1. System automatically send instructor's hand gestures when application starts up
-* The system should start obtaining the video feed of the operator and the video feed of the instructor.\
-The video feed of the instructor is then processed to obtain footage only of the instructor's hand and not the background surroundings.
-The image of the hands should then be superimposed on the operator's video feed and then sent back to the operator.
-Both users should see video feed of both the operator's feed and the instructor's hand gestures to both users
+The ML model is able to detect objects in the image data from the depth camera and the robot arm is able to receive location data from the PC.\
+Steps:
+	1. Run commands to set up connection between the ML model and the robot arm controller on the PC
+* The robot arm is able to receive locations of parts to pick up from the ML model.
 
-#### Make sketch
-1. Check if instructor can capture image\
+#### The robot arm is able to moves on command
+1. Check that the robot arm is able to move to the locations provided by the ML model and pick up parts as instructed.\
 Preconditions:
-Instructor must have video feed to capture image from
-	1. Instructor performs "screenshot" hand signal
-* System captures image of video stream
-2. Check if instructor can draw sketch on image
-	1. Draw sketch on image by using their fingers
-* System registers finger movements and overlays it onto image
+The connection between the ML model and the robot arm has been made.\
+Steps:
+	1. Instruct the system to pick up the next required part.
+* The robot arm is able to move to the correct location to pick up the part, move the to the unloading location and place the part in the assembly tray.
 
-#### Send sketch
-1. Check if instructor can send sketched image to operator\
+#### The system is able to continue functioning autonomously
+1. Verify that the robot is able to continue operation continuously.\
 Preconditions:
-Instructor has created sketch using "Make a sketch" function
-	1. Instructor performs "wave forward" hand signal
-* System sends image to the operator
-
-#### View sketch
-1. Check if operator can view image\
-Preconditions:
-Operator device must receive image
-	1. System automatically replaces operator's video feed with sketched image
-* Operator can view sketched image
-
-#### Dismiss sketch
-1. Check if operator can dismiss image after viewing\
-Preconditions:
-Operator device must receive image
-	1. Operator performs "wave-away" hand signal
-* System dismisses image, and view goes back to operator video feed
+The robot arm arm is able to move according to locations provided by the ML model.
+* The ML model is able to continue detecting the next required parts and providing the location data to the robot arm.
+The robot arm is then able to continue correctly picking up the part and placing them in the assembly tray.
+Once the assembly tray is filled up with the required parts, the system is able to instruct the robot arm to move it to the ready position.
+When all parts have been taken by the participant, the system is able to instruct the robot arm to return the tray to the original location and repeat the process.
 
 ### Non-functional Testing
 #### Testing Goal
