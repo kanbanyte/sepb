@@ -330,14 +330,14 @@ The risks and contingencies associated with testing include the following:
 
 <!-- TOC ignore:true -->
 ### Risks
-1. Team members leave our become unable to work through illness or injury.
+1. Team members leave or become unable to work through illness or injury.
 2. Time pressures may result in less time being allocated to testing.
 3. Not all possible scenarios are able to be tested.
 4. The scope of testing could end up going beyond the project's boundaries, resulting in time and resource overruns.
 
 <!-- TOC ignore:true -->
 ### Contingencies
-1. Have tasks delegated to at least 2 team members members.
+1. Have tasks delegated to at least 2 team members.
 2. Set realistic time frames for testing activities during project planning and
 if timelines become constrained, prioritise testing activities based on problem severity.
 3. Create comprehensive test plans that use techniques like equivalence partitioning.
