@@ -180,9 +180,8 @@ Analysis of the collected time data will inform system enhancements, aligning wi
 This data-driven approach ensures continual refinement and optimisation of the system's performance.
 
 # Usability Goals
-The usability goals for this usability evaluation would be a completion rate of 100% and an error-free rate of 80%.
-The completion rate is the percentage of participants who successfully complete the task without critical errors.
-The error-free rate is the percentage of participants who complete the task without both critical and non-critical errors.
+The usability of the system will be measured in the success of the software, that being through successfully selecting appropriate objects for use.
+The system will achieve a 100% success rate whereas the success of the software is harder to measure due to the variance that exists in prediction software.
 
 # Problem Severity
 Problems that are discovered during the  testing procedures will be classified based on severity, of which are influenced by impact and frequency.
