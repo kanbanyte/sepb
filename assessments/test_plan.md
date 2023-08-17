@@ -229,7 +229,7 @@ the participant will be requested to provide feedback as to whether or not the t
 #### Pass/Fail Criteria
 
 The task of delivering and assembly tray of parts to the user must be completed in a smooth manner,
-ensuring that all the correct parts remain on the tray while in motion,and none of the parts are damaged during the pick and place task.
+ensuring that all the correct parts remain on the tray while in motion, and none of the parts are damaged during the pick and place task.
 
 #### Testing Constants
 The locations of the parts are constant. The system will not need to search for a part, rather just check if a part is in a certain location.
