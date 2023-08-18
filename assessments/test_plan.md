@@ -43,7 +43,7 @@
 <!-- TOC -->
 
 * [Introduction](#introduction)
-	* [Purpose of the test plan](#purpose-of-the-test-plan)
+	* [Purpose](#purpose)
 	* [Scope](#scope)
 	* [References Material](#references-material)
 	* [Objective](#objective)
@@ -54,7 +54,7 @@
 	* [Test Cases](#test-cases)
 		* [Functional Test Cases](#functional-test-cases)
 		* [Non-functional Testing](#non-functional-testing)
-	* [Features not to be Tested](#features-not-to-be-tested)
+	* [Untested Features](#untested-features)
 * [Strategy](#strategy)
 	* [Roles and Responsibilities](#roles-and-responsibilities)
 	* [Test Deliverables](#test-deliverables)
@@ -76,54 +76,50 @@ This document will outline its purpose, the scope and objective of testing, as w
 The strategy for testing will be explained including the responsibilities of each role, test deliverables, the schedule for testing, and risks and contingency plans.\
 Finally, the pass and fail criteria will be expounded to demonstrate the process for the final stages of testing.
 
-## Purpose of the test plan
-The test plan is a document designed to outline the scope, resources, approach, strategy and criteria for all testing activities carried out during and
-after the development of the system.
-The plan will clearly identify the features that are to be tested and the features which will not be and the stages at which tests are to be carried out.
+## Purpose
+The purpose of the test plan is to clearly state the required features and functions of the system to test and the strategy by which they will be tested.
+The test plan will allow for a more efficient testing process to prepare the developed system for its final release by outlining test features,
+functional and non functional test cases, as well as the pass and fail criteria for these tests.
+Additionally, the test plan will highlight the features that will not be tested to allow for a more efficient testing process.
 
 ## Scope
-Testing will be carried out at several stages of the life cycle as the system is developed.
-Testing will ensure system defects, bugs to be caught early in the development and
-helps the team reevaluate their approach to developing a particular aspect of the project.
-The test plan is currently limited to high-level test cases and assumptions as the system architecture and features have still not reached a low-level design.
-As many aspects of the system are still unknown the test plan shall act as a high-level guide for testing at the moment and
-will be further updated as the system is developed over time.
-The system to be tested is the Smart Glass Remote Guidance System.
-The system will be tested using unit tests and usability tests.
+The scope of the test plan will encompass testing of the computer vision system and of the cobot's movement both individually and together to ensure optimal function.
+Development of the overall system is still in progress, so additional tests may be required and some may not be necessary in the future.
 
-Constraints/Assumptions
-* The team is restrained to testing the system on the Vuzix M100 smart glasses.
-* The system must remain portable during testing.
-* The system will be tested under the assumption that the users have full access to WiFi
-* Both users have the system already setup on the devices at both ends of the transmission.
+<!-- TOC ignore:true -->
+### Constraints
+* Testing of the cobot's movement can be done in a simulated environment, however must ultimately be performed at the F.o.F.
+* Testing the integration of the vision system will the movement system will need to be done at the F.o.F.
 
-The team will be following a four level testing strategy.
-This will allow the project to be tested at different development stages at maximum efficiency.
-* Unit Testing
+<!-- TOC ignore:true -->
+### Methods of Testing
+Different methods of testing will be conducted at various stages in development.\
+These include:
+* Unit testing
+* Integration testing
 * System Testing
-* Integration Testing
 * Acceptance Testing
 
 ## References Material
-The following document has been created according to the details specified in the documents below.
-The documents below will provide further information on the project.
+Previously produced documents have been referenced to ensure that the testing that is conducted satisfies the requirements in these documents.
+These documents can provide further information if required:
 * Project Plan
 * Software Quality Assurance Plan
 * Software Requirements Specification
-* IEEE 829 Standard template (Test Plan)
+* Detailed Design and Implementation Report
 
 ## Objective
-Carry out appropriate tests at appropriate stages of development.
-The test plan shall act as a guideline for performing these different types of tests required for maintaining the quality and efficiency of the system.
+The objective of the testing plan is to outline the tests required and the strategy for conducting and completing testing.\
+This will ensure the system is functional at a quality level and in the most efficient manner possible.
 
 ## Resources Required
-* 2 Smart Glasses
-* May require Smart mobiles (for higher processing power)
-* 2 users acting as Operator and Instructor
-* A ruler (for point of reference)
-* Hotspot or WiFi
-* Glove (to identify the users hand)
-* IDE (to create and run unit tests)
+The following items will be require to ensure that the system is testable:
+* A computer capable of communicating with the depth camera, and running the machine learning algorithm to detect where parts are located.
+* Software that is able to communicate with the robot arm and move it.
+* AA batteries.
+* Chips for assembly.
+* Front shells for assembly.
+* A participant to act as the worker assembling the parts provided by the system.
 
 ## Environment Requirements
 The test environment is situated at the Factory of the Future's operation desk, housing the robot arm and assembly line.\
@@ -154,6 +150,9 @@ The following features will undergo testing:
 * The annotated images resulting from the inference are recorded for subsequent review.
 
 ## Test Cases
+The creation of well-structured test cases in important for evaluating software.\
+This section outlines the creation of both functional and non-functional test cases, designed to assess the system's ability to perform the specified requirements.
+
 ### Functional Test Cases
 <!--
 1. Test Case(s)
@@ -161,66 +160,54 @@ The following features will undergo testing:
 * Expected Results
 -->
 
-#### Establish Communication
-1. Check if connection is established between devices
-	1. User turns on the device
-	2. System automatically tries to establish a connection with the other device
-* Connection is established between the two devices when the device is switched on
+#### Establish connection with Robot Arm
+1. Check if the connection between the PC and robot arm.\
+Steps:
+	1. Turn on robot arm.
+	2. Ping the robot to ensure that it is on the same network and able to connect.
+	3. Run initialisation commands from PC to set up the robot arm.
+* The robot arm is able to receive instructions from the PC.
 
-#### Send video feed
-1. Check if instructor can send video feed\
-Preconditions:
-Connection between users has to be established
-	1. Instructor clicks Send video
-* Video stream connection is successfully setup and video feed would stream between both users
+#### Set up depth camera
+1. Check the connection between the PC and the depth camera.\
+Steps:
+	1. Turn on the depth camera and connect it to the PC.
+	2. Start camera software to ensure that PC is receiving a signal from the camera.
+* The PC is able to receive image data from the depth camera.
 
-#### View video feed
-1. Check if user can view operator's video feed\
+#### Intialise Machine Learning (ML) Model
+1. Check if the ML model can receive data from camera.\
 Preconditions:
-Connection between users has to be established
-	1. System automatically broadcasts video stream to both users.
-* Both users can view the operator's video feed on their displays
+Connection between the PC and the depth camera has been established.\
+Steps:
+	1. Intialise ML model and ensure that it is receiving data from the depth camera.
+	2. Verify that the model is able to detect objects in the image data as required.
+* The ML model is able to recognise the required objects and provide locations for them.
 
-#### Send hand gestures
-1. Check if Instructor can send hand gestures to Operator\
+#### Connect ML model and Robot arm through PC
+1. Check that the ML model is able to send locations to the robot arm.\
 Preconditions:
-The system has to have the video feed of the operator
-	1. System automatically send instructor's hand gestures when application starts up
-* The system should start obtaining the video feed of the operator and the video feed of the instructor.\
-The video feed of the instructor is then processed to obtain footage only of the instructor's hand and not the background surroundings.
-The image of the hands should then be superimposed on the operator's video feed and then sent back to the operator.
-Both users should see video feed of both the operator's feed and the instructor's hand gestures to both users
+The ML model is able to detect objects in the image data from the depth camera and the robot arm is able to receive location data from the PC.\
+Steps:
+	1. Run commands to set up connection between the ML model and the robot arm controller on the PC
+* The robot arm is able to receive locations of parts to pick up from the ML model.
 
-#### Make sketch
-1. Check if instructor can capture image\
+#### The robot arm is able to moves on command
+1. Check that the robot arm is able to move to the locations provided by the ML model and pick up parts as instructed.\
 Preconditions:
-Instructor must have video feed to capture image from
-	1. Instructor performs "screenshot" hand signal
-* System captures image of video stream
-2. Check if instructor can draw sketch on image
-	1. Draw sketch on image by using their fingers
-* System registers finger movements and overlays it onto image
+The connection between the ML model and the robot arm has been made.\
+Steps:
+	1. Instruct the system to pick up the next required part.
+* The robot arm is able to move to the correct location to pick up the part, move the to the unloading location and place the part in the assembly tray.
 
-#### Send sketch
-1. Check if instructor can send sketched image to operator\
+#### The system is able to continue functioning autonomously
+1. Verify that the robot is able to continue operation continuously.\
 Preconditions:
-Instructor has created sketch using "Make a sketch" function
-	1. Instructor performs "wave forward" hand signal
-* System sends image to the operator
-
-#### View sketch
-1. Check if operator can view image\
-Preconditions:
-Operator device must receive image
-	1. System automatically replaces operator's video feed with sketched image
-* Operator can view sketched image
-
-#### Dismiss sketch
-1. Check if operator can dismiss image after viewing\
-Preconditions:
-Operator device must receive image
-	1. Operator performs "wave-away" hand signal
-* System dismisses image, and view goes back to operator video feed
+The robot arm arm is able to move according to locations provided by the ML model.
+* The ML model is able to continue detecting the next required parts and providing the location data to the robot arm.
+The robot arm is then able to continue correctly picking up the part and placing them in the assembly tray.
+Once the assembly tray is filled up with the required parts, the system is able to instruct the robot arm to move it to the ready position.
+When all parts have been taken by the participant, the system is able to instruct the robot arm to return the tray to the original location and repeat the process.
 
 ### Non-functional Testing
 #### Testing Goal
@@ -265,9 +252,10 @@ Expected Results
 4. User must see the sketch being removed from the operator's display
 5. User must see video feed
 
-## Features not to be Tested
-Since all the features are being implemented for the first time and are all capable of being tested.
-There are currently no features that will not be tested.
+## Untested Features
+There are currently no features that won't be tested.\
+This is because all features are being introduced for the first time.\
+All introduced features can be tested and therefore will be tested.
 
 # Strategy
 To ensure the successful implementation of the Robot Vision System for the Pick and Place Task, a comprehensive testing strategy will be employed.
@@ -321,28 +309,30 @@ The following key deliverables will be produced as part of the testing process:
 * Acceptance Test Documentation
 
 ## Schedule
-Features to test:
-* Establish communication
-* Sending and viewing video feed
-* Sending hand gestures
-* Making,sending,viewing and dismissing sketches
-
-Estimated Testing: Semester 2
+Testing will be conducted and completed throughout semester 2.\
+The schedule for testing will be as follows:
+* Test cobot's movement/test accuracy of vision system
+* Test integration of the movement and vision systems
+* Test the overall system's performance in completing the pick and place task
+* Fine tune system to perform its tasks within an acceptable threshold
 
 ## Risk and Contingency
-Risks associated with testing:
+The risks and contingencies associated with testing include the following:
 
-#### Risks
-1. May be shortage of time which may result in less time for testing.
-2. Requirements may change during development.
-3. Team member leaves
-4. Design lack flexibility to make changes
+<!-- TOC ignore:true -->
+### Risks
+1. Team members leave or become unable to work through illness or injury.
+2. Time pressures may result in less time being allocated to testing.
+3. Not all possible scenarios are able to be tested.
+4. The scope of testing could end up going beyond the project's boundaries, resulting in time and resource overruns.
 
-#### Contingency
-1. Carry out tests frequently as the system is developed instead of assigning a particular date.
-2. Keep updating requirements from client as frequent as possible to avoid last minute chaos.
-3. Have each module worked on and tested by 2 members.
-4. When designing allow room for accommodating changes.
+<!-- TOC ignore:true -->
+### Contingencies
+1. Have tasks delegated to at least 2 team members.
+2. Set realistic time frames for testing activities during project planning and
+if timelines become constrained, prioritise testing activities based on problem severity.
+3. Create comprehensive test plans that use techniques like equivalence partitioning.
+4. Clearly define the scope of testing in the test plan and establish a process to assess and approve any changes to the scope.
 
 ## Testing Tasks
 * Develop comprehensive unit test cases for individual components of the vision system,
@@ -355,6 +345,10 @@ including object detection algorithms, position estimation, and robot control me
 * Review and validate the accuracy and comprehensiveness of documentation, ensuring that it effectively guides users and developers.
 
 # Pass/Fail Criteria
+These criteria help make sure that the project meets the necessary requirements as well as ensuring the project is at an acceptable standard of quality.
+The following criteria provide clear guidelines for assessing whether the system meets the desired level of functionality, performance and
+other relevant attributes whilst under testing conditions.
+
 ## Product Level
 Instructor and operator can switch roles upon accepting the connected user's request.
 
@@ -453,9 +447,10 @@ The testing process will be halted if at least one of the below criterias is met
 * Involved hardware or testing resources become defective or unavailable.
 
 ### Resumption Requirements
-* All critical issues found have been fixed.
-* Modified or fixed modules have passed testing successfully.
-* The new changes have gained the approval of the testing manager as well as the Team Leader.
+* The design has been adjusted or redesign to suit the needs of the project.
+* The error has been fixed, or a work-around has been identified.
+* A new system design is finalised and ready for testing.
+* Any problematic hardware has been replaced with an adequate alternative.
 
 ## Approvals
 * Both the Team leader and the Testing manager must agree to the completion of a testing level before moving on to the next level.
