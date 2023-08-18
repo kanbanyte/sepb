@@ -211,46 +211,20 @@ When all parts have been taken by the participant, the system is able to instruc
 
 ### Non-functional Testing
 #### Testing Goal
-The purpose of the following test cases is to make sure that the application we develop would not only be functional but be user friendly with a small learning curve,
-allowing the average user to quickly adapt to the user interface.
+The goal of the above mentioned test case is the ensure that the system that has been developed is able to function correctly, repeatedly and consistently,
+thereby allowing the participant to speed up their rate of production.
 
 #### Testing Procedure
-The test would be performed on a set of participants, who will be asked to perform basic tasks using the applications.
-Upon completing the task, the user would be expected to be able to give feedback on the difficulty of the task and
-what their suggestion to improve the user interface would be.
+The test will be conducted in the presence of a participant. As the system completes its tasks and delivers the assembly tray of parts to the ready position,
+the participant will be requested to provide feedback as to whether or not the task was completed by the system in a satisfactory manner.
 
 #### Pass/Fail Criteria
-The tasks given are very simple and would have constant pass criteria.
-Each task should be completed before 30 seconds and would have a difficulty goal of being less than 5(1 being very easy, and 10 being very hard)
+
+The task of delivering and assembly tray of parts to the user must be completed in a smooth manner,
+ensuring that all the correct parts remain on the tray while in motion, and none of the parts are damaged during the pick and place task.
 
 #### Testing Constants
-All of the tests will be carried out on the application on the Smart Glasses, using sample data provided to them.
-
-#### Testing Assumptions
-The tests will be carried out in pairs of participants where on of the participants will play the role of the "operator" while the other acts as the "instructor".
-
-Non-functional test cases:
-
-Test Case(s)
-1. Check if user can take a screenshot
-2. Check if user can make a sketch
-3. Check if user can send sketch
-4. Check if user can dismiss the sketch
-5. Check if user can send video
-
-Steps
-1. Perform "screenshot" action
-2. User users finger to sketch on image
-3. User performs "wave-forward" action
-4. User performs "wave-away" action
-5. User clicks send" video feed"
-
-Expected Results
-1. User must see screenshot on display
-2. User must see image with draw path of his/her finger
-3. Operator must acknowledge that a screenshot was received
-4. User must see the sketch being removed from the operator's display
-5. User must see video feed
+The locations of the parts are constant. The system will not need to search for a part, rather just check if a part is in a certain location.
 
 ## Untested Features
 There are currently no features that won't be tested.\
