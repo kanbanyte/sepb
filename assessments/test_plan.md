@@ -54,7 +54,7 @@
 	* [Test Cases](#test-cases)
 		* [Functional Test Cases](#functional-test-cases)
 		* [Non-functional Testing](#non-functional-testing)
-	* [Features not to be Tested](#features-not-to-be-tested)
+	* [Untested Features](#untested-features)
 * [Strategy](#strategy)
 	* [Roles and Responsibilities](#roles-and-responsibilities)
 	* [Test Deliverables](#test-deliverables)
@@ -248,9 +248,10 @@ Expected Results
 4. User must see the sketch being removed from the operator's display
 5. User must see video feed
 
-## Features not to be Tested
-Since all the features are being implemented for the first time and are all capable of being tested.
-There are currently no features that will not be tested.
+## Untested Features
+There are currently no features that won't be tested.\
+This is because all features are being introduced for the first time.\
+All introduced features can be tested and therefore will be tested.
 
 # Strategy
 To ensure the successful implementation of the Robot Vision System for the Pick and Place Task, a comprehensive testing strategy will be employed.
