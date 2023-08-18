@@ -396,42 +396,42 @@ Test Case Pass/Fail Criteria:
 		* Operator is unable to dismiss image after viewing
 
 ## Testing Stages
-During each development stage test will be conducted and judged according to the following criteria.
+During each development testing stage, success will be judged in the passing of the below criteria.
 
 Testing level pass/fail criteria:
 * Unit Testing
 	* Pass criteria
-		* All unit tests have been passed successfully
-		* At least 70% of all code written has been covered during testing.
-		* All bugs and errors found have been logged and been accounted for.
+		* All unit tests successfully pass.
+		* Majority of testable code has an appropriate unit test.
+		* Any bugs or errors are recorded and where plausible resolved.
 	* Fail criteria
-		* Not all unit tests have been passed
-		* Not enough code written has been included in testing.
+		* A unit test fails.
+		* A non-negligible amount of code hasn't been tested.
 * Integration Testing
 	* Pass criteria
-		* 90% of all modules developed have been tested.
-		* Modules perform their assigned function successfully when tested together.
-		* All issues have been logged and corrected
+		* Developed modules have appropriate testing done on them.
+		* Modules perform their expected function, even when run alongside other modules.
+		* Any issues are recorded and where applicable; resolved.
 	* Fail criteria
-		* Modules fail to carry out their function when put together.
-		* Too many critical issues found.
+		* Modules fail to work when alone or alongside other modules
+		* A large amount of critical errors
 * System Testing
 	* Pass criteria
 		* Entire System has been tested.
-		* 100% of all specified requirements have been successfully achieved.
-		* Minor Issues found have been logged and fixed.
-		* 100% of all system features functioning appropriately.
+		* All specified requirements have been met.
+		* Minor Issues found have been logged and resolved accordingly.
+		* System features are working appropriately.
 	* Fail criteria
-		* Not all specified requirements have been achieved.
-		* Critical issues and defects found during the test.
-		* System features are not functioning accurately.
+		* A specified requirement isn't met.
+		* Unresolved issue(s) or a defect is found.
+		* System features are not working appropriately.
 * Acceptance Testing
 	* Pass criteria
-		* When client is satisfied with the product.
+		* Client is satisfied with the presented product.
 	* Fail criteria
-		* Does not achieve the requirements specified.
-		* Critical issues found by client.
-		* Does not satisfy the client.
+		* Requirements not met.
+		* Major issues identified by client.
+		* Client is not satisfied.
 
 ## Suspension criteria and resumption requirements
 ### Suspension Criteria
