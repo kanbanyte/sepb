@@ -412,5 +412,5 @@ The testing process will be halted if at least one of the below criterias is met
 * Any problematic hardware has been replaced with an adequate alternative.
 
 ## Approvals
-* Both the Team leader and the Testing manager must agree to the completion of a testing level before moving on to the next level.
-* Any changes or addition to the system features would have to be approved by the client.
+* The Team leader and the Testing manager must be in agreement to the completion of a testing level before proceeding to the next level.
+* Changes or additions to the system's features would have to be approved by the client.
