@@ -346,54 +346,37 @@ The following criteria provide clear guidelines for assessing whether the system
 other relevant attributes whilst under testing conditions.
 
 ## Product Level
-Instructor and operator can switch roles upon accepting the connected user's request.
+The testing will occur on the functionality of the product.
 
 Test Case Pass/Fail Criteria:
-* Pairing the glasses over a wireless connection/ Bluetooth connection
+* Arm retrieves item
 	* Pass Criteria
-		* Glasses are paired up with a stable wireless connection with a third device acting as a server.
-	* Fail Criteria
-		* Glasses don't pair up successfully or connection isn't stable enough.
-* Instructor can see hand gestures on operator's video feed.
+		* An appropriate item is grabbed
+	* Fail criteria
+		* The arm grabs nothing
+		* The arm grabs an inappropriate item
+		* The Arm does nothing
+* Arm places item
 	* Pass Criteria
-		* Request sent from operator glasses and accepted by instructor glasses.
-	* Fail Criteria
-		* Request isn't sent or doesn't prompt instructor with video request.
-* Receiving and viewing operator video feed from operator glasses on instructor glasses
+		* A grabbed item is placed
+	* Fail criteria
+		* The arm places the item incorrectly
+		* The arm drops an item
+		* The Arm does nothing
+* Computer vision identifies items
 	* Pass Criteria
-		* Video is sent with a delay of less than 1000ms and a minimum frame rate of 20.
+		* CV consistently labels items correct
 	* Fail Criteria
-		* Video sent, has loss of frames.
-* Sending hand gestures from instructor glasses
+		* CV incorrectly labels items
+		* CV labels background as something
+		* CV doesn't label anything
+* Camera outputs a feed
 	* Pass Criteria
-		* Instructor can see hand gestures on operator's video feed.
+		* Camera outputs correctly
 	* Fail Criteria
-		* Instructor's video feed does not show hand gestures.
-* Receiving only hand gestures (without video) from instructor glasses and viewing them on operator video feed.
-	* Pass Criteria
-		* Operator can see instructor's hand gestures on operator video feed.
-	* Fail Criteria
-		* Instructor's hand gestures are not shown at all/ or not shown clearly on operator's video stream.
-* Make sketch
-	* Pass Criteria
-		* Instructor can capture a still image of video feed and draw a sketch on it using his/her finger.
-	* Fail Criteria
-		* Instructor can capture a still image of video feed and draw a sketch on it using his/her finger.
-* Send sketch
-	* Pass Criteria
-		* Instructor is able to send a saved image of a sketch to the instructor.
-	* Fail Criteria
-		* Unable to save sketched image/ send it to instructor
-* View sketch
-	* Pass Criteria
-		* Operator can download and view sketched image.
-	* Fail Criteria
-		* Operator is unable to view image.
-* Dismiss sketch
-	* Pass Criteria
-		* Operator is able to dismiss image after viewing
-	* Fail Criteria
-		* Operator is unable to dismiss image after viewing
+		* Camera feed is corrupted
+		* Camera feed is in a different format than expected
+		* Camera feed isn't outputting
 
 ## Testing Stages
 During each development stage test will be conducted and judged according to the following criteria.
