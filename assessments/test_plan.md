@@ -64,7 +64,7 @@
 * [Pass/Fail Criteria](#passfail-criteria)
 	* [Product Level](#product-level)
 	* [Testing Stages](#testing-stages)
-	* [Suspension criteria and resumption requirements](#suspension-criteria-and-resumption-requirements)
+	* [Criteria Requirements](#criteria-requirements)
 		* [Suspension Criteria](#suspension-criteria)
 		* [Resumption Requirements](#resumption-requirements)
 	* [Approvals](#approvals)
@@ -394,7 +394,9 @@ Testing level pass/fail criteria:
 		* Major issues identified by client.
 		* Client is not satisfied.
 
-## Suspension criteria and resumption requirements
+## Criteria Requirements
+Below are Criteria that will halt progress and the subsequent fix for those halts.
+
 ### Suspension Criteria
 The testing process will be halted if at least one of the below criterias is met:
 * The requirements have been changed.
