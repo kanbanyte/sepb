@@ -22,6 +22,10 @@ import tkinter as tk
 from tkinter import filedialog
 from ultralytics import YOLO
 
+BOX_THICKNESS = 2
+GREEN_RGB = (0, 255, 0)
+FONT_THICKNESS = 2
+
 def install_packages(packages_to_install):
     for package in packages_to_install:
         if importlib.util.find_spec(package) is None:
@@ -85,6 +89,7 @@ def get_positive_int(prompt, default_value):
         sys.exit()
 
 def main():
+
     install_packages(["opencv-python", "ultralytics"])
 
     model_file = select_file_with_extension("Select model file", ["pt"])
@@ -95,19 +100,22 @@ def main():
 
     print("Select tile dimensions (must be the same as the dimension used to train the model)")
     num_rows = get_positive_int("Select row count: ", 3)
-    num_cols = get_positive_int("Select column: ", 4)
+    num_cols = get_positive_int("Select column count: ", 4)
 
     tiled_images = tile_image(image, num_rows, num_cols)
 
-    for i, tile in enumerate(tiled_images):
-        print(f"Checking tile {i}")
+    for tile_index, tile in enumerate(tiled_images):
+        print(f"Checking tile {tile_index}")
         results = model(tile, verbose=False)
 
         # TODO(HUY): why is there only one object in `results`
         for result_index, result in enumerate(results):
-            cv2.imshow(f"Tile #{result_index} (close window to continue)", result.plot())
+            # This is the built-in function that plots the bounding boxes
+            # However, the full label-confidence text is too long and obscures parts of the image
+            # cv2.imshow(f"Tile #{result_index} (close window to continue)", result.plot())
+
             if result.boxes is None or result.boxes.xyxy.numel() == 0:
-                print("No object detected in tile")
+                print(f"No object detected in tile {tile_index} (close image to continue)")
                 continue
 
             if result.boxes is not None and result.boxes.xyxy.numel() != 0:
@@ -115,19 +123,31 @@ def main():
                 y1_tensor = result.boxes.xyxy[:, 1]
                 x2_tensor = result.boxes.xyxy[:, 2]
                 y2_tensor = result.boxes.xyxy[:, 3]
-                for i in range(len(result.boxes.xyxy)):
-                    print(f"Object #{i}")
-                    print("Performance in ms:")
-                    for key, value in result.speed.items():
-                        print(f"    {key}: {value}")
-                    print(f"Confidence: {result.boxes.conf[i] * 100:.2f}%")
-                    print(f"Bounding Box: "
-                        f"(x1={x1_tensor[i]:.2f}, y1={y1_tensor[i]:.2f}), "
-                        f"(x2={x2_tensor[i]:.2f}, y2={y2_tensor[i]:.2f})")
-                    print(f"\n")
 
+            detected_obj_count = x1_tensor.size()
+            tile_result_data = zip(result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor)
+            for obj_index, (conf, x1, y1, x2, y2) in enumerate(tile_result_data):
+
+                # OpenCV only works with integers
+                x1_int = int(x1)
+                y1_int = int(y1)
+                x2_int = int(x2)
+                y2_int = int(y2)
+
+                cv2.rectangle(tile, (x1_int, y1_int), (x2_int, y2_int), GREEN_RGB, BOX_THICKNESS)
+                cv2.putText(tile, f'{conf * 100:.2f}', (x1_int, y1_int - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN_RGB, FONT_THICKNESS)
+                print(f"Object #{obj_index}/{detected_obj_count} - Tile #{tile_index}")
+                print("Performance in ms:")
+                for key, value in result.speed.items():
+                    print(f"\t{key}: {value}")
+                print(f"Confidence: {conf}")
+                print(f"Bounding Box: "
+                    f"(x1={x1:.2f}, y1={y1:.2f}), "
+                    f"(x2={x2:.2f}, y2={y2:.2f})")
+                print()
+
+        cv2.imshow(f'Tile #{tile_index} with Bounding Boxes', tile)
         cv2.waitKey(0)
-        print("\n")
 
     cv2.destroyAllWindows()
 
