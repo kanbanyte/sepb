@@ -95,7 +95,7 @@ def main():
     model_file = select_file_with_extension("Select model file", ["pt"])
     model = YOLO(model_file)
 
-    image_file = select_file_with_extension("Select model file", ["png", "jpg", "jpeg"])
+    image_file = select_file_with_extension("Select image file", ["png", "jpg", "jpeg"])
     image = cv2.imread(image_file)
 
     print("Select tile dimensions (must be the same as the dimension used to train the model)")
@@ -106,25 +106,26 @@ def main():
 
     for tile_index, tile in enumerate(tiled_images):
         print(f"Checking tile {tile_index}")
-        results = model(tile, verbose=False)
+        results = model.predict(tile, verbose=False)
 
-        # TODO(HUY): why is there only one object in `results`
-        for result_index, result in enumerate(results):
+        for result in results:
             # This is the built-in function that plots the bounding boxes
-            # However, the full label-confidence text is too long and obscures parts of the image
-            # cv2.imshow(f"Tile #{result_index} (close window to continue)", result.plot())
+            # However, we deliberately draw boxes manually to make sure the data is extracted correctly
+            # cv2.imshow(f"Tile (close window to continue)", result.plot())
 
             if result.boxes is None or result.boxes.xyxy.numel() == 0:
-                print(f"No object detected in tile {tile_index} (close image to continue)")
+                print(f"No object detected in tile {tile_index}")
+                cv2.imshow(f'Empty tile #{tile_index} (CLOSE WINDOW TO CONTINUE)', tile)
                 continue
 
-            if result.boxes is not None and result.boxes.xyxy.numel() != 0:
-                x1_tensor = result.boxes.xyxy[:, 0]
-                y1_tensor = result.boxes.xyxy[:, 1]
-                x2_tensor = result.boxes.xyxy[:, 2]
-                y2_tensor = result.boxes.xyxy[:, 3]
+            x1_tensor = result.boxes.xyxy[:, 0]
+            y1_tensor = result.boxes.xyxy[:, 1]
+            x2_tensor = result.boxes.xyxy[:, 2]
+            y2_tensor = result.boxes.xyxy[:, 3]
 
-            detected_obj_count = x1_tensor.size()
+            detected_obj_count = x1_tensor.size(dim=-1)
+            print(f"Displaying {detected_obj_count} detected object(s). Close windows to continue")
+
             tile_result_data = zip(result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor)
             for obj_index, (conf, x1, y1, x2, y2) in enumerate(tile_result_data):
 
@@ -145,10 +146,8 @@ def main():
                     f"(x1={x1:.2f}, y1={y1:.2f}), "
                     f"(x2={x2:.2f}, y2={y2:.2f})")
                 print()
-
-        cv2.imshow(f'Tile #{tile_index} with Bounding Boxes', tile)
+            cv2.imshow(f'Tile #{tile_index} (CLOSE WINDOW TO CONTINUE)', tile)
         cv2.waitKey(0)
-
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
