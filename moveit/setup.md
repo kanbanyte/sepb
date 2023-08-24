@@ -115,3 +115,33 @@ ros2 pkg create \
  --dependencies moveit_ros_planning_interface rclpy \
  --node-name <file_name> <package_name>
 ```
+
+## VSCode Include Path Settings
+VSCode will complain about include errors unless the following settings is applied.
+```json
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/ros/humble/include/**",
+                "/usr/include/eigen3"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
+```
+
+The `.json` file should be created in the hidden directory (.vscode) with `c_cpp_properties` as the file name.
+```gherkin
+/sepb
+  |-- .vscode
+      |-- c_cpp_properties.json
+```
