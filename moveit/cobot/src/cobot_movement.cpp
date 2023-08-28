@@ -31,8 +31,8 @@ int main(int argc, char * argv[])
 
   Need to find a way to load the robot description parameter to the node.
   */
-	MoveGroupInterface::Options move_group_options("ur_manipulator", "robot_description");
-	auto move_group_interface = MoveGroupInterface(node, move_group_options);
+	//MoveGroupInterface::Options move_group_options("ur_manipulator", "robot_description");
+	auto move_group_interface = MoveGroupInterface(node, "ur_manipulator");
   
 
 	// Set a target Pose
