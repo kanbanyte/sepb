@@ -140,7 +140,7 @@ def define_cropbox(image_filename):
     print("No crop box selected")
     exit()
 
-def make_croppped_image_paths(original_images, output_folder):
+def make_cropped_image_paths(original_images, output_folder):
     """
     Create file paths for cropped images based on the original image names and chosen output folder.
 
@@ -172,8 +172,9 @@ def main():
     crop_box = define_cropbox(template_image)
 
     output_folder = select_output_folder(root)
+    print(f"Using output folder: {output_folder}")
     input_images = select_images_to_crop("SELECT IMAGES TO APPLY THE CROP ON", image_extensions, root)
-    cropped_images = make_croppped_image_paths(input_images, output_folder)
+    cropped_images = make_cropped_image_paths(input_images, output_folder)
 
     print(f"Applying {crop_box} crop to {len(input_images)} images")
     for image_file, cropped_image in zip(input_images, cropped_images):
