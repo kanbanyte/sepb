@@ -1,34 +1,50 @@
+<!-- TOC ignore:true -->
 # Data Processing Scripts
 
-## `crop.py`
+<!-- TOC ignore:true -->
+**Table of Contents**
+<!-- TOC -->
 
-- purpose: define a crop box and apply it all selected files
-- usage:
-    1. Select an image to define the crop box on
-    2. Define the crop box on that image. Press 'f' to finish or cancel. Press 'r' to reset.
-    3. Select image file(s) to apply that crop box on
-    4. Select output folder
-    5. Wait until finish.
-- required packages:
-    - Pillow `pip install pillow`
-    - cv2 (OpenCV) `pip install opencv-python`
-    - tkinter
-- note:
-    - the script does not appear to run well when image count exceeds ~100. The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
+* [crop.py](#croppy)
+* [copy-by-interval.ps1](#copy-by-intervalps1)
+* [rename.ps1](#renameps1)
 
-## `copy-by-interval.ps1`
+<!-- /TOC -->
 
-- purpose: copy files from a folder with a user-defined interval. Since the exported photos contain a lot of duplicate, copying them in an interval somewhat removes duplicate images
-- usage:
-    1. Enter source folder
-    2. Enter target folder
-    3. Enter interval
-    4. Wait until finish
+## crop.py
+* Purpose:\
+Define a crop box and apply it all selected files.
+* Usage:
+	1. Select an image to define the crop box on.
+	2. Define the crop box on that image.\
+	Press 'f' to finish or cancel.\
+	Press 'r' to reset.
+	3. Select image file(s) to apply that crop box on.
+	4. Select output folder.
+	5. Wait until finish.
+* Required Packages:
+	* Pillow `pip install pillow`
+	* cv2 (OpenCV) `pip install opencv-python`
+	* tkinter
+* Note:
+	* The script does not appear to run well when image count exceeds ~100.\
+	The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
 
-## `rename.ps1`
+## copy-by-interval.ps1
+* Purpose:\
+Copy files from a folder with a user-defined interval.\
+Since the exported photos contain a lot of duplicate, copying them in an interval somewhat removes duplicate images.
+* Usage:
+	1. Enter source folder.
+	2. Enter target folder.
+	3. Enter interval.
+	4. Wait until finish.
 
-- purpose: rename all files in a folder into the format `<index>`.`<extension>`, with `<index>` being user defined. Since the output of the ZED Export program are images in the format `<left>/<right><index>.<extension>`, renaming them helps prevent duplicate names
-- usage:
-    1. Enter the source folder
-    2. Enter the target folder
-    3. Enter starting index.
+## rename.ps1
+* Purpose:\
+Rename all files in a folder into the format `<index>`.`<extension>`, with `<index>` being user defined.\
+Since the output of the ZED Export program are images in the format `<left>/<right><index>.<extension>`, renaming them helps prevent duplicate names.
+* Usage:
+	1. Enter the source folder.
+	2. Enter the target folder.
+	3. Enter starting index.
