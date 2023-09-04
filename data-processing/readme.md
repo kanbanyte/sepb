@@ -1,7 +1,5 @@
 <!-- TOC ignore:true -->
 # Data Processing Scripts
-
-<!-- TOC ignore:true -->
 **Table of Contents**
 <!-- TOC -->
 

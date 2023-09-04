@@ -1,13 +1,20 @@
+<!-- TOC ignore:true -->
 # BUILD STEPS
+**Table of Contents**
+<!-- TOC -->
+
+* [Installations](#installations)
+* [Build](#build)
+* [Debug](#debug)
+
+<!-- /TOC -->
 
 ## Installations
-
 The following software needs to be installed:
-- CMake
-- PyTorch C++ distribution
+* CMake
+* PyTorch C++ distribution
 
 ## Build
-
 From the `cpp` directory, run the following commands:
 ```bash
 # Make a 'build' directory and navigate there
@@ -20,3 +27,4 @@ cmake --build . --config Release
 ```
 
 ## Debug
+...
