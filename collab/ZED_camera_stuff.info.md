@@ -13,6 +13,8 @@ zed-examples/svo recording/export/
 So, we will leave this folder empty.\
 By default, the binary files can be found in `usr/local/bin/` on a Desktop, and in `/usr/local/zed/tools` in the Jetson Nano.
 
+When executing these Bash scripts, the paths with `$` should be changed to the appropriate directory names, these can also be defined in a program prior to execution.
+
 ## How to Capture Data
 Capturing 3 seconds and 4 frames extra. 3 seconds to settle down the auto-exposure
 ```bash
