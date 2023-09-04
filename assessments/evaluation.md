@@ -57,8 +57,8 @@
 	* [Time on Task](#time-on-task)
 * [Usability Goals](#usability-goals)
 * [Problem Severity](#problem-severity)
-	* [Impact ranking](#impact-ranking)
-	* [Frequency ranking](#frequency-ranking)
+	* [Impact Ranking](#impact-ranking)
+	* [Frequency Ranking](#frequency-ranking)
 	* [Severity Ranking](#severity-ranking)
 * [Reporting Results](#reporting-results)
 
@@ -180,47 +180,58 @@ Analysis of the collected time data will inform system enhancements, aligning wi
 This data-driven approach ensures continual refinement and optimisation of the system's performance.
 
 # Usability Goals
-The usability goals for this usability evaluation would be a completion rate of 100% and an error-free rate of 80%.
-The completion rate is the percentage of participants who successfully complete the task without critical errors.
-The error-free rate is the percentage of participants who complete the task without both critical and non-critical errors.
+The usability of the system will be measured in the success of the software, that being through successfully selecting appropriate objects for use.
+The system will achieve a 100% success rate whereas the success of the software is harder to measure due to the variance that exists in prediction software.
 
 # Problem Severity
-Problems that are seen during the testing must be classified under severity which is dependent on impact and frequency.
+Problems that are discovered during the  testing procedures will be classified based on severity, of which are influenced by impact and frequency.
 
-## Impact ranking
+## Impact Ranking
+Ranking problems helps prioritize which issues need immediate attention and which ones can be addressed later.
+
 #### High
-A critical error which prevents the user from completing the task.
+Critical errors that have a significant negative effect on the user experience.\
+High impact errors lead to frustration, task failure, and a substantial reduction in user satisfaction.
 
 #### Moderate
-A non-critical error which causes the user to have a larger time on task despite the task being completed.
+Issues that negatively affect the user's experience noticeably but which may not be as serious as high impact problems.\
+They might make users more frustrated and less productive.
 
 #### Low
-A user encounters a minor non-critical error.
+Non critical errors that have a minimal negative impact on the user's experience.\
+They may cause slight confusion or inconvenience for the user, but they don't significantly hinder users from achieving their goal.
 
-## Frequency ranking
-#### High
-Greater than 30% of the participants encountered the issue
+## Frequency Ranking
+Ranking problem frequency is valuable for understanding whether an issue is an isolated incident or a recurring problem.
 
-#### Moderate
-13%-29% of the participants encountered the issue
+#### Frequent Occurrence
+Greater than 20-50% of the participants encountered the issue across multiple sessions.\
+These problems must be addressed to ensure usability is maintained.
 
-#### Low
-Less than 13% of the participants encountered the issue
+#### Moderate Occurrence
+10-20% of the participants encountered the issue.\
+These issues still impact user experience and should be addressed to improve usability.
+
+#### Rare Occurrence
+Less than 10% of the participants encountered the issue.\
+These problems may only affect a small subset of users, but they are still worth addressing to enhance the product's usability.
 
 ## Severity Ranking
-#### Severity 1
-An issue with high severity and high impact preventing the user from completing the task.
-This kind of issue must be fixed as quickly as possible.
+Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts, 
+enabling the team to focus resources on addressing critical user experience problems first.
 
-#### Severity 2
-An issue with moderate to high frequency with moderate impact which doesn't allow the user to complete the task efficiently.
+#### High Severity
+These issues have a severe negative impact on usability and heavily impact a user's ability to achieve their goals.\
+These issues often lead to task failure and user frustration.
 
-#### Severity 3
-An issue with either moderate frequency with low impact or low frequency with moderate impact that might frustrate some users.
+#### Medium Severity
+These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.\
+While not critical, these issues still need to be addressed to ensure a smoother user experience.
 
-#### Severity 4
-An issue with low frequency and low impact that might increase user satisfaction if the problem is to be resolved.
+#### Low Severity
+These issues have minimal impact on usability and do not significantly hinder users from completing their tasks.\
+They may however reduce the quality of a user's experience and therefore should be addressed and fixed.
 
 # Reporting Results
-The usability evaluation test will be concluded with a usability test report presenting the results with the usability metrics compared with the usability goals and
-recommendations resolve the problems.
+Upon conclusion of testing the Test results will be summarised in a clear and concise way with appropriate captions and information in a report.
+The Report will cover the successfulness of the test, and where applicable improvements suggested.
