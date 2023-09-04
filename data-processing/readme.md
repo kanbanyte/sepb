@@ -25,8 +25,7 @@ Define a crop box and apply it all selected files.
 	* cv2 (OpenCV) `pip install opencv-python`
 	* tkinter
 * Note:
-	* The script does not appear to run well when image count exceeds ~100.\
-	The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
+	* The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
 
 ## copy-by-interval.ps1
 * Purpose:\
