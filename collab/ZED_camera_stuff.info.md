@@ -7,7 +7,7 @@ From the SDK we need:
 
 From the [ZED_EXAMPLES](https://github.com/stereolabs/zed-examples) we need:
 ```bash
-zed-examples/svo recording/export/
+samples\recording\export\svo\python
 ```
 
 So, we will leave this folder empty.\
