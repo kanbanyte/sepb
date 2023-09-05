@@ -1,27 +1,27 @@
 import os
-import tkinter as tk
-from tkinter import filedialog
 from PIL import Image
 import cv2
+from util import select_folder_from_dialog
+from util import select_files_from_dialog
+from util import select_file_from_dialog
 
-def select_output_folder(root):
+def select_output_folder():
     """
     Displays a dialog box to select an output folder.
 
     Args:
-        root (tk.Tk): The parent window or widget.
 
     Returns:
         str: The selected output folder path.
     """
-    folder = filedialog.askdirectory(parent=root, initialdir=os.getcwd(), title="Select output folder")
+    folder = select_folder_from_dialog()
     if folder is None:
         print("No output folder selected")
         exit()
 
     return folder
 
-def select_images_to_crop(prompt, allowed_extensions, root):
+def select_images_to_crop(prompt, allowed_extensions):
     """
     Displays a dialog box to select images for cropping.
 
@@ -33,9 +33,8 @@ def select_images_to_crop(prompt, allowed_extensions, root):
     Returns:
         list: List of selected image file paths for cropping.
     """
-    init_tkinter()
-    file_paths = list(filedialog.askopenfilenames(parent=root, initialdir=os.getcwd(), title=prompt, filetypes=[("Allowed Files", f"*.{ext}") for ext in allowed_extensions]))
-    return file_paths
+
+    return select_files_from_dialog(prompt, allowed_extensions)
 
 def crop_image(input_image_path, output_image_path, crop_box):
     """
@@ -54,7 +53,7 @@ def crop_image(input_image_path, output_image_path, crop_box):
     cropped_image = image.crop((left, top, right, bottom))
     cropped_image.save(output_image_path)
 
-def select_image_to_define_cropbox(prompt, allowed_extensions, root):
+def select_image_to_define_cropbox(prompt, allowed_extensions):
     """
     Selects an image file to define the crop box.
 
@@ -66,7 +65,7 @@ def select_image_to_define_cropbox(prompt, allowed_extensions, root):
     Returns:
         str: The selected image file
     """
-    file_path = filedialog.askopenfilename(parent=root, initialdir=os.getcwd(), title=prompt, filetypes=[("Allowed Files", f"*.{ext}") for ext in allowed_extensions])
+    file_path = select_file_from_dialog(prompt, allowed_extensions)
 
     if not file_path:
         print("No file selected")
@@ -158,22 +157,14 @@ def make_cropped_image_paths(original_images, output_folder):
 
     return new_paths
 
-# Initialize Tkinter and make sure the file dialog opens in the foreground
-def init_tkinter():
-    root = tk.Tk()
-    root.withdraw()
-    root.wm_attributes('-topmost', 1)
-    return root
-
 def main():
-    root = init_tkinter()
     image_extensions = ["jpg", "jpeg", "png"]
-    template_image = select_image_to_define_cropbox("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions, root)
+    template_image = select_image_to_define_cropbox("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
     crop_box = define_cropbox(template_image)
 
-    output_folder = select_output_folder(root)
+    output_folder = select_output_folder()
     print(f"Using output folder: {output_folder}")
-    input_images = select_images_to_crop("SELECT IMAGES TO APPLY THE CROP ON", image_extensions, root)
+    input_images = select_images_to_crop("SELECT IMAGES TO APPLY THE CROP ON", image_extensions)
     cropped_images = make_cropped_image_paths(input_images, output_folder)
 
     print(f"Applying {crop_box} crop to {len(input_images)} images")
