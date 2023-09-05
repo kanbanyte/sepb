@@ -14,28 +14,16 @@ Note:
 - The tile dimensions must match the dimensions used to train the model.
 """
 
-import subprocess
-import importlib
 import sys
-import os
 import cv2
-import tkinter as tk
-from tkinter import filedialog
 from ultralytics import YOLO
+from src.util.file_dialog import select_file_from_dialog
+from src.util.package_install import install_packages
 
 # Constants for drawing bounding boxes and text on images
 BOX_THICKNESS = 2
 GREEN_RGB = (0, 255, 0)
 FONT_THICKNESS = 2
-
-# Function to install required Python packages if not already installed
-def install_packages(packages_to_install):
-	for package in packages_to_install:
-		if importlib.util.find_spec(package) is None:
-			print(f"Installing required package in quiet mode: {package}")
-			subprocess.call(["pip", "install", package, "--quiet"])
-		else:
-			print(f"{package} is already installed.")
 
 # Function to split an image into tiles based on the number of rows and columns
 def tile_image(image, num_rows, num_cols):
@@ -51,27 +39,6 @@ def tile_image(image, num_rows, num_cols):
 			tile = image[y_start:y_end, x_start:x_end]
 			tiled_images.append(tile)
 	return tiled_images
-
-# Function to prompt the user to select a file with a specific extension
-def select_file_with_extension(prompt, allowed_extensions):
-	root = tk.Tk()
-	root.withdraw()
-	root.wm_attributes('-topmost', 1)
-	file_path = filedialog.askopenfilename(
-		parent=root, initialdir=os.getcwd(), title=prompt, filetypes=[("Allowed Files", f"*.{ext}") for ext in allowed_extensions]
-	)
-
-	if not file_path:
-		print("No file selected")
-		print("Exiting")
-		sys.exit()
-
-	file_extension = os.path.splitext(file_path)[1][1:]
-	if file_extension not in allowed_extensions:
-		print(f"Selected file has an unsupported extension: {file_extension}")
-		print("Exiting")
-		sys.exit()
-	return file_path
 
 # Function to get a positive integer input from the user
 def get_positive_int(prompt, default_value):
@@ -97,11 +64,11 @@ def main():
 	install_packages(["opencv-python", "ultralytics"])
 
 	# Prompt the user to select the YOLO model file
-	model_file = select_file_with_extension("Select model file", ["pt"])
+	model_file = select_file_from_dialog("Select model file", ["pt"])
 	model = YOLO(model_file)
 
 	# Prompt the user to select the image file
-	image_file = select_file_with_extension("Select image file", ["png", "jpg", "jpeg"])
+	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
 	image = cv2.imread(image_file)
 
 	print("Select tile dimensions (must be the same as the dimension used to train the model)")

@@ -4,7 +4,7 @@
 <!-- TOC -->
 
 * [crop.py](#croppy)
-* [copy-by-interval.ps1](#copy-by-intervalps1)
+* [copy_by_interval.ps1](#copy-by-intervalps1)
 * [rename.ps1](#renameps1)
 
 <!-- /TOC -->
