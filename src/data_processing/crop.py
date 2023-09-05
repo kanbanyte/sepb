@@ -7,7 +7,7 @@ import cv2
 from file_dialog import select_folder_from_dialog
 from file_dialog import select_files_from_dialog
 from file_dialog import select_file_from_dialog
-from package_install import install_packages
+from cli_runner import install_packages
 
 def select_output_folder():
     """

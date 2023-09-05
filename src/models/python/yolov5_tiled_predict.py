@@ -16,11 +16,10 @@ Note:
 
 import sys
 sys.path.append("../../util")
-from file_dialog import select_file_from_dialog
 import cv2
 from ultralytics import YOLO
 from file_dialog import select_file_from_dialog
-from package_install import install_packages
+from cli_runner import install_packages
 
 # Constants for drawing bounding boxes and text on images
 BOX_THICKNESS = 2
@@ -67,10 +66,17 @@ def main():
 
 	# Prompt the user to select the YOLO model file
 	model_file = select_file_from_dialog("Select model file", ["pt"])
+	if model_file is None:
+		print("No model file selected")
+		exit -1
+
 	model = YOLO(model_file)
 
 	# Prompt the user to select the image file
 	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
+	if image_file is None:
+		print("No image file selected")
+		exit -1
 	image = cv2.imread(image_file)
 
 	print("Select tile dimensions (must be the same as the dimension used to train the model)")
