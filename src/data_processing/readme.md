@@ -6,6 +6,7 @@
 * [crop.py](#croppy)
 * [copy_by_interval.ps1](#copy-by-intervalps1)
 * [rename.ps1](#renameps1)
+* [slice.py](#slice.py)
 
 <!-- /TOC -->
 
@@ -45,3 +46,10 @@ Since the output of the ZED Export program are images in the format `<left>/<rig
 	1. Enter the source folder.
 	2. Enter the target folder.
 	3. Enter starting index.
+
+## slice.py
+* Purpose:\
+Slice the images into a grid of 4 columns and 6 rows, corresponding to the structure of the 2 chip trays. This is to check that later on we can translate the concrete coordinates of bounding boxes into the position matrix easily.
+* Usage
+	1. Select the file to slice
+	2. View results in the current folder
