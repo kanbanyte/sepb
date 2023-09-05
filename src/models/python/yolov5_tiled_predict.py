@@ -15,10 +15,12 @@ Note:
 """
 
 import sys
+sys.path.append("../../util")
+from file_dialog import select_file_from_dialog
 import cv2
 from ultralytics import YOLO
-from src.util.file_dialog import select_file_from_dialog
-from src.util.package_install import install_packages
+from file_dialog import select_file_from_dialog
+from package_install import install_packages
 
 # Constants for drawing bounding boxes and text on images
 BOX_THICKNESS = 2

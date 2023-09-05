@@ -1,10 +1,13 @@
+import sys
+sys.path.append("../util")
+
 import os
 from PIL import Image
 import cv2
-from util.file_dialog import select_folder_from_dialog
-from util.file_dialog import select_files_from_dialog
-from util.file_dialog import select_file_from_dialog
-from util.package_install import install_packages
+from file_dialog import select_folder_from_dialog
+from file_dialog import select_files_from_dialog
+from file_dialog import select_file_from_dialog
+from package_install import install_packages
 
 def select_output_folder():
     """
