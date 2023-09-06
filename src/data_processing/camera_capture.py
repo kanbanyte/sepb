@@ -2,6 +2,7 @@ import sys
 import cv2
 import yaml
 import os
+import time
 import pyzed.sl as sl
 sys.path.append("../util")
 
@@ -72,7 +73,11 @@ def main():
     file_name = "camera_config.yaml"
     file_path = os.path.join(current_directory, "src/data_processing", file_name)
     config = read_yaml(file_path)
+    start_time = time.perf_counter()
     take_photo(config)
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    print(f"Elapsed time: {elapsed_time:.4f} seconds")
 
 
 if __name__ == "__main__":
