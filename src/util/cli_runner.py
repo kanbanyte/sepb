@@ -3,7 +3,9 @@ import importlib
 
 def install_packages(packages_to_install, quiet_mode=True, args = None):
 	"""
-    Install packages.
+    Install packages using the command `python -m pip install <package name>.
+	The shorthand `pip install <package name>` command is not used to
+	avoid mismatch between the active Python interpreter and package manager.
 
     Args:
 		packages_to_install (list[str]): list of package names to install
@@ -15,10 +17,10 @@ def install_packages(packages_to_install, quiet_mode=True, args = None):
 		if importlib.util.find_spec(package) is None:
 			if quiet_mode:
 				print(f"Installing {package} in quiet mode")
-				run_command(f"pip install {package} --quiet {args}")
+				run_command(f"python -m pip install {package} --quiet {args}")
 			else:
 				print(f"Installing {package}")
-				run_command(f"pip install {package} {args}")
+				run_command(f"python -m pip install {package} {args}")
 		else:
 			print(f"{package} is already installed.")
 

@@ -1,0 +1,26 @@
+camera:
+  brightness: 5
+  contrast: 4
+  hue: 0
+  saturation: 8
+  sharpness: 4
+  gamma: 4
+  # -1 indicates that an automatic setting is applied
+  white_balance: -1
+  gain: -1
+  exposure: -1
+chip_slot_crop_box:
+  x1: 857
+  y1: 233
+  x2: 1242
+  y2: 456
+white_tray_crop_box:
+  x1: 0
+  y1: 0
+  x2: 0
+  y2: 0
+case_crop_box:
+  x1: 0
+  y1: 0
+  x2: 0
+  y2: 0
