@@ -36,6 +36,6 @@ def run_command(command):
 	"""
 	print(f"Running command `{command}`")
 	exit_code = subprocess.call(command.split())
-	if exit_code is not 0:
+	if exit_code != 0:
 		print(f"The command `{command}` failed. Exiting")
 		exit(exit_code)

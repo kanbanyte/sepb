@@ -1,5 +1,6 @@
-import sys
-sys.path.append("../util")
+import sys, os
+
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
 from file_dialog import select_file_from_dialog
 
 from PIL import Image

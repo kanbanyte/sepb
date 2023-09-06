@@ -14,8 +14,9 @@ Note:
 - The tile dimensions must match the dimensions used to train the model.
 """
 
-import sys
-sys.path.append("../../util")
+import sys, os
+
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
 import cv2
 from ultralytics import YOLO
 from file_dialog import select_file_from_dialog
