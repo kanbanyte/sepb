@@ -8,17 +8,16 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../u
 from file_reader import read_yaml
 from cli_runner import install_packages
 
-def open_camera(config):
-    camera_properties = config.get('camera', {})
-    brightness = camera_properties.get('brightness', None)
-    contrast = camera_properties.get('contrast', None)
-    hue = camera_properties.get('hue', None)
-    saturation = camera_properties.get('saturation', None)
-    sharpness = camera_properties.get('sharpness', None)
-    gamma = camera_properties.get('gamma', None)
-    white_balance = camera_properties.get('white_balance', None)
-    gain = camera_properties.get('gain', None)
-    exposure = camera_properties.get('exposure', None)
+def open_camera(camera_config):
+    brightness = camera_config.get('brightness', None)
+    contrast = camera_config.get('contrast', None)
+    hue = camera_config.get('hue', None)
+    saturation = camera_config.get('saturation', None)
+    sharpness = camera_config.get('sharpness', None)
+    gamma = camera_config.get('gamma', None)
+    white_balance = camera_config.get('white_balance', None)
+    gain = camera_config.get('gain', None)
+    exposure = camera_config.get('exposure', None)
 
     init_params = sl.InitParameters()
     init_params.camera_resolution = sl.RESOLUTION.HD2K
@@ -60,23 +59,21 @@ def apply_crop(x1, y1, x2, y2, image):
     cropped_image = image[y1:y2, x1:x2]
     cv2.imshow("Cropped image", cropped_image)
 
-def read_crop_box(config):
-    crop_box = config.get('chip_slot_crop_box').get('left')
-    x1 = crop_box.get('x1')
-    x2 = crop_box.get('y1')
-    y1 = crop_box.get('x2')
-    y2 = crop_box.get('y2')
+def read_crop_box(crop_box_config):
+    x1 = crop_box_config.get('x1')
+    x2 = crop_box_config.get('y1')
+    y1 = crop_box_config.get('x2')
+    y2 = crop_box_config.get('y2')
     return x1, x2, y1, y2
 
 def main():
-    # install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml"])
+    install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml"])
     current_directory = os.path.dirname(os.path.realpath(__file__))
     file_name = "camera_config.yaml"
     file_path = os.path.join(current_directory, file_name)
     config = read_yaml(file_path)
-    
-    crop_box = read_crop_box(config)
-    camera = open_camera(config)
+    crop_box = read_crop_box(config.get('chip_slot_crop_box').get('left'))
+    camera = open_camera(config.get('camera'))
     
     start_time = time.perf_counter()
     take_photo(camera, crop_box)
