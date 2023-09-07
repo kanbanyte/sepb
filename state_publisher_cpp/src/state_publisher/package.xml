@@ -3,9 +3,9 @@
 <package format="3">
   <name>state_publisher</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>C++ file for creating a joint state publisher node</description>
   <maintainer email="ubuntupc@todo.todo">ubuntupc</maintainer>
-  <license>TODO: License declaration</license>
+  <license>N/A</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

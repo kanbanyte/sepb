@@ -18,7 +18,7 @@ setup(
     zip_safe=True,
     maintainer='ubuntupc',
     maintainer_email='ubuntupc@todo.todo',
-    description='TODO: Package description',
+    description='Python file for creating a joint state publisher node',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
