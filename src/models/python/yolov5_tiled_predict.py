@@ -16,7 +16,7 @@ Note:
 
 import sys, os
 
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
 import cv2
 from ultralytics import YOLO
 from file_dialog import select_file_from_dialog
@@ -79,7 +79,7 @@ def main():
 		print("No image file selected")
 		exit -1
 	image = cv2.imread(image_file)
-
+	print(image)
 	print("Select tile dimensions (must be the same as the dimension used to train the model)")
 	num_rows = get_positive_int("Select row count: ", 3)
 	num_cols = get_positive_int("Select column count: ", 4)
@@ -135,8 +135,8 @@ def main():
 				print()
 			# Display the tile with bounding boxes and information
 			cv2.imshow(f'Tile #{tile_index} (CLOSE WINDOW TO CONTINUE)', tile)
-		# Wait for user to close the tile image window
-		cv2.waitKey(0)
+			# Wait for user to close the tile image window
+			cv2.waitKey(0)
 	# Close all open windows when processing is complete
 	cv2.destroyAllWindows()
 
