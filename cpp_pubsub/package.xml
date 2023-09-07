@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>state_publisher</name>
+  <name>cpp_pubsub</name>
   <version>0.0.0</version>
-  <description>C++ file for creating a joint state publisher node</description>
-  <maintainer email="ubuntupc@todo.todo">ubuntupc</maintainer>
-  <license>N/A</license>
+  <description>TODO: Package description</description>
+  <maintainer email="75763222+finnmcgearey@users.noreply.github.com">cobot</maintainer>
+  <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
@@ -13,11 +13,14 @@
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2</depend>
 
-  <test_depend>ament_lint_auto</test_depend>
+
+<test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <build_type>ament_cmake</build_type>
+	<build_type>ament_cmake</build_type>
   </export>
 </package>

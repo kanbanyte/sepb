@@ -9,6 +9,7 @@
 /**/.vs/
 /**/obj/
 /**/x64/
+/**/install/
 # Ignore the following User-specific file types.
 /**/*.vcxproj.*
 /**/*.csproj.*
@@ -27,6 +28,8 @@
 /**/*.exe
 /**/*.zip
 /**/*.*.json
+# Ignore Python generated files.
+__init__.py
 # Borrowed from: https://github.com/github/gitignore/blob/main/Maven.gitignore
 # JDT-specific (Eclipse Java Development Tools)
 .classpath

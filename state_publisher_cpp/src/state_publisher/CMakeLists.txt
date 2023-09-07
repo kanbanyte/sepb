@@ -8,18 +8,21 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
-add_executable(cobot_movement src/cobot_movement.cpp)
-target_include_directories(cobot_movement PUBLIC
+add_executable(state_publisher src/state_publisher.cpp)
+target_include_directories(state_publisher PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(cobot_movement PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(state_publisher PUBLIC c_std_99 cxx_std_11)  # Require C99 and C++17
 ament_target_dependencies(
-  cobot_movement
+  state_publisher
   "rclcpp"
 )
 
-install(TARGETS cobot_movement
+install(TARGETS state_publisher
   DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME})

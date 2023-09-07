@@ -2,8 +2,8 @@
 #include <functional>
 #include <memory>
 #include <string>
-#include "std_msgs/msg/string.hpp"
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
 #include <rclcpp/executor.hpp>
 #include <rclcpp/qos.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
