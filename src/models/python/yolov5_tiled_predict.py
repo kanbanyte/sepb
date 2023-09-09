@@ -1,3 +1,4 @@
+# TODO: update documentation
 """
 Usage:
 1. Run the script using the following command:
@@ -16,32 +17,21 @@ Note:
 
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
+from cli_runner import install_packages
 install_packages(["opencv-python", "ultralytics"])
 
 import cv2
 from ultralytics import YOLO
 from file_dialog import select_file_from_dialog
-from cli_runner import install_packages
+from file_reader import read_yaml
+from image_processing import tile_image
+from object_detection_model import ObjectDetectionModel
 
 # Constants for drawing bounding boxes and text on images
 BOX_THICKNESS = 2
 GREEN_RGB = (0, 255, 0)
 FONT_THICKNESS = 2
-
-# Function to split an image into tiles based on the number of rows and columns
-def tile_image(image, num_rows, num_cols):
-	tile_height = int(image.shape[0] / num_rows)
-	tile_width = int(image.shape[1] / num_cols)
-	tiled_images = []
-	for row in range(num_rows):
-		for col in range(num_cols):
-			y_start = row * tile_height
-			y_end = y_start + tile_height
-			x_start = col * tile_width
-			x_end = x_start + tile_width
-			tile = image[y_start:y_end, x_start:x_end]
-			tiled_images.append(tile)
-	return tiled_images
 
 # Function to get a positive integer input from the user
 def get_positive_int(prompt, default_value):
@@ -61,31 +51,13 @@ def get_positive_int(prompt, default_value):
 		print("Input must be a positive integer.")
 		sys.exit()
 
-# Main function that orchestrates the entire image processing workflow
-def main():
-
+def version_0(tiled_images):
 	# Prompt the user to select the YOLO model file
 	model_file = select_file_from_dialog("Select model file", ["pt"])
 	if model_file is None:
 		print("No model file selected")
 		exit(-1)
-
 	model = YOLO(model_file)
-
-	# Prompt the user to select the image file
-	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
-	if image_file is None:
-		print("No image file selected")
-		exit(-1)
-	image = cv2.imread(image_file)
-	print(image)
-	print("Select tile dimensions (must be the same as the dimension used to train the model)")
-	num_rows = get_positive_int("Select row count: ", 3)
-	num_cols = get_positive_int("Select column count: ", 4)
-
-	# Split the image into tiles
-	tiled_images = tile_image(image, num_rows, num_cols)
-
 	for tile_index, tile in enumerate(tiled_images):
 		print(f"Checking tile {tile_index}")
 		results = model.predict(tile, verbose=False)
@@ -98,6 +70,7 @@ def main():
 			if result.boxes is None or result.boxes.xyxy.numel() == 0:
 				print(f"No object detected in tile {tile_index}")
 				cv2.imshow(f'Empty tile #{tile_index} (CLOSE WINDOW TO CONTINUE)', tile)
+				cv2.waitKey(0)
 				continue
 
 			x1_tensor = result.boxes.xyxy[:, 0]
@@ -138,6 +111,50 @@ def main():
 			cv2.waitKey(0)
 	# Close all open windows when processing is complete
 	cv2.destroyAllWindows()
+
+def version_1(tiled_images):
+	config_file = select_file_from_dialog("Select configuration file", ["yaml"])
+	if config_file is None:
+		print("No config file selected")
+		exit(-1)
+	config = read_yaml(config_file)
+	model = ObjectDetectionModel(config.get('model').get('detect_chip'))
+	for tile_index, tile in enumerate(tiled_images):
+		print(f"Checking tile {tile_index}")
+		bounding_boxes = model.run_inference(tile)
+		for (conf, x1, y1, x2, y2) in bounding_boxes:
+			print(f"Detected object: ")
+			print(f"Confidence: {conf}")
+			print(f"Box: ({x1},{y1}), ({x2},{y2})")
+			print()
+		print()
+
+# Main function that orchestrates the entire image processing workflow
+def main():
+	# Prompt the user to select the image file
+	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
+	if not image_file:
+		print("No image file selected")
+		exit(-1)
+	image = cv2.imread(image_file)
+
+	print("Select tile dimensions (must be the same as the dimension used to train the model)")
+	num_rows = get_positive_int("Select row count: ", 1)
+	num_cols = get_positive_int("Select column count: ", 1)
+
+	# Split the image into tiles
+	tiled_images = tile_image(image, num_rows, num_cols)
+	print(
+	'''
+	Select version number to run.
+	- Version 0 shows individual tiles with bounding boxes and asks the user to select the model file
+	- Version 1 only prints bounding boxes with confidence level and asks the user to select the configuration file
+	''')
+	version = int(input("Select version number to run: "))
+	if version == 0:
+		version_0(tiled_images)
+	elif version == 1:
+		version_1(tiled_images)
 
 if __name__ == "__main__":
 	main()

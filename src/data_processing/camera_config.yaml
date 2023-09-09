@@ -36,4 +36,15 @@ case_crop_box:
   y1: 0
   x2: 0
   y2: 0
-model: "/path/to/model.pt"
+model:
+  detect_chip:
+    file: "/path/to/model"
+    image_size:
+      width: 640
+      height: 640
+    iou: 0.7
+    confidence: 0.25
+  detect_white_tray:
+    file: "/path/to/model"
+  detect_case:
+    file: "/path/to/model"

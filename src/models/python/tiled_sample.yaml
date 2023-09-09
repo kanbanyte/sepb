@@ -1,0 +1,12 @@
+model:
+  detect_chip:
+    file: "D:\\Swinburne Assignments\\SEP-B\\inference\\yolov5_uncropped_tiled3x4_best.pt"
+    image_size:
+      width: 640
+      height: 640
+    iou: 0.7
+    confidence: 0.25
+  detect_white_tray:
+    file: "/path/to/model"
+  detect_case:
+    file: "/path/to/model"

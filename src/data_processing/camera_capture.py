@@ -1,5 +1,6 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../models/python"))
 from cli_runner import install_packages
 install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml", "ultralytics"])
 
@@ -11,6 +12,7 @@ import pyzed.sl as sl
 
 from file_reader import read_yaml
 from file_dialog import select_file_from_dialog
+from object_detection_model import ObjectDetectionModel
 
 def open_camera(camera_config):
 	brightness = camera_config.get('brightness')
@@ -109,12 +111,12 @@ def main():
 	crop_box = read_crop_box(config.get('chip_slot_crop_box').get('left'))
 	camera = open_camera(config.get('camera'))
 
-	model = load_model(config.get('model'))
+	chip_detection_model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 
 	start_time = time.perf_counter()
 	cropped_image = get_rgb_cropped_image(camera, crop_box)
 	image_capture_time = time.perf_counter()
-	bounding_boxes = get_bounding_boxes(cropped_image, model)
+	bounding_boxes = chip_detection_model.run_inference(cropped_image)
 	inference_time = time.perf_counter()
 	for i, bounding_box in enumerate(bounding_boxes):
 		print(f"Bounding box #{i}")

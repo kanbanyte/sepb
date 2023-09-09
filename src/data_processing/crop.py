@@ -3,8 +3,8 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../u
 from cli_runner import install_packages
 install_packages(["opencv-python"])
 
-from PIL import Image
 import cv2
+from image_processing import crop_image
 from file_dialog import select_folder_from_dialog
 from file_dialog import select_files_from_dialog
 from file_dialog import select_file_from_dialog
@@ -40,7 +40,7 @@ def select_images_to_crop(prompt, allowed_extensions):
 
     return select_files_from_dialog(prompt, allowed_extensions)
 
-def crop_image(input_image_path, output_image_path, crop_box):
+def crop_image_and_save(input_image_path, output_image_path, crop_box):
     """
     Crops an image based on the specified crop box and saves the cropped image.
 
@@ -52,10 +52,9 @@ def crop_image(input_image_path, output_image_path, crop_box):
     Returns:
         None
     """
-    left, top, right, bottom = crop_box
-    image = Image.open(input_image_path)
-    cropped_image = image.crop((left, top, right, bottom))
-    cropped_image.save(output_image_path)
+    image = cv2.imread(input_image_path)
+    cropped_image = crop_image(image, crop_box)
+    cv2.imwrite(output_image_path, cropped_image)
 
 def select_image_to_define_cropbox(prompt, allowed_extensions):
     """
@@ -174,7 +173,7 @@ def main():
 
     print(f"Applying {crop_box} crop to {len(input_images)} images")
     for image_file, cropped_image in zip(input_images, cropped_images):
-        crop_image(image_file, cropped_image,  crop_box)
+        crop_image_and_save(image_file, cropped_image,  crop_box)
 
     print(f"Finished processing {len(input_images)} images")
 
