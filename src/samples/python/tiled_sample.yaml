@@ -1,6 +1,6 @@
 model:
   detect_chip:
-    file: "D:\\Swinburne Assignments\\SEP-B\\inference\\yolov5_uncropped_tiled3x4_best.pt"
+    file: "/path/to/model"
     image_size:
       width: 640
       height: 640
