@@ -7,6 +7,7 @@
 * [copy_by_interval.ps1](#copy-by-intervalps1)
 * [rename.ps1](#renameps1)
 * [slice.py](#slice.py)
+* [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflow.py)
 
 <!-- /TOC -->
 
@@ -53,3 +54,7 @@ Slice the images into a grid of 4 columns and 6 rows, corresponding to the struc
 * Usage
 	1. Select the file to slice
 	2. View results in the current folder
+
+## calculate_training_ratio_roboflow.py
+* Purpose:\
+Robowflow asks for training/test/validation ratio which is invalid after the agumentation process. This script calculates the amount of images used for training, testing and validation accounting for generated data.

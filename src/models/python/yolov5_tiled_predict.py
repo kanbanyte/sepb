@@ -15,8 +15,9 @@ Note:
 """
 
 import sys, os
-
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
+install_packages(["opencv-python", "ultralytics"])
+
 import cv2
 from ultralytics import YOLO
 from file_dialog import select_file_from_dialog
@@ -62,14 +63,12 @@ def get_positive_int(prompt, default_value):
 
 # Main function that orchestrates the entire image processing workflow
 def main():
-	# Install required Python packages
-	install_packages(["opencv-python", "ultralytics"])
 
 	# Prompt the user to select the YOLO model file
 	model_file = select_file_from_dialog("Select model file", ["pt"])
 	if model_file is None:
 		print("No model file selected")
-		exit -1
+		exit(-1)
 
 	model = YOLO(model_file)
 
@@ -77,7 +76,7 @@ def main():
 	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
 	if image_file is None:
 		print("No image file selected")
-		exit -1
+		exit(-1)
 	image = cv2.imread(image_file)
 	print(image)
 	print("Select tile dimensions (must be the same as the dimension used to train the model)")

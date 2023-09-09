@@ -1,14 +1,13 @@
-import sys
-
+import os, sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
+from cli_runner import install_packages
+install_packages(["opencv-python"])
 
-import os
 from PIL import Image
 import cv2
 from file_dialog import select_folder_from_dialog
 from file_dialog import select_files_from_dialog
 from file_dialog import select_file_from_dialog
-from cli_runner import install_packages
 
 def select_output_folder():
     """
@@ -163,7 +162,6 @@ def make_cropped_image_paths(original_images, output_folder):
     return new_paths
 
 def main():
-    install_packages(["opencv-python"])
 
     image_extensions = ["jpg", "jpeg", "png"]
     template_image = select_image_to_define_cropbox("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
