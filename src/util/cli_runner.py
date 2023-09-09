@@ -1,5 +1,16 @@
 import subprocess
 import importlib
+import sys
+
+
+def __get_python_exe():
+	if sys.platform == "win32":
+		return "python"
+	elif "linux" in sys.platform:
+		return "python3"
+	else:
+		print(f"Unknown platform: {sys.platform}")
+		return None
 
 def install_packages(packages_to_install, quiet_mode=True, args = None):
 	"""
@@ -13,14 +24,16 @@ def install_packages(packages_to_install, quiet_mode=True, args = None):
     Returns:
         None
     """
+    
+	python_exe = __get_python_exe()
 	for package in packages_to_install:
 		if importlib.util.find_spec(package) is None:
 			if quiet_mode:
 				print(f"Installing {package} in quiet mode")
-				run_command(f"python -m pip install {package} --quiet {args}")
+				run_command(f"{python_exe} -m pip install {package} --quiet {args}")
 			else:
 				print(f"Installing {package}")
-				run_command(f"python -m pip install {package} {args}")
+				run_command(f"{python_exe} -m pip install {package} {args}")
 		else:
 			print(f"{package} is already installed.")
 
