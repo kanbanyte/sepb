@@ -1,6 +1,6 @@
 def crop_image(image, crop_box):
 	"""
-	Crops an image based on the specified crop box and saves the cropped image.
+	Crops an image based on the specified crop box.
 
 	Args:
 		image (np.array): Input image as a NumPy array.

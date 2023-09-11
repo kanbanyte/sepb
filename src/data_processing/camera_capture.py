@@ -5,16 +5,20 @@ from cli_runner import install_packages
 install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml", "ultralytics"])
 
 import cv2
-import time
 from datetime import datetime
-from ultralytics import YOLO
 import pyzed.sl as sl
-
-from file_reader import read_yaml
-from file_dialog import select_file_from_dialog
-from object_detection_model import ObjectDetectionModel
+from image_processing import crop_image
 
 def open_camera(camera_config):
+	"""
+	Open the ZED camera and applies settings specified in the yaml configuration file.
+
+	Args:
+		camera_config (dict): dictionary containing camera settings.
+
+	Returns:
+		Opened ZED camera object.
+	"""
 	brightness = camera_config.get('brightness')
 	contrast = camera_config.get('contrast')
 	hue = camera_config.get('hue')
@@ -47,88 +51,47 @@ def open_camera(camera_config):
 	return camera
 
 def get_rgb_cropped_image(camera, crop_box):
-	x1, x2, y1, y2 = crop_box
+	"""
+	Takes a photo with the camera and applies a crop box to it.
+
+	Args:
+		camera_config (dict): dictionary containing camera settings.
+		crop_box (tuple): tuple containing the crop box coordinates in the (left, top, right, bottom) format.
+
+	Returns:
+		The cropped image as a np.array.
+	"""
+	x1, y1, x2, y2 = crop_box
 	image = sl.Mat()
 	err = camera.grab()
 	if err == sl.ERROR_CODE.SUCCESS:
 		camera.retrieve_image(image, sl.VIEW.LEFT)
 		current_time = datetime.now().strftime("%H-%M-%S")
+		# get_data() turns a sl.Mat object into a numpy array
 		cv2.imwrite(f"{current_time}.png", image.get_data())
-		cropped_image = apply_crop(x1, x2, y1, y2, image)
+		cropped_image = crop_image(image.get_data(), (x1, x2, y1, y2))
+
+		# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
 		camera.close()
+		# ZED returns an image in the RGBA format but the alpha channel is not needed
 		cropped_image = cropped_image[:, :, 0:3]
 		return cropped_image
 	else:
 		print(f"Error: {err}")
 		exit(-1)
 
-def apply_crop(x1, y1, x2, y2, image):
-	cropped_image = image.get_data()[y1:y2, x1:x2]
-	current_time = datetime.now().strftime("%H-%M-%S")
-	cv2.imwrite(f"cropped.{current_time}.png", cropped_image)
-	return cropped_image
-
 def read_crop_box(crop_box_config):
+	"""
+	Get the crop box in the xyxy format as specified in the yaml configuration file.
+
+	Args:
+		crop_box_config (dict): dictionary containing crop box xyxy coordinates.
+
+	Returns:
+		Coordinates of the crop box as a tuple (left, top, right, bottom)
+	"""
 	x1 = crop_box_config.get('x1')
 	x2 = crop_box_config.get('y1')
 	y1 = crop_box_config.get('x2')
 	y2 = crop_box_config.get('y2')
-	return x1, x2, y1, y2
-
-def get_bounding_boxes(image, model):
-	results = model.predict(image, verbose=False)
-	bounding_boxes = []
-	for result in results:
-		if result.boxes is None or result.boxes.xyxy.numel() == 0:
-			continue
-
-		x1_tensor = result.boxes.xyxy[:, 0]
-		y1_tensor = result.boxes.xyxy[:, 1]
-		x2_tensor = result.boxes.xyxy[:, 2]
-		y2_tensor = result.boxes.xyxy[:, 3]
-
-		tile_result_data = zip(result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor)
-		for (conf, x1, y1, x2, y2) in tile_result_data:
-			bounding_boxes.append(conf, x1, y1, x2, y2)
-
-	return bounding_boxes
-
-def load_model(model_file):
-	# Prompt the user to select the YOLO model file
-	# model_file = select_file_from_dialog("Select model file", ["pt"])
-	# if model_file is None:
-	# 	print("No model file selected")
-	# 	exit -1
-
-	model = YOLO(model_file)
-	return model
-
-def main():
-	current_directory = os.path.dirname(os.path.realpath(__file__))
-	file_name = "camera_config.yaml"
-	file_path = os.path.join(current_directory, file_name)
-	config = read_yaml(file_path)
-	crop_box = read_crop_box(config.get('chip_slot_crop_box').get('left'))
-	camera = open_camera(config.get('camera'))
-
-	chip_detection_model = ObjectDetectionModel(config.get('model').get('detect_chip'))
-
-	start_time = time.perf_counter()
-	cropped_image = get_rgb_cropped_image(camera, crop_box)
-	image_capture_time = time.perf_counter()
-	bounding_boxes = chip_detection_model.run_inference(cropped_image)
-	inference_time = time.perf_counter()
-	for i, bounding_box in enumerate(bounding_boxes):
-		print(f"Bounding box #{i}")
-		print(f"(confidence, x1, y1, x2, y2): {bounding_box}")
-
-	end_time = time.perf_counter()
-	elapsed_time = end_time - start_time
-	print(f"Total elapsed time: {elapsed_time:.4f} seconds")
-	print(f"\tImage capture and crop time: {image_capture_time - start_time:.4f} seconds")
-	print(f"\tInference time: {inference_time - image_capture_time:.4f} seconds")
-
-
-
-if __name__ == "__main__":
-	main()
+	return x1, y1, x2, y2
