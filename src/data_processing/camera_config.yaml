@@ -1,0 +1,50 @@
+camera:
+  brightness: 5
+  contrast: 4
+  hue: 0
+  saturation: 8
+  sharpness: 4
+  gamma: 4
+  # -1 indicates that an automatic setting is applied
+  white_balance: -1
+  gain: -1
+  exposure: -1
+chip_slot_crop_box:
+  left:
+    x1: 857
+    y1: 233
+    x2: 1242
+    y2: 456
+  right:
+    x1: 711
+    y1: 233
+    x2: 1092
+    y2: 459
+white_tray_crop_box:
+  left:
+    x1: 638
+    y1: 645
+    x2: 1326
+    y2: 1221
+  right:
+    x1: 566
+    y1: 658
+    x2: 1227
+    y2: 1226
+case_crop_box:
+  x1: 0
+  y1: 0
+  x2: 0
+  y2: 0
+model:
+  detect_chip:
+    file: "/path/to/model"
+    image_size:
+      width: 640
+      height: 640
+    iou: 0.7
+    confidence: 0.25
+  detect_white_tray:
+    file: "/path/to/model"
+  detect_case:
+    file: "/path/to/model"
