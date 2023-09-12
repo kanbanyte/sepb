@@ -1,3 +1,5 @@
+import cv2
+
 def crop_image(image, crop_box):
 	"""
 	Crops an image based on the specified crop box.
@@ -36,3 +38,18 @@ def tile_image(image, num_rows, num_cols):
 			tile = image[y_start:y_end, x_start:x_end]
 			tiled_images.append(tile)
 	return tiled_images
+
+def draw_bounding_box(image, bounding_box):
+	"""
+	Draw a green bounding box on an image.
+
+	Args:
+		image (np.array): Input image as a NumPy array.
+		bounding_box (tuple): bounding box coordinates in the (left, top, right, bottom) format.
+
+	Returns:
+		List of tiled images
+	"""
+	x1, y1, x2, y2 = bounding_box
+	green = (0, 255, 0)
+	cv2.rectangle(image, (x1, y1), (x2, y2), green, 2)
