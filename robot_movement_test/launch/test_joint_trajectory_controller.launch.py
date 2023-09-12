@@ -38,6 +38,7 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
+
     position_goals = PathJoinSubstitution(
         [FindPackageShare("robot_movement_test"), "config", "test_goal_publishers_config.yaml"]
     )
@@ -47,7 +48,7 @@ def generate_launch_description():
             Node(
                 package="ros2_controllers_test_nodes",
                 executable="publisher_joint_trajectory_controller",
-                name="publisher_scaled_joint_trajectory_controller",
+                name="publisher_joint_trajectory_controller",
                 parameters=[position_goals],
                 output="screen",
             )
