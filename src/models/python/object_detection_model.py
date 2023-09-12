@@ -24,7 +24,7 @@ class ObjectDetectionModel:
         Returns:
             List of bounding boxes in the (left, top, right, bottom) format.
         """
-        results = self.model.predict(image, verbose=False, conf=self.confidence, iou=self.iou, imgsz=(self.image_width, self.image_height))
+        results = self.model.predict(image, verbose=False, conf=self.confidence, iou=self.iou, imgsz=(self.image_height, self.image_width))
         result = results[0]
         bounding_boxes = []
         if result.boxes is None or result.boxes.xyxy.numel() == 0:
@@ -39,9 +39,14 @@ class ObjectDetectionModel:
 
         image_copy = image.copy()
         for (conf, x1, y1, x2, y2) in zip(result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
-            bounding_boxes.append((conf, x1, y1, x2, y2))
+            x1_int = int(x1)
+            y1_int = int(y1)
+            x2_int = int(x2)
+            y2_int = int(y2)
+            
+            bounding_boxes.append((conf, x1_int, y1_int, x2_int, y2_int))
             if result_img_path:
-                draw_bounding_box(image_copy, (x1, y1, x2, y2))
+                draw_bounding_box(image_copy, (x1_int, y1_int, x2_int, y2_int))
                 cv2.imwrite(result_img_path, image_copy)
 
         return bounding_boxes

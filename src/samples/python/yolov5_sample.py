@@ -1,12 +1,14 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../models/python"))
 from cli_runner import install_packages
+from datetime import datetime
 install_packages(["opencv-python", "ultralytics"])
 
 import cv2
 from ultralytics import YOLO
-from file_dialog import select_file_from_dialog
+from file_dialog import select_file_from_dialog, select_folder_from_dialog
 from file_reader import read_yaml
 from image_processing import tile_image
 from object_detection_model import ObjectDetectionModel
@@ -101,10 +103,18 @@ def version_1(tiled_images):
 		print("No config file selected")
 		exit(-1)
 	config = read_yaml(config_file)
+ 
+	save_output_choice = input("Save output image (y/any key)?: ")
+	output_path = None
+	if  save_output_choice == 'y':
+		output_path = select_folder_from_dialog("Select output image folder")
+	
+	now = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")
+	output_image_path = os.path.join(output_path, f"{now}.png")
 	model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 	for tile_index, tile in enumerate(tiled_images):
 		print(f"Checking tile {tile_index}")
-		bounding_boxes = model.run_inference(tile)
+		bounding_boxes = model.run_inference(tile, output_image_path)
 		for (conf, x1, y1, x2, y2) in bounding_boxes:
 			print(f"Detected object: ")
 			print(f"Confidence: {conf}")
@@ -128,11 +138,11 @@ def main():
 	# Split the image into tiles
 	tiled_images = tile_image(image, num_rows, num_cols)
 	print(
-	'''
-	Select version to run.
-	- Version 0 shows individual tiles with bounding boxes and asks the user to select the model file
-	- Version 1 only prints bounding boxes with confidence level and asks the user to select the configuration file
-	''')
+'''
+Select version to run.
+- Version 0 shows individual tiles with bounding boxes and asks the user to select the model file
+- Version 1 only prints bounding boxes with confidence level and asks the user to select the configuration file
+''')
 	version = int(input("Select version number to run: "))
 	if version == 0:
 		version_0(tiled_images)

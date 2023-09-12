@@ -68,11 +68,13 @@ def get_rgb_cropped_image(camera, crop_box):
 		camera.retrieve_image(image, sl.VIEW.LEFT)
 		current_time = datetime.now().strftime("%H-%M-%S")
 		# get_data() turns a sl.Mat object into a numpy array
-		cv2.imwrite(f"{current_time}.png", image.get_data())
-		cropped_image = crop_image(image.get_data(), (x1, x2, y1, y2))
+		# cv2.imwrite(f"{current_time}.png", image.get_data())
+		image_data = image.get_data()
+		cropped_image = crop_image(image_data, (x1, y1, x2, y2))
+		cv2.imwrite(f"{current_time}.png", cropped_image)
 
 		# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
-		camera.close()
+		# camera.close()
 		# ZED returns an image in the RGBA format but the alpha channel is not needed
 		cropped_image = cropped_image[:, :, 0:3]
 		return cropped_image
@@ -91,7 +93,7 @@ def read_crop_box(crop_box_config):
 		Coordinates of the crop box as a tuple (left, top, right, bottom)
 	"""
 	x1 = crop_box_config.get('x1')
-	x2 = crop_box_config.get('y1')
-	y1 = crop_box_config.get('x2')
+	x2 = crop_box_config.get('x2')
+	y1 = crop_box_config.get('y1')
 	y2 = crop_box_config.get('y2')
 	return x1, y1, x2, y2

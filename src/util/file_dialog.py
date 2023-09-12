@@ -2,17 +2,17 @@ import os
 import tkinter
 from tkinter import filedialog
 
-def select_folder_from_dialog():
+def select_folder_from_dialog(prompt):
     """
     Displays a dialog box to select a folder.
 
     Args:
-
+        prompt (str): Dialog prompt.
     Returns:
         str | None: The selected folder path or None.
     """
     root = __init_tkinter()
-    folder = filedialog.askdirectory(parent=root, initialdir=os.getcwd(), title="Select output folder")
+    folder = filedialog.askdirectory(parent=root, initialdir=os.getcwd(), title=prompt)
 
     return folder
 

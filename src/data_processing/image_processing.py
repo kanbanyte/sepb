@@ -51,5 +51,10 @@ def draw_bounding_box(image, bounding_box):
 		List of tiled images
 	"""
 	x1, y1, x2, y2 = bounding_box
+	x1_int = round(x1)
+	y1_int = round(y1)
+	x2_int = round(x2)
+	y2_int = round(y2)
+ 
 	green = (0, 255, 0)
-	cv2.rectangle(image, (x1, y1), (x2, y2), green, 2)
+	cv2.rectangle(image, (x1_int, y1_int), (x2_int, y2_int), green, 2)
