@@ -1,20 +1,3 @@
-# TODO: update documentation
-"""
-Usage:
-1. Run the script using the following command:
-	python yolov5_tiled_predict.py
-2. Follow the on-screen prompts to select model and image files, as well as set tile dimensions.
-3. The program will process the image tiles using the YOLO model and display the results.
-4. Close the image window to proceed to the next tile.
-
-Note:
-- Make sure you have Python installed on your system.
-- The following packages will be installed if not available: opencv-python, ultralytics
-- You will be prompted to select a YOLO model file (with a .pt extension) and an image file (png, jpg, jpeg).
-	If the file selection window does not appear, it might be opened in the background.
-- The tile dimensions must match the dimensions used to train the model.
-"""
-
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
@@ -146,7 +129,7 @@ def main():
 	tiled_images = tile_image(image, num_rows, num_cols)
 	print(
 	'''
-	Select version number to run.
+	Select version to run.
 	- Version 0 shows individual tiles with bounding boxes and asks the user to select the model file
 	- Version 1 only prints bounding boxes with confidence level and asks the user to select the configuration file
 	''')

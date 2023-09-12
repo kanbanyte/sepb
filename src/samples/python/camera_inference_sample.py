@@ -9,6 +9,7 @@ import time
 from file_reader import read_yaml
 from object_detection_model import ObjectDetectionModel
 from camera_capture import read_crop_box, open_camera, get_rgb_cropped_image
+from file_dialog import select_file_from_dialog
 
 def run_inference(camera, detection_model, crop_box):
 	start_time = time.perf_counter()
@@ -27,9 +28,7 @@ def run_inference(camera, detection_model, crop_box):
 	print(f"\tInference time: {inference_time - image_capture_time:.4f} seconds")
 
 def main():
-	current_directory = os.path.dirname(os.path.realpath(__file__))
-	file_name = "camera_config.yaml"
-	file_path = os.path.join(current_directory, file_name)
+	file_path = select_file_from_dialog("Select YAML configuration file")
 
 	config = read_yaml(file_path)
 	camera = open_camera(config.get('camera'))
