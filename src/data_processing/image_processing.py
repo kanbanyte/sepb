@@ -6,10 +6,10 @@ def crop_image(image, crop_box):
 
 	Args:
 		image (np.array): Input image as a NumPy array.
-		crop_box (tuple): Tuple containing crop box coordinates (left, top, right, bottom).
+		crop_box (x1, y1, x2, y2): Tuple containing crop box coordinates (left, top, right, bottom).
 
 	Returns:
-		Cropped Image
+		np.array: Cropped Image
 	"""
 	x1, y1, x2, y2 = crop_box
 	return image[y1:y2, x1:x2]
@@ -24,7 +24,7 @@ def tile_image(image, num_rows, num_cols):
 		num_cols (int): number of columns.
 
 	Returns:
-		List of tiled images
+		List[np.array]: list of tiled images.
 	"""
 	tile_height = int(image.shape[0] / num_rows)
 	tile_width = int(image.shape[1] / num_cols)
@@ -45,16 +45,16 @@ def draw_bounding_box(image, bounding_box):
 
 	Args:
 		image (np.array): Input image as a NumPy array.
-		bounding_box (tuple): bounding box coordinates in the (left, top, right, bottom) format.
+		bounding_box (x1, y1, x2, y2): bounding box coordinates in the (left, top, right, bottom) format.
 
 	Returns:
-		List of tiled images
+		None
 	"""
 	x1, y1, x2, y2 = bounding_box
 	x1_int = round(x1)
 	y1_int = round(y1)
 	x2_int = round(x2)
 	y2_int = round(y2)
- 
+
 	green = (0, 255, 0)
 	cv2.rectangle(image, (x1_int, y1_int), (x2_int, y2_int), green, 2)

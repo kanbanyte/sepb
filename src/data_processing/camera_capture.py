@@ -17,7 +17,7 @@ def open_camera(camera_config):
 		camera_config (dict): dictionary containing camera settings.
 
 	Returns:
-		Opened ZED camera object.
+		sl.Camera: Opened and calibrated ZED camera object.
 	"""
 	brightness = camera_config.get('brightness')
 	contrast = camera_config.get('contrast')
@@ -56,10 +56,10 @@ def get_rgb_cropped_image(camera, crop_box):
 
 	Args:
 		camera_config (dict): dictionary containing camera settings.
-		crop_box (tuple): tuple containing the crop box coordinates in the (left, top, right, bottom) format.
+		crop_box (x1, y1, x2, y2): tuple containing the crop box coordinates in the (left, top, right, bottom) format.
 
 	Returns:
-		The cropped image as a np.array.
+		np.array: The cropped image.
 	"""
 	x1, y1, x2, y2 = crop_box
 	image = sl.Mat()
@@ -90,7 +90,7 @@ def read_crop_box(crop_box_config):
 		crop_box_config (dict): dictionary containing crop box xyxy coordinates.
 
 	Returns:
-		Coordinates of the crop box as a tuple (left, top, right, bottom)
+		int, int, int, int: Coordinates of the crop box in the (left, top, right, bottom) format
 	"""
 	x1 = crop_box_config.get('x1')
 	x2 = crop_box_config.get('x2')

@@ -32,10 +32,9 @@ def select_images_to_crop(prompt, allowed_extensions):
     Args:
         prompt (str): The prompt message for the dialog box.
         allowed_extensions (list): List of allowed image file extensions.
-        root (tk.Tk): The parent window or widget.
 
     Returns:
-        list: List of selected image file paths for cropping.
+        list[str]: List of selected image file paths for cropping.
     """
 
     return select_files_from_dialog(prompt, allowed_extensions)
@@ -61,8 +60,6 @@ def select_image_to_define_cropbox(prompt, allowed_extensions):
     Selects an image file to define the crop box.
 
     Args:
-        input_image_path (str): Path to the input image.
-        output_image_path (str): Path to save the cropped image.
         crop_box (tuple): Tuple containing crop box coordinates (left, top, right, bottom).
 
     Returns:
@@ -91,7 +88,7 @@ def define_cropbox(image_filename):
         image_filename (str): Path to the input image.
 
     Returns:
-        crop_box (tuple): Tuple containing crop box coordinates (left, top, right, bottom).
+        x1, y1, x2, y2: Tuple containing crop box coordinates (left, top, right, bottom).
     """
     top_left_corner = None
     bottom_right_corner = None

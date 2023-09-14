@@ -22,21 +22,21 @@ class ObjectDetectionModel:
             result_img_path (None|str): optional file path to which the resulting image is saved.
 
         Returns:
-            List of bounding boxes in the (left, top, right, bottom) format.
+            List[float, int, int, int, int]: List of confidence and bounding boxes in the (left, top, right, bottom) format.
         """
-        
+
         assert image.size != 0, f"Input image size must not be 0"
-        
+
         # YOLO model class uses the (h,w) order
         image_dimension = (self.__image_height, self.__image_width)
-        
+
         results = self.__model.predict(
-            image, 
+            image,
             verbose=False,
-            conf=self.__confidence, 
-            iou=self.__iou, 
+            conf=self.__confidence,
+            iou=self.__iou,
             imgsz=image_dimension)
-        
+
         result = results[0]
         if result.boxes is None or result.boxes.xyxy.numel() == 0:
             if result_img_path:
@@ -57,7 +57,7 @@ class ObjectDetectionModel:
             y1_int = int(y1)
             x2_int = int(x2)
             y2_int = int(y2)
-            
+
             bounding_boxes.append((conf, x1_int, y1_int, x2_int, y2_int))
             if result_img_path:
                 draw_bounding_box(image_copy, (x1_int, y1_int, x2_int, y2_int))
