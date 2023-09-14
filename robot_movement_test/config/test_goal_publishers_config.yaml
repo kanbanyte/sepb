@@ -2,7 +2,7 @@ publisher_scaled_joint_trajectory_controller:
   ros__parameters:
 
     controller_name: "scaled_joint_trajectory_controller"
-    wait_sec_between_publish: 6
+    wait_sec_between_publish: 5
 
     goal_names: ["home", "chip_home", "chip22", "chip_home_1", "part_place_home_1", "chip_place_1", "part_place_home_1_2", "home_1"]
     home:
