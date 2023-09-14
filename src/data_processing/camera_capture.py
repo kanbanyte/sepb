@@ -71,7 +71,7 @@ def get_rgb_cropped_image(camera, crop_box):
 		# cv2.imwrite(f"{current_time}.png", image.get_data())
 		image_data = image.get_data()
 		cropped_image = crop_image(image_data, (x1, y1, x2, y2))
-		cv2.imwrite(f"{current_time}.png", cropped_image)
+		cv2.imwrite(f"raw.{current_time}.png", cropped_image)
 
 		# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
 		# camera.close()
@@ -79,7 +79,7 @@ def get_rgb_cropped_image(camera, crop_box):
 		cropped_image = cropped_image[:, :, 0:3]
 		return cropped_image
 	else:
-		print(f"Error: {err}")
+		print(f"Error capturing image: {err}")
 		exit(-1)
 
 def read_crop_box(crop_box_config):

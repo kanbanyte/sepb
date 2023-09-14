@@ -7,11 +7,11 @@ import cv2
 
 class ObjectDetectionModel:
     def __init__(self, model_config):
-        self.model = YOLO(model_config.get('file'))
-        self.iou = model_config.get('iou')
-        self.confidence = model_config.get('confidence')
-        self.image_width = model_config.get('image_size').get('width')
-        self.image_height = model_config.get('image_size').get('height')
+        self.__model = YOLO(model_config.get('file'))
+        self.__iou = model_config.get('iou')
+        self.__confidence = model_config.get('confidence')
+        self.__image_width = model_config.get('image_size').get('width')
+        self.__image_height = model_config.get('image_size').get('height')
 
     def run_inference(self, image, result_img_path=None):
         """
@@ -24,11 +24,23 @@ class ObjectDetectionModel:
         Returns:
             List of bounding boxes in the (left, top, right, bottom) format.
         """
-        results = self.model.predict(image, verbose=False, conf=self.confidence, iou=self.iou, imgsz=(self.image_height, self.image_width))
+        
+        assert image.size != 0, f"Input image size must not be 0"
+        
+        # YOLO model class uses the (h,w) order
+        image_dimension = (self.__image_height, self.__image_width)
+        
+        results = self.__model.predict(
+            image, 
+            verbose=False,
+            conf=self.__confidence, 
+            iou=self.__iou, 
+            imgsz=image_dimension)
+        
         result = results[0]
-        bounding_boxes = []
         if result.boxes is None or result.boxes.xyxy.numel() == 0:
             if result_img_path:
+                # if the model detects no objects, we save the raw image so the user can still check the model's accuracy
                 cv2.imwrite(result_img_path, image)
             return []
 
@@ -37,8 +49,10 @@ class ObjectDetectionModel:
         x2_tensor = result.boxes.xyxy[:, 2]
         y2_tensor = result.boxes.xyxy[:, 3]
 
+        bounding_boxes = []
         image_copy = image.copy()
         for (conf, x1, y1, x2, y2) in zip(result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
+            # the coordinates are still 1D tensors here and needs to be converted to a scalar value
             x1_int = int(x1)
             y1_int = int(y1)
             x2_int = int(x2)
