@@ -36,26 +36,6 @@ from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-# def generate_launch_description():
-# 	yaml_files = {
-# 		"config/quack.yaml",
-# 		"config/woof.yaml"
-# 	}
-# 	node_actions = []
-# 	for yaml in yaml_files:
-# 		position_goals = PathJoinSubstitution(
-# 			[FindPackageShare("robot_movement_test"), yaml]
-# 		)
-# 		node = Node(
-# 			package="ros2_controllers_test_nodes",
-# 			executable="publisher_joint_trajectory_controller",
-# 			name="publisher_scaled_joint_trajectory_controller",
-# 			parameters=[position_goals],
-# 			output="screen",
-# 		)
-# 		node_actions.append(node)
-# 	return LaunchDescription(node_actions)
-
 def generate_launch_description():
 	position_goals = PathJoinSubstitution(
 		# [FindPackageShare("ur_robot_driver"), "config", "test_goal_publishers_config.yaml"]
