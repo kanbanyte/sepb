@@ -10,8 +10,31 @@ class ObjectDetectionModel:
         self.__model = YOLO(model_config.get('file'))
         self.__iou = model_config.get('iou')
         self.__confidence = model_config.get('confidence')
-        self.__image_width = model_config.get('image_size').get('width')
-        self.__image_height = model_config.get('image_size').get('height')
+
+        image_size = model_config.get('image_size')
+        self.__image_width = self.__calculate_next_multiple(32, image_size.get('width'))
+        self.__image_height = self.__calculate_next_multiple(32, image_size.get('height'))
+
+    def __calculate_next_multiple(self, factor, number):
+        """
+        Calculates the multiple of `factor` and is cloest to `number` in the positive direction.
+        YOLO models requires the image length to be a multiple of `factor` so it
+        automatically converts the image size to that value and produce a warning message.
+        We calculate that value to prevent this situation from the start.
+
+        Args:
+            factor (integer): Fasctor value.
+            number (integer): Input value.
+
+        Returns:
+            Integer: multiple of `factor` closest to `number`
+        """
+        remainder = number % factor
+        if remainder > 0:
+            current_factor = number // factor
+            return factor * (current_factor + 1)
+
+        return number
 
     def run_inference(self, image, result_img_path=None):
         """
