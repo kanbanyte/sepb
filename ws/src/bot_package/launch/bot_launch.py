@@ -11,8 +11,8 @@ def generate_launch_description():
 	return LaunchDescription(
 		[
 			Node(
-				package="ros2_controllers_test_nodes",
-				executable="publisher_joint_trajectory_controller",
+				package="bot_package",
+				executable="bot_node",
 				name="bot_positions",
 				parameters=[position_goals],
 				output="screen",

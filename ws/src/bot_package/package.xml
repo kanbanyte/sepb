@@ -49,6 +49,7 @@
   <depend>ur_dashboard_msgs</depend>
   <depend>ur_description</depend>
   <depend>ur_msgs</depend>
+  <depend>trajectory_msgs</depend>
 
   <exec_depend>force_torque_sensor_broadcaster</exec_depend>
   <exec_depend>joint_state_broadcaster</exec_depend>
@@ -67,8 +68,10 @@
 
   <test_depend>docker.io</test_depend>
   <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>python3-pytest</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
+    <build_type>ament_python</build_type>
   </export>
 </package>
