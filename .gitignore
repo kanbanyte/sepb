@@ -10,6 +10,7 @@
 /**/obj/
 /**/x64/
 /**/install/
+/**/src/**/test/
 # Ignore the following User-specific file types.
 /**/*.vcxproj.*
 /**/*.csproj.*
