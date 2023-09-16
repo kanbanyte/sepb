@@ -4,6 +4,7 @@
 
 ### Usage
 Runs inference using a trained model and an image selected through a file dialog.
+Cropping is not supported.
 User can choose from the 2 options:
 * **Version 0**
 	- Designed to be used with tiling:
@@ -23,7 +24,8 @@ User can choose from the 2 options:
 ## Camera Inference Sample
 
 ### Usage
-Runs inference using a trained model and an image selected through a file dialog. All configurations for the model and crop box are specified in the configuration YAML file, which is selected via file dialog
+Runs inference using a trained model and an image selected through a file dialog. 
+All configurations for the model and crop box are specified in the configuration YAML file, which is selected via file dialog.
 
 This sample is designed to be used with the ZED camera. The user can choose from 3 options:
 * **Option 0**

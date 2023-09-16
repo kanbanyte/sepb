@@ -110,9 +110,9 @@ def version_1(tiled_images):
 		output_path = select_folder_from_dialog("Select output image folder")
 	
 	now = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")
-	output_image_path = os.path.join(output_path, f"{now}.png")
 	model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 	for tile_index, tile in enumerate(tiled_images):
+		output_image_path = os.path.join(output_path, f"{now}-tile-{tile_index}.png")
 		print(f"Checking tile {tile_index}")
 		bounding_boxes = model.run_inference(tile, output_image_path)
 		for (conf, x1, y1, x2, y2) in bounding_boxes:
