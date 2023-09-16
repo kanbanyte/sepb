@@ -18,7 +18,7 @@ def select_output_folder():
     Returns:
         str: The selected output folder path.
     """
-    folder = select_folder_from_dialog()
+    folder = select_folder_from_dialog("Select your output folder")
     if folder is None:
         print("No output folder selected")
         exit()
@@ -80,7 +80,7 @@ def select_image_to_define_cropbox(prompt, allowed_extensions):
 
     return file_path
 
-def define_cropbox(image_filename):
+def define_crop_box_via_image(image_filename):
     """
     Define cropbox on an image.
 
@@ -157,11 +157,48 @@ def make_cropped_image_paths(original_images, output_folder):
 
     return new_paths
 
+def get_crop_box(image_extensions=None):
+    """
+    Gets the crop box based on user choice. Two options are available: define the crop box on an image or entering its coordinates into the console.
+
+    Args:
+        image_extensions (list[str]): optional list containing image extensions without `.`
+
+    Returns:
+        x1, y1, x2, y2: Tuple containing crop box coordinates (left, top, right, bottom).
+    """
+    print(
+    """
+Select how a crop box is defined:
+- 0: Define a crop box using a template image
+- 1: Define a crop box by entering the xyxy coordinates (left-top-right-bottom) in the console
+    """)
+    choice = int(input("Enter your choice (0 or 1): "))
+    if choice == 0:
+        if image_extensions is None:
+            image_extensions = ["jpg", "jpeg", "png"]
+        template_image = select_image_to_define_cropbox("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
+        return define_crop_box_via_image(template_image)
+    elif choice == 1:
+        x1 = int(input("Enter x1 coordinate (left): "))
+        y1 = int(input("Enter y1 coordinate (top): "))
+        x2 = int(input("Enter x2 coordinate (right): "))
+        y2 = int(input("Enter y2 coordinate (bottom): "))
+
+        if (x2 < x1):
+            print("Error: x2 value (right) must be higher than x1 value (left)")
+            exit(-1)
+
+        if (y2 < y1):
+            print("Error: y2 value (bottom) must be higher than y1 value (top)")
+            exit(-1)
+
+        return (x1, y1, x2, y2)
+
 def main():
 
     image_extensions = ["jpg", "jpeg", "png"]
-    template_image = select_image_to_define_cropbox("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
-    crop_box = define_cropbox(template_image)
+    crop_box = get_crop_box(image_extensions)
 
     output_folder = select_output_folder()
     print(f"Using output folder: {output_folder}")
