@@ -65,7 +65,7 @@ class PublisherJointTrajectory(Node):
 		self.joint_state_msg_received = False
 
 		# Read all positions from parameters
-		self.goals = self.read_positions_from_parameters(goal_names)  # List of JointTrajectoryPoint
+		self.goals = self.read_positions_from_parameters(goal_names)  # --List-- Dict of JointTrajectoryPoint
 
 		if len(self.goals) < 1:
 			self.get_logger().error("No valid goal found. Exiting...")
@@ -83,13 +83,13 @@ class PublisherJointTrajectory(Node):
 		self.i = 0
 
 	def read_positions_from_parameters(self, goal_names: list):
-		goals = [] # Temp list of JointTrajectoryPoint
+		# goals = [] # Temp list of JointTrajectoryPoint
+		goals = {} # Temp dict of JointTrajectoryPoint
 
 		for name in goal_names:
 			self.declare_parameter(name, descriptor=ParameterDescriptor(dynamic_typing=True))
 			goal = self.get_parameter(name).value
 
-			# TODO(anyone): remove this "if" part in ROS Iron
 			if isinstance(goal, list):
 				self.get_logger().warn(
 					f'Goal "{name}" is defined as a list. This is deprecated. '
@@ -109,7 +109,8 @@ class PublisherJointTrajectory(Node):
 				point.positions = float_goal
 				point.time_from_start = Duration(sec=4)
 
-				goals.append(point)
+				# goals.append(point)
+				goal[name] = point
 
 			else:
 				point = JointTrajectoryPoint()
@@ -152,7 +153,8 @@ class PublisherJointTrajectory(Node):
 
 				if one_ok:
 					point.time_from_start = Duration(sec=4)
-					goals.append(point)
+					# goals.append(point)
+					goals[name] = point
 					self.get_logger().info(f'Goal "{name}" has definition {point}')
 
 				else:
@@ -166,16 +168,33 @@ class PublisherJointTrajectory(Node):
 					)
 		return goals
 
+	def move_chip_1(self):
+		traj = JointTrajectory()
+		traj.joint_names = self.joints
+		traj.points.append(self.goals["chip_1"])
+
+		return traj
+
 	def timer_callback(self):
 
 		if self.starting_point_ok:
-			self.get_logger().info(f"Sending goal {self.goals[self.i]}.")
+			goal_names = self.goals.keys()
+			goal_name = goal_names[self.i]
 
-			traj = JointTrajectory()
-			traj.joint_names = self.joints
-			traj.points.append(self.goals[self.i])
+			# self.get_logger().info(f"Sending goal {self.goals[self.i]}.")
+			self.get_logger().info(f"Sending goal {self.goals[goal_name]}.") # Using goals as dict type
+
+			traj = self.move_chip_1()
+
+			# traj = JointTrajectory()
+			# traj.joint_names = self.joints
+			# # traj.points.append(self.goals[self.i])
+			# traj.points.append(self.goals[goal_name]) # Using goals as dict type
 
 			self.publisher_.publish(traj)
+
+			# Exit once moved
+			return
 
 			self.i += 1
 			self.i %= len(self.goals)
