@@ -160,15 +160,6 @@ class PublisherJointTrajectory(Node):
 
 		return traj
 
-	def pick_place_chip_1(self):
-		traj = JointTrajectory()
-		traj.joint_names = self.joints
-		traj.points.append(self.goals["chip_1"])
-		traj.points.append(self.goals["chip_1"])
-		traj.points.append(self.goals["chip_1"])
-
-		return traj
-
 	def timer_callback(self):
 
 		if self.starting_point_ok:
