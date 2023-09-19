@@ -1,4 +1,7 @@
 import os, sys
+
+from detected_object import DetectedObject
+from collections import defaultdict
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
 
 from ultralytics import YOLO
@@ -8,8 +11,11 @@ import cv2
 class ObjectDetectionModel:
     def __init__(self, model_config):
         self.__model = YOLO(model_config.get('file'))
+        self.__classes = self.__model.names.copy()
         self.__iou = model_config.get('iou')
         self.__confidence = model_config.get('confidence')
+        # TODO: add to config file
+        self.__max_det = model_config.get('max_determination', 300)
 
         image_size = model_config.get('image_size')
         self.__image_width = self.__calculate_next_multiple(32, image_size.get('width'))
@@ -36,6 +42,16 @@ class ObjectDetectionModel:
 
         return number
 
+    @property
+    def classes(self):
+        """
+        Gets a dictionary containing indices and names of classes detected by the model.
+
+        Returns:
+            dict: dictionary mapping class index to class name.
+        """
+        return self.__classes
+
     def run_inference(self, image, result_img_path=None):
         """
         Draw a green bounding box on an image.
@@ -58,7 +74,8 @@ class ObjectDetectionModel:
             verbose=False,
             conf=self.__confidence,
             iou=self.__iou,
-            imgsz=image_dimension)
+            imgsz=image_dimension,
+            max_det=self.__max_det)
 
         result = results[0]
         if result.boxes is None or result.boxes.xyxy.numel() == 0:
@@ -72,18 +89,20 @@ class ObjectDetectionModel:
         x2_tensor = result.boxes.xyxy[:, 2]
         y2_tensor = result.boxes.xyxy[:, 3]
 
-        bounding_boxes = []
+        # defaultdict supports specifying a default for missing values
+        detected_objects = defaultdict(list)
         image_copy = image.copy()
-        for (conf, x1, y1, x2, y2) in zip(result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
-            # the coordinates are still 1D tensors here and needs to be converted to a scalar value
-            x1_int = int(x1)
-            y1_int = int(y1)
-            x2_int = int(x2)
-            y2_int = int(y2)
+        for (object_class, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
+            # these values are still 1D tensors and need to be converted to scalar values
+            object_class_index = int(object_class)
+            bounding_box = (int(x1), int(y1), int(x2), int(y2))
+            detected_object = DetectedObject(
+                bounding_box=bounding_box,
+                confidence=conf)
 
-            bounding_boxes.append((conf, x1_int, y1_int, x2_int, y2_int))
+            detected_objects[object_class_index].append(detected_object)
             if result_img_path:
-                draw_bounding_box(image_copy, (x1_int, y1_int, x2_int, y2_int))
+                draw_bounding_box(image_copy, bounding_box)
                 cv2.imwrite(result_img_path, image_copy)
 
-        return bounding_boxes
+        return detected_objects

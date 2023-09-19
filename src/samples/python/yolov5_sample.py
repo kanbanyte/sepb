@@ -103,23 +103,30 @@ def version_1(tiled_images):
 		print("No config file selected")
 		exit(-1)
 	config = read_yaml(config_file)
- 
+
 	save_output_choice = input("Save output image (y/any key)?: ")
 	output_path = None
-	if  save_output_choice == 'y':
+	if save_output_choice == 'y':
 		output_path = select_folder_from_dialog("Select output image folder")
-	
+
+	if not output_path:
+		print("Error: image output folder path not selected")
+		exit(-1)
+
+	print(f"Saving output images to folder '{output_path}'")
 	now = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")
 	model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 	for tile_index, tile in enumerate(tiled_images):
 		output_image_path = os.path.join(output_path, f"{now}-tile-{tile_index}.png")
 		print(f"Checking tile {tile_index}")
-		bounding_boxes = model.run_inference(tile, output_image_path)
-		for (conf, x1, y1, x2, y2) in bounding_boxes:
-			print(f"Detected object: ")
-			print(f"Confidence: {conf}")
-			print(f"Box: ({x1},{y1}), ({x2},{y2})")
-			print()
+		detections = model.run_inference(tile, output_image_path)
+		print("======")
+		print(f"Detected {len(detections)} object(s) in tile {tile_index}")
+		for class_index, detected_objects in detections.items():
+			for i, detected_object in enumerate(detected_objects):
+				print(f"Object {i + 1}/{len(detected_objects)} in class {model.classes[class_index]}: ")
+				print(f"\tConfidence: {detected_object.confidence}")
+				print(f"\tBox: {detected_object.bounding_box}")
 		print()
 
 # Main function that orchestrates the entire image processing workflow

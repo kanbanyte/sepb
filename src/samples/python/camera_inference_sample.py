@@ -16,11 +16,14 @@ def run_inference(camera, detection_model, crop_box, output_path = None):
 	cropped_image = get_rgb_cropped_image(camera, crop_box)
 	image_capture_time = time.perf_counter()
 
-	bounding_boxes = detection_model.run_inference(cropped_image) if output_path is None else detection_model.run_inference(cropped_image, output_path)
+	detections = detection_model.run_inference(cropped_image, output_path)
 	inference_time = time.perf_counter()
-	for i, bounding_box in enumerate(bounding_boxes):
-		print(f"Bounding box #{i}")
-		print(f"(confidence, x1, y1, x2, y2): {bounding_box}")
+
+	for class_index, detected_objects in detections.items():
+		for i, detected_object in enumerate(detected_objects):
+			print(f"Object {i + 1}/{len(detected_objects)} in class {detection_model.classes[class_index]}: ")
+			print(f"\tConfidence: {detected_object.confidence}")
+			print(f"\tBox: {detected_object.bounding_box}")
 
 	end_time = time.perf_counter()
 	elapsed_time = end_time - start_time
@@ -34,7 +37,7 @@ def main():
 	output_path = None
 	if  save_output_choice == 'y':
 		output_path = select_folder_from_dialog("Select output image folder")
-     
+
 	config = read_yaml(file_path)
 	camera = open_camera(config.get('camera'))
 
@@ -70,7 +73,7 @@ def main():
 		except Exception as error:
 			print(error)
 
-			
+
 
 if __name__ == "__main__":
 	main()
