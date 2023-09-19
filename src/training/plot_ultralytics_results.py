@@ -7,12 +7,14 @@ install_packages(["opencv-python", "ultralytics", "pandas", "matplotlib"])
 from file_dialog import select_file_from_dialog
 from file_reader import read_yaml
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
 def main():
     results_csv = select_file_from_dialog("Select result CSV file", ["csv"])
+    print(f"Opening result file: {results_csv}")
     df = pd.read_csv(results_csv)
 
     # The csv file contains weird spaces before the labels.
@@ -32,8 +34,8 @@ def main():
 
     training_cls_loss = df['         train/cls_loss']
     validation_cls_loss = df['           val/cls_loss']
-    loss_axes[1].plot(epochs, training_cls_loss, label='Training Classification Loss', marker=',', color='blue')
-    loss_axes[1].plot(epochs, validation_cls_loss, label='Validation Classification Loss', marker=',', color='red')
+    loss_axes[1].plot(epochs, np.asarray(training_cls_loss, float), label='Training Classification Loss', marker=',', color='blue')
+    loss_axes[1].plot(epochs, np.asarray(validation_cls_loss, float), label='Validation Classification Loss', marker=',', color='red')
     loss_axes[1].set_xlabel('Epochs')
     loss_axes[1].set_ylabel('Classification Loss')
     loss_axes[1].set_title('Training and Validation Classification Loss')
@@ -41,8 +43,8 @@ def main():
 
     training_dfl_loss = df['         train/dfl_loss']
     validation_dfl_loss = df['           val/dfl_loss']
-    loss_axes[2].plot(epochs, training_dfl_loss, label='Training DFL Loss', marker=',', color='blue')
-    loss_axes[2].plot(epochs, validation_dfl_loss, label='Validation DFL Loss', marker=',', color='red')
+    loss_axes[2].plot(epochs, np.asarray(training_dfl_loss, float), label='Training DFL Loss', marker=',', color='blue')
+    loss_axes[2].plot(epochs, np.asarray(validation_dfl_loss, float), label='Validation DFL Loss', marker=',', color='red')
     loss_axes[2].set_xlabel('Epochs')
     loss_axes[2].set_ylabel('DFL Loss')
     loss_axes[2].set_title('Training and Validation DFL Loss')
@@ -56,8 +58,8 @@ def main():
 
     maAP50 = df['       metrics/mAP50(B)']
     mAP50_95 = df['    metrics/mAP50-95(B)']
-    pr_axes[0].plot(epochs, maAP50, label='mAP50', marker=',', color='blue')
-    pr_axes[0].plot(epochs, mAP50_95, label='mAP50-95', marker=',', color='red')
+    pr_axes[0].plot(epochs, np.asarray(maAP50, float), label='mAP50', marker=',', color='blue')
+    pr_axes[0].plot(epochs, np.asarray(mAP50_95, float), label='mAP50-95', marker=',', color='red')
     pr_axes[0].set_xlabel('Epochs')
     pr_axes[0].set_ylabel('Mean Average Precisions Loss')
     pr_axes[0].set_title('Mean Average Precisions @50 and @50-95')
@@ -65,8 +67,8 @@ def main():
 
     recall = df['      metrics/recall(B)']
     precision = df['   metrics/precision(B)']
-    pr_axes[1].plot(epochs, recall, label='Recall', marker=',', color='blue')
-    pr_axes[1].plot(epochs, precision, label='Precision', marker=',', color='red')
+    pr_axes[1].plot(epochs,  np.asarray(recall, float), label='Recall', marker=',', color='blue')
+    pr_axes[1].plot(epochs,  np.asarray(precision, float), label='Precision', marker=',', color='red')
     pr_axes[1].set_xlabel('Epochs')
     pr_axes[1].set_ylabel('Percentage')
     pr_axes[1].set_title('Precision and Recall rates')

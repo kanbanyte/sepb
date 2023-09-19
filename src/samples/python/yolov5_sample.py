@@ -121,7 +121,7 @@ def version_1(tiled_images):
 		print(f"Checking tile {tile_index}")
 		detections = model.run_inference(tile, output_image_path)
 		print("======")
-		print(f"Detected {len(detections)} object(s) in tile {tile_index}")
+		print(f"Detected {len(detections)} class(es) in tile {tile_index}")
 		for class_index, detected_objects in detections.items():
 			for i, detected_object in enumerate(detected_objects):
 				print(f"Object {i + 1}/{len(detected_objects)} in class {model.classes[class_index]}: ")

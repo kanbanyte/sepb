@@ -6,6 +6,7 @@ model:
       height: 640
     iou: 0.7
     confidence: 0.25
+    max_det: 48
   detect_white_tray:
     file: "/path/to/model"
   detect_case:
