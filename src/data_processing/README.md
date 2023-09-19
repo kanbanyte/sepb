@@ -3,13 +3,36 @@
 **Table of Contents**
 <!-- TOC -->
 
-* [crop.py](#croppy)
+* [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflowpy)
+* [camera_capture.py](#camera_capturepy)
 * [copy_by_interval.ps1](#copy-by-intervalps1)
+* [crop.py](#croppy)
+* [image_processing.py](#image_processingpy)
+* [random_crop.py](#random_croppy)
 * [rename.ps1](#renameps1)
-* [slice.py](#slice.py)
-* [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflow.py)
+* [slice.py](#slicepy)
 
 <!-- /TOC -->
+
+## calculate_training_ratio_roboflow.py
+* Purpose:\
+Robowflow asks for training/test/validation ratio which is invalid after the agumentation process.
+This script calculates the amount of images used for training, testing and validation accounting for generated data.
+
+## camera_capture.py
+* Purpose:\
+Contains functions that deals with the ZED camera.
+Functionalities range from opening the camera, applying configured settings and taking images.
+
+## copy-by-interval.ps1
+* Purpose:\
+Copy files from a folder with a user-defined interval.\
+Since the exported photos contain a lot of duplicate, copying them in an interval somewhat removes duplicate images.
+* Usage:
+	1. Enter source folder.
+	2. Enter target folder.
+	3. Enter interval.
+	4. Wait until finish.
 
 ## crop.py
 * Purpose:\
@@ -29,15 +52,15 @@ Define a crop box and apply it all selected files.
 * Note:
 	* The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
 
-## copy-by-interval.ps1
+## image_processing.py
 * Purpose:\
-Copy files from a folder with a user-defined interval.\
-Since the exported photos contain a lot of duplicate, copying them in an interval somewhat removes duplicate images.
-* Usage:
-	1. Enter source folder.
-	2. Enter target folder.
-	3. Enter interval.
-	4. Wait until finish.
+Contains functions that processes images.
+Functionalities involve cropping, tiling and drawing rectangular crop boxes on images.
+
+## random_crop.py
+* Purpose:\
+Creates a specified number random crops from an image with the specified size.
+Primarily used to generates background images to diversify dataset for models that rely on static cropping.
 
 ## rename.ps1
 * Purpose:\
@@ -54,7 +77,3 @@ Slice the images into a grid of 4 columns and 6 rows, corresponding to the struc
 * Usage
 	1. Select the file to slice
 	2. View results in the current folder
-
-## calculate_training_ratio_roboflow.py
-* Purpose:\
-Robowflow asks for training/test/validation ratio which is invalid after the agumentation process. This script calculates the amount of images used for training, testing and validation accounting for generated data.
