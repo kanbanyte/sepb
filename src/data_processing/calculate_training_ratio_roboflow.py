@@ -1,8 +1,3 @@
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-from cli_runner import install_packages
-install_packages(["numpy"])
-
 import numpy as np
 
 def main():

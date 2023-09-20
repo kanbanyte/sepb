@@ -1,8 +1,6 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../models/python"))
-from cli_runner import install_packages
-install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml", "ultralytics"])
 
 import numpy
 from datetime import datetime

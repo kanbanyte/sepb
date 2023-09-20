@@ -1,9 +1,6 @@
 import os, sys
 
-
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-from cli_runner import install_packages
-install_packages(["opencv-python"])
 
 import cv2
 from image_processing import crop_image
@@ -13,7 +10,6 @@ from file_dialog import select_file_from_dialog
 from camera_capture import capture_image
 from camera_capture import open_camera
 from file_reader import read_yaml
-
 
 IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"]
 

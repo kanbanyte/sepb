@@ -2,9 +2,7 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../models/python"))
-from cli_runner import install_packages
 from datetime import datetime
-install_packages(["opencv-python", "ultralytics"])
 
 import cv2
 from ultralytics import YOLO
