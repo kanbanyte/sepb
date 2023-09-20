@@ -160,7 +160,7 @@ class PublisherJointTrajectory(Node):
 
 			traj = JointTrajectory()
 			traj.joint_names = self.joints
-			traj.points.append(self.goals[1])
+			traj.points.append(self.goals[self.i])
 
 			self.publisher_.publish(traj)
 
