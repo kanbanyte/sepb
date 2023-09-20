@@ -1,4 +1,6 @@
 import os, sys
+
+
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
 from cli_runner import install_packages
 install_packages(["opencv-python"])
@@ -8,6 +10,9 @@ from image_processing import crop_image
 from file_dialog import select_folder_from_dialog
 from file_dialog import select_files_from_dialog
 from file_dialog import select_file_from_dialog
+from camera_capture import capture_image
+from camera_capture import open_camera
+from file_reader import read_yaml
 
 def select_output_folder():
     """
@@ -55,7 +60,7 @@ def crop_image_and_save(input_image_path, output_image_path, crop_box):
     cropped_image = crop_image(image, crop_box)
     cv2.imwrite(output_image_path, cropped_image)
 
-def select_image_to_define_cropbox(prompt, allowed_extensions):
+def select_image_to_define_crop_box(prompt, allowed_extensions):
     """
     Selects an image file to define the crop box.
 
@@ -80,9 +85,10 @@ def select_image_to_define_cropbox(prompt, allowed_extensions):
 
     return file_path
 
-def define_crop_box_via_image(image_filename):
+# TODO: UPDATE DOCUMENTATION
+def draw_crop_box_on_image(image):
     """
-    Define cropbox on an image.
+    Define crop box on an image.
 
     Args:
         image_filename (str): Path to the input image.
@@ -106,7 +112,6 @@ def define_crop_box_via_image(image_filename):
             bottom_right_corner = [(x,y)]
             cv2.rectangle(image, top_left_corner[0], bottom_right_corner[0], (0,255,0), 2, 8)
 
-    image = cv2.imread(image_filename)
 
     # keep the original so we can reset later
     original = image.copy()
@@ -157,6 +162,40 @@ def make_cropped_image_paths(original_images, output_folder):
 
     return new_paths
 
+# TODO: update documentation
+def define_crop_box_with_image(image_extensions=None):
+    if image_extensions is None:
+        image_extensions = ["jpg", "jpeg", "png"]
+    template_image = select_image_to_define_crop_box("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
+    image = cv2.imread(template_image)
+    
+    return draw_crop_box_on_image(image)
+
+# TODO: update documentation
+def define_crop_box_with_console():
+    x1 = int(input("Enter x1 coordinate (left): "))
+    y1 = int(input("Enter y1 coordinate (top): "))
+    x2 = int(input("Enter x2 coordinate (right): "))
+    y2 = int(input("Enter y2 coordinate (bottom): "))
+
+    if (x2 < x1):
+        raise ValueError("Error: x2 value (right) must be higher than x1 value (left)")
+
+    if (y2 < y1):
+        raise ValueError("Error: y2 value (bottom) must be higher than y1 value (top)")
+
+    return (x1, y1, x2, y2)
+
+# TODO: update documentation
+def define_crop_box_with_camera():
+    config_file = select_file_from_dialog("SELECT CAMERA CONFIGURATION FILE", ["yaml"])
+    print(f"Reading camera configuration file '{config_file}'")
+    config = read_yaml(config_file)
+    camera = open_camera(config.get('camera'))
+    image = capture_image(camera)
+    camera.close()
+    return draw_crop_box_on_image(image)
+
 def get_crop_box(image_extensions=None):
     """
     Gets the crop box based on user choice. Two options are available: define the crop box on an image or entering its coordinates into the console.
@@ -172,28 +211,17 @@ def get_crop_box(image_extensions=None):
 Select how a crop box is defined:
 - 0: Define a crop box using a template image
 - 1: Define a crop box by entering the xyxy coordinates (left-top-right-bottom) in the console
+- 2: Define a crop box using an image captured from the ZED camera
     """)
-    choice = int(input("Enter your choice (0 or 1): "))
+    choice = int(input("Enter your choice (0, 1 or 2): "))
     if choice == 0:
-        if image_extensions is None:
-            image_extensions = ["jpg", "jpeg", "png"]
-        template_image = select_image_to_define_cropbox("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
-        return define_crop_box_via_image(template_image)
+        return define_crop_box_with_image()
     elif choice == 1:
-        x1 = int(input("Enter x1 coordinate (left): "))
-        y1 = int(input("Enter y1 coordinate (top): "))
-        x2 = int(input("Enter x2 coordinate (right): "))
-        y2 = int(input("Enter y2 coordinate (bottom): "))
-
-        if (x2 < x1):
-            print("Error: x2 value (right) must be higher than x1 value (left)")
-            exit(-1)
-
-        if (y2 < y1):
-            print("Error: y2 value (bottom) must be higher than y1 value (top)")
-            exit(-1)
-
-        return (x1, y1, x2, y2)
+        return define_crop_box_with_console()
+    elif choice == 2:
+        return define_crop_box_with_camera()
+    else:
+        raise ValueError(f"Invalid choice")
 
 def main():
 

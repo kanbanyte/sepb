@@ -4,7 +4,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../m
 from cli_runner import install_packages
 install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml", "ultralytics"])
 
-import cv2
+import numpy
 from datetime import datetime
 import pyzed.sl as sl
 from image_processing import crop_image
@@ -50,6 +50,27 @@ def open_camera(camera_config):
 
 	return camera
 
+def capture_image(camera):
+	"""
+	Captures an image using the specified camera object.
+
+	Args:
+		camera: an opened ZED camera object.
+
+	Returns:
+		np.array: The captured image as an array.
+	"""
+	image = sl.Mat()
+	error_code = camera.grab()
+	if error_code == sl.ERROR_CODE.SUCCESS:
+		camera.retrieve_image(image, sl.VIEW.LEFT)
+		# - get_data() turns a sl.Mat object into a numpy array
+		# - accessing the image as an array without copying it will crash the program later due to unknown reasons
+		image_data = numpy.copy(image.get_data())
+		return image_data
+	else:
+		raise ValueError(f"Failed to capture image: {error_code}")
+
 def get_rgb_cropped_image(camera, crop_box):
 	"""
 	Takes a photo with the camera and applies a crop box to it.
@@ -61,26 +82,19 @@ def get_rgb_cropped_image(camera, crop_box):
 	Returns:
 		np.array: The cropped image.
 	"""
-	x1, y1, x2, y2 = crop_box
-	image = sl.Mat()
-	err = camera.grab()
-	if err == sl.ERROR_CODE.SUCCESS:
-		camera.retrieve_image(image, sl.VIEW.LEFT)
-		current_time = datetime.now().strftime("%H-%M-%S")
-		# get_data() turns a sl.Mat object into a numpy array
-		# cv2.imwrite(f"{current_time}.png", image.get_data())
-		image_data = image.get_data()
-		cropped_image = crop_image(image_data, (x1, y1, x2, y2))
-		cv2.imwrite(f"raw.{current_time}.png", cropped_image)
+	image = capture_image(camera)
+	cropped_image = crop_image(image, crop_box)
+ 
+	# ZED returns an image in the RGBA format but the alpha channel is not needed
+	cropped_image = cropped_image[:, :, 0:3]
+ 
+	# import cv2
+	# current_time = datetime.now().strftime("%H-%M-%S")
+	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)
 
-		# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
-		# camera.close()
-		# ZED returns an image in the RGBA format but the alpha channel is not needed
-		cropped_image = cropped_image[:, :, 0:3]
-		return cropped_image
-	else:
-		print(f"Error capturing image: {err}")
-		exit(-1)
+	# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
+	# camera.close()
+	return cropped_image
 
 def read_crop_box(crop_box_config):
 	"""
