@@ -34,12 +34,9 @@ Runs inference using a trained model and an image selected through a file dialog
 All configurations for the model and crop box are specified in the configuration YAML file, which is selected via file dialog.
 
 This sample is designed to be used with the ZED camera. The user can choose from 3 options:
-* **Option 0**
-	- Run chip detection model.
-* **Option 1**
-	- Run tray detection model.
-* **Option 2**
-	- Run case detection model.
+* **Option 0**: Run chip detection model.
+* **Option 1**: Run tray detection model.
+* **Option 2**: Run case detection model.
 
 ### Notes
 * If the file selection window does not appear, check if it opens in the background.

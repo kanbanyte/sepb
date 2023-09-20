@@ -32,9 +32,8 @@ def open_camera(camera_config):
 	init_params.camera_image_flip = sl.FLIP_MODE.ON
 	camera = sl.Camera()
 	open_result = camera.open(init_params)
-	if  open_result != sl.ERROR_CODE.SUCCESS:
-		print(f"Failed to open camera: {open_result}")
-		exit(-1)
+	if open_result != sl.ERROR_CODE.SUCCESS:
+		raise ValueError(f"Failed to open camera: {open_result}")
 
 	camera.set_camera_settings(sl.VIDEO_SETTINGS.CONTRAST, contrast)
 	camera.set_camera_settings(sl.VIDEO_SETTINGS.SATURATION, saturation)

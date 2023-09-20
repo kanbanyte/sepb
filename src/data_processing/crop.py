@@ -25,8 +25,7 @@ def select_output_folder():
     """
     folder = select_folder_from_dialog("Select your output folder")
     if folder is None:
-        print("No output folder selected")
-        exit()
+        raise ValueError("No output folder selected")
 
     return folder
 
@@ -73,15 +72,11 @@ def select_image_to_define_crop_box(prompt, allowed_extensions):
     file_path = select_file_from_dialog(prompt, allowed_extensions)
 
     if not file_path:
-        print("No file selected")
-        print("Exiting")
-        exit()
+        raise ValueError("No file selected")
 
     file_extension = os.path.splitext(file_path)[1][1:]
     if file_extension not in allowed_extensions:
-        print(f"Selected file has an unsupported extension: {file_extension}")
-        print("Exiting")
-        exit()
+        raise ValueError(f"Selected file has an unsupported extension: {file_extension}")
 
     return file_path
 
@@ -141,8 +136,7 @@ def draw_crop_box_on_image(image):
         x2, y2 = bottom_right_corner[0]
         return x1, y1, x2, y2
 
-    print("No crop box selected")
-    exit()
+    raise ValueError("No crop box selected")
 
 def make_cropped_image_paths(original_images, output_folder):
     """

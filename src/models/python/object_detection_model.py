@@ -62,10 +62,11 @@ class ObjectDetectionModel:
 
         Returns:
             defaultdict(list): Dictionary where the keys are the indices of the classes and
-            the values are list[DetectedObjects] 
+            the values are list[DetectedObjects]
         """
 
-        assert image.size != 0, f"Input image size must not be 0"
+        if image.size == 0:
+            raise ValueError(f"Input image size must not be 0")
 
         # YOLO model class uses the (h,w) order
         image_dimension = (self.__image_height, self.__image_width)
@@ -91,7 +92,7 @@ class ObjectDetectionModel:
         y1_tensor = result.boxes.xyxy[:, 1]
         x2_tensor = result.boxes.xyxy[:, 2]
         y2_tensor = result.boxes.xyxy[:, 3]
-        
+
         image_copy = image.copy()
         for (object_class, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
             # these values are still 1D tensors and need to be converted to scalar values

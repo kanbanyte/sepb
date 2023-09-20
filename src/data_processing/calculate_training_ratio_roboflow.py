@@ -4,13 +4,11 @@ def main():
     dataset_size = int(input("Enter value for dataset size: "))
     training_set_percentage = int(input("Enter the value for training set percentage (out of 100%): "))
     if training_set_percentage < 0 or training_set_percentage > 100:
-        print("Training set percentage must be between 0 - 100%")
-        exit(-1)
+        raise ValueError("Training set percentage must be between 0 - 100%")
 
     training_set_augmentation_scale = int(input("Enter the value by which the training set will my scaled after the augmentation process: "))
     if training_set_augmentation_scale < 0:
-        print("Training set augmentation scale must be positive")
-        exit(-1)
+        raise ValueError("Training set augmentation scale must be positive")
 
     test_val_set_percentage = 100 - training_set_percentage
 
@@ -29,4 +27,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

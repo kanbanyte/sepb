@@ -11,6 +11,17 @@ def crop_image(image, crop_box):
 	Returns:
 		np.array: Cropped Image
 	"""
+
+	if image.size == 0:
+		raise ValueError(f"Input image size must not be 0")
+
+	height, width, _ = image.shape
+	if abs(x2 - x1) > width:
+		raise ValueError("Crop box width is larger than image width")
+
+	if abs(y2 - y1) > height:
+		raise ValueError("Crop box height is larger than image height")
+
 	x1, y1, x2, y2 = crop_box
 	return image[y1:y2, x1:x2]
 

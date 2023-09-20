@@ -12,12 +12,10 @@ def random_crop(image_path, crop_width, crop_height):
     width = image.shape[1]
 
     if height < crop_height:
-        print("Error: image height must be bigger than crop box height")
-        exit(-1)
+        raise ValueError("Error: image height must be bigger than crop box height")
 
     if width < crop_width:
-        print("Error: image width must be bigger than crop box width")
-        exit(-1)
+        raise ValueError("Error: image width must be bigger than crop box width")
 
     # Generate random coordinates for the crop box
     left = random.randint(0, width - crop_width)
