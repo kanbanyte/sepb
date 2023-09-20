@@ -16,12 +16,13 @@ User can optionally save the output image to a specified folder.
 Supports image tiling.
 To run the model on the full image, enter (1,1) for the tile dimensions.
 User can choose from the 2 options:
-* **Version 0**
+* **Option 0**
 	* Model file selected via file dialog.
-	* Allows the user to apply tiling with the specified row and column count.
 	* Cropping is not supported
-* **Version 1**
+	* Use built-in methods from Ultralytics
+* **Option 1**
 	* Designed to be used with a yaml configuration file selected by the user via a file dialog
+	* Cropping, model files and settings can be set in the configuration file
 
 ### Notes
 * If the file selection window does not appear, check if it opens in the background.

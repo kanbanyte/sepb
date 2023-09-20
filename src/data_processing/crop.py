@@ -1,6 +1,7 @@
 import os, sys
 
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../camera"))
 
 import cv2
 from image_processing import crop_image
@@ -163,25 +164,25 @@ def make_cropped_image_paths(original_images, output_folder):
 
 def define_crop_box_with_image():
     """
-    Open an image file and define the crop box on that image. 
+    Open an image file and define the crop box on that image.
 
     Args: None
 
-    Returns: 
+    Returns:
         (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
     """
     template_image = select_image_to_define_crop_box("SELECT AN IMAGE TO DEFINE THE CROP BOX", IMAGE_EXTENSIONS)
     image = cv2.imread(template_image)
-    
+
     return draw_crop_box_on_image(image)
 
 def define_crop_box_with_console():
     """
-    Define the crop box by entering its coordinates to the terminal. 
+    Define the crop box by entering its coordinates to the terminal.
 
     Args: None
 
-    Returns: 
+    Returns:
         (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
     """
     x1 = int(input("Enter x1 coordinate (left): "))
@@ -199,11 +200,11 @@ def define_crop_box_with_console():
 
 def define_crop_box_with_camera():
     """
-    Capture an image from the ZED camera and define the crop box on that image. 
+    Capture an image from the ZED camera and define the crop box on that image.
 
     Args: None
 
-    Returns: 
+    Returns:
         (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
     """
     config_file = select_file_from_dialog("SELECT CAMERA CONFIGURATION FILE", ["yaml"])
@@ -216,9 +217,9 @@ def define_crop_box_with_camera():
 
 def apply_crop_and_save(crop_box):
     """
-    Apply the crop box to selected images and save them in a specified folder. 
+    Apply the crop box to selected images and save them in a specified folder.
 
-    Args: 
+    Args:
         crop_box(int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
 
     Returns: None

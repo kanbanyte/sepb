@@ -38,7 +38,7 @@ def select_file_from_dialog(prompt, allowed_extensions):
     Args:
         prompt (str): The prompt message for the dialog box.
         allowed_extensions (list): List of allowed image file extensions.
-        
+
     Returns:
         str | None: the path of selected file or None.
     """
@@ -50,7 +50,7 @@ def __init_tkinter():
     """
     Initialize Tkinter and make sure the file dialog opens in the foreground.
 
-    Args:
+    Args: None
 
     Returns:
         root: Tkinter window root.
