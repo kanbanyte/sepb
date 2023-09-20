@@ -1,10 +1,10 @@
-# import rclpy
 from rclpy.node import Node
 from builtin_interfaces.msg import Duration
 from rcl_interfaces.msg import ParameterDescriptor
 
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from sensor_msgs.msg import JointState
+from nodes.bot_functions import BotMethods
 
 
 class PublisherJointTrajectory(Node):
@@ -50,6 +50,8 @@ class PublisherJointTrajectory(Node):
 		# Read all positions from parameters
 		self.goals = self.read_positions_from_parameters(
 			goal_names)  # --List-- Dict of JointTrajectoryPoint
+
+		self.goal_names = list(self.goals.keys())
 
 		if len(self.goals) < 1:
 			self.get_logger().error("No valid goal found. Exiting...")
@@ -140,7 +142,8 @@ class PublisherJointTrajectory(Node):
 					point.time_from_start = Duration(sec=4)
 					# goals.append(point)
 					goals[name] = point
-					self.get_logger().info(f'Goal "{name}" has definition {point}')
+					# self.get_logger().info(f'Goal "{name}" has definition \n{point}\n')
+					self.get_logger().info(f'Goal "{name}" has definition \n{point.positions}\n')
 
 				else:
 					self.get_logger().warn(
@@ -153,35 +156,39 @@ class PublisherJointTrajectory(Node):
 					)
 		return goals
 
-	def move_chip_1(self):
-		traj = JointTrajectory()
-		traj.joint_names = self.joints
-		traj.points.append(self.goals["chip_1"])
+	# def move_chip_1(self):
+	# 	traj = JointTrajectory()
+	# 	traj.joint_names = self.joints
 
-		return traj
+	# 	traj.points.append(self.goals["home"])
+	# 	traj.points.append(self.goals["chip_1"])
+
+	# 	return traj
 
 	def timer_callback(self):
 
 		if self.starting_point_ok:
-			goal_names = list(self.goals.keys())
-
-			goal = goal_names[self.i]
+			goal = self.goal_names[self.i]
 
 			# self.get_logger().info(f"Sending goal {self.goals[self.i]}.")
 			# Using goals as dict type
-			self.get_logger().info(f"Sending goal {self.goals[goal]}.")
+			# self.get_logger().info(f"Sending goal \n{self.goals[goal]}.\n")
+			self.get_logger().info(f"Sending goal \n{self.goals[goal].positions}.\n")
 
 			# traj = self.move_chip_1()
+			traj = BotMethods.move_chip(self.joints, self.goals, 1)
 
-			traj = JointTrajectory()
-			traj.joint_names = self.joints
-			# traj.points.append(self.goals[self.i])
-			traj.points.append(self.goals[goal]) # Using goals as dict type
+			#region KEEPME
+			# traj = JointTrajectory()
+			# traj.joint_names = self.joints
+			# # traj.points.append(self.goals[self.i])
+			# traj.points.append(self.goals[goal]) # Using goals as dict type
+			#endregion KEEPME
 
 			self.publisher_.publish(traj)
 
-			# # Exit once moved
-			# return
+			# Exit once moved
+			return
 
 			self.i += 1
 			self.i %= len(self.goals)
