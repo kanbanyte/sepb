@@ -1,4 +1,4 @@
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from trajectory_msgs.msg import JointTrajectory
 
 
 class BotMethods:
@@ -9,12 +9,9 @@ class BotMethods:
 	@classmethod
 	def move_chip(self, joints, goals, chip_number):
 		trajectories = []
-
 		traj = JointTrajectory()
 		traj.joint_names = joints
-
 		chip_name = "chip_" + str(chip_number)
-
 
 		"""
 		traj.points must be cleared before appending a new trajectory to it.
@@ -29,5 +26,9 @@ class BotMethods:
 
 		traj.points.append(goals[chip_name])
 		trajectories.append(traj)
+		traj.points.clear()
 
-		return traj
+		traj.points.append(goals["home"])
+		trajectories.append(traj)
+
+		return trajectories

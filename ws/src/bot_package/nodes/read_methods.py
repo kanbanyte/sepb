@@ -1,18 +1,15 @@
 from builtin_interfaces.msg import Duration
 from rcl_interfaces.msg import ParameterDescriptor
-
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from trajectory_msgs.msg import JointTrajectoryPoint
 
 
 class ReadMethods:
 	"""
-	ReadMethods defines all functions that
+	ReadMethods defines all functions that affect the output inside the terminal.
 	"""
 
 	@classmethod
 	def read_positions_from_parameters(self, pjt, goal_names: list):
-		# Temp list of JointTrajectoryPoint
-		# goals = []
 		# Temp dict of JointTrajectoryPoint
 		goals = {}
 
@@ -22,11 +19,11 @@ class ReadMethods:
 
 			if isinstance(goal, list):
 				pjt.get_logger().warn(
-					f'Goal "{name}" is defined as a list. This is deprecated. '
-					"Use the following structure:\n<goal_name>:\n  "
-					"positions: [joint1, joint2, joint3, ...]\n  "
-					"velocities: [v_joint1, v_joint2, ...]\n  "
-					"accelerations: [a_joint1, a_joint2, ...]\n  "
+					f'Goal "{name}" is defined as a list.\nThis is deprecated.\nUse the following structure:\n'
+					"<goal_name>:\n"
+					"positions: [joint1, joint2, joint3, ...]\n"
+					"velocities: [v_joint1, v_joint2, ...]\n"
+					"accelerations: [a_joint1, a_joint2, ...]\n"
 					"effort: [eff_joint1, eff_joint2, ...]"
 				)
 
@@ -39,7 +36,6 @@ class ReadMethods:
 				point.positions = float_goal
 				point.time_from_start = Duration(sec=4)
 
-				# goals.append(point)
 				goal[name] = point
 
 			else:
@@ -83,18 +79,20 @@ class ReadMethods:
 
 				if one_ok:
 					point.time_from_start = Duration(sec=4)
-					# goals.append(point)
 					goals[name] = point
-					# pjt.get_logger().info(f'Goal "{name}" has definition \n{point}\n')
-					pjt.get_logger().info(f'Goal "{name}" has definition \n{point.positions}\n')
+					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+					pos = f'[Base: {point.positions[0]}, Shoulder: {point.positions[1]}, Elbow: {point.positions[2]},' +\
+					f'Wrist 1: {point.positions[3]}, Wrist 2: {point.positions[4]}, Wrist 3: {point.positions[5]}]'
+					# pjt.get_logger().info(f'\nGoal "{name}" has definition \n{point.positions}\n')
+					pjt.get_logger().info(f'\n\tGoal "{name}":\n\t\t{pos}\n')
 
 				else:
 					pjt.get_logger().warn(
-						f'Goal "{name}" definition is wrong. This goal will not be used. '
-						"Use the following structure: \n<goal_name>:\n  "
-						"positions: [joint1, joint2, joint3, ...]\n  "
-						"velocities: [v_joint1, v_joint2, ...]\n  "
-						"accelerations: [a_joint1, a_joint2, ...]\n  "
+						f'Goal "{name}" definition is wrong.\nThis goal will not be used.\nUse the following structure:\n'
+						"<goal_name>:\n"
+						"positions: [joint1, joint2, joint3, ...]\n"
+						"velocities: [v_joint1, v_joint2, ...]\n"
+						"accelerations: [a_joint1, a_joint2, ...]\n"
 						"effort: [eff_joint1, eff_joint2, ...]"
 					)
 		return goals

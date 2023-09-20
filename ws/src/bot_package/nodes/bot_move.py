@@ -1,8 +1,5 @@
 from rclpy.node import Node
-from builtin_interfaces.msg import Duration
-from rcl_interfaces.msg import ParameterDescriptor
-
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from trajectory_msgs.msg import JointTrajectory
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
@@ -40,16 +37,14 @@ class PublisherJointTrajectory(Node):
 			for name in self.joints:
 				if len(self.starting_point[name]) != 2:
 					raise Exception('"starting_point" parameter is not set correctly!')
-			self.joint_state_sub = self.create_subscription(
-				JointState, "joint_states", self.joint_state_callback, 10
-			)
+			self.joint_state_sub = self.create_subscription(JointState, "joint_states", self.joint_state_callback, 10)
+
 		# initialize starting point status
 		self.starting_point_ok = not self.check_starting_point
 
 		self.joint_state_msg_received = False
 
 		# Read all positions from parameters
-		# self.goals = self.read_positions_from_parameters(goal_names)  # Dict of JointTrajectoryPoint
 		# Dict of JointTrajectoryPoint
 		self.goals = ReadMethods.read_positions_from_parameters(self, goal_names)
 
@@ -61,10 +56,7 @@ class PublisherJointTrajectory(Node):
 
 		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
 
-		self.get_logger().info(
-			f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every '
-			"{wait_sec_between_publish} s"
-		)
+		self.get_logger().info(f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every "{wait_sec_between_publish} s"')
 
 		self.publisher_ = self.create_publisher(JointTrajectory, publish_topic, 1)
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
@@ -72,15 +64,15 @@ class PublisherJointTrajectory(Node):
 
 	def timer_callback(self):
 		if self.starting_point_ok:
-			goal = self.goal_names[self.i]
+			# goal = self.goal_names[self.i]
+			trajectories = BotMethods.move_chip(self.joints, self.goals, 1)
+			traj = trajectories[self.i]
+			self.get_logger().info(str(self.i))
+			traj_goal = traj.points[0]
 
-			# self.get_logger().info(f"Sending goal {self.goals[self.i]}.")
 			# Using goals as dict type
-			# self.get_logger().info(f"Sending goal \n{self.goals[goal]}.\n")
-			self.get_logger().info(f"Sending goal \n{self.goals[goal].positions}.\n")
-
-			# traj = self.move_chip_1()
-			traj = BotMethods.move_chip(self.joints, self.goals, 1)
+			# self.get_logger().info(f"Sending goal \n{self.goals[goal].positions}.\n")
+			self.get_logger().info(f"Sending goal \n{traj_goal.positions}.\n")
 
 			#region KEEPME
 			# traj = JointTrajectory()
@@ -91,31 +83,21 @@ class PublisherJointTrajectory(Node):
 
 			self.publisher_.publish(traj)
 
-			# Exit once moved
-			return
-
 			self.i += 1
-			self.i %= len(self.goals)
+			self.i %= len(trajectories)
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
-			self.get_logger().warn(
-				'Start configuration could not be checked! Check "joint_state" topic!'
-			)
+			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
 		else:
 			self.get_logger().warn("Start configuration is not within configured limits!")
 
 	def joint_state_callback(self, msg):
-
 		if not self.joint_state_msg_received:
-
 			# check start state
 			limit_exceeded = [False] * len(msg.name)
 			for idx, enum in enumerate(msg.name):
-				if (msg.position[idx] < self.starting_point[enum][0]) or (
-					msg.position[idx] > self.starting_point[enum][1]
-				):
-					self.get_logger().warn(
-						f"Starting point limits exceeded for joint {enum} !")
+				if (msg.position[idx] < self.starting_point[enum][0]) or (msg.position[idx] > self.starting_point[enum][1]):
+					self.get_logger().warn(f"Starting point limits exceeded for joint {enum} !")
 					limit_exceeded[idx] = True
 
 			if any(limit_exceeded):
