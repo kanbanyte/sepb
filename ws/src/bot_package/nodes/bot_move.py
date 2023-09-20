@@ -1,21 +1,4 @@
-# Copyright 2022 Stogl Robotics Consulting UG (haftungsbeschränkt)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# Authors: Denis Štogl, Lovro Ivanov
-#
-
-import rclpy
+# import rclpy
 from rclpy.node import Node
 from builtin_interfaces.msg import Duration
 from rcl_interfaces.msg import ParameterDescriptor
@@ -65,12 +48,33 @@ class PublisherJointTrajectory(Node):
 		self.joint_state_msg_received = False
 
 		# Read all positions from parameters
-		self.goals = []  # List of JointTrajectoryPoint
+		self.goals = self.read_positions_from_parameters(
+			goal_names)  # --List-- Dict of JointTrajectoryPoint
+
+		if len(self.goals) < 1:
+			self.get_logger().error("No valid goal found. Exiting...")
+			exit(1)
+
+		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
+
+		self.get_logger().info(
+			f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every '
+			"{wait_sec_between_publish} s"
+		)
+
+		self.publisher_ = self.create_publisher(JointTrajectory, publish_topic, 1)
+		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
+		self.i = 0
+
+	def read_positions_from_parameters(self, goal_names: list):
+		# goals = [] # Temp list of JointTrajectoryPoint
+		goals = {}  # Temp dict of JointTrajectoryPoint
+
 		for name in goal_names:
-			self.declare_parameter(name, descriptor=ParameterDescriptor(dynamic_typing=True))
+			self.declare_parameter(
+				name, descriptor=ParameterDescriptor(dynamic_typing=True))
 			goal = self.get_parameter(name).value
 
-			# TODO(anyone): remove this "if" part in ROS Iron
 			if isinstance(goal, list):
 				self.get_logger().warn(
 					f'Goal "{name}" is defined as a list. This is deprecated. '
@@ -90,7 +94,8 @@ class PublisherJointTrajectory(Node):
 				point.positions = float_goal
 				point.time_from_start = Duration(sec=4)
 
-				self.goals.append(point)
+				# goals.append(point)
+				goal[name] = point
 
 			else:
 				point = JointTrajectoryPoint()
@@ -133,7 +138,8 @@ class PublisherJointTrajectory(Node):
 
 				if one_ok:
 					point.time_from_start = Duration(sec=4)
-					self.goals.append(point)
+					# goals.append(point)
+					goals[name] = point
 					self.get_logger().info(f'Goal "{name}" has definition {point}')
 
 				else:
@@ -145,38 +151,37 @@ class PublisherJointTrajectory(Node):
 						"accelerations: [a_joint1, a_joint2, ...]\n  "
 						"effort: [eff_joint1, eff_joint2, ...]"
 					)
+		return goals
 
-		if len(self.goals) < 1:
-			self.get_logger().error("No valid goal found. Exiting...")
-			exit(1)
+	def move_chip_1(self):
+		traj = JointTrajectory()
+		traj.joint_names = self.joints
+		traj.points.append(self.goals["chip_1"])
 
-		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
-
-		self.get_logger().info(
-			f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every '
-			"{wait_sec_between_publish} s"
-		)
-
-		self.publisher_ = self.create_publisher(JointTrajectory, publish_topic, 1)
-		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
-		self.i = 0
+		return traj
 
 	def timer_callback(self):
 
 		if self.starting_point_ok:
-			self.get_logger().info(f"Sending goal {self.goals[self.i]}.")
+			goal_names = list(self.goals.keys())
 
-			# traj_home = JointTrajectory()
-			# traj_home.joint_names = self.joints
-			# traj_home.points.append(self.goals[1])
+			goal = goal_names[self.i]
+
+			# self.get_logger().info(f"Sending goal {self.goals[self.i]}.")
+			# Using goals as dict type
+			self.get_logger().info(f"Sending goal {self.goals[goal]}.")
+
+			# traj = self.move_chip_1()
 
 			traj = JointTrajectory()
 			traj.joint_names = self.joints
-			traj.points.append(self.goals[1])
-			#traj.points.append(self.goals[self.i])
+			# traj.points.append(self.goals[self.i])
+			traj.points.append(self.goals[goal]) # Using goals as dict type
 
-			# self.publisher_.publish(traj_home)
 			self.publisher_.publish(traj)
+
+			# # Exit once moved
+			# return
 
 			self.i += 1
 			self.i %= len(self.goals)
@@ -198,7 +203,8 @@ class PublisherJointTrajectory(Node):
 				if (msg.position[idx] < self.starting_point[enum][0]) or (
 					msg.position[idx] > self.starting_point[enum][1]
 				):
-					self.get_logger().warn(f"Starting point limits exceeded for joint {enum} !")
+					self.get_logger().warn(
+						f"Starting point limits exceeded for joint {enum} !")
 					limit_exceeded[idx] = True
 
 			if any(limit_exceeded):
@@ -209,17 +215,3 @@ class PublisherJointTrajectory(Node):
 			self.joint_state_msg_received = True
 		else:
 			return
-
-
-def main(args=None):
-	rclpy.init(args=args)
-
-	publisher_joint_trajectory = PublisherJointTrajectory()
-
-	rclpy.spin(publisher_joint_trajectory)
-	publisher_joint_trajectory.destroy_node()
-	rclpy.shutdown()
-
-
-if __name__ == "__main__":
-	main()
