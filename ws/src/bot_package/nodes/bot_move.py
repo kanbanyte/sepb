@@ -5,6 +5,7 @@ from rcl_interfaces.msg import ParameterDescriptor
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
+from nodes.read_methods import ReadMethods
 
 
 class PublisherJointTrajectory(Node):
@@ -48,8 +49,9 @@ class PublisherJointTrajectory(Node):
 		self.joint_state_msg_received = False
 
 		# Read all positions from parameters
-		self.goals = self.read_positions_from_parameters(
-			goal_names)  # --List-- Dict of JointTrajectoryPoint
+		# self.goals = self.read_positions_from_parameters(goal_names)  # Dict of JointTrajectoryPoint
+		# Dict of JointTrajectoryPoint
+		self.goals = ReadMethods.read_positions_from_parameters(self, goal_names)
 
 		self.goal_names = list(self.goals.keys())
 
@@ -68,105 +70,7 @@ class PublisherJointTrajectory(Node):
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
-	def read_positions_from_parameters(self, goal_names: list):
-		# goals = [] # Temp list of JointTrajectoryPoint
-		goals = {}  # Temp dict of JointTrajectoryPoint
-
-		for name in goal_names:
-			self.declare_parameter(
-				name, descriptor=ParameterDescriptor(dynamic_typing=True))
-			goal = self.get_parameter(name).value
-
-			if isinstance(goal, list):
-				self.get_logger().warn(
-					f'Goal "{name}" is defined as a list. This is deprecated. '
-					"Use the following structure:\n<goal_name>:\n  "
-					"positions: [joint1, joint2, joint3, ...]\n  "
-					"velocities: [v_joint1, v_joint2, ...]\n  "
-					"accelerations: [a_joint1, a_joint2, ...]\n  "
-					"effort: [eff_joint1, eff_joint2, ...]"
-				)
-
-				if goal is None or len(goal) == 0:
-					raise Exception(f'Values for goal "{name}" not set!')
-
-				float_goal = [float(value) for value in goal]
-
-				point = JointTrajectoryPoint()
-				point.positions = float_goal
-				point.time_from_start = Duration(sec=4)
-
-				# goals.append(point)
-				goal[name] = point
-
-			else:
-				point = JointTrajectoryPoint()
-
-				def get_sub_param(sub_param):
-					param_name = name + "." + sub_param
-					self.declare_parameter(param_name, [float()])
-					param_value = self.get_parameter(param_name).value
-
-					float_values = []
-
-					if len(param_value) != len(self.joints):
-						return [False, float_values]
-
-					float_values = [float(value) for value in param_value]
-
-					return [True, float_values]
-
-				one_ok = False
-
-				[ok, values] = get_sub_param("positions")
-				if ok:
-					point.positions = values
-					one_ok = True
-
-				[ok, values] = get_sub_param("velocities")
-				if ok:
-					point.velocities = values
-					one_ok = True
-
-				[ok, values] = get_sub_param("accelerations")
-				if ok:
-					point.accelerations = values
-					one_ok = True
-
-				[ok, values] = get_sub_param("effort")
-				if ok:
-					point.effort = values
-					one_ok = True
-
-				if one_ok:
-					point.time_from_start = Duration(sec=4)
-					# goals.append(point)
-					goals[name] = point
-					# self.get_logger().info(f'Goal "{name}" has definition \n{point}\n')
-					self.get_logger().info(f'Goal "{name}" has definition \n{point.positions}\n')
-
-				else:
-					self.get_logger().warn(
-						f'Goal "{name}" definition is wrong. This goal will not be used. '
-						"Use the following structure: \n<goal_name>:\n  "
-						"positions: [joint1, joint2, joint3, ...]\n  "
-						"velocities: [v_joint1, v_joint2, ...]\n  "
-						"accelerations: [a_joint1, a_joint2, ...]\n  "
-						"effort: [eff_joint1, eff_joint2, ...]"
-					)
-		return goals
-
-	# def move_chip_1(self):
-	# 	traj = JointTrajectory()
-	# 	traj.joint_names = self.joints
-
-	# 	traj.points.append(self.goals["home"])
-	# 	traj.points.append(self.goals["chip_1"])
-
-	# 	return traj
-
 	def timer_callback(self):
-
 		if self.starting_point_ok:
 			goal = self.goal_names[self.i]
 

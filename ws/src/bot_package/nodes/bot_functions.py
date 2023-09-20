@@ -3,7 +3,7 @@ from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
 class BotMethods:
 	"""
-	BotMethods defines all functions that
+	BotMethods defines all functions that involve moving the cobot to pick and place each object.
 	"""
 
 	@classmethod
@@ -20,10 +20,14 @@ class BotMethods:
 		traj.points must be cleared before appending a new trajectory to it.
 
 		Otherwise, two goals will be within the same trajectory and the trajectory will be invalid.
+
+		Trajectories are added to the trajectories list which is returned so that the cobot will move to all goals.
 		"""
 		traj.points.append(goals["home"])
 		trajectories.append(traj)
 		traj.points.clear()
+
 		traj.points.append(goals[chip_name])
+		trajectories.append(traj)
 
 		return traj
