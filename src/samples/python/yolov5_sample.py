@@ -2,6 +2,7 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../models/python"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../camera"))
 from datetime import datetime
 
 import cv2

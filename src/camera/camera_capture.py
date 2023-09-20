@@ -1,6 +1,6 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../models/python"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../data_processing"))
 
 import numpy
 from datetime import datetime
@@ -82,10 +82,10 @@ def get_rgb_cropped_image(camera, crop_box):
 	"""
 	image = capture_image(camera)
 	cropped_image = crop_image(image, crop_box)
- 
+
 	# ZED returns an image in the RGBA format but the alpha channel is not needed
 	cropped_image = cropped_image[:, :, 0:3]
- 
+
 	# import cv2
 	# current_time = datetime.now().strftime("%H-%M-%S")
 	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)

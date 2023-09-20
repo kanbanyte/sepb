@@ -1,4 +1,19 @@
-# Log Project: ZED capture data
+<!-- TOC ignore:true -->
+# ZED Camera
+**Table of Contents**
+<!-- TOC -->
+
+* [camera_capture.py](#camera_capturepy)
+* [Capturing via the commandline](#capturing-images-via-the-commandline)
+
+<!-- /TOC -->
+
+## camera_capture.py
+* Purpose:\
+Contains functions that controls the ZED camera programmatically.
+Functionalities range from opening the camera, applying configured settings and taking images.
+
+## Capturing images via the commandline
 To capture data with the ZED camera we are going to use the SDK default files, and the example code found in github.
 
 From the SDK we need:
@@ -15,7 +30,7 @@ By default, the binary files can be found in `usr/local/bin/` on a Desktop, and 
 
 When executing these Bash scripts, the paths with `$` should be changed to the appropriate directory names, these can also be defined in a program prior to execution.
 
-## How to Capture Data
+### How to Capture Data
 Capturing 3 seconds and 4 frames extra. 3 seconds to settle down the auto-exposure
 ```bash
 ZED_Explorer -r HD2K -f 15 -l 50 --cpm -m 0 -o $PATH_TO_DATA/$SCENE_NUMBER/ZED/$SCENE_NUMBER-ZED-$TIME_STAMP-autoexp.svo

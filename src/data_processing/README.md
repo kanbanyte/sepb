@@ -19,11 +19,6 @@
 Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
 This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
 
-## camera_capture.py
-* Purpose:\
-Contains functions that deals with the ZED camera.
-Functionalities range from opening the camera, applying configured settings and taking images.
-
 ## copy-by-interval.ps1
 * Purpose:\
 Copy files from a folder with a user-defined interval.\

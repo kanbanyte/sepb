@@ -1,6 +1,7 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../models/python"))
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../camera"))
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
 
 import time
