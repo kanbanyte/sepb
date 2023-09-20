@@ -16,8 +16,8 @@
 
 ## calculate_training_ratio_roboflow.py
 * Purpose:\
-Robowflow asks for training/test/validation ratio which is invalid after the agumentation process.
-This script calculates the amount of images used for training, testing and validation accounting for generated data.
+Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
+This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
 
 ## camera_capture.py
 * Purpose:\
@@ -38,17 +38,10 @@ Since the exported photos contain a lot of duplicate, copying them in an interva
 * Purpose:\
 Define a crop box and apply it all selected files.
 * Usage:
-	1. Select an image to define the crop box on.
-	2. Define the crop box on that image.\
-	Press 'f' to finish or cancel.\
-	Press 'r' to reset.
-	3. Select image file(s) to apply that crop box on.
-	4. Select output folder.
-	5. Wait until finish.
-* Required Packages:
-	* Pillow `pip install pillow`
-	* cv2 (OpenCV) `pip install opencv-python`
-	* tkinter
+	* Select from the following options:
+		0. Select an image to define a crop box, then apply it to a set of selected images and save them to a folder
+		1. Enter the crop box coordinates into the console, apply it to a set of images and save them to a folder
+		2. Capture an image from the ZED camera and use it to define a crop box.
 * Note:
 	* The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
 
@@ -59,7 +52,7 @@ Functionalities involve cropping, tiling and drawing rectangular crop boxes on i
 
 ## random_crop.py
 * Purpose:\
-Creates a specified number random crops from an image with the specified size.
+Creates a specified number of random crops from an image with the specified size.
 Primarily used to generates background images to diversify dataset for models that rely on static cropping.
 
 ## rename.ps1

@@ -14,6 +14,9 @@ from camera_capture import capture_image
 from camera_capture import open_camera
 from file_reader import read_yaml
 
+
+IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"]
+
 def select_output_folder():
     """
     Displays a dialog box to select an output folder.
@@ -162,17 +165,29 @@ def make_cropped_image_paths(original_images, output_folder):
 
     return new_paths
 
-# TODO: update documentation
-def define_crop_box_with_image(image_extensions=None):
-    if image_extensions is None:
-        image_extensions = ["jpg", "jpeg", "png"]
-    template_image = select_image_to_define_crop_box("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
+def define_crop_box_with_image():
+    """
+    Open an image file and define the crop box on that image. 
+
+    Args: None
+
+    Returns: 
+        (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
+    """
+    template_image = select_image_to_define_crop_box("SELECT AN IMAGE TO DEFINE THE CROP BOX", IMAGE_EXTENSIONS)
     image = cv2.imread(template_image)
     
     return draw_crop_box_on_image(image)
 
-# TODO: update documentation
 def define_crop_box_with_console():
+    """
+    Define the crop box by entering its coordinates to the terminal. 
+
+    Args: None
+
+    Returns: 
+        (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
+    """
     x1 = int(input("Enter x1 coordinate (left): "))
     y1 = int(input("Enter y1 coordinate (top): "))
     x2 = int(input("Enter x2 coordinate (right): "))
@@ -186,8 +201,15 @@ def define_crop_box_with_console():
 
     return (x1, y1, x2, y2)
 
-# TODO: update documentation
 def define_crop_box_with_camera():
+    """
+    Capture an image from the ZED camera and define the crop box on that image. 
+
+    Args: None
+
+    Returns: 
+        (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
+    """
     config_file = select_file_from_dialog("SELECT CAMERA CONFIGURATION FILE", ["yaml"])
     print(f"Reading camera configuration file '{config_file}'")
     config = read_yaml(config_file)
@@ -196,41 +218,18 @@ def define_crop_box_with_camera():
     camera.close()
     return draw_crop_box_on_image(image)
 
-def get_crop_box(image_extensions=None):
+def apply_crop_and_save(crop_box):
     """
-    Gets the crop box based on user choice. Two options are available: define the crop box on an image or entering its coordinates into the console.
+    Apply the crop box to selected images and save them in a specified folder. 
 
-    Args:
-        image_extensions (list[str]): optional list containing image extensions without `.`
+    Args: 
+        crop_box(int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
 
-    Returns:
-        x1, y1, x2, y2: Tuple containing crop box coordinates (left, top, right, bottom).
+    Returns: None
     """
-    print(
-    """
-Select how a crop box is defined:
-- 0: Define a crop box using a template image
-- 1: Define a crop box by entering the xyxy coordinates (left-top-right-bottom) in the console
-- 2: Define a crop box using an image captured from the ZED camera
-    """)
-    choice = int(input("Enter your choice (0, 1 or 2): "))
-    if choice == 0:
-        return define_crop_box_with_image()
-    elif choice == 1:
-        return define_crop_box_with_console()
-    elif choice == 2:
-        return define_crop_box_with_camera()
-    else:
-        raise ValueError(f"Invalid choice")
-
-def main():
-
-    image_extensions = ["jpg", "jpeg", "png"]
-    crop_box = get_crop_box(image_extensions)
-
     output_folder = select_output_folder()
     print(f"Using output folder: {output_folder}")
-    input_images = select_images_to_crop("SELECT IMAGES TO APPLY THE CROP ON", image_extensions)
+    input_images = select_images_to_crop("SELECT IMAGES TO APPLY THE CROP ON", IMAGE_EXTENSIONS)
     cropped_images = make_cropped_image_paths(input_images, output_folder)
 
     print(f"Applying {crop_box} crop to {len(input_images)} images")
@@ -238,6 +237,25 @@ def main():
         crop_image_and_save(image_file, cropped_image,  crop_box)
 
     print(f"Finished processing {len(input_images)} images")
+
+def main():
+
+    print(
+    """
+Select how a crop box is defined:
+- 0: Define a crop box using a template image and apply it to selected images
+- 1: Define a crop box by entering the xyxy coordinates (left-top-right-bottom) in the console and apply it to selected images
+- 2: Define a crop box using an image captured from the ZED camera
+    """)
+    choice = int(input("Enter your choice (0, 1 or 2): "))
+    if choice == 0:
+        apply_crop_and_save(define_crop_box_with_image())
+    elif choice == 1:
+        apply_crop_and_save(define_crop_box_with_console())
+    elif choice == 2:
+        print(f"Defined crop box: {define_crop_box_with_camera()}")
+    else:
+        raise ValueError(f"Invalid choice")
 
 if __name__ == "__main__":
     main()
