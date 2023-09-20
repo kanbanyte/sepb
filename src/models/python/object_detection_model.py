@@ -61,7 +61,8 @@ class ObjectDetectionModel:
             result_img_path (None|str): optional file path to which the resulting image is saved.
 
         Returns:
-            List[float, int, int, int, int]: List of confidence and bounding boxes in the (left, top, right, bottom) format.
+            defaultdict(list): Dictionary where the keys are the indices of the classes and
+            the values are list[DetectedObjects] 
         """
 
         assert image.size != 0, f"Input image size must not be 0"
@@ -77,20 +78,20 @@ class ObjectDetectionModel:
             imgsz=image_dimension,
             max_det=self.__max_det)
 
+        # defaultdict supports specifying a default for missing values
+        detected_objects = defaultdict(list)
         result = results[0]
         if result.boxes is None or result.boxes.xyxy.numel() == 0:
             if result_img_path:
                 # if the model detects no objects, we save the raw image so the user can still check the model's accuracy
                 cv2.imwrite(result_img_path, image)
-            return []
+            return detected_objects
 
         x1_tensor = result.boxes.xyxy[:, 0]
         y1_tensor = result.boxes.xyxy[:, 1]
         x2_tensor = result.boxes.xyxy[:, 2]
         y2_tensor = result.boxes.xyxy[:, 3]
-
-        # defaultdict supports specifying a default for missing values
-        detected_objects = defaultdict(list)
+        
         image_copy = image.copy()
         for (object_class, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
             # these values are still 1D tensors and need to be converted to scalar values

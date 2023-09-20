@@ -6,17 +6,22 @@ from cli_runner import install_packages
 # install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml", "ultralytics"])
 
 import time
+from datetime import datetime
 from file_reader import read_yaml
 from object_detection_model import ObjectDetectionModel
 from camera_capture import read_crop_box, open_camera, get_rgb_cropped_image
 from file_dialog import select_file_from_dialog, select_folder_from_dialog
 
-def run_inference(camera, detection_model, crop_box, output_path = None):
+def run_inference(camera, detection_model, crop_box, output_folder = None):
 	start_time = time.perf_counter()
 	cropped_image = get_rgb_cropped_image(camera, crop_box)
 	image_capture_time = time.perf_counter()
 
-	detections = detection_model.run_inference(cropped_image, output_path)
+	if output_folder:
+		current_time = datetime.now().strftime("%H-%M-%S")
+		output_folder = os.path.join(output_folder, f"{current_time}.png")
+
+	detections = detection_model.run_inference(cropped_image, output_folder)
 	inference_time = time.perf_counter()
 
 	for class_index, detected_objects in detections.items():
@@ -43,13 +48,13 @@ def main():
 
 	while True:
 		print(
-		'''
-		===============================================
-		Select a model to run:
-		\t- 0: run chip detection model using left lens
-		\t- 1: run tray detection model using left lens
-		\t- 2: run case detection model using left lens
-		''')
+'''
+===============================================
+Select a model to run:
+\t- 0: run chip detection model using left lens
+\t- 1: run tray detection model using left lens
+\t- 2: run case detection model using left lens
+''')
 		choice = input("Choose model to run. Press `q` to quit: ")
 		if choice == 'q':
 			print("Closing camera")
@@ -72,7 +77,6 @@ def main():
 				print("Invalid input")
 		except Exception as error:
 			print(error)
-
 
 
 if __name__ == "__main__":
