@@ -15,13 +15,15 @@ class BotMethods:
 	trajectories = []
 
 	@classmethod
-	def move_chip(self, joints, goals, chip_number):
+	def move_chip(self, joints, goals, chip_number, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		chip_name = f"chip_{str(chip_number)}"
+		above_tray_name = f"above_tray_{str(tray_number)}"
+		chip_place_name = f"chip_place_{str(tray_number)}"
 		# chip_home_name = f"chip_home_2"
-		chip_place_name = f"chip_place_1"
-		above_tray_name = f"above_tray_1"
+		# chip_place_name = f"chip_place_1"
+		# above_tray_name = f"above_tray_1"
 		# pjt.get_logger().info(f'chip_name: {chip_name}')
 
 		"""
@@ -84,10 +86,49 @@ class BotMethods:
 		traj.points.append(goals["home"])
 		BotMethods.trajectories.append(copy.deepcopy(traj))
 
+	@classmethod
+	def move_case(self, joints, goals, case_number, tray_number):
+		traj = JointTrajectory()
+		traj.joint_names = joints
+		case_name = f"case_{str(case_number)}"
+		above_tray_name = f"above_tray_{str(tray_number)}"
+		case_place_name = f"bottom_case_place_{str(tray_number)}"
+
+		traj.points.append(goals["home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals["case_pick_home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[case_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals["case_pick_home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[above_tray_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[case_place_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[above_tray_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals["home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+
 
 	@classmethod
-	def get_all_trajectories(self, joints, goals, chip_number):
-		BotMethods.move_chip(joints, goals, chip_number)
-		# BotMethods.move_case(joints, goals, case_number)
+	def get_all_trajectories(self, joints, goals, chip_number, case_number, tray_number):
+		BotMethods.move_chip(joints, goals, chip_number, tray_number)
+		BotMethods.move_case(joints, goals, case_number, tray_number)
 
 		return BotMethods.trajectories

@@ -61,7 +61,8 @@ class PublisherJointTrajectory(Node):
 		self.get_logger().info(f'\n\tPublishing {len(goal_names)}...\n')
 
 		# Get list of all trajectories to move to
-		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24)
+		# Args: joints, goals, chip_number, case_number, tray_number
+		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 5, 2)
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
