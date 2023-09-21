@@ -60,21 +60,22 @@ class PublisherJointTrajectory(Node):
 		# self.get_logger().info(f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every "{wait_sec_between_publish} s"')
 		self.get_logger().info(f'\n\tPublishing {len(goal_names)}...\n')
 
+		# Get list of all trajectories to move to
+		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24)
+
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
-
-		# Count for checking start position
-		self.count = 0
 
 	def timer_callback(self):
 		if self.starting_point_ok:
 			# goal = self.goal_names[self.i]
 
+			# trajectories = BotMethods.move_chip(self, self.joints, self.goals, 33)
+
 			# Return trajectories to move from home to chip 1
-			if self.i < 7:
-				trajectories = BotMethods.move_chip(self, self.joints, self.goals, 1)
-				traj = trajectories[self.i]
+			if self.i < len(self.trajectories):
+				traj = self.trajectories[self.i]
 				self.get_logger().info(f'trajectory_number: {str(self.i)}')
 				traj_goal = traj.points[0]
 
@@ -99,28 +100,6 @@ class PublisherJointTrajectory(Node):
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
 			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
-		# else:
-		# 	self.get_logger().warn("Start configuration is not within configured limits!")
-		else:
-			self.get_logger().warn("Moving back to preferred position.")
-			temp = JointTrajectory()
-			temp.joint_names = self.joints
-			temp_traj = []
-
-			temp.points.append(self.goals["safe_start"])
-			temp_traj.append(copy.deepcopy(temp))
-			temp.points.clear()
-
-			temp.points.append(self.goals["home"])
-			temp_traj.append(copy.deepcopy(temp))
-			temp.points.clear()
-
-			temp_pos = temp_traj[self.count]
-
-			self._publisher.publish(temp_pos)
-
-			self.count += 1
-
 
 	def joint_state_callback(self, msg):
 		if not self.joint_state_msg_received:
@@ -132,7 +111,24 @@ class PublisherJointTrajectory(Node):
 					limit_exceeded[idx] = True
 
 			if any(limit_exceeded):
-				self.starting_point_ok = False
+				self.get_logger().warn("Moving back to preferred position.")
+				temp = JointTrajectory()
+				temp.joint_names = self.joints
+				temp_traj = []
+
+				temp.points.append(self.goals["safe_start"])
+				temp_traj.append(copy.deepcopy(temp))
+				temp.points.clear()
+
+				# temp.points.append(self.goals["home"])
+				# temp_traj.append(copy.deepcopy(temp))
+				# temp.points.clear()
+
+				for traj in temp_traj:
+					temp_pos = traj
+					self._publisher.publish(temp_pos)
+
+				self.starting_point_ok = True
 			else:
 				self.starting_point_ok = True
 

@@ -6,14 +6,20 @@ class BotMethods:
 	"""
 	BotMethods defines all functions that involve moving the cobot to pick and place each object.
 	"""
+	# trajectories = {}
+
+	# @classmethod
+	# def get_trajectories(self):
+	# 	# calculate and get trajectories
+	# 	pass
+	trajectories = []
 
 	@classmethod
-	def move_chip(self, pjt, joints, goals, chip_number):
-		trajectories = []
+	def move_chip(self, joints, goals, chip_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		chip_name = f"chip_{str(chip_number)}"
-		chip_home_name = f"chip_home_1"
+		# chip_home_name = f"chip_home_2"
 		chip_place_name = f"chip_place_1"
 		above_tray_name = f"above_tray_1"
 		# pjt.get_logger().info(f'chip_name: {chip_name}')
@@ -39,30 +45,49 @@ class BotMethods:
 		# traj.points.clear()
 
 		traj.points.append(goals["home"])
-		trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
+		if chip_number < 13:
+			chip_home_name = "chip_home_1"
+		elif chip_number < 25:
+			chip_home_name = "chip_home_2"
+		elif chip_number < 37:
+			chip_home_name = "chip_home_3"
+		else:
+			chip_home_name = "chip_home_4"
+
 		traj.points.append(goals[chip_home_name])
-		trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
 		traj.points.append(goals[chip_name])
-		trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[chip_home_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
 		traj.points.append(goals[above_tray_name])
-		trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
 		traj.points.append(goals[chip_place_name])
-		trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
 		traj.points.append(goals[above_tray_name])
-		trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
 		traj.points.append(goals["home"])
-		trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 
-		return trajectories
+
+	@classmethod
+	def get_all_trajectories(self, joints, goals, chip_number):
+		BotMethods.move_chip(joints, goals, chip_number)
+		# BotMethods.move_case(joints, goals, case_number)
+
+		return BotMethods.trajectories
