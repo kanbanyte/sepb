@@ -71,8 +71,8 @@ def main():
 	image = cv2.imread(image_file)
 
 	print("Select tile dimensions (must be the same as the dimension used to train the model)")
-	num_rows = int(input("Select row count: ", 1))
-	num_cols = int(input("Select column count: ", 1))
+	num_rows = int(input("Select row count: "))
+	num_cols = int(input("Select column count: "))
 
 	# Split the image into tiles
 	tiled_images = tile_image(image, num_rows, num_cols)

@@ -18,7 +18,7 @@ def select_output_folder():
     """
     Displays a dialog box to select an output folder.
 
-    Args:
+    Args: None
 
     Returns:
         str: The selected output folder path.
@@ -28,20 +28,6 @@ def select_output_folder():
         raise ValueError("No output folder selected")
 
     return folder
-
-def select_images_to_crop(prompt, allowed_extensions):
-    """
-    Displays a dialog box to select images for cropping.
-
-    Args:
-        prompt (str): The prompt message for the dialog box.
-        allowed_extensions (list): List of allowed image file extensions.
-
-    Returns:
-        list[str]: List of selected image file paths for cropping.
-    """
-
-    return select_files_from_dialog(prompt, allowed_extensions)
 
 def crop_image_and_save(input_image_path, output_image_path, crop_box):
     """
@@ -59,34 +45,12 @@ def crop_image_and_save(input_image_path, output_image_path, crop_box):
     cropped_image = crop_image(image, crop_box)
     cv2.imwrite(output_image_path, cropped_image)
 
-def select_image_to_define_crop_box(prompt, allowed_extensions):
-    """
-    Selects an image file to define the crop box.
-
-    Args:
-        crop_box (tuple): Tuple containing crop box coordinates (left, top, right, bottom).
-
-    Returns:
-        str: The selected image file
-    """
-    file_path = select_file_from_dialog(prompt, allowed_extensions)
-
-    if not file_path:
-        raise ValueError("No file selected")
-
-    file_extension = os.path.splitext(file_path)[1][1:]
-    if file_extension not in allowed_extensions:
-        raise ValueError(f"Selected file has an unsupported extension: {file_extension}")
-
-    return file_path
-
-# TODO: UPDATE DOCUMENTATION
 def draw_crop_box_on_image(image):
     """
     Define crop box on an image.
 
     Args:
-        image_filename (str): Path to the input image.
+        image (np.array): image to draw crop box on.
 
     Returns:
         x1, y1, x2, y2: Tuple containing crop box coordinates (left, top, right, bottom).
@@ -102,9 +66,9 @@ def draw_crop_box_on_image(image):
         # mark the position where the user pressed the left button as the top left corner
         # and mark the position where the user releases that button as the bottom right corner
         if event == cv2.EVENT_LBUTTONDOWN:
-            top_left_corner = [(x,y)]
+            top_left_corner = [(x, y)]
         elif event == cv2.EVENT_LBUTTONUP:
-            bottom_right_corner = [(x,y)]
+            bottom_right_corner = [(x, y)]
             cv2.rectangle(image, top_left_corner[0], bottom_right_corner[0], (0,255,0), 2, 8)
 
 
@@ -165,7 +129,7 @@ def define_crop_box_with_image():
     Returns:
         (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
     """
-    template_image = select_image_to_define_crop_box("SELECT AN IMAGE TO DEFINE THE CROP BOX", IMAGE_EXTENSIONS)
+    template_image = select_file_from_dialog("SELECT AN IMAGE TO DEFINE THE CROP BOX", IMAGE_EXTENSIONS)
     image = cv2.imread(template_image)
 
     return draw_crop_box_on_image(image)
@@ -220,7 +184,7 @@ def apply_crop_and_save(crop_box):
     """
     output_folder = select_output_folder()
     print(f"Using output folder: {output_folder}")
-    input_images = select_images_to_crop("SELECT IMAGES TO APPLY THE CROP ON", IMAGE_EXTENSIONS)
+    input_images = select_files_from_dialog("SELECT IMAGES TO APPLY THE CROP ON", IMAGE_EXTENSIONS)
     cropped_images = make_cropped_image_paths(input_images, output_folder)
 
     print(f"Applying {crop_box} crop to {len(input_images)} images")

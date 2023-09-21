@@ -14,8 +14,7 @@ class ObjectDetectionModel:
         self.__classes = self.__model.names.copy()
         self.__iou = model_config.get('iou')
         self.__confidence = model_config.get('confidence')
-        # TODO: add to config file
-        self.__max_det = model_config.get('max_determination', 300)
+        self.__max_det = model_config.get('max_determination')
 
         image_size = model_config.get('image_size')
         self.__image_width = self.__calculate_next_multiple(32, image_size.get('width'))
