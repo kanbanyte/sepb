@@ -81,7 +81,7 @@ class ReadMethods:
 					point.time_from_start = Duration(sec=4)
 					goals[name] = point
 					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-					pos = f'[Base: {point.positions[0]}, Shoulder: {point.positions[1]}, Elbow: {point.positions[2]},' +\
+					pos = f'[Base: {point.positions[0]}, Shoulder: {point.positions[1]}, Elbow: {point.positions[2]}, ' +\
 					f'Wrist 1: {point.positions[3]}, Wrist 2: {point.positions[4]}, Wrist 3: {point.positions[5]}]'
 					# pjt.get_logger().info(f'\nGoal "{name}" has definition \n{point.positions}\n')
 					pjt.get_logger().info(f'\n\tGoal "{name}":\n\t\t{pos}\n')

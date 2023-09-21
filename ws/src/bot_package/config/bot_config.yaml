@@ -1,7 +1,8 @@
 bot_positions:
   ros__parameters:
 
-    controller_name: "scaled_joint_trajectory_controller"
+    # controller_name: "scaled_joint_trajectory_controller"
+    controller_name: "bot_controller"
     wait_sec_between_publish: 5
 
     goal_names: [
