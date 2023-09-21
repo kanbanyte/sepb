@@ -1,11 +1,9 @@
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../data_processing"))
-
 import numpy
 from datetime import datetime
 import pyzed.sl as sl
-from image_processing import crop_image
+
+import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../"))
+from data_processing import crop_image
 
 def open_camera(camera_config):
 	"""

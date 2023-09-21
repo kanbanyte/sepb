@@ -1,16 +1,11 @@
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../models/python"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../camera"))
-from datetime import datetime
-
 import cv2
+from datetime import datetime
 from ultralytics import YOLO
-from file_dialog import select_file_from_dialog, select_folder_from_dialog
-from file_reader import read_yaml
-from image_processing import tile_image
-from object_detection_model import ObjectDetectionModel
+
+import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../"))
+from util import select_file_from_dialog, select_folder_from_dialog, read_yaml
+from data_processing import tile_image
+from models.python import ObjectDetectionModel
 
 # Constants for drawing bounding boxes and text on images
 BOX_THICKNESS = 2
@@ -71,8 +66,8 @@ def main():
 	image = cv2.imread(image_file)
 
 	print("Select tile dimensions (must be the same as the dimension used to train the model)")
-	num_rows = int(input("Select row count: ", 1))
-	num_cols = int(input("Select column count: ", 1))
+	num_rows = int(input("Select row count: "))
+	num_cols = int(input("Select column count: "))
 
 	# Split the image into tiles
 	tiled_images = tile_image(image, num_rows, num_cols)

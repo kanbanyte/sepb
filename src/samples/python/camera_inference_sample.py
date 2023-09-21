@@ -1,15 +1,10 @@
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../util"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../models/python"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../camera"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
-
 import time
 from datetime import datetime
-from file_reader import read_yaml
-from object_detection_model import ObjectDetectionModel
-from camera_capture import read_crop_box, open_camera, get_rgb_cropped_image
-from file_dialog import select_file_from_dialog, select_folder_from_dialog
+
+import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../"))
+from util import select_file_from_dialog, select_folder_from_dialog, read_yaml
+from models.python import ObjectDetectionModel
+from camera import read_crop_box, open_camera, get_rgb_cropped_image
 
 def run_inference(camera, detection_model, crop_box, output_folder = None):
 	start_time = time.perf_counter()
