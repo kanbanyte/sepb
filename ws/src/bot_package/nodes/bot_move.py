@@ -82,7 +82,7 @@ class PublisherJointTrajectory(Node):
 
 				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
 				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
+				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {len(traj_goal.velocities)}'
 
 				# Using goals as dict type
 				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
