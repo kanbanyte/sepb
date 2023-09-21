@@ -1,4 +1,5 @@
 from trajectory_msgs.msg import JointTrajectory
+import copy
 
 
 class BotMethods:
@@ -26,21 +27,24 @@ class BotMethods:
 
 		Trajectories are added to the trajectories list which is returned so that the cobot will move to all goals.
 		"""
-		# traj.points.append(goals["home"])
+		traj.points.append(goals["home"])
 		# traj.points.append(pjt.goals["home"])
 		# trajectories.append(traj)
-		# traj.points.clear()
+		trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
 
 		traj.points.append(goals[chip_name])
 		# traj.points.append(pjt.goals[chip_name])
-		trajectories.append(traj)
+		# trajectories.append(traj)
+		trajectories.append(copy.deepcopy(traj))
 		# print(traj)
 		# print(trajectories)
 		traj.points.clear()
 
 		traj.points.append(goals["home"])
 		# traj.points.append(pjt.goals["home"])
-		trajectories.append(traj)
+		# trajectories.append(traj)
+		trajectories.append(copy.deepcopy(traj))
 		# print(traj)
 		# print(trajectories)
 		# traj.points.clear()

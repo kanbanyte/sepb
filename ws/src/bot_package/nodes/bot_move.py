@@ -59,7 +59,7 @@ class PublisherJointTrajectory(Node):
 		# self.get_logger().info(f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every "{wait_sec_between_publish} s"')
 		self.get_logger().info(f'\n\tPublishing {len(goal_names)}...\n')
 
-		self.publisher_ = self.create_publisher(JointTrajectory, publish_topic, 1)
+		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
@@ -70,36 +70,32 @@ class PublisherJointTrajectory(Node):
 			# Return trajectories to move from home to chip 1
 			# trajectories = BotMethods.move_chip(self.joints, self.goals, 1)
 			# trajectories = BotMethods.move_chip(self, 1)
-			trajectories = BotMethods.move_chip(self, self.joints, self.goals, 1)
-			traj = trajectories[self.i]
-			self.get_logger().info(f'trajectory_number: {str(self.i)}')
-			traj_goal = traj.points[0]
+			if self.i <= 2:
+				trajectories = BotMethods.move_chip(self, self.joints, self.goals, 1)
+				traj = trajectories[self.i]
+				self.get_logger().info(f'trajectory_number: {str(self.i)}')
+				traj_goal = traj.points[0]
 
-			# self.get_logger().info(f'traj: {trajectories}')
+				# self.get_logger().info(f'traj: {trajectories}')
 
-			# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-			pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-			f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
-			# # pjt.get_logger().info(f'\nGoal "{name}" has definition \n{point.positions}\n')
-			# pjt.get_logger().info(f'\n\tGoal "{name}":\n\t\t{pos}\n')
+				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
+				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
 
+				# Using goals as dict type
+				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
 
-			# Using goals as dict type
-			# self.get_logger().info(f"Sending goal \n{self.goals[goal].positions}.\n")
-			# self.get_logger().info(f"Sending goal \n{traj_goal.positions}.\n")
-			self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+				#region KEEPME
+				# traj = JointTrajectory()
+				# traj.joint_names = self.joints
+				# # traj.points.append(self.goals[self.i])
+				# traj.points.append(self.goals[goal]) # Using goals as dict type
+				#endregion KEEPME
 
-			#region KEEPME
-			# traj = JointTrajectory()
-			# traj.joint_names = self.joints
-			# # traj.points.append(self.goals[self.i])
-			# traj.points.append(self.goals[goal]) # Using goals as dict type
-			#endregion KEEPME
+				self._publisher.publish(traj)
 
-			self.publisher_.publish(traj)
-
-			self.i += 1
-			self.i %= len(trajectories)
+				self.i += 1
+				#self.i %= len(trajectories)
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
 			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
