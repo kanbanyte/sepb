@@ -4,6 +4,7 @@ from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
 
+import copy
 
 class PublisherJointTrajectory(Node):
 	def __init__(self):
@@ -63,20 +64,19 @@ class PublisherJointTrajectory(Node):
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
+		# Count for checking start position
+		self.count = 0
+
 	def timer_callback(self):
 		if self.starting_point_ok:
 			# goal = self.goal_names[self.i]
 
 			# Return trajectories to move from home to chip 1
-			# trajectories = BotMethods.move_chip(self.joints, self.goals, 1)
-			# trajectories = BotMethods.move_chip(self, 1)
-			if self.i <= 2:
+			if self.i < 7:
 				trajectories = BotMethods.move_chip(self, self.joints, self.goals, 1)
 				traj = trajectories[self.i]
 				self.get_logger().info(f'trajectory_number: {str(self.i)}')
 				traj_goal = traj.points[0]
-
-				# self.get_logger().info(f'traj: {trajectories}')
 
 				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
 				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
@@ -95,12 +95,32 @@ class PublisherJointTrajectory(Node):
 				self._publisher.publish(traj)
 
 				self.i += 1
-				#self.i %= len(trajectories)
+				# self.i %= len(trajectories)
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
 			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
+		# else:
+		# 	self.get_logger().warn("Start configuration is not within configured limits!")
 		else:
-			self.get_logger().warn("Start configuration is not within configured limits!")
+			self.get_logger().warn("Moving back to preferred position.")
+			temp = JointTrajectory()
+			temp.joint_names = self.joints
+			temp_traj = []
+
+			temp.points.append(self.goals["safe_start"])
+			temp_traj.append(copy.deepcopy(temp))
+			temp.points.clear()
+
+			temp.points.append(self.goals["home"])
+			temp_traj.append(copy.deepcopy(temp))
+			temp.points.clear()
+
+			temp_pos = temp_traj[self.count]
+
+			self._publisher.publish(temp_pos)
+
+			self.count += 1
+
 
 	def joint_state_callback(self, msg):
 		if not self.joint_state_msg_received:
