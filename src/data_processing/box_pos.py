@@ -1,14 +1,15 @@
 ##takes in user input for x1,y1,x2,y2
-def main():
-	x1 = input("Enter x1: ")
-	y1 = input("Enter y1: ")
-	x2 = input("Enter x2: ")
-	y2 = input("Enter y2: ")
-	print(return_num(int(x1),int(y1),int(x2),int(y2)))
+# this is test code for the box position calculation
+# def main():
+# 	x1 = input("Enter x1: ")
+# 	y1 = input("Enter y1: ")
+# 	x2 = input("Enter x2: ")
+# 	y2 = input("Enter y2: ")
+# 	print(get_chip_slot_number(int(x1),int(y1),int(x2),int(y2)))
 
 # checks if the user input is between a certain range and returns appropriate position
 
-def check_x_pos(x1,x2):
+def get_chip_col(x1,x2):
 	if x1 >= 4 and x2 <= 32:
 		return 1
 	if x1 >= 61 and x2 <= 81:
@@ -26,9 +27,9 @@ def check_x_pos(x1,x2):
 	if x1 >= 356 and x2 <= 376:
 		return 8
 	else:
-		print("Error: x1 and x2 are not within range")
+		return None
 
-def check_y_pos(y1,y2):
+def get_chip_row(y1,y2):
 	if y1 >= 0 and y2 <= 40:
 		return 0
 	if y1 >= 39 and y2 <= 76:
@@ -42,10 +43,9 @@ def check_y_pos(y1,y2):
 	if y1 >= 184 and y2 <= 223:
 		return 5
 	else:
-		print("Error: y1 and y2 are not within range")
-
+		return None
 # the defined calculation for the box number
-def return_num(x1, y1, x2, y2):
-	return 8 * check_y_pos(y1, y2) + check_x_pos(x1, x2)
+def get_chip_slot_number(x1, y1, x2, y2):
+	return 8 * get_chip_row(y1, y2) + get_chip_col(x1, x2)
 
-main()
+# main()
