@@ -22,13 +22,13 @@ class ObjectDetectionModel:
 
     def __calculate_next_multiple(self, factor, number):
         """
-        Calculates the multiple of `factor` and is cloest to `number` in the positive direction.
+        Calculates the multiple of `factor` and is closest to `number` in the positive direction.
         YOLO models requires the image length to be a multiple of `factor` so it
         automatically converts the image size to that value and produce a warning message.
         We calculate that value to prevent this situation from the start.
 
         Args:
-            factor (integer): Fasctor value.
+            factor (integer): Factor value.
             number (integer): Input value.
 
         Returns:
