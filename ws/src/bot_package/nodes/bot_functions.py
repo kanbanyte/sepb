@@ -83,8 +83,8 @@ class BotMethods:
 		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.append(goals["home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
 
 	@classmethod
 	def move_case(self, joints, goals, case_number, tray_number):
@@ -122,13 +122,55 @@ class BotMethods:
 		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
+		# traj.points.append(goals["home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+
+	@classmethod
+	def move_battery(self, joints, goals, tray_number):
+		traj = JointTrajectory()
+		traj.joint_names = joints
+		above_tray_name = f"above_tray_{str(tray_number)}"
+		battery_place_name = f"battery_place_{str(tray_number)}"
+
 		traj.points.append(goals["home"])
 		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
 
+		traj.points.append(goals["battery_pick_home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals["battery_pick"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals["battery_pick_home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals["safe_start"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[above_tray_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[battery_place_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals[above_tray_name])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
+
+		traj.points.append(goals["home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
 
 	@classmethod
 	def get_all_trajectories(self, joints, goals, chip_number, case_number, tray_number):
 		BotMethods.move_chip(joints, goals, chip_number, tray_number)
 		BotMethods.move_case(joints, goals, case_number, tray_number)
+		BotMethods.move_battery(joints, goals, tray_number)
 
 		return BotMethods.trajectories
