@@ -1,5 +1,6 @@
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectory
+from std_msgs.msg import Float64
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
@@ -57,6 +58,8 @@ class PublisherJointTrajectory(Node):
 
 		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
 
+		speed_scale_topic = "/speed_scaling_state_broadcaster/speed_scaling"
+
 		# self.get_logger().info(f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every "{wait_sec_between_publish} s"')
 		self.get_logger().info(f'\n\tPublishing {len(goal_names)}...\n')
 
@@ -65,6 +68,7 @@ class PublisherJointTrajectory(Node):
 		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 5, 2)
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
+		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
@@ -80,9 +84,11 @@ class PublisherJointTrajectory(Node):
 				self.get_logger().info(f'trajectory_number: {str(self.i)}')
 				traj_goal = traj.points[0]
 
+				# traj_goal.velocities = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+
 				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
 				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {len(traj_goal.velocities)}'
+				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {traj_goal.velocities}'
 
 				# Using goals as dict type
 				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
@@ -95,6 +101,10 @@ class PublisherJointTrajectory(Node):
 				#endregion KEEPME
 
 				self._publisher.publish(traj)
+
+				# speed_scale = Float64()
+				# speed_scale.data = 50.0
+				# self._speed_publisher.publish(speed_scale)
 
 				self.i += 1
 				# self.i %= len(trajectories)

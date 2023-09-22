@@ -94,9 +94,9 @@ class BotMethods:
 		above_tray_name = f"above_tray_{str(tray_number)}"
 		case_place_name = f"bottom_case_place_{str(tray_number)}"
 
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
 		traj.points.append(goals["case_pick_home"])
 		BotMethods.trajectories.append(copy.deepcopy(traj))
@@ -164,19 +164,12 @@ class BotMethods:
 		BotMethods.trajectories.append(copy.deepcopy(traj))
 		traj.points.clear()
 
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-
 	@classmethod
 	def move_tray(self, joints, goals, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		above_tray_name = f"tray_pick_{str(tray_number)}_above"
 		tray_pick_name = f"tray_pick_{str(tray_number)}"
-
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
 
 		traj.points.append(goals[above_tray_name])
 		BotMethods.trajectories.append(copy.deepcopy(traj))
