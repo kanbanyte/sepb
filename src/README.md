@@ -20,9 +20,10 @@ python -m pip install -r ./requirements.txt
 ## Directory Structure
 The below list provides an overview of the directory structure.\
 See the `README.md` files within individual subdirectories for more details.
+* [camera](camera/README.md): contains modules interacting with the ZED SDK Python API.
 * [data_processing](data_processing/README.md): contains modules and runnable scripts that process images and interact with the ZED2i camera.
 * [models](models/README.md): contains modules related to a Python class representing a trained model.
 * [samples](samples/python/README.md): contains sample programs that use trained models to detect objects.
 * [training](training/README.md):
-contains notebooks and scripts that train the model as well as visualize the model `metrics.ms` that run inference with a trained model.
+contains notebooks and scripts that train a model as well as visualize its metrics.
 * [util](util/README.md): utility functions, mostly related to the file system.
