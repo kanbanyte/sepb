@@ -1,9 +1,57 @@
-# Overview of the Vision System source code
+# Overview of the Vision System Source Code
+```diff
+src
+|	README.md
+|	requirements.txt
+|
++---camera
+|	camera_capture.py
+|	README.md
+|
++---data_processing
+|	calculate_training_ratio_roboflow.py
+|	copy_by_interval.ps1
+|	crop.py
+|	image_processing.py
+|	random_crop.py
+|	README.md
+|	rename.ps1
+|	slice.py
+|
++---models
+|	|	README.md
+|	|
+|	+---cpp
+|	|	build.md
+|	|	CMakeLists.txt
+|	|	main.cpp
+|	|
+|	\---python
+|		detected_object.py
+|		object_detection_model.py
+|
++---samples
+|	\---python
+|		camera_inference_sample.py
+|		camera_inference_sample.yaml
+|		README.md
+|		yolov5_sample.py
+|		yolov5_sample.yaml
+|
++---training
+|	object_detection_training.ipynb
+|	object_detection_training.py
+|	plot_ultralytics_results.py
+|	README.md
+|
+\---util
+	file_dialog.py
+	file_reader.py
+	README.md
+```
 
 ## Dependencies
-
-### Python packages
-
+### Python Packages
 * To ensure that the machine has packages to run every script in this directory, run the following command:
 ```bash
 python -m pip install -r ./requirements.txt
