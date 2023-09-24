@@ -8,6 +8,14 @@ See the `README.md` files within individual subdirectories for more details.
 * [training](training/README.md): contains notebooks and scripts that train a model as well as visualize its metrics.
 * [util](util/README.md): utility functions, mostly related to the file system.
 
+Directories that act as packages have an `__init__.py` file that imports all modules within that package.
+Code using these packages have access to the all modules, regardless of nesting level, without having to specify their absolute paths.
+To ensure that Python can resolve imported modules from other directories, the following lines are used:
+```py
+import sys, os;
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "relative/path/to/root/directory"))
+```
+
 ## Dependencies
 ### Python Packages
 * To ensure that the machine has packages to run every script in this directory, run the following command:
