@@ -1,5 +1,4 @@
 import numpy
-from datetime import datetime
 import pyzed.sl as sl
 
 import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../"))
@@ -84,6 +83,7 @@ def get_rgb_cropped_image(camera, crop_box):
 	cropped_image = cropped_image[:, :, 0:3]
 
 	# import cv2
+	# from datetime import datetime
 	# current_time = datetime.now().strftime("%H-%M-%S")
 	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)
 
