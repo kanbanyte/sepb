@@ -6,7 +6,17 @@ import cv2
 import random
 
 def random_crop(image_path, crop_width, crop_height):
-    # Read the image
+    """
+    Tile an image with the specified grid size.
+
+    Args:
+        image_path (str): path to input image.
+        crop_width (int): width of crop box.
+        crop_height (int): height of crop box.
+
+    Returns:
+        np.array: cropped image.
+    """
     image = cv2.imread(image_path)
     height = image.shape[0]
     width = image.shape[1]
@@ -28,14 +38,21 @@ def random_crop(image_path, crop_width, crop_height):
 def main():
     image_extensions = ["jpg", "jpeg", "png"]
     original_image = select_file_from_dialog("Select image to generate random crops", image_extensions)
+    if original_image is None:
+        raise ValueError("No image selected")
+
     count = int(input("Select number of crops to generate: "))
+
     output_folder = select_folder_from_dialog("Select output folder: ")
+    if output_folder is None:
+        raise ValueError("No output folder selected")
 
     crop_height = int(input("Enter crop height: "))
     crop_width = int(input("Enter crop width: "))
 
     filename = os.path.basename(original_image)
 
+    # apply random crop boxes to the selected image and save it in the selected folder
     for i in range(count):
         cropped_image = random_crop(original_image, crop_width, crop_height)
         cropped_image_path = os.path.join(output_folder, f"cropped-{i}-{filename}")
