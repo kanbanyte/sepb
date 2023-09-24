@@ -38,13 +38,13 @@ def random_crop(image_path, crop_width, crop_height):
 def main():
     image_extensions = ["jpg", "jpeg", "png"]
     original_image = select_file_from_dialog("Select image to generate random crops", image_extensions)
-    if original_image is None:
+    if not original_image:
         raise ValueError("No image selected")
 
     count = int(input("Select number of crops to generate: "))
 
     output_folder = select_folder_from_dialog("Select output folder: ")
-    if output_folder is None:
+    if not output_folder:
         raise ValueError("No output folder selected")
 
     crop_height = int(input("Enter crop height: "))

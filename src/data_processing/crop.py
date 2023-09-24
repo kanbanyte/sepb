@@ -24,7 +24,7 @@ def select_output_folder():
         str: The selected output folder path.
     """
     folder = select_folder_from_dialog("Select your output folder")
-    if folder is None:
+    if not folder:
         raise ValueError("No output folder selected")
 
     return folder
@@ -166,6 +166,9 @@ def define_crop_box_with_camera():
         (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
     """
     config_file = select_file_from_dialog("SELECT CAMERA CONFIGURATION FILE", ["yaml"])
+    if not config_file:
+        raise ValueError("Configuration file path is empty")
+
     print(f"Reading camera configuration file '{config_file}'")
     config = read_yaml(config_file)
     camera = open_camera(config.get('camera'))
@@ -183,6 +186,9 @@ def apply_crop_and_save(crop_box):
     Returns: None
     """
     output_folder = select_output_folder()
+    if not output_folder:
+        raise ValueError("Output folder is empty")
+
     print(f"Using output folder: {output_folder}")
     input_images = select_files_from_dialog("SELECT IMAGES TO APPLY THE CROP ON", IMAGE_EXTENSIONS)
     cropped_images = make_cropped_image_paths(input_images, output_folder)
