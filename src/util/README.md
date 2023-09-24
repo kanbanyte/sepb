@@ -10,9 +10,7 @@
 <!-- /TOC -->
 
 ## file_dialog.py
-* Purpose:\
-Provides functions to interact with the file dialogs.
+Provides functions to interact with the file dialogues.
 
 ## file_reader.py
-* Purpose:\
 Provides functions to read files.
