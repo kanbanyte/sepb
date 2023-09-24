@@ -14,7 +14,7 @@ FONT_THICKNESS = 2
 
 def version_0(tiled_images):
 	model_file = select_file_from_dialog("Select model file", ["pt"])
-	if model_file is None:
+	if not model_file:
 		raise ValueError("No model file selected")
 
 	model = YOLO(model_file)
@@ -29,7 +29,7 @@ def version_0(tiled_images):
 
 def version_1(tiled_images):
 	config_file = select_file_from_dialog("Select configuration file", ["yaml"])
-	if config_file is None:
+	if not config_file:
 		raise ValueError("No config file selected")
 
 	config = read_yaml(config_file)
@@ -38,9 +38,8 @@ def version_1(tiled_images):
 	output_path = None
 	if save_output_choice == 'y':
 		output_path = select_folder_from_dialog("Select output image folder")
-
-	if not output_path:
-		raise ValueError("Error: image output folder path not selected")
+		if not output_path:
+			raise ValueError("Error: image output folder path not selected")
 
 	print(f"Saving output images to folder '{output_path}'")
 	now = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")

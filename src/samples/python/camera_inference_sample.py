@@ -36,6 +36,8 @@ def main():
 	output_path = None
 	if  save_output_choice == 'y':
 		output_path = select_folder_from_dialog("Select output image folder")
+		if not output_path:
+			raise ValueError("Selected output path is empty")
 
 	config = read_yaml(file_path)
 	camera = open_camera(config.get('camera'))

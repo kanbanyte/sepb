@@ -6,13 +6,15 @@ def main():
     if training_set_percentage < 0 or training_set_percentage > 100:
         raise ValueError("Training set percentage must be between 0 - 100%")
 
-    training_set_augmentation_scale = int(input("Enter the value by which the training set will my scaled after the augmentation process: "))
+    training_set_augmentation_scale = int(
+        input("Enter the value by which the training set will my scaled after the augmentation process: "))
     if training_set_augmentation_scale < 0:
         raise ValueError("Training set augmentation scale must be positive")
 
     test_val_set_percentage = 100 - training_set_percentage
 
-    coefficients = np.array([[1, 1], [test_val_set_percentage * training_set_augmentation_scale, training_set_percentage * -1]])
+    coefficients = np.array(
+        [[1, 1], [test_val_set_percentage * training_set_augmentation_scale, training_set_percentage * -1]])
     constants = np.array([dataset_size, 0])
     training_size, _ = np.linalg.solve(coefficients, constants)
 

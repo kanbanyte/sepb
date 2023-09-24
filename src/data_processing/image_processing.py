@@ -15,6 +15,7 @@ def crop_image(image, crop_box):
 	if image.size == 0:
 		raise ValueError(f"Input image size must not be 0")
 
+	x1, y1, x2, y2 = crop_box
 	height, width, _ = image.shape
 	if abs(x2 - x1) > width:
 		raise ValueError("Crop box width is larger than image width")
