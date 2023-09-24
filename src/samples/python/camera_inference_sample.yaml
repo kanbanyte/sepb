@@ -20,7 +20,7 @@ chip_slot_crop_box:
     y1: 233
     x2: 1092
     y2: 459
-white_tray_crop_box:
+tray_crop_box:
   left:
     x1: 638
     y1: 645
@@ -32,10 +32,16 @@ white_tray_crop_box:
     x2: 1227
     y2: 1226
 case_crop_box:
-  x1: 0
-  y1: 0
-  x2: 0
-  y2: 0
+  left:
+    x1: 0
+    y1: 0
+    x2: 0
+    y2: 0
+  right:
+    x1: 0
+    y1: 0
+    x2: 0
+    y2: 0
 model:
   detect_chip:
     file: "/path/to/model"
@@ -44,7 +50,10 @@ model:
       height: 640
     iou: 0.7
     confidence: 0.25
-  detect_white_tray:
+    max_det: 48
+  detect_tray:
     file: "/path/to/model"
+    max_det: 3
   detect_case:
     file: "/path/to/model"
+    max_det: 100

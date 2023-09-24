@@ -1,10 +1,8 @@
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../models/python"))
-from cli_runner import install_packages
-install_packages(["opencv-python", "cython", "numpy", "pyopengl", "yaml", "ultralytics"])
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../data_processing"))
 
-import cv2
+import numpy
 from datetime import datetime
 import pyzed.sl as sl
 from image_processing import crop_image
@@ -17,7 +15,7 @@ def open_camera(camera_config):
 		camera_config (dict): dictionary containing camera settings.
 
 	Returns:
-		Opened ZED camera object.
+		sl.Camera: Opened and calibrated ZED camera object.
 	"""
 	brightness = camera_config.get('brightness')
 	contrast = camera_config.get('contrast')
@@ -34,9 +32,8 @@ def open_camera(camera_config):
 	init_params.camera_image_flip = sl.FLIP_MODE.ON
 	camera = sl.Camera()
 	open_result = camera.open(init_params)
-	if  open_result != sl.ERROR_CODE.SUCCESS:
-		print(f"Failed to open camera: {open_result}")
-		exit(-1)
+	if open_result != sl.ERROR_CODE.SUCCESS:
+		raise ValueError(f"Failed to open camera: {open_result}")
 
 	camera.set_camera_settings(sl.VIDEO_SETTINGS.CONTRAST, contrast)
 	camera.set_camera_settings(sl.VIDEO_SETTINGS.SATURATION, saturation)
@@ -50,35 +47,51 @@ def open_camera(camera_config):
 
 	return camera
 
+def capture_image(camera):
+	"""
+	Captures an image using the specified camera object.
+
+	Args:
+		camera: an opened ZED camera object.
+
+	Returns:
+		np.array: The captured image as an array.
+	"""
+	image = sl.Mat()
+	error_code = camera.grab()
+	if error_code == sl.ERROR_CODE.SUCCESS:
+		camera.retrieve_image(image, sl.VIEW.LEFT)
+		# - get_data() turns a sl.Mat object into a numpy array
+		# - accessing the image as an array without copying it will crash the program later due to unknown reasons
+		image_data = numpy.copy(image.get_data())
+		return image_data
+	else:
+		raise ValueError(f"Failed to capture image: {error_code}")
+
 def get_rgb_cropped_image(camera, crop_box):
 	"""
 	Takes a photo with the camera and applies a crop box to it.
 
 	Args:
 		camera_config (dict): dictionary containing camera settings.
-		crop_box (tuple): tuple containing the crop box coordinates in the (left, top, right, bottom) format.
+		crop_box (x1, y1, x2, y2): tuple containing the crop box coordinates in the (left, top, right, bottom) format.
 
 	Returns:
-		The cropped image as a np.array.
+		np.array: The cropped image.
 	"""
-	x1, y1, x2, y2 = crop_box
-	image = sl.Mat()
-	err = camera.grab()
-	if err == sl.ERROR_CODE.SUCCESS:
-		camera.retrieve_image(image, sl.VIEW.LEFT)
-		current_time = datetime.now().strftime("%H-%M-%S")
-		# get_data() turns a sl.Mat object into a numpy array
-		cv2.imwrite(f"{current_time}.png", image.get_data())
-		cropped_image = crop_image(image.get_data(), (x1, x2, y1, y2))
+	image = capture_image(camera)
+	cropped_image = crop_image(image, crop_box)
 
-		# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
-		camera.close()
-		# ZED returns an image in the RGBA format but the alpha channel is not needed
-		cropped_image = cropped_image[:, :, 0:3]
-		return cropped_image
-	else:
-		print(f"Error: {err}")
-		exit(-1)
+	# ZED returns an image in the RGBA format but the alpha channel is not needed
+	cropped_image = cropped_image[:, :, 0:3]
+
+	# import cv2
+	# current_time = datetime.now().strftime("%H-%M-%S")
+	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)
+
+	# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
+	# camera.close()
+	return cropped_image
 
 def read_crop_box(crop_box_config):
 	"""
@@ -88,10 +101,10 @@ def read_crop_box(crop_box_config):
 		crop_box_config (dict): dictionary containing crop box xyxy coordinates.
 
 	Returns:
-		Coordinates of the crop box as a tuple (left, top, right, bottom)
+		int, int, int, int: Coordinates of the crop box in the (left, top, right, bottom) format
 	"""
 	x1 = crop_box_config.get('x1')
-	x2 = crop_box_config.get('y1')
-	y1 = crop_box_config.get('x2')
+	x2 = crop_box_config.get('x2')
+	y1 = crop_box_config.get('y1')
 	y2 = crop_box_config.get('y2')
 	return x1, y1, x2, y2

@@ -1,44 +1,33 @@
 import os, sys
+
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-from cli_runner import install_packages
-install_packages(["opencv-python"])
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../camera"))
 
 import cv2
 from image_processing import crop_image
 from file_dialog import select_folder_from_dialog
 from file_dialog import select_files_from_dialog
 from file_dialog import select_file_from_dialog
+from camera_capture import capture_image
+from camera_capture import open_camera
+from file_reader import read_yaml
+
+IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"]
 
 def select_output_folder():
     """
     Displays a dialog box to select an output folder.
 
-    Args:
+    Args: None
 
     Returns:
         str: The selected output folder path.
     """
-    folder = select_folder_from_dialog()
-    if folder is None:
-        print("No output folder selected")
-        exit()
+    folder = select_folder_from_dialog("Select your output folder")
+    if not folder:
+        raise ValueError("No output folder selected")
 
     return folder
-
-def select_images_to_crop(prompt, allowed_extensions):
-    """
-    Displays a dialog box to select images for cropping.
-
-    Args:
-        prompt (str): The prompt message for the dialog box.
-        allowed_extensions (list): List of allowed image file extensions.
-        root (tk.Tk): The parent window or widget.
-
-    Returns:
-        list: List of selected image file paths for cropping.
-    """
-
-    return select_files_from_dialog(prompt, allowed_extensions)
 
 def crop_image_and_save(input_image_path, output_image_path, crop_box):
     """
@@ -56,42 +45,15 @@ def crop_image_and_save(input_image_path, output_image_path, crop_box):
     cropped_image = crop_image(image, crop_box)
     cv2.imwrite(output_image_path, cropped_image)
 
-def select_image_to_define_cropbox(prompt, allowed_extensions):
+def draw_crop_box_on_image(image):
     """
-    Selects an image file to define the crop box.
+    Define crop box on an image.
 
     Args:
-        input_image_path (str): Path to the input image.
-        output_image_path (str): Path to save the cropped image.
-        crop_box (tuple): Tuple containing crop box coordinates (left, top, right, bottom).
+        image (np.array): image to draw crop box on.
 
     Returns:
-        str: The selected image file
-    """
-    file_path = select_file_from_dialog(prompt, allowed_extensions)
-
-    if not file_path:
-        print("No file selected")
-        print("Exiting")
-        exit()
-
-    file_extension = os.path.splitext(file_path)[1][1:]
-    if file_extension not in allowed_extensions:
-        print(f"Selected file has an unsupported extension: {file_extension}")
-        print("Exiting")
-        exit()
-
-    return file_path
-
-def define_cropbox(image_filename):
-    """
-    Define cropbox on an image.
-
-    Args:
-        image_filename (str): Path to the input image.
-
-    Returns:
-        crop_box (tuple): Tuple containing crop box coordinates (left, top, right, bottom).
+        x1, y1, x2, y2: Tuple containing crop box coordinates (left, top, right, bottom).
     """
     top_left_corner = None
     bottom_right_corner = None
@@ -104,12 +66,11 @@ def define_cropbox(image_filename):
         # mark the position where the user pressed the left button as the top left corner
         # and mark the position where the user releases that button as the bottom right corner
         if event == cv2.EVENT_LBUTTONDOWN:
-            top_left_corner = [(x,y)]
+            top_left_corner = [(x, y)]
         elif event == cv2.EVENT_LBUTTONUP:
-            bottom_right_corner = [(x,y)]
+            bottom_right_corner = [(x, y)]
             cv2.rectangle(image, top_left_corner[0], bottom_right_corner[0], (0,255,0), 2, 8)
 
-    image = cv2.imread(image_filename)
 
     # keep the original so we can reset later
     original = image.copy()
@@ -139,8 +100,7 @@ def define_cropbox(image_filename):
         x2, y2 = bottom_right_corner[0]
         return x1, y1, x2, y2
 
-    print("No crop box selected")
-    exit()
+    raise ValueError("No crop box selected")
 
 def make_cropped_image_paths(original_images, output_folder):
     """
@@ -160,15 +120,77 @@ def make_cropped_image_paths(original_images, output_folder):
 
     return new_paths
 
-def main():
+def define_crop_box_with_image():
+    """
+    Open an image file and define the crop box on that image.
 
-    image_extensions = ["jpg", "jpeg", "png"]
-    template_image = select_image_to_define_cropbox("SELECT AN IMAGE TO DEFINE THE CROP BOX", image_extensions)
-    crop_box = define_cropbox(template_image)
+    Args: None
 
+    Returns:
+        (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
+    """
+    template_image = select_file_from_dialog("SELECT AN IMAGE TO DEFINE THE CROP BOX", IMAGE_EXTENSIONS)
+    image = cv2.imread(template_image)
+
+    return draw_crop_box_on_image(image)
+
+def define_crop_box_with_console():
+    """
+    Define the crop box by entering its coordinates to the terminal.
+
+    Args: None
+
+    Returns:
+        (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
+    """
+    x1 = int(input("Enter x1 coordinate (left): "))
+    y1 = int(input("Enter y1 coordinate (top): "))
+    x2 = int(input("Enter x2 coordinate (right): "))
+    y2 = int(input("Enter y2 coordinate (bottom): "))
+
+    if (x2 < x1):
+        raise ValueError("Error: x2 value (right) must be higher than x1 value (left)")
+
+    if (y2 < y1):
+        raise ValueError("Error: y2 value (bottom) must be higher than y1 value (top)")
+
+    return (x1, y1, x2, y2)
+
+def define_crop_box_with_camera():
+    """
+    Capture an image from the ZED camera and define the crop box on that image.
+
+    Args: None
+
+    Returns:
+        (int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
+    """
+    config_file = select_file_from_dialog("SELECT CAMERA CONFIGURATION FILE", ["yaml"])
+    if not config_file:
+        raise ValueError("Configuration file path is empty")
+
+    print(f"Reading camera configuration file '{config_file}'")
+    config = read_yaml(config_file)
+    camera = open_camera(config.get('camera'))
+    image = capture_image(camera)
+    camera.close()
+    return draw_crop_box_on_image(image)
+
+def apply_crop_and_save(crop_box):
+    """
+    Apply the crop box to selected images and save them in a specified folder.
+
+    Args:
+        crop_box(int,int,int,int): Tuple containing crop box coordinates in the left-top-right-bottom format.
+
+    Returns: None
+    """
     output_folder = select_output_folder()
+    if not output_folder:
+        raise ValueError("Output folder is empty")
+
     print(f"Using output folder: {output_folder}")
-    input_images = select_images_to_crop("SELECT IMAGES TO APPLY THE CROP ON", image_extensions)
+    input_images = select_files_from_dialog("SELECT IMAGES TO APPLY THE CROP ON", IMAGE_EXTENSIONS)
     cropped_images = make_cropped_image_paths(input_images, output_folder)
 
     print(f"Applying {crop_box} crop to {len(input_images)} images")
@@ -176,6 +198,25 @@ def main():
         crop_image_and_save(image_file, cropped_image,  crop_box)
 
     print(f"Finished processing {len(input_images)} images")
+
+def main():
+
+    print(
+    """
+Select how a crop box is defined:
+- 0: Define a crop box using a template image and apply it to selected images
+- 1: Define a crop box by entering the xyxy coordinates (left-top-right-bottom) in the console and apply it to selected images
+- 2: Define a crop box using an image captured from the ZED camera
+    """)
+    choice = int(input("Enter your choice (0, 1 or 2): "))
+    if choice == 0:
+        apply_crop_and_save(define_crop_box_with_image())
+    elif choice == 1:
+        apply_crop_and_save(define_crop_box_with_console())
+    elif choice == 2:
+        print(f"Defined crop box: {define_crop_box_with_camera()}")
+    else:
+        raise ValueError(f"Invalid choice")
 
 if __name__ == "__main__":
     main()
