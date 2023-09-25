@@ -2,7 +2,6 @@ import cv2
 from collections import defaultdict
 from ultralytics import YOLO
 
-import os, sys; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../"))
 from .detected_object import DetectedObject
 from data_processing import draw_bounding_box
 

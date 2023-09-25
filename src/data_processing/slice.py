@@ -1,6 +1,5 @@
 from PIL import Image
 
-import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../"))
 from util import select_file_from_dialog
 
 CHIP_ROW_COUNT = 6
