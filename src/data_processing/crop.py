@@ -1,6 +1,5 @@
 import cv2
 
-import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../"))
 from image_processing import crop_image
 from util import select_folder_from_dialog, select_files_from_dialog, select_file_from_dialog, read_yaml
 from camera import capture_image

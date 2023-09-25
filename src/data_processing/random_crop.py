@@ -1,7 +1,6 @@
 import cv2
 import random
 
-import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../"))
 from util import select_file_from_dialog
 from util import select_folder_from_dialog
 

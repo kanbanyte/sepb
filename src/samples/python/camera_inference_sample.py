@@ -1,7 +1,6 @@
 import time
 from datetime import datetime
 
-import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../"))
 from util import select_file_from_dialog, select_folder_from_dialog, read_yaml
 from models.python import ObjectDetectionModel
 from camera import read_crop_box, open_camera, get_rgb_cropped_image

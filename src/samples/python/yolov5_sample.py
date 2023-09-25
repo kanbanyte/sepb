@@ -2,7 +2,6 @@ import cv2
 from datetime import datetime
 from ultralytics import YOLO
 
-import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../"))
 from util import select_file_from_dialog, select_folder_from_dialog, read_yaml
 from data_processing import tile_image
 from models.python import ObjectDetectionModel

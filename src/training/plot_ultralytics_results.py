@@ -2,8 +2,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../"))
 from util import select_file_from_dialog, select_file_from_dialog
 
 def main():
