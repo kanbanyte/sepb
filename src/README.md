@@ -8,6 +8,21 @@ See the `README.md` files within individual subdirectories for more details.
 * [training](training/README.md): contains notebooks and scripts that train a model as well as visualize its metrics.
 * [util](util/README.md): utility functions, mostly related to the file system.
 
+Directories that act as packages have an `__init__.py` file that imports all modules within that package.
+Code using these packages will have access to all modules inside those packages, regardless of nesting level, without having to specify their absolute paths.
+
+## Installation
+* Note: use `python` if you are running in Windows and `python3` if you are running in Linux.
+This document exclusively uses the Windows version.
+* To ensure you have the latest pip, run the command:
+```bash
+python -m pip install --upgrade pip
+```
+* To install the package, navigate to the project containing `pyproject.toml` and run the command:
+```bash
+python -m pip install .
+```
+
 ## Dependencies
 ### Python Packages
 * To ensure that the machine has packages to run every script in this directory, run the following command:

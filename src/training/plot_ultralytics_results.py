@@ -1,14 +1,8 @@
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-from datetime import datetime
-
-from file_dialog import select_file_from_dialog
-from file_reader import read_yaml
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
+
+from util.file_dialog import select_file_from_dialog, select_file_from_dialog
 
 def main():
     results_csv = select_file_from_dialog("Select result CSV file", ["csv"])

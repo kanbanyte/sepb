@@ -1,16 +1,11 @@
-import os, sys
-
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../util"))
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../camera"))
-
 import cv2
-from image_processing import crop_image
-from file_dialog import select_folder_from_dialog
-from file_dialog import select_files_from_dialog
-from file_dialog import select_file_from_dialog
-from camera_capture import capture_image
-from camera_capture import open_camera
-from file_reader import read_yaml
+import os
+
+from data_processing.image_processing import crop_image
+from util.file_dialog import select_folder_from_dialog, select_files_from_dialog, select_file_from_dialog
+from util.file_reader import read_yaml
+from camera.camera_capture import capture_image
+from camera.camera_capture import open_camera
 
 IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"]
 

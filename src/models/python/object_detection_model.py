@@ -1,12 +1,9 @@
-import os, sys
-
-from detected_object import DetectedObject
-from collections import defaultdict
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../../data_processing"))
-
-from ultralytics import YOLO
-from image_processing import draw_bounding_box
 import cv2
+from collections import defaultdict
+from ultralytics import YOLO
+
+from .detected_object import DetectedObject
+from data_processing.image_processing import draw_bounding_box
 
 class ObjectDetectionModel:
     def __init__(self, model_config):
