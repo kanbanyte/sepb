@@ -1,4 +1,5 @@
 import cv2
+import os
 
 from image_processing import crop_image
 from util import select_folder_from_dialog, select_files_from_dialog, select_file_from_dialog, read_yaml
