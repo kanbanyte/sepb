@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from util import select_file_from_dialog, select_file_from_dialog
+from util.file_dialog import select_file_from_dialog, select_file_from_dialog
 
 def main():
     results_csv = select_file_from_dialog("Select result CSV file", ["csv"])

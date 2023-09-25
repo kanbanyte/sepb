@@ -1,6 +1,6 @@
 from PIL import Image
 
-from util import select_file_from_dialog
+from util.file_dialog import select_file_from_dialog
 
 CHIP_ROW_COUNT = 6
 CHIP_COL_COUNT = 8

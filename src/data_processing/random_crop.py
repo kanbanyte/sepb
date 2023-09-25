@@ -2,8 +2,7 @@ import cv2
 import random
 import os
 
-from util import select_file_from_dialog
-from util import select_folder_from_dialog
+from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 
 def random_crop(image_path, crop_width, crop_height):
     """

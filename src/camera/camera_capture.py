@@ -1,7 +1,7 @@
 import numpy
 import pyzed.sl as sl
 
-from data_processing import crop_image
+from data_processing.image_processing import crop_image
 
 def open_camera(camera_config):
 	"""

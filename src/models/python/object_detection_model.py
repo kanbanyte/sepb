@@ -3,7 +3,7 @@ from collections import defaultdict
 from ultralytics import YOLO
 
 from .detected_object import DetectedObject
-from data_processing import draw_bounding_box
+from data_processing.image_processing import draw_bounding_box
 
 class ObjectDetectionModel:
     def __init__(self, model_config):

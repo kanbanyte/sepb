@@ -1,10 +1,11 @@
 import cv2
 import os
 
-from data_processing import crop_image
-from util import select_folder_from_dialog, select_files_from_dialog, select_file_from_dialog, read_yaml
-from camera import capture_image
-from camera import open_camera
+from data_processing.image_processing import crop_image
+from util.file_dialog import select_folder_from_dialog, select_files_from_dialog, select_file_from_dialog
+from util.file_reader import read_yaml
+from camera.camera_capture import capture_image
+from camera.camera_capture import open_camera
 
 IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"]
 
