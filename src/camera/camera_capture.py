@@ -1,7 +1,6 @@
 import numpy
 import pyzed.sl as sl
 
-import sys, os; sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)),  "../"))
 from data_processing import crop_image
 
 def open_camera(camera_config):

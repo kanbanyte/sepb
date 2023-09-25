@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "VisionSystem"
+version = "0.1.0"
+description = "Vision System"
+readme = "./README.md"
+license = {text= "TO-BE-UPDATED"}
+requires-python = ">=3.9"
+authors = [
+  { name = "H", email="h@email.com"},
+  { name = "A", email="a@email.com"},
+]
+
+dependencies = [
+    "Cython==3.0.2",
+    "matplotlib==3.7.2",
+    "numpy==1.25.2",
+    "opencv-python==4.8.0.76",
+    "torch==2.0.1",
+    "pandas==2.1.0",
+    "Pillow==9.5.0",
+    "roboflow==1.1.4",
+    "PyOpenGL",
+    "PyOpenGL-accelerate",
+    "PyYAML==6.0.1",
+    "ultralytics==8.0.159",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["training"]
+
+[project.scripts]
+camera_inference_sample = "samples.python.camera_inference_sample:main"
+yolov5_sample = "samples.python.yolov5_sample:main"
+crop="data_processing.crop:main"
+random_crop="data_processing.random_crop:main"
+slice="data_processing.slice:main"
+calculate_training_ratio_roboflow="data_processing.calculate_training_ratio_roboflow:main"
