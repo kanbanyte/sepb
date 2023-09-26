@@ -21,7 +21,7 @@ This script calculates the amount of images used for training, testing and valid
 
 ## convert_case.py
 Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.
-Note: This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and the height of the image is around 514px.
+This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and the height of the image is around 514px.
 
 ## copy-by-interval.ps1
 Copy files from a folder with a user-defined interval.\

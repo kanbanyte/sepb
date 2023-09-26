@@ -10,6 +10,8 @@ def convert_case_bounding_boxes(detected_case):
 
     The x coordinates are ignored since the tight crop box should ensure that they are always valid.
     It is crucial that the crop box for both lens of the camera have the same y coordinates since they are used to compute the position.
+    
+    This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and the height of the image is around 514px.
 
 	Args:
         list(detected_object): a list of detected cases.

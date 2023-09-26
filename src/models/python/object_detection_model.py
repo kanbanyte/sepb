@@ -94,9 +94,10 @@ class ObjectDetectionModel:
             # these values are still 1D tensors and need to be converted to scalar values
             object_class_index = int(object_class)
             bounding_box = (int(x1), int(y1), int(x2), int(y2))
+            confidence = float(conf)
             detected_object = DetectedObject(
                 bounding_box=bounding_box,
-                confidence=conf)
+                confidence=confidence)
 
             detected_objects[object_class_index].append(detected_object)
             if result_img_path:
