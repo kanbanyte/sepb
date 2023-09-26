@@ -59,25 +59,27 @@ Select a model to run:
 			if choice == '0':
 				crop_box = read_crop_box(config.get('chip_slot_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_chip'))
+				run_inference(model, cropped_image, output_path)
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
+				run_inference(model, cropped_image, output_path)
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))
-				detections = cropped_image = get_rgb_cropped_image(camera, crop_box)
-				if len(detections.items() == 0) or len(detections[0]) == 0:
+				cropped_image = get_rgb_cropped_image(camera, crop_box)
+				detections = run_inference(model, cropped_image, output_path)
+
+				if len(detections.items() == 0):
 					continue
 
-				cases_bounding_boxes = detections[0]
-				print(f"Case position is {convert_case_bounding_boxes(cases_bounding_boxes)}")
+				for i, detected_case in detections.items():
+					print(f"Detected case #{i} position: {convert_case_bounding_boxes(detected_case.bounding_box)}")
 
 			else:
 				raise ValueError("Invalid input")
-
-			run_inference(model, cropped_image, output_path)
 		except Exception as error:
 			print(f"Error: {error}")
 
