@@ -5,7 +5,7 @@
 <!-- TOC -->
 
 * [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflowpy)
-* [camera_capture.py](#camera_capturepy)
+* [convert_case.py](#convert_casepy)
 * [copy_by_interval.ps1](#copy-by-intervalps1)
 * [crop.py](#croppy)
 * [image_processing.py](#image_processingpy)
@@ -18,6 +18,17 @@
 ## calculate_training_ratio_roboflow.py
 Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
 This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
+
+## convert_case.py
+Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.
+Note: This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and the height of the image is around 514px.
+
+## crop.py
+Defines a crop box and applies it to all selected files.\
+The following options are supported:
+1. Select an image to define a crop box, then apply it to a set of selected images and save them to a folder.
+2. Enter the crop box coordinates into the console, apply it to a set of images and save them to a folder.
+3. Capture an image from the ZED camera and use it to define a crop box.
 
 ## copy-by-interval.ps1
 Copy files from a folder with a user-defined interval.\
