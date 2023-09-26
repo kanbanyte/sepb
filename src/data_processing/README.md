@@ -23,13 +23,6 @@ This script calculates the amount of images used for training, testing and valid
 Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.
 Note: This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and the height of the image is around 514px.
 
-## crop.py
-Defines a crop box and applies it to all selected files.\
-The following options are supported:
-1. Select an image to define a crop box, then apply it to a set of selected images and save them to a folder.
-2. Enter the crop box coordinates into the console, apply it to a set of images and save them to a folder.
-3. Capture an image from the ZED camera and use it to define a crop box.
-
 ## copy-by-interval.ps1
 Copy files from a folder with a user-defined interval.\
 Since the exported photos contain a lot of duplicates, copying them in an interval somewhat removes duplicate images.\
