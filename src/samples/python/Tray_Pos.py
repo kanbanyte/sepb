@@ -1,5 +1,5 @@
 # this is the class based code, this is likely the base way to do this, however it does introduce classes which can be finicky
-
+# region class code
 class Tray_Pos:
 	#defines global variables, these use the self tags so they can be accessed and then overwritten
 	# in this, False means that the tray is not in that position, True means that it is
@@ -59,8 +59,7 @@ Tray_Pos.get_position_from_bounding_box(0, 144, 335, 400, "partially full")
 Tray_Pos.get_position_from_bounding_box(340, 288, 685, 575, "full")
 # calls the check_move function, this returns the relevant move text
 print(Tray_Pos.check_move())
-
-
+#endregion
 
 # for non class code refer here, this is bad practice but it works
 # why is it bad practice? the global tag, generally you don't want to be modifying these but in this case it was difficult to get it working with it
