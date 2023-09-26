@@ -1,9 +1,7 @@
-__BOTTOM_Y_COORDINATE = 496
-__TOP_Y_COORDINATE = 149
+__BOTTOM_Y_COORDINATE = 499
+__TOP_Y_COORDINATE = 148
 __POSITION_COUNT = 17
-__POSITION_GAP = __BOTTOM_Y_COORDINATE - __TOP_Y_COORDINATE / __POSITION_COUNT
-
-import math
+__POSITION_GAP = (__BOTTOM_Y_COORDINATE - __TOP_Y_COORDINATE) / (__POSITION_COUNT - 1)
 
 def convert_case_bounding_boxes(detected_case):
     """
@@ -23,7 +21,9 @@ def convert_case_bounding_boxes(detected_case):
         raise ValueError("Detected case object is null")
 
     _, _, _, detected_case_bottom_y = detected_case.bounding_box
-    position =  math.ceil((detected_case_bottom_y - __BOTTOM_Y_COORDINATE)/ __POSITION_GAP) + 1
+    # without subtracting the value from __POSITION_COUNT, the function would return a position in reverse order.
+    # 1 is added to the value to make sure the "inverted" position is correct
+    position = __POSITION_COUNT - round((detected_case_bottom_y - __TOP_Y_COORDINATE)/ __POSITION_GAP) + 1
     if position < 1 or position > __POSITION_COUNT:
         return None
 

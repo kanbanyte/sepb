@@ -23,11 +23,14 @@ def run_inference(detection_model, cropped_image, output_folder = None):
 			print(f"\tConfidence: {detected_object.confidence}")
 			print(f"\tBox: {detected_object.bounding_box}")
 
-	print(f"\Inference time: {inference_time - start_time:.4f} seconds")
+	print(f"Inference time: {inference_time - start_time:.4f} seconds")
 	return detections
 
 def main():
 	file_path = select_file_from_dialog("Select YAML configuration file", ["yaml"])
+	if not file_path:
+		raise ValueError("No configuration file selected")
+ 
 	save_output_choice = input("Save output image (y/any key)?: ")
 	output_path = None
 	if save_output_choice == 'y':
@@ -72,11 +75,12 @@ Select a model to run:
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 				detections = run_inference(model, cropped_image, output_path)
 
-				if len(detections.items() == 0):
+				if len(detections.items()) == 0:
 					continue
 
-				for i, detected_case in detections.items():
-					print(f"Detected case #{i} position: {convert_case_bounding_boxes(detected_case.bounding_box)}")
+				# there is only one class which is the case and its index is 0
+				for i, detected_case in enumerate(detections[0]):
+					print(f"Detected case #{i} position: {convert_case_bounding_boxes(detected_case)}")
 
 			else:
 				raise ValueError("Invalid input")
