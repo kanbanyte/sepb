@@ -74,7 +74,7 @@ Select a model to run:
 				# runs through each detected object and adds it to an internal database of stored positions
 				for class_index, detected_objects in detections.items():
 					for i, detected_object in enumerate(detected_objects):
-						get_position_from_bounding_box(detected_object.bounding_box[0], detected_object.bounding_box[1], detected_object.bounding_box[2], detected_object.bounding_box[3], model.classes[class_index])
+						get_position_from_bounding_box(detected_object.bounding_box, model.classes[class_index])
 				# returns appropriate move command
 				print(check_move())
 			elif choice == '2':
