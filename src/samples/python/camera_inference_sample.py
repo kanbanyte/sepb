@@ -19,10 +19,10 @@ def run_inference(detection_model, cropped_image, output_folder = None):
 	inference_time = time.perf_counter()
 
 	for class_index, detected_objects in detections.items():
-		for i, detected_object in enumerate(detected_objects):
+		for i, detected_tray in enumerate(detected_objects):
 			print(f"Object {i + 1}/{len(detected_objects)} in class {detection_model.classes[class_index]}: ")
-			print(f"\tConfidence: {detected_object.confidence}")
-			print(f"\tBox: {detected_object.bounding_box}")
+			print(f"\tConfidence: {detected_tray.confidence}")
+			print(f"\tBox: {detected_tray.bounding_box}")
 
 	print(f"Inference time: {inference_time - start_time:.4f} seconds")
 	return detections
@@ -73,8 +73,8 @@ Select a model to run:
 
 				# runs through each detected object and adds it to an internal database of stored positions
 				for class_index, detected_objects in detections.items():
-					for i, detected_object in enumerate(detected_objects):
-						get_position_from_bounding_box(detected_object.bounding_box, model.classes[class_index])
+					for i, detected_tray in enumerate(detected_objects):
+						get_position_from_bounding_box(detected_tray.bounding_box, model.classes[class_index])
 				# returns appropriate move command
 				print(check_move())
 			elif choice == '2':
