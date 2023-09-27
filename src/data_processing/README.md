@@ -56,3 +56,8 @@ The renamed images will be copied into an output folder selected by the user.
 ## slice.py
 Slice the images into a grid of 4 columns and 6 rows, corresponding to the structure of the 2 chip trays.\
 This is to check how tight the crop box is so we can translate the concrete coordinates of bounding boxes into the position matrix easily.
+
+## Tray_pos.py
+Used regularly by sample programs to translate tray bounding boxes into readable formats.
+It is also used to determine what the next robot arm action, in relation to trays should be.
+Generally this application should be called from code rather than ran independently.
