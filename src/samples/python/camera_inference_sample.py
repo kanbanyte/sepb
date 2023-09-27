@@ -62,13 +62,13 @@ Select a model to run:
 			if choice == '0':
 				crop_box = read_crop_box(config.get('chip_slot_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_chip'))
-				run_inference(model, cropped_image, output_path)
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
+				detections = run_inference(model, cropped_image, output_path)
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
-				run_inference(model, cropped_image, output_path)
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
+				detections = run_inference(model, cropped_image, output_path)
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))
