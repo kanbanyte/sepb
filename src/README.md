@@ -33,7 +33,6 @@ python -m pip install -r ./requirements.txt
 ### ZED2 SDK
 * Install the ZED2 SDK at [the official site](https://www.stereolabs.com/developers/release/).
 * Install the Python API by running the `get_python_api.py` script:
-* Install the Python API by running the `get_python_api.py` script:
 	* On Windows, the script is in `C:\Program Files (x86)\ZED SDK\`
 	* On Linux, the script is in `/usr/local/zed/`
 	* See the [official documentation](https://www.stereolabs.com/docs/app-development/python/install/#installing-the-python-api) for more information.

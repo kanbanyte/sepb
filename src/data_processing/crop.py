@@ -190,7 +190,7 @@ def apply_crop_and_save(crop_box):
 
     print(f"Applying {crop_box} crop to {len(input_images)} images")
     for image_file, cropped_image in zip(input_images, cropped_images):
-        crop_image_and_save(image_file, cropped_image,  crop_box)
+        crop_image_and_save(image_file, cropped_image, crop_box)
 
     print(f"Finished processing {len(input_images)} images")
 
