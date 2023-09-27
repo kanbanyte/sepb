@@ -8,15 +8,15 @@ class BotMethods:
 	"""
 	# trajectories = {}
 
-	# @classmethod
-	# def get_trajectories(self):
+	# @staticmethod
+	# def get_trajectories():
 	# 	# calculate and get trajectories
 	# 	pass
 	trajectories = []
 	trajectory_names = []
 
-	@classmethod
-	def move_home(self, joints, goals):
+	@staticmethod
+	def move_home(joints, goals):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 
@@ -25,8 +25,8 @@ class BotMethods:
 		BotMethods.trajectory_names.append("home")
 		traj.points.clear()
 
-	@classmethod
-	def move_chip(self, joints, goals, chip_number, tray_number):
+	@staticmethod
+	def move_chip(joints, goals, chip_number, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		chip_name = f"chip_{str(chip_number)}"
@@ -66,8 +66,8 @@ class BotMethods:
 			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
-	@classmethod
-	def move_case(self, joints, goals, case_number, tray_number):
+	@staticmethod
+	def move_case(joints, goals, case_number, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		case_name = f"case_{str(case_number)}"
@@ -89,8 +89,8 @@ class BotMethods:
 			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
-	@classmethod
-	def move_battery(self, joints, goals, tray_number):
+	@staticmethod
+	def move_battery(joints, goals, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		above_tray_name = f"above_tray_{str(tray_number)}"
@@ -113,8 +113,8 @@ class BotMethods:
 			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
-	@classmethod
-	def move_tray(self, joints, goals, tray_number):
+	@staticmethod
+	def move_tray(joints, goals, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		above_tray_name = f"tray_pick_{str(tray_number)}_above"
@@ -136,8 +136,8 @@ class BotMethods:
 			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
-	@classmethod
-	def replace_tray(self, joints, goals, tray_number):
+	@staticmethod
+	def replace_tray(joints, goals, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
 		above_tray_name = f"tray_pick_{str(tray_number)}_above"
@@ -159,8 +159,8 @@ class BotMethods:
 			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
-	@classmethod
-	def get_all_trajectories(self, joints, goals, chip_number, case_number, tray_number):
+	@staticmethod
+	def get_all_trajectories(joints, goals, chip_number, case_number, tray_number):
 		BotMethods.move_home(joints, goals)
 		BotMethods.move_chip(joints, goals, chip_number, tray_number)
 		BotMethods.move_case(joints, goals, case_number, tray_number)
@@ -171,6 +171,6 @@ class BotMethods:
 		return BotMethods.trajectories
 
 	# Must be called after get_all_trajectories
-	@classmethod
-	def get_trajectory_names(self):
+	@staticmethod
+	def get_trajectory_names():
 		return BotMethods.trajectory_names
