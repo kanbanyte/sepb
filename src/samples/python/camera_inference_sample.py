@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 
 from data_processing.convert_case import convert_case_bounding_boxes
+from data_processing.box_pos import get_chip_slot_number
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from models.python.object_detection_model import ObjectDetectionModel
@@ -30,7 +31,7 @@ def main():
 	file_path = select_file_from_dialog("Select YAML configuration file", ["yaml"])
 	if not file_path:
 		raise ValueError("No configuration file selected")
- 
+
 	save_output_choice = input("Save output image (y/any key)?: ")
 	output_path = None
 	if save_output_choice == 'y':
@@ -64,6 +65,11 @@ Select a model to run:
 				model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 				detections = run_inference(model, cropped_image, output_path)
+
+				list = []
+				for i, detected_chip in enumerate(detections):
+					list.append(get_chip_slot_number(detected_chip.bounding_box))
+				print(f"Detected {i + 1} chips at position: {list}")
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
