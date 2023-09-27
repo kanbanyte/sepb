@@ -5,7 +5,7 @@
 <!-- TOC -->
 
 * [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflowpy)
-* [camera_capture.py](#camera_capturepy)
+* [convert_case.py](#convert_casepy)
 * [copy_by_interval.ps1](#copy-by-intervalps1)
 * [crop.py](#croppy)
 * [image_processing.py](#image_processingpy)
@@ -18,6 +18,11 @@
 ## calculate_training_ratio_roboflow.py
 Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
 This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
+
+## convert_case.py
+Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.\
+This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and
+the height of the image is around 514px.
 
 ## copy-by-interval.ps1
 Copy files from a folder with a user-defined interval.\
