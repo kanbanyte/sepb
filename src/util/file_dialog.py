@@ -2,17 +2,17 @@ import os
 import tkinter
 from tkinter import filedialog
 
-def select_folder_from_dialog():
+def select_folder_from_dialog(prompt):
     """
     Displays a dialog box to select a folder.
 
     Args:
-
+        prompt (str): Dialog prompt.
     Returns:
         str | None: The selected folder path or None.
     """
     root = __init_tkinter()
-    folder = filedialog.askdirectory(parent=root, initialdir=os.getcwd(), title="Select output folder")
+    folder = filedialog.askdirectory(parent=root, initialdir=os.getcwd(), title=prompt)
 
     return folder
 
@@ -38,7 +38,7 @@ def select_file_from_dialog(prompt, allowed_extensions):
     Args:
         prompt (str): The prompt message for the dialog box.
         allowed_extensions (list): List of allowed image file extensions.
-        
+
     Returns:
         str | None: the path of selected file or None.
     """
@@ -50,7 +50,7 @@ def __init_tkinter():
     """
     Initialize Tkinter and make sure the file dialog opens in the foreground.
 
-    Args:
+    Args: None
 
     Returns:
         root: Tkinter window root.
