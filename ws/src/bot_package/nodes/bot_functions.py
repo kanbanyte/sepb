@@ -46,9 +46,9 @@ class BotMethods:
 		# trajectories.append(copy.deepcopy(traj))
 		# traj.points.clear()
 
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
 		if chip_number < 13:
 			chip_home_name = "chip_home_1"

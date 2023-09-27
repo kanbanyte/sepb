@@ -131,9 +131,9 @@ class PublisherJointTrajectory(Node):
 				temp_traj.append(copy.deepcopy(temp))
 				temp.points.clear()
 
-				# temp.points.append(self.goals["home"])
-				# temp_traj.append(copy.deepcopy(temp))
-				# temp.points.clear()
+				temp.points.append(self.goals["home"])
+				temp_traj.append(copy.deepcopy(temp))
+				temp.points.clear()
 
 				for traj in temp_traj:
 					temp_pos = traj
