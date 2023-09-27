@@ -7,12 +7,12 @@ True also means the tray is present.
 False is the inverse, the Tray is not in a moveable state or is not present.
 '''
 dict = {
-	"assembly": False,
-	"assembly_move": False,
-	"tray1": False,
-	"tray1_move": False,
-	"tray2": False,
-	"tray2_move": False
+	"assembly_present": False,
+	"assembly_movable": False,
+	"tray1_present": False,
+	"tray1_movable": False,
+	"tray2_present": False,
+	"tray2_movable": False
 }
 
 '''
@@ -51,19 +51,19 @@ The tray class is used to determine whether the tray is in a moveable state.
 def get_position_from_bounding_box(bounding_box, tray_class):
 	x1, y1, x2, y2 = bounding_box
 	if x1 >=0  and y1 >= 140 or x2 <= 335 or y2 <= 400:
-		dict.update({"assembly": True})
+		dict.update({"assembly_present": True})
 		if tray_class.lower() == "empty":
-			dict.update({"assembly_move": True})
+			dict.update({"assembly_movable": True})
 		return TrayPos.assembly
 	if x1 >= 340 and y1 >= 0 or x2 <= 672 or y2 <= 265:
-		dict.update({"tray2": True})
+		dict.update({"tray2_present": True})
 		if tray_class.lower() == "full":
-			dict.update({"tray2_move": True})
+			dict.update({"tray2_movable": True})
 		return TrayPos.tray2
 	if x1 >= 340 and y1 >= 288 or x2 <= 685 or y2 <= 575:
-		dict.update({"tray1": True})
+		dict.update({"tray1_present": True})
 		if tray_class.lower() == "full":
-			dict.update({"tray1_move": True})
+			dict.update({"tray1_movable": True})
 		return TrayPos.tray1
 
 '''
@@ -80,23 +80,23 @@ If the tray is not in a moveable state it will return no_move.
 '''
 # checks if the trays are in a moveable state and returns a corresponding move
 def check_move():
-	if dict.get("assembly") == False:
-		if dict.get("tray1_move") == True:
-			dict.update({"tray1": False})
-			dict.update({"tray1_move": False})
+	if dict.get("assembly_present") == False:
+		if dict.get("tray1_movable") == True:
+			dict.update({"tray1_present": False})
+			dict.update({"tray1_movable": False})
 			return TrayMovement.move_tray1_assembly
-		elif dict.get("tray2_move") == True:
-			dict.update({"tray2_move": False})
-			dict.update({"tray2": False})
+		elif dict.get("tray2_movable") == True:
+			dict.update({"tray2_movable": False})
+			dict.update({"tray2_present": False})
 			return TrayMovement.move_tray2_assembly
-	if dict.get("assembly") == True and dict.get("assembly_move") == True:
-		if dict.get("tray1") == False:
-			dict.update({"assembly": False})
-			dict.update({"assembly_move": False})
+	if dict.get("assembly_present") == True and dict.get("assembly_movable") == True:
+		if dict.get("tray1_present") == False:
+			dict.update({"assembly_present": False})
+			dict.update({"assembly_movable": False})
 			return TrayMovement.move_assembly_tray1
-		elif dict.get("tray2") == False:
-			dict.update({"assembly": False})
-			dict.update({"assembly_move": False})
+		elif dict.get("tray2_present") == False:
+			dict.update({"assembly_present": False})
+			dict.update({"assembly_movable": False})
 			return TrayMovement.move_assembly_tray2
 	return TrayMovement.no_move
 
