@@ -45,7 +45,7 @@ The tray class is used to determine whether the tray is in a moveable state.
 		  tray_class (str): The class of the tray.
 
     Returns:
-        repr(): A representation of the tray position.
+        TrayPos(): an enum value representing the tray position.
 '''
 # checks if bounding box is between a certain range and returns a corresponding position
 def get_position_from_bounding_box(bounding_box, tray_class):
@@ -75,7 +75,7 @@ If the tray is not in a moveable state it will return no_move.
 	Args: None
 
 	Returns:
-		repr(): A representation of the desired tray movement.
+		TrayMovement: an enum value representing the desired tray movement.
 
 '''
 # checks if the trays are in a moveable state and returns a corresponding move
