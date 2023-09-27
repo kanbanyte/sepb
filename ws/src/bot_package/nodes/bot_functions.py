@@ -13,7 +13,7 @@ class BotMethods:
 	# 	# calculate and get trajectories
 	# 	pass
 	trajectories = []
-	goal_names = []
+	trajectory_names = []
 
 	@classmethod
 	def move_home(self, joints, goals):
@@ -22,6 +22,7 @@ class BotMethods:
 
 		traj.points.append(goals["home"])
 		BotMethods.trajectories.append(copy.deepcopy(traj))
+		BotMethods.trajectory_names.append("home")
 		traj.points.clear()
 
 	@classmethod
@@ -62,6 +63,7 @@ class BotMethods:
 		for goal_name in goal_names:
 			traj.points.append(goals[goal_name])
 			BotMethods.trajectories.append(copy.deepcopy(traj))
+			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
 	@classmethod
@@ -84,6 +86,7 @@ class BotMethods:
 		for goal_name in goal_names:
 			traj.points.append(goals[goal_name])
 			BotMethods.trajectories.append(copy.deepcopy(traj))
+			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
 	@classmethod
@@ -107,6 +110,7 @@ class BotMethods:
 		for goal_name in goal_names:
 			traj.points.append(goals[goal_name])
 			BotMethods.trajectories.append(copy.deepcopy(traj))
+			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
 	@classmethod
@@ -129,6 +133,7 @@ class BotMethods:
 		for goal_name in goal_names:
 			traj.points.append(goals[goal_name])
 			BotMethods.trajectories.append(copy.deepcopy(traj))
+			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
 	@classmethod
@@ -151,6 +156,7 @@ class BotMethods:
 		for goal_name in goal_names:
 			traj.points.append(goals[goal_name])
 			BotMethods.trajectories.append(copy.deepcopy(traj))
+			BotMethods.trajectory_names.append(goal_name)
 			traj.points.clear()
 
 	@classmethod
@@ -163,3 +169,8 @@ class BotMethods:
 		BotMethods.replace_tray(joints, goals, tray_number)
 
 		return BotMethods.trajectories
+
+	# Must be called after get_all_trajectories
+	@classmethod
+	def get_trajectory_names(self):
+		return BotMethods.trajectory_names

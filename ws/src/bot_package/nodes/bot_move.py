@@ -66,6 +66,7 @@ class PublisherJointTrajectory(Node):
 		# Get list of all trajectories to move to
 		# Args: joints, goals, chip_number, case_number, tray_number
 		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
+		self.trajectory_names = BotMethods.get_trajectory_names()
 
 		# Trajectories to move the cobot to a safe position and back to home
 		self.safe_start_trajectories = [JointTrajectory(), JointTrajectory()]
@@ -93,7 +94,8 @@ class PublisherJointTrajectory(Node):
 			# Return trajectories to move from home to chip 1
 			if self.i < len(self.trajectories):
 				traj = self.trajectories[self.i]
-				self.get_logger().info(f'Goal Name: x')
+				traj_name = self.trajectory_names[self.i]
+				self.get_logger().info(f'Goal Name: {traj_name}')
 				traj_goal = traj.points[0]
 
 				# traj_goal.velocities = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
