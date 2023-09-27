@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 from data_processing.convert_case import convert_case_bounding_boxes
-from data_processing.Tray_Pos import Tray_Pos
+from data_processing.Tray_Pos import get_position_from_bounding_box, check_move
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from models.python.object_detection_model import ObjectDetectionModel
@@ -70,11 +70,13 @@ Select a model to run:
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 				detections = run_inference(model, cropped_image, output_path)
-				# Tray_Pos = Tray_Pos()
-				# for i, detected_tray in enumerate(detections):
-				# 	Tray_Pos.get_position_from_bounding_box(0,0,0,0 "partially full")
-				# 	Tray_Pos.get_position_from_bounding_box(340, 288, 685, 575, "full")
-				# 	print(Tray_Pos.check_move())
+
+				# runs through each detected object and adds it to an internal database of stored positions
+				for class_index, detected_objects in detections.items():
+					for i, detected_object in enumerate(detected_objects):
+						get_position_from_bounding_box(detected_object.bounding_box[0], detected_object.bounding_box[1], detected_object.bounding_box[2], detected_object.bounding_box[3], model.classes[class_index])
+				# returns appropriate move command
+				print(check_move())
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))

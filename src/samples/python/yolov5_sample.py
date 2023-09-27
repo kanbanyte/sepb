@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 from ultralytics import YOLO
 
-from data_processing.Tray_Pos import get_position_from_bounding_box, check_move
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from data_processing.image_processing import tile_image
@@ -57,12 +56,6 @@ def version_1(tiled_images):
 				print(f"Object {i + 1}/{len(detected_objects)} in class {model.classes[class_index]}: ")
 				print(f"\tConfidence: {detected_object.confidence}")
 				print(f"\tBox: {detected_object.bounding_box}")
-			for i, detected_object in enumerate(detected_objects):
-				get_position_from_bounding_box(
-					detected_object.bounding_box[0], detected_object.bounding_box[1], detected_object.bounding_box[2], detected_object.bounding_box[3], model.classes[class_index])
-				# get_position_from_bounding_box(
-				# 	detected_object.bounding_box[0], detected_object.bounding_box[1], detected_object.bounding_box[2], detected_object.bounding_box[3], model.classes[class_index])
-		print(check_move())
 		print()
 
 def main():
