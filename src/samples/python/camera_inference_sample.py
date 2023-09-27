@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 
 from data_processing.convert_case import convert_case_bounding_boxes
+from data_processing.Tray_Pos import Tray_Pos
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from models.python.object_detection_model import ObjectDetectionModel
@@ -30,7 +31,7 @@ def main():
 	file_path = select_file_from_dialog("Select YAML configuration file", ["yaml"])
 	if not file_path:
 		raise ValueError("No configuration file selected")
- 
+
 	save_output_choice = input("Save output image (y/any key)?: ")
 	output_path = None
 	if save_output_choice == 'y':
@@ -69,6 +70,11 @@ Select a model to run:
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 				detections = run_inference(model, cropped_image, output_path)
+				# Tray_Pos = Tray_Pos()
+				# for i, detected_tray in enumerate(detections):
+				# 	Tray_Pos.get_position_from_bounding_box(0,0,0,0 "partially full")
+				# 	Tray_Pos.get_position_from_bounding_box(340, 288, 685, 575, "full")
+				# 	print(Tray_Pos.check_move())
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))

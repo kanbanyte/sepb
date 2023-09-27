@@ -1,6 +1,6 @@
 model:
   detect_chip:
-    file: "/path/to/model"
+    file: "D:/School/train-2023-09-12T11-20-07/weights/best.pt"
     image_size:
       width: 640
       height: 640
@@ -8,6 +8,6 @@ model:
     confidence: 0.25
     max_det: 48
   detect_white_tray:
-    file: "/path/to/model"
+    file: "D:/School/train-2023-09-12T11-20-07/weights/best.pt"
   detect_case:
     file: "/path/to/model"
