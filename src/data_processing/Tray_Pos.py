@@ -1,5 +1,11 @@
 from enum import Enum
-
+'''
+This is a dictonary of the trays and their states.
+The states are either True or False.
+True means that the tray is in a moveable state as denoted by _move
+True also means the tray is present.
+False is the inverse, the Tray is not in a moveable state or is not present.
+'''
 dict = {
 	"assembly": False,
 	"assembly_move": False,
@@ -9,6 +15,11 @@ dict = {
 	"tray2_move": False
 }
 
+'''
+enumerations for the tray positions and movements
+They will in the format return data in repr() format, this can be changed with .name or .value appended to the end
+These enumerations should be subject to changed as needed by the ROS team
+'''
 class TrayPos(Enum):
 	tray1 = 1
 	tray2 = 2
@@ -19,7 +30,23 @@ class TrayMovement(Enum):
 	move_assembly_tray2 = 2
 	move_tray1_assembly = 3
 	move_tray2_assembly = 4
+	no_move = 5
 
+
+'''
+This method takes in a bounding box and tray class and returns the position of the tray.
+It also updates the dictionary with the tray position and whether it is in a moveable state.
+It does this by checking the bounding box against a range of values.
+The tray class is used to determine whether the tray is full or empty.
+The tray class is not used to determine the position of the tray.
+The tray class is used to determine whether the tray is in a moveable state.
+
+    Args: bounding_box (list[int]): The bounding box of the tray.
+		  tray_class (str): The class of the tray.
+
+    Returns:
+        repr(): A representation of the tray position.
+'''
 # checks if bounding box is between a certain range and returns a corresponding position
 def get_position_from_bounding_box(bounding_box, tray_class):
 	x1, y1, x2, y2 = bounding_box
@@ -39,6 +66,18 @@ def get_position_from_bounding_box(bounding_box, tray_class):
 			dict.update({"tray1_move": True})
 		return TrayPos.tray1
 
+'''
+This method checks the state of the trays and returns a move.
+It does this by checking the dictionary for the state of the trays.
+If the tray is in a moveable state it will return a move.
+If the tray is not in a moveable state it will return no_move.
+
+	Args: None
+
+	Returns:
+		repr(): A representation of the desired tray movement.
+
+'''
 # checks if the trays are in a moveable state and returns a corresponding move
 def check_move():
 	if dict.get("assembly") == False:
@@ -59,13 +98,14 @@ def check_move():
 			dict.update({"assembly": False})
 			dict.update({"assembly_move": False})
 			return TrayMovement.move_assembly_tray2
+	return TrayMovement.no_move
 
 # #endregion
 
 # this is test code
 
 # calls the functions from the class, creating example bounding boxes and tray classes
-get_position_from_bounding_box([0, 144, 335, 400], "empty")
-get_position_from_bounding_box([340, 288, 685, 575], "full")
-# calls the check_move function, this returns the relevant move text
-print(check_move())
+# get_position_from_bounding_box([0, 144, 335, 400], "empty")
+# get_position_from_bounding_box([340, 288, 685, 575], "full")
+# # calls the check_move function, this returns the relevant move text
+# print(check_move())
