@@ -65,7 +65,7 @@ class PublisherJointTrajectory(Node):
 
 		# Get list of all trajectories to move to
 		# Args: joints, goals, chip_number, case_number, tray_number
-		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 5, 2)
+		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
