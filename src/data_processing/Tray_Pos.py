@@ -31,7 +31,6 @@
 # 				self.tray1_move = True
 # 			return None
 
-# 	# checks if the trays are in a moveable state and returns a corresponding move
 # 	def check_move(self):
 # 		if self.assembly == False:
 # 			if self.tray1_move == True:
@@ -51,14 +50,6 @@
 # 				self.assembly = False
 # 				self.assembly_move = False
 # 				return "move from assembly to tray 2"
-
-# calls the class, initializing the code
-# Tray_Pos = Tray_Pos()
-# # calls the functions from the class, creating example bounding boxes and tray classes
-# Tray_Pos.get_position_from_bounding_box(0, 144, 335, 400, "partially full")
-# Tray_Pos.get_position_from_bounding_box(340, 288, 685, 575, "full")
-# # calls the check_move function, this returns the relevant move text
-# print(Tray_Pos.check_move())
 #endregion
 
 # for non class code refer here, this is bad practice but it works
@@ -66,6 +57,10 @@
 
 # # region non class code
 
+# 	#defines global variables, these use the self tags so they can be accessed and then overwritten
+# 	# in this, False means that the tray is not in that position, True means that it is
+# 	# tray1_move and tray2_move are used to check if the tray is able to be moved,
+# 	# this is used to check if the trays are in a moveable state for example entirely full for tray1 & 2 and empty for assembly
 tray1 = False
 tray1_move = False
 tray2 = False
@@ -92,6 +87,7 @@ def get_position_from_bounding_box(x1, y1, x2, y2, tray_class):
 			tray1_move = True
 		return None
 
+# checks if the trays are in a moveable state and returns a corresponding move
 def check_move():
 	global tray1,tray1_move, tray2, tray2_move, assembly, assembly_move
 	if assembly == False:
@@ -113,8 +109,13 @@ def check_move():
 			assembly_move = False
 			return "move from assembly to tray 2"
 
-# get_position_from_bounding_box(0, 144, 335, 400, "empty")
-# get_position_from_bounding_box(340, 288, 685, 575, "full")
-# print(check_move())
-
 # #endregion
+
+# this is test code
+'''
+# calls the functions from the class, creating example bounding boxes and tray classes
+get_position_from_bounding_box(0, 144, 335, 400, "empty")
+get_position_from_bounding_box(340, 288, 685, 575, "full")
+# calls the check_move function, this returns the relevant move text
+print(check_move())
+'''
