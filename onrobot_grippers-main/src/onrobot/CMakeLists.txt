@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(onrobot)
-find_package(ament_cmake REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-ament_package()

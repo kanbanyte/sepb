@@ -8,7 +8,7 @@ This repository was inspired by [ros-industrial/robotiq](https://github.com/ros-
 
 ## Dependency
 * pymodbus==2.5.3
-* [roboticsgroup/roboticsgroup_upatras_gazebo_plugins](https://github.com/roboticsgroup/roboticsgroup_upatras_gazebo_plugins.git)
+* [roboticsgroup/roboticsgroup_upatras_gazebo_plugins](https://github.com/roboticsgroup/roboticsgroup_upatras_gazebo_plugins)
 
 ## Installation
 ```bash
@@ -17,9 +17,8 @@ git clone https://github.com/takuya-ki/onrobot.git --depth 1
 git clone https://github.com/roboticsgroup/roboticsgroup_upatras_gazebo_plugins.git --depth 1
 cd ..
 sudo rosdep install --from-paths ./src --ignore-packages-from-source --rosdistro humble -y --os=ubuntu:jammy -y
-# sudo apt install ros-noetic-ros-control ros-noetic-ros-controllers
 sudo apt install ros-humble-ros-control ros-humble-ros-controllers
-catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3
+colcon build --symlink-install
 ```
 
 ## Usage
