@@ -6,6 +6,7 @@ from util.file_dialog import select_folder_from_dialog, select_files_from_dialog
 from util.file_reader import read_yaml
 from camera.camera_capture import capture_image
 from camera.camera_capture import open_camera
+from camera.camera_lens import LogicalLens
 
 IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"]
 
@@ -65,7 +66,6 @@ def draw_crop_box_on_image(image):
         elif event == cv2.EVENT_LBUTTONUP:
             bottom_right_corner = [(x, y)]
             cv2.rectangle(image, top_left_corner[0], bottom_right_corner[0], (0,255,0), 2, 8)
-
 
     # keep the original so we can reset later
     original = image.copy()
@@ -167,7 +167,16 @@ def define_crop_box_with_camera():
     print(f"Reading camera configuration file '{config_file}'")
     config = read_yaml(config_file)
     camera = open_camera(config.get('camera'))
-    image = capture_image(camera)
+    lens_input = input("Which logical lens (affected by flip mode) would you like to use? (l/r): ")
+    lens = None
+    if lens_input == 'l':
+        lens = LogicalLens.left
+    elif lens_input == 'r':
+        lens = LogicalLens.right
+    else:
+        raise ValueError(f"Invalid lens choice: {lens_input}. Input must be 'l' or 'r'")
+    
+    image = capture_image(camera, lens)
     camera.close()
     return draw_crop_box_on_image(image)
 

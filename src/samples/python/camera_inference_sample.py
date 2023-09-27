@@ -1,6 +1,7 @@
 import os
 import time
 from datetime import datetime
+from camera.camera_lens import LogicalLens
 
 from data_processing.convert_case import convert_case_bounding_boxes
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
@@ -8,13 +9,13 @@ from util.file_reader import read_yaml
 from models.python.object_detection_model import ObjectDetectionModel
 from camera.camera_capture import read_crop_box, open_camera, get_rgb_cropped_image
 
-def run_inference(detection_model, cropped_image, output_folder = None):
-	if output_folder:
+def run_inference(detection_model, cropped_image, output_location = None):
+	if output_location:
 		current_time = datetime.now().strftime("%H-%M-%S")
-		output_folder = os.path.join(output_folder, f"{current_time}.png")
+		output_location = os.path.join(output_location, f"{current_time}.png")
 
 	start_time = time.perf_counter()
-	detections = detection_model.run_inference(cropped_image, output_folder)
+	detections = detection_model.run_inference(cropped_image, output_location)
 	inference_time = time.perf_counter()
 
 	for class_index, detected_objects in detections.items():
@@ -37,6 +38,9 @@ def main():
 		output_path = select_folder_from_dialog("Select output image folder")
 		if not output_path:
 			raise ValueError("Selected output path is empty")
+		
+		if not os.path.exists(output_path):
+			os.mkdir(output_path)
 
 	config = read_yaml(file_path)
 	camera = open_camera(config.get('camera'))
@@ -49,30 +53,46 @@ def main():
 '''
 ===============================================
 Select a model to run:
-\t- 0: run chip detection model using left lens
-\t- 1: run tray detection model using left lens
-\t- 2: run case detection model using left lens
+\t- 0: run chip detection model using both lenses
+\t- 1: run tray detection model using physically left lens
+\t- 2: run case detection model using physically left lens
 ''')
 		choice = input("Choose model to run. Press `q` to quit: ")
 		if choice == 'q':
 			print("Closing camera")
 			camera.close()
 			break
+		
 		try:
 			if choice == '0':
-				crop_box = read_crop_box(config.get('chip_slot_crop_box').get('left'))
+				crop_boxes = config.get('chip_slot_crop_box')
 				model = ObjectDetectionModel(config.get('model').get('detect_chip'))
-				cropped_image = get_rgb_cropped_image(camera, crop_box)
-				detections = run_inference(model, cropped_image, output_path)
+
+				left_lens_output_dir = os.path.join(output_path, "left")
+				if not os.path.exists(left_lens_output_dir):
+					os.mkdir(left_lens_output_dir)
+				print(left_lens_output_dir)
+				left_crop_box = read_crop_box(crop_boxes.get('left'))
+				cropped_image = get_rgb_cropped_image(camera, left_crop_box, LogicalLens.left)
+				detections = run_inference(model, cropped_image, left_lens_output_dir)
+
+				right_lens_output_dir = os.path.join(output_path, "right")
+				if not os.path.exists(right_lens_output_dir):
+					os.mkdir(right_lens_output_dir)
+				print(right_lens_output_dir)
+				right_crop_box =  read_crop_box(crop_boxes.get('right'))
+				cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.right)
+				detections = run_inference(model, cropped_image, right_lens_output_dir)
+    
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
-				cropped_image = get_rgb_cropped_image(camera, crop_box)
+				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.right)
 				detections = run_inference(model, cropped_image, output_path)
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))
-				cropped_image = get_rgb_cropped_image(camera, crop_box)
+				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.right)
 				detections = run_inference(model, cropped_image, output_path)
 
 				if len(detections.items()) == 0:

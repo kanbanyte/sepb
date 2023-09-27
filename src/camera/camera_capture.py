@@ -1,6 +1,7 @@
 import numpy
 import pyzed.sl as sl
 
+from .camera_lens import LogicalLens
 from data_processing.image_processing import crop_image
 
 def open_camera(camera_config):
@@ -43,12 +44,30 @@ def open_camera(camera_config):
 
 	return camera
 
-def capture_image(camera):
+def logical_lens_to_zed_lens(logical_lens):
+	"""
+	Converts logical lens enum value to enum used by the ZED SDK.
+
+	Args:
+		logical_lens (LogicalLens): logical lens used to capture the image.
+
+	Returns:
+		sl.VIEW: the logical lens used.
+	"""
+	if logical_lens == LogicalLens.right:
+		return sl.VIEW.RIGHT
+	elif logical_lens == LogicalLens.left:
+		return sl.VIEW.LEFT
+	else:
+		raise ValueError(f"Unknown logical lens value: {logical_lens}")
+
+def capture_image(camera, camera_lens=LogicalLens.left):
 	"""
 	Captures an image using the specified camera object.
 
 	Args:
-		camera: an opened ZED camera object.
+		camera (sl.Camera): an opened ZED camera object.
+		camera_lens (LogicalLens): logical lens used to capture the image.
 
 	Returns:
 		np.array: The captured image as an array.
@@ -56,7 +75,8 @@ def capture_image(camera):
 	image = sl.Mat()
 	error_code = camera.grab()
 	if error_code == sl.ERROR_CODE.SUCCESS:
-		camera.retrieve_image(image, sl.VIEW.LEFT)
+		camera.retrieve_image(image, logical_lens_to_zed_lens(camera_lens))
+   
 		# - get_data() turns a sl.Mat object into a numpy array
 		# - accessing the image as an array without copying it will crash the program later due to unknown reasons
 		image_data = numpy.copy(image.get_data())
@@ -64,7 +84,7 @@ def capture_image(camera):
 	else:
 		raise ValueError(f"Failed to capture image: {error_code}")
 
-def get_rgb_cropped_image(camera, crop_box):
+def get_rgb_cropped_image(camera, crop_box, lens):
 	"""
 	Takes a photo with the camera and applies a crop box to it.
 
@@ -75,7 +95,7 @@ def get_rgb_cropped_image(camera, crop_box):
 	Returns:
 		np.array: The cropped image.
 	"""
-	image = capture_image(camera)
+	image = capture_image(camera, lens)
 	cropped_image = crop_image(image, crop_box)
 
 	# ZED returns an image in the RGBA format but the alpha channel is not needed
