@@ -67,6 +67,18 @@ class PublisherJointTrajectory(Node):
 		# Args: joints, goals, chip_number, case_number, tray_number
 		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
 
+		# Trajectories to move the cobot to a safe position and back to home
+		self.safe_start_trajectories = [JointTrajectory(), JointTrajectory()]
+
+		self.safe_start_trajectories[0].joint_names = self.joints
+		self.safe_start_trajectories[1].joint_names = self.joints
+
+		# for traj in self.safe_start_trajectories:
+		# 	traj.joint_names = self.joints
+
+		self.safe_start_trajectories[0].points.append(self.goals["safe_start"])
+		self.safe_start_trajectories[1].points.append(self.goals["home"])
+
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
@@ -81,7 +93,7 @@ class PublisherJointTrajectory(Node):
 			# Return trajectories to move from home to chip 1
 			if self.i < len(self.trajectories):
 				traj = self.trajectories[self.i]
-				self.get_logger().info(f'trajectory_number: {str(self.i)}')
+				self.get_logger().info(f'Goal Name: x')
 				traj_goal = traj.points[0]
 
 				# traj_goal.velocities = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
@@ -131,13 +143,19 @@ class PublisherJointTrajectory(Node):
 				temp_traj.append(copy.deepcopy(temp))
 				temp.points.clear()
 
-				temp.points.append(self.goals["home"])
-				temp_traj.append(copy.deepcopy(temp))
-				temp.points.clear()
-
 				for traj in temp_traj:
 					temp_pos = traj
 					self._publisher.publish(temp_pos)
+
+				# temp = self.safe_start_trajectories[self.i]
+
+				# self._publisher.publish(temp)
+
+				# self.i += 1
+
+				# if self.i == 2:
+				# 	self.i = 0
+				# 	self.starting_point_ok = True
 
 				self.starting_point_ok = True
 			else:

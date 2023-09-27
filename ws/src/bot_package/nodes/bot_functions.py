@@ -13,6 +13,16 @@ class BotMethods:
 	# 	# calculate and get trajectories
 	# 	pass
 	trajectories = []
+	goal_names = []
+
+	@classmethod
+	def move_home(self, joints, goals):
+		traj = JointTrajectory()
+		traj.joint_names = joints
+
+		traj.points.append(goals["home"])
+		BotMethods.trajectories.append(copy.deepcopy(traj))
+		traj.points.clear()
 
 	@classmethod
 	def move_chip(self, joints, goals, chip_number, tray_number):
@@ -21,10 +31,6 @@ class BotMethods:
 		chip_name = f"chip_{str(chip_number)}"
 		above_tray_name = f"above_tray_{str(tray_number)}"
 		chip_place_name = f"chip_place_{str(tray_number)}"
-		# chip_home_name = f"chip_home_2"
-		# chip_place_name = f"chip_place_1"
-		# above_tray_name = f"above_tray_1"
-		# pjt.get_logger().info(f'chip_name: {chip_name}')
 
 		"""
 		traj.points must be cleared before appending a new trajectory to it.
@@ -32,23 +38,7 @@ class BotMethods:
 		Otherwise, two goals will be within the same trajectory and the trajectory will be invalid.
 
 		Trajectories are added to the trajectories list which is returned so that the cobot will move to all goals.
-
-		home
-		chip_home_1
-		chip_1
-		chip_home_1
-		above_tray_1
-		chip_place_1
-		above_tray_1
-		home
 		"""
-		# traj.points.append(goals["safe_start"])
-		# trajectories.append(copy.deepcopy(traj))
-		# traj.points.clear()
-
-		# traj.points.append(goals["home"])
-		# BotMethods.trajectories.append(copy.deepcopy(traj))
-		# traj.points.clear()
 
 		if chip_number < 13:
 			chip_home_name = "chip_home_1"
@@ -59,29 +49,44 @@ class BotMethods:
 		else:
 			chip_home_name = "chip_home_4"
 
-		traj.points.append(goals[chip_home_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# Sequence of goals to move the cobot to
+		goal_names = [
+			chip_home_name,
+			chip_name,
+			chip_home_name,
+			above_tray_name,
+			chip_place_name,
+			above_tray_name
+		]
 
-		traj.points.append(goals[chip_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		for goal_name in goal_names:
+			traj.points.append(goals[goal_name])
+			BotMethods.trajectories.append(copy.deepcopy(traj))
+			traj.points.clear()
 
-		traj.points.append(goals[chip_home_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[chip_home_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[chip_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[chip_place_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[chip_home_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals[chip_place_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
 		# traj.points.append(goals["home"])
 		# BotMethods.trajectories.append(copy.deepcopy(traj))
@@ -94,33 +99,47 @@ class BotMethods:
 		above_tray_name = f"above_tray_{str(tray_number)}"
 		case_place_name = f"bottom_case_place_{str(tray_number)}"
 
+		goal_names = [
+			"case_pick_home",
+			case_name,
+			"case_pick_home",
+			above_tray_name,
+			case_place_name,
+			above_tray_name
+		]
+
+		for goal_name in goal_names:
+			traj.points.append(goals[goal_name])
+			BotMethods.trajectories.append(copy.deepcopy(traj))
+			traj.points.clear()
+
 		# traj.points.append(goals["home"])
 		# BotMethods.trajectories.append(copy.deepcopy(traj))
 		# traj.points.clear()
 
-		traj.points.append(goals["case_pick_home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["case_pick_home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[case_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[case_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["case_pick_home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["case_pick_home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[case_place_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[case_place_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
 		# traj.points.append(goals["home"])
 		# BotMethods.trajectories.append(copy.deepcopy(traj))
@@ -132,37 +151,53 @@ class BotMethods:
 		above_tray_name = f"above_tray_{str(tray_number)}"
 		battery_place_name = f"battery_place_{str(tray_number)}"
 
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		goal_names = [
+			"home",
+			"battery_pick_home",
+			"battery_pick",
+			"battery_pick_home",
+			"safe_start",
+			above_tray_name,
+			battery_place_name,
+			above_tray_name
+		]
 
-		traj.points.append(goals["battery_pick_home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		for goal_name in goal_names:
+			traj.points.append(goals[goal_name])
+			BotMethods.trajectories.append(copy.deepcopy(traj))
+			traj.points.clear()
 
-		traj.points.append(goals["battery_pick"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["battery_pick_home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["battery_pick_home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["safe_start"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["battery_pick"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["battery_pick_home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[battery_place_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["safe_start"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals[battery_place_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
 	@classmethod
 	def move_tray(self, joints, goals, tray_number):
@@ -171,32 +206,47 @@ class BotMethods:
 		above_tray_name = f"tray_pick_{str(tray_number)}_above"
 		tray_pick_name = f"tray_pick_{str(tray_number)}"
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		goal_names = [
+			above_tray_name,
+			tray_pick_name,
+			above_tray_name,
+			"tray_unload_above",
+			"tray_unload",
+			"tray_unload_above",
+			"home",
+		]
 
-		traj.points.append(goals[tray_pick_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		for goal_name in goal_names:
+			traj.points.append(goals[goal_name])
+			BotMethods.trajectories.append(copy.deepcopy(traj))
+			traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["tray_unload_above"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[tray_pick_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["tray_unload"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["tray_unload_above"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["tray_unload_above"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.append(goals["tray_unload"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals["tray_unload_above"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals["home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
 
 	@classmethod
 	def replace_tray(self, joints, goals, tray_number):
@@ -205,35 +255,51 @@ class BotMethods:
 		above_tray_name = f"tray_pick_{str(tray_number)}_above"
 		tray_pick_name = f"tray_pick_{str(tray_number)}"
 
-		traj.points.append(goals["tray_unload_above"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		goal_names = [
+			"tray_unload_above",
+			"tray_unload",
+			"tray_unload_above",
+			above_tray_name,
+			tray_pick_name,
+			above_tray_name,
+			"home",
+		]
 
-		traj.points.append(goals["tray_unload"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		for goal_name in goal_names:
+			traj.points.append(goals[goal_name])
+			BotMethods.trajectories.append(copy.deepcopy(traj))
+			traj.points.clear()
 
-		traj.points.append(goals["tray_unload_above"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["tray_unload_above"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["tray_unload"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[tray_pick_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals["tray_unload_above"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals[above_tray_name])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		traj.points.clear()
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
 
-		traj.points.append(goals["home"])
-		BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.append(goals[tray_pick_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals[above_tray_name])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
+		# traj.points.clear()
+
+		# traj.points.append(goals["home"])
+		# BotMethods.trajectories.append(copy.deepcopy(traj))
 
 	@classmethod
 	def get_all_trajectories(self, joints, goals, chip_number, case_number, tray_number):
+		BotMethods.move_home(joints, goals)
 		BotMethods.move_chip(joints, goals, chip_number, tray_number)
 		BotMethods.move_case(joints, goals, case_number, tray_number)
 		BotMethods.move_battery(joints, goals, tray_number)
