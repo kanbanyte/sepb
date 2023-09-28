@@ -76,4 +76,4 @@ def get_chip_slot_number(bounding_box):
 	col = get_chip_col(x1, x2)
 	if col == -1:
 		return None
-	return 8 * row + col + 1
+	return 8 * col + row + 1
