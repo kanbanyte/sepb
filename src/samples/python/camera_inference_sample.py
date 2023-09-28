@@ -85,12 +85,12 @@ Select a model to run:
 				detections = run_inference(model, cropped_image, right_lens_output_dir)
     
 			elif choice == '1':
-				crop_box = read_crop_box(config.get('tray_crop_box').get('left'))
+				crop_box = read_crop_box(config.get('tray_crop_box').get('right'))
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.right)
 				detections = run_inference(model, cropped_image, output_path)
 			elif choice == '2':
-				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
+				crop_box = read_crop_box(config.get('case_crop_box').get('right'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.right)
 				detections = run_inference(model, cropped_image, output_path)
