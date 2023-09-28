@@ -117,11 +117,10 @@ class BotMethods:
 	def move_tray(joints, goals, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
-		above_tray_name = f"tray_pick_{str(tray_number)}_above"
+		above_tray_name = f"above_tray_{str(tray_number)}"
 		tray_pick_name = f"tray_pick_{str(tray_number)}"
 
 		goal_names = [
-			above_tray_name,
 			tray_pick_name,
 			above_tray_name,
 			"tray_unload_above",
@@ -140,7 +139,7 @@ class BotMethods:
 	def replace_tray(joints, goals, tray_number):
 		traj = JointTrajectory()
 		traj.joint_names = joints
-		above_tray_name = f"tray_pick_{str(tray_number)}_above"
+		above_tray_name = f"above_tray_{str(tray_number)}"
 		tray_pick_name = f"tray_pick_{str(tray_number)}"
 
 		goal_names = [
