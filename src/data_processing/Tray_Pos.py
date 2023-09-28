@@ -3,24 +3,24 @@ from enum import Enum
 '''
 Constants representing the names of states of the tray movement and presence
 '''
-ASSEMBLY_PRESENT = "assembly_present"
-ASSEMBLY_MOVABLE =  "assembly_movable"
-TRAY1_PRESENT =  "tray1_present"
-TRAY1_MOVABLE =  "tray1_movable"
-TRAY2_PRESENT =  "tray2_present"
-TRAY2_MOVABLE = "tray2_movable"
+__ASSEMBLY_PRESENT = "assembly_present"
+__ASSEMBLY_MOVABLE =  "assembly_movable"
+__TRAY1_PRESENT =  "tray1_present"
+__TRAY1_MOVABLE =  "tray1_movable"
+__TRAY2_PRESENT =  "tray2_present"
+__TRAY2_MOVABLE = "tray2_movable"
 
 '''
 State dictionary showing the presence and movability of the tray.
 Note that assembly, tray1 and tray2 indicates the 3 slots a tray can be found in, not the trays themselves.
 '''
-dict = {
-	ASSEMBLY_PRESENT: False,
-	ASSEMBLY_MOVABLE: False,
-	TRAY1_PRESENT: False,
-	TRAY1_MOVABLE: False,
-	TRAY2_PRESENT: False,
-	TRAY2_MOVABLE: False
+__tray_states = {
+	__ASSEMBLY_PRESENT: False,
+	__ASSEMBLY_MOVABLE: False,
+	__TRAY1_PRESENT: False,
+	__TRAY1_MOVABLE: False,
+	__TRAY2_PRESENT: False,
+	__TRAY2_MOVABLE: False
 }
 
 '''
@@ -40,16 +40,10 @@ class TrayMovement(Enum):
 	move_tray2_assembly = 4
 	no_move = 5
 
-
-# checks if bounding box is between a certain range and returns a corresponding position
-def get_position_from_bounding_box(bounding_box, tray_class):
+def update_tray_positions(bounding_box, tray_class):
 	'''
 		This method takes in a bounding box and tray class and returns the position of the tray.
-		It also updates the dictionary with the tray position and whether it is in a moveable state.
-		It does this by checking the bounding box against a range of values.
-		The tray class is used to determine whether the tray is full or empty.
-		The tray class is not used to determine the position of the tray.
-		The tray class is used to determine whether the tray is in a moveable state.
+		It also updates the internal state dictionary with the tray position and whether it is in a moveable state, which is then used to determine the next movement.
 
 		Args: 
   			bounding_box (list[int]): The bounding box of the tray.
@@ -58,25 +52,32 @@ def get_position_from_bounding_box(bounding_box, tray_class):
 		Returns:
 			TrayPos(): an enum value representing the tray position.
 	'''
+ 
 	x1, y1, x2, y2 = bounding_box
+ 
+	# check the tray presence in the assembly slot
 	if x1 >= 0 and y1 >= 140 or x2 <= 335 or y2 <= 400:
-		dict.update({ASSEMBLY_PRESENT: True})
+		__tray_states.update({__ASSEMBLY_PRESENT: True})
 		if tray_class.lower() == "empty":
-			dict.update({ASSEMBLY_MOVABLE: True})
+			__tray_states.update({__ASSEMBLY_MOVABLE: True})
 		return TrayPos.assembly
+
+	# check the tray presence in the second slot (upper right from operator)
 	if x1 >= 340 and y1 >= 0 or x2 <= 672 or y2 <= 265:
-		dict.update({TRAY2_PRESENT: True})
+		__tray_states.update({__TRAY2_PRESENT: True})
 		if tray_class.lower() == "full":
-			dict.update({TRAY2_MOVABLE: True})
+			__tray_states.update({__TRAY2_MOVABLE: True})
 		return TrayPos.tray2
+
+	# check the tray presence in the first slot (lower right from operator)
 	if x1 >= 340 and y1 >= 288 or x2 <= 685 or y2 <= 575:
-		dict.update({TRAY1_PRESENT: True})
+		__tray_states.update({__TRAY1_PRESENT: True})
 		if tray_class.lower() == "full":
-			dict.update({TRAY1_MOVABLE: True})
+			__tray_states.update({__TRAY1_MOVABLE: True})
 		return TrayPos.tray1
 
 
-def check_move():
+def determine_tray_movement():
 	'''
 		This method checks the state of the trays and returns a move.
 		It does this by checking the dictionary for the state of the trays.
@@ -88,28 +89,28 @@ def check_move():
 
 		Returns:
 			TrayMovement: an enum value representing the desired tray movement.
-
 	'''
-	if not dict.get(ASSEMBLY_PRESENT):
-		if dict.get(TRAY1_MOVABLE):
-			dict.update({TRAY1_PRESENT: False})
-			dict.update({TRAY1_MOVABLE: False})
+ 
+	if not __tray_states.get(__ASSEMBLY_PRESENT):
+		if __tray_states.get(__TRAY1_MOVABLE):
+			__tray_states.update({__TRAY1_PRESENT: False})
+			__tray_states.update({__TRAY1_MOVABLE: False})
 			return TrayMovement.move_tray1_assembly
 		
-		if dict.get(TRAY2_MOVABLE):
-			dict.update({TRAY2_MOVABLE: False})
-			dict.update({TRAY2_PRESENT: False})
+		if __tray_states.get(__TRAY2_MOVABLE):
+			__tray_states.update({__TRAY2_MOVABLE: False})
+			__tray_states.update({__TRAY2_PRESENT: False})
 			return TrayMovement.move_tray2_assembly
 
-	if dict.get(ASSEMBLY_PRESENT) and dict.get(ASSEMBLY_MOVABLE):
-		if not dict.get(TRAY1_PRESENT):
-			dict.update({ASSEMBLY_PRESENT: False})
-			dict.update({ASSEMBLY_MOVABLE: False})
+	if __tray_states.get(__ASSEMBLY_PRESENT) and __tray_states.get(__ASSEMBLY_MOVABLE):
+		if not __tray_states.get(__TRAY1_PRESENT):
+			__tray_states.update({__ASSEMBLY_PRESENT: False})
+			__tray_states.update({__ASSEMBLY_MOVABLE: False})
 			return TrayMovement.move_assembly_tray1
 		
-		if not dict.get(TRAY2_PRESENT):
-			dict.update({ASSEMBLY_PRESENT: False})
-			dict.update({ASSEMBLY_MOVABLE: False})
+		if not __tray_states.get(__TRAY2_PRESENT):
+			__tray_states.update({__ASSEMBLY_PRESENT: False})
+			__tray_states.update({__ASSEMBLY_MOVABLE: False})
 			return TrayMovement.move_assembly_tray2
 
 	return TrayMovement.no_move
