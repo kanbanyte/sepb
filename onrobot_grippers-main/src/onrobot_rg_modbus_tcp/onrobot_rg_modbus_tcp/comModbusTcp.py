@@ -21,7 +21,7 @@ class communication:
     def connectToDevice(self, ip: str, port: str, changer_addr: int = 65) -> bool:
         """Connects to the client.
            The method takes the IP address and port number
-           (as a string, e.g., '172.21.0.121' and '502') as arguments.
+           (as a string, e.g., '172.21.0.121' and '54321') as arguments.
         """
         if self.dummy:
             if self.logger:

@@ -14,7 +14,7 @@ def generate_launch_description():
 
   ns_arg =      DeclareLaunchArgument('namespace', default_value='')
   ip_arg =      DeclareLaunchArgument("ip",        default_value="172.21.0.121")
-  port_arg =    DeclareLaunchArgument("port",      default_value="502")
+  port_arg =    DeclareLaunchArgument("port",      default_value="54321")
   gripper_arg = DeclareLaunchArgument("gripper",   default_value="rg2")
   changer_addr_arg = DeclareLaunchArgument("changer_addr",   default_value="65")
   dummy_arg =   DeclareLaunchArgument("dummy",     default_value="false")
