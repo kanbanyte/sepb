@@ -11,10 +11,10 @@ camera:
   exposure: -1
 chip_slot_crop_box:
   left:
-    x1: 857
-    y1: 233
-    x2: 1242
-    y2: 456
+    x1: 805
+    y1: 212
+    x2: 1196
+    y2: 451
   right:
     x1: 656
     y1: 208
