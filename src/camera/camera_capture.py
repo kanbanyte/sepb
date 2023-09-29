@@ -44,7 +44,7 @@ def open_camera(camera_config):
 
 	return camera
 
-def logical_lens_to_zed_lens(logical_lens):
+def __logical_lens_to_zed_lens(logical_lens):
 	"""
 	Converts logical lens enum value to enum used by the ZED SDK.
 
@@ -75,8 +75,8 @@ def capture_image(camera, camera_lens=LogicalLens.left):
 	image = sl.Mat()
 	error_code = camera.grab()
 	if error_code == sl.ERROR_CODE.SUCCESS:
-		camera.retrieve_image(image, logical_lens_to_zed_lens(camera_lens))
-   
+		camera.retrieve_image(image, __logical_lens_to_zed_lens(camera_lens))
+
 		# - get_data() turns a sl.Mat object into a numpy array
 		# - accessing the image as an array without copying it will crash the program later due to unknown reasons
 		image_data = numpy.copy(image.get_data())
@@ -106,8 +106,6 @@ def get_rgb_cropped_image(camera, crop_box, lens):
 	# current_time = datetime.now().strftime("%H-%M-%S")
 	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)
 
-	# TODO: does the camera needs to be closed here? (Any leaks or performance issue)
-	# camera.close()
 	return cropped_image
 
 def read_crop_box(crop_box_config):
