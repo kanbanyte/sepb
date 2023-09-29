@@ -26,7 +26,10 @@ def open_camera(camera_config):
 
 	init_params = sl.InitParameters()
 	init_params.camera_resolution = sl.RESOLUTION.HD2K
+
+	print("Camera flip mode turned ON")
 	init_params.camera_image_flip = sl.FLIP_MODE.ON
+
 	camera = sl.Camera()
 	open_result = camera.open(init_params)
 	if open_result != sl.ERROR_CODE.SUCCESS:
@@ -61,7 +64,7 @@ def __logical_lens_to_zed_lens(logical_lens):
 	else:
 		raise ValueError(f"Unknown logical lens value: {logical_lens}")
 
-def capture_image(camera, camera_lens=LogicalLens.left):
+def capture_image(camera, lens=LogicalLens.right):
 	"""
 	Captures an image using the specified camera object.
 
@@ -75,7 +78,7 @@ def capture_image(camera, camera_lens=LogicalLens.left):
 	image = sl.Mat()
 	error_code = camera.grab()
 	if error_code == sl.ERROR_CODE.SUCCESS:
-		camera.retrieve_image(image, __logical_lens_to_zed_lens(camera_lens))
+		camera.retrieve_image(image, __logical_lens_to_zed_lens(lens))
 
 		# - get_data() turns a sl.Mat object into a numpy array
 		# - accessing the image as an array without copying it will crash the program later due to unknown reasons
@@ -84,13 +87,14 @@ def capture_image(camera, camera_lens=LogicalLens.left):
 	else:
 		raise ValueError(f"Failed to capture image: {error_code}")
 
-def get_rgb_cropped_image(camera, crop_box, lens):
+def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.right):
 	"""
 	Takes a photo with the camera and applies a crop box to it.
 
 	Args:
 		camera_config (dict): dictionary containing camera settings.
 		crop_box (x1, y1, x2, y2): tuple containing the crop box coordinates in the (left, top, right, bottom) format.
+		lens (LogicalLens): logical lens used to capture the image.
 
 	Returns:
 		np.array: The cropped image.
