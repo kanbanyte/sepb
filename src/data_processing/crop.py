@@ -175,7 +175,7 @@ def define_crop_box_with_camera():
         lens = LogicalLens.right
     else:
         raise ValueError(f"Invalid lens choice: {lens_input}. Input must be 'l' or 'r'")
-    
+
     image = capture_image(camera, lens)
     camera.close()
     return draw_crop_box_on_image(image)
@@ -210,15 +210,21 @@ def main():
 Select how a crop box is defined:
 - 0: Define a crop box using a template image and apply it to selected images
 - 1: Define a crop box by entering the xyxy coordinates (left-top-right-bottom) in the console and apply it to selected images
-- 2: Define a crop box using an image captured from the ZED camera
+- 2: Define a crop box using an image captured from the ZED camera and apply it to selected images
     """)
     choice = int(input("Enter your choice (0, 1 or 2): "))
     if choice == 0:
-        apply_crop_and_save(define_crop_box_with_image())
+        crop_box = define_crop_box_with_image()
+        apply_crop_and_save(crop_box)
+        print(f"Defined crop box: {(crop_box)}")
     elif choice == 1:
-        apply_crop_and_save(define_crop_box_with_console())
+        crop_box = define_crop_box_with_console()
+        apply_crop_and_save(crop_box)
+        print(f"Defined crop box: {(crop_box)}")
     elif choice == 2:
-        print(f"Defined crop box: {define_crop_box_with_camera()}")
+        crop_box = define_crop_box_with_camera()
+        apply_crop_and_save(crop_box)
+        print(f"Defined crop box: {(crop_box)}")
     else:
         raise ValueError(f"Invalid choice")
 
