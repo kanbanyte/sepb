@@ -6,12 +6,13 @@
 
 * [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflowpy)
 * [convert_case.py](#convert_casepy)
-* [copy_by_interval.ps1](#copy-by-intervalps1)
+* [copy-by-interval.ps1](#copy-by-intervalps1)
 * [crop.py](#croppy)
 * [image_processing.py](#image_processingpy)
 * [random_crop.py](#random_croppy)
 * [rename.ps1](#renameps1)
 * [slice.py](#slicepy)
+* [Box_Pos.py](#box_pospy)
 
 <!-- /TOC -->
 
@@ -56,3 +57,7 @@ The renamed images will be copied into an output folder selected by the user.
 ## slice.py
 Slice the images into a grid of 4 columns and 6 rows, corresponding to the structure of the 2 chip trays.\
 This is to check how tight the crop box is so we can translate the concrete coordinates of bounding boxes into the position matrix easily.
+
+## Box_Pos.py
+Used regularly by sample programs to translate chip bounding boxes into usable numerical data.
+Generally not recommended to be calling this alone outside of testing applications
