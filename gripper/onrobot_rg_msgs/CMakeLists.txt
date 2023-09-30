@@ -6,14 +6,14 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(std_msgs REQUIRED)
 
 set(msg_files
-  "msg/OnRobotRGInput.msg"
-  "msg/OnRobotRGOutput.msg"
-  "srv/SetCommand.srv"
-) 
+	"msg/OnRobotRGInput.msg"
+	"msg/OnRobotRGOutput.msg"
+	"srv/SetCommand.srv"
+)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-    ${msg_files}
-    DEPENDENCIES std_msgs
+	${msg_files}
+	DEPENDENCIES std_msgs
 )
 
 ament_export_dependencies(rosidl_default_runtime)
