@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 from data_processing.convert_case import convert_case_bounding_boxes
-from data_processing.Tray_Pos import update_tray_positions, determine_tray_movement
+from data_processing.Tray_Pos import determine_move
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from models.python.object_detection_model import ObjectDetectionModel
@@ -71,12 +71,8 @@ Select a model to run:
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 				detections = run_inference(model, cropped_image, output_path)
 
-				# runs through each detected object and adds it to an internal database of stored positions
-				for class_index, detected_objects in detections.items():
-					for i, detected_tray in enumerate(detected_objects):
-						update_tray_positions(detected_tray.bounding_box, model.classes[class_index])
-				# returns appropriate move command
-				print(determine_tray_movement())
+				print(f"Best Tray movement is: {determine_move(detections, model)}")
+
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))
