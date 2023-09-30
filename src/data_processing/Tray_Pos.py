@@ -22,16 +22,16 @@ class Traystate(Enum):
 	empty = 2
 	part_full = 3
 
-'''
-	Returns a dictionary of the tray states
-	Args:
-		detections (dict): dictionary of detected objects
-		model (ObjectDetectionModel): model used to detect objects
-	Returns:
-		dict: dictionary of tray states
-'''
-def __get_states(detections, model):
 
+def __get_states(detections, model):
+	'''
+		Returns a dictionary of the tray states
+		Args:
+			detections (dict): dictionary of detected objects
+			model (ObjectDetectionModel): model used to detect objects
+		Returns:
+			dict: dictionary of tray states
+	'''
 	# Tray names in string for reference later
 	__tray2 = "tray 2"
 	__tray1 = "tray 1"
@@ -43,8 +43,14 @@ def __get_states(detections, model):
 		__assembly: Traystate.not_present
 	}
 
+	# detections is a dictionary of detected objects, in this format:
+	# dict_items([(0, [DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))]), (1, [DetectedObject(confidence=0.950691819190979, bounding_box=(344, 293, 675, 574))])])
 	for class_index, detected_objects in detections.items():
+		# detected_objects is a list of DetectedObject, in this format:
+		# [DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))]
 		for detected_tray in detected_objects:
+			# detected_tray is a DetectedObject, in this format:
+			# DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))
 			x1, y1, x2, y2 = detected_tray.bounding_box
 			if x1 >= 0 and y1 >= 140 and x2 <= 335 and y2 <= 400:
 				if model.classes[class_index].lower() == "empty":
@@ -76,6 +82,14 @@ def __get_states(detections, model):
 	return __tray_states
 
 def __get_movement(tray_states):
+	'''
+	Returns the movement of the tray by taking in a dictionary of states
+
+	Args:
+		tray_states (dict): dictionary of tray states
+	Returns:
+		TrayMovement: movement of the tray
+'''
 	if tray_states.get("assembly") == Traystate.not_present:
 		if tray_states.get("tray 1") == Traystate.full:
 			return TrayMovement.move_tray1_assembly
@@ -90,5 +104,14 @@ def __get_movement(tray_states):
 		return TrayMovement.no_move
 
 def determine_move(detections, model):
+	'''
+		Returns the movement of the tray by taking in a dictionary of detected objects and a model
+
+		Args:
+			detections (dict): dictionary of detected objects
+			model (ObjectDetectionModel): model used to detect objects
+		Returns:
+			TrayMovement: movement of the tray
+	'''
 	tray_states = __get_states(detections, model)
 	return __get_movement(tray_states)
