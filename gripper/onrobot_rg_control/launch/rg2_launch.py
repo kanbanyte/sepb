@@ -19,17 +19,17 @@ def generate_launch_description():
 		DeclareLaunchArgument("changer_addr", default_value="65"),
 		DeclareLaunchArgument("dummy", default_value="false"),
 		Node(
-			name='OnRobotRGStatusListener',
 			package='onrobot_rg_control',
+			executable='rg2_listener.py',
+			name='rg2_listener',
 			namespace=namespace,
-			executable='OnRobotRGStatusListener.py',
 			parameters=[{'gripper' : gripper,}]
 		),
 		Node(
-			name='OnRobotRGTcpNode',
 			package='onrobot_rg_control',
+			executable='rg2_tcp.py',
+			name='rg2_tcp',
 			namespace=namespace,
-			executable='OnRobotRGTcpNode.py',
 			parameters=[{
 				'ip' : ip,
 				'port' : port,
@@ -37,12 +37,5 @@ def generate_launch_description():
 				'changer_addr':changer_addr,
 				'dummy' : dummy,
 			}]
-		),
-		Node(
-			name='OnRobotRGSimpleControllerServer',
-			package='onrobot_rg_control',
-			namespace=namespace,
-			executable='OnRobotRGSimpleControllerServer.py',
-			parameters=[{'gripper' : gripper,}]
 		)
 	])

@@ -10,7 +10,7 @@ ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 # build with `colcon build --symlink-install` to symlink these
 # install(PROGRAMS
-# 	src/onrobot_rg_modbus_tcp/comModbusTcp.py
+# 	src/onrobot_rg_modbus_tcp/rg2_modbus.py
 # 	DESTINATION lib/${PROJECT_NAME}
 # )
 

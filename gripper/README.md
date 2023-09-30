@@ -26,10 +26,12 @@ sudo apt install ros-humble-ros-control ros-humble-ros-controllers
 ```
 
 ```bash
+# exports ROS_DOMAIN_ID=10 and sources /opt/ros/humble/setup.bash
 init_ros
 ```
 
 ```bash
+# might be fine without "--ignore-packages-from-source" included?
 rosdep install -i --from-paths src --ignore-packages-from-source --rosdistro humble -y
 ```
 
@@ -41,6 +43,11 @@ colcon build --symlink-install
 colcon build --packages-select onrobot_rg_control
 ```
 
+```bash
+# currently unsure if this will actually build though...
+colcon build --packages-select onrobot_rg_modbus_tcp
+```
+
 ## Usage
 1. Connect the cable between Compute Box and Tool Changer.
 2. Connect an ethernet cable between Compute Box and your computer.
@@ -50,34 +57,40 @@ colcon build --packages-select onrobot_rg_control
 #### Send motion commands
 ##### Interactive mode
 ```bash
-ros2 launch onrobot_rg_control bringup.launch gripper:=rg2 ip:=172.21.0.121
+# might be able to execute line without "gripper:=rg2 ip:=172.21.0.121" appended to the end?
+ros2 launch onrobot_rg_control rg2_launch.py gripper:=rg2 ip:=172.21.0.121
 ```
 
 ```bash
-ros2 run onrobot_rg_control OnRobotRGSimpleController.py
+ros2 run onrobot_rg_control rg2_controller.py
 ```
 
 ##### ROS2 service call
 ```bash
-ros2 launch onrobot_rg_control bringup.launch gripper:=rg2 ip:=172.21.0.121
+# might be server_launch.py instead?
+ros2 launch onrobot_rg_control rg2_launch.py gripper:=rg2 ip:=172.21.0.121
 ```
 
 ```bash
-ros2 run onrobot_rg_control OnRobotRGSimpleControllerServer.py
+ros2 run onrobot_rg_control rg2_server.py
 ```
 
 ```bash
+# close grip?
 ros2 service call /onrobot_rg/set_command c
 ```
 
 ```bash
+# open grip?
 ros2 service call /onrobot_rg/set_command o
 ```
 
 ```bash
+# currently unknown...
 ros2 service call /onrobot_rg/set_command '!!str 300'
 ```
 
 ```bash
+# restart grip but not entire cobot?
 ros2 service call /onrobot_rg/restart_power
 ```

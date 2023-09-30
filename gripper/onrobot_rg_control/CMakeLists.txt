@@ -13,10 +13,10 @@ ament_python_install_package(${PROJECT_NAME})
 # Install Python executables
 # build with `colcon build --symlink-install` to symlink these
 install(PROGRAMS
-	nodes/OnRobotRGSimpleController.py
-	nodes/OnRobotRGStatusListener.py
-	nodes/OnRobotRGTcpNode.py
-	nodes/OnRobotRGSimpleControllerServer.py
+	nodes/rg2_controller.py
+	nodes/rg2_listener.py
+	nodes/rg2_tcp.py
+	nodes/rg2_server.py
 	DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -2,8 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
-import onrobot_rg_modbus_tcp.comModbusTcp
-from onrobot_rg_control.baseOnRobotRG import OnRobotBaseRG
+import onrobot_rg_modbus_tcp.rg2_modbus
+from onrobot_rg_control.rg2_base import OnRobotBaseRG
 from onrobot_rg_msgs.msg import OnRobotRGInput
 from onrobot_rg_msgs.msg import OnRobotRGOutput
 from std_srvs.srv import Trigger
@@ -19,7 +19,7 @@ class OnRobotRGTcpNode(OnRobotBaseRG):
 		self.dummy = self.declare_parameter('/onrobot/dummy', False).get_parameter_value().bool_value
 
 		# Gripper is a RG gripper with a Modbus/TCP connection
-		self.client = onrobot_rg_modbus_tcp.comModbusTcp.communication(self.dummy)
+		self.client = onrobot_rg_modbus_tcp.rg2_modbus.communication(self.dummy)
 		self.prev_msg = []
 
 		# the communication lib needs access to the node's logger

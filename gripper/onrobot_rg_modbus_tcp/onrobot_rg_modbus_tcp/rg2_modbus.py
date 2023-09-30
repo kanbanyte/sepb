@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''Module comModbusTcp: defines a class which communicates with OnRobot Grippers using the Modbus/TCP protocol.'''
+'''Module rg2_modbus: defines a class which communicates with OnRobot Grippers using the Modbus/TCP protocol.'''
 
 import sys
 import rclpy
