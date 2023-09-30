@@ -31,14 +31,14 @@ def main():
 	file_path = select_file_from_dialog("Select YAML configuration file", ["yaml"])
 	if not file_path:
 		raise ValueError("No configuration file selected")
- 
+
 	save_output_choice = input("Save output image (y/any key)?: ")
 	output_path = None
 	if save_output_choice == 'y':
 		output_path = select_folder_from_dialog("Select output image folder")
 		if not output_path:
 			raise ValueError("Selected output path is empty")
-		
+
 		if not os.path.exists(output_path):
 			os.mkdir(output_path)
 
@@ -62,7 +62,7 @@ Select a model to run:
 			print("Closing camera")
 			camera.close()
 			break
-		
+
 		try:
 			if choice == '0':
 				crop_boxes = config.get('chip_slot_crop_box')
@@ -83,7 +83,7 @@ Select a model to run:
 				right_crop_box =  read_crop_box(crop_boxes.get('right'))
 				cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.right)
 				detections = run_inference(model, cropped_image, right_lens_output_dir)
-    
+
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('right'))
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
