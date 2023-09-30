@@ -73,7 +73,7 @@ Select a model to run:
 					os.mkdir(left_lens_output_dir)
 				print(left_lens_output_dir)
 				left_crop_box = read_crop_box(crop_boxes.get('left'))
-				cropped_image = get_rgb_cropped_image(camera, left_crop_box, LogicalLens.left)
+				cropped_image = get_rgb_cropped_image(camera, left_crop_box, LogicalLens.LEFT)
 				detections = run_inference(model, cropped_image, left_lens_output_dir)
 
 				right_lens_output_dir = os.path.join(output_path, "right")
@@ -81,18 +81,18 @@ Select a model to run:
 					os.mkdir(right_lens_output_dir)
 				print(right_lens_output_dir)
 				right_crop_box =  read_crop_box(crop_boxes.get('right'))
-				cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.right)
+				cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.RIGHT)
 				detections = run_inference(model, cropped_image, right_lens_output_dir)
 
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('right'))
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
-				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.right)
+				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.RIGHT)
 				detections = run_inference(model, cropped_image, output_path)
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('right'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))
-				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.right)
+				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.RIGHT)
 				detections = run_inference(model, cropped_image, output_path)
 
 				if len(detections.items()) == 0:

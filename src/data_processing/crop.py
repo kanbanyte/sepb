@@ -170,9 +170,9 @@ def define_crop_box_with_camera():
     lens_input = input("Which logical lens (affected by flip mode) would you like to use? (l/r): ")
     lens = None
     if lens_input == 'l':
-        lens = LogicalLens.left
+        lens = LogicalLens.LEFT
     elif lens_input == 'r':
-        lens = LogicalLens.right
+        lens = LogicalLens.RIGHT
     else:
         raise ValueError(f"Invalid lens choice: {lens_input}. Input must be 'l' or 'r'")
 

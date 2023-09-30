@@ -1,3 +1,3 @@
 from enum import Enum
 
-LogicalLens = Enum("LogicalLens", "left right")
+LogicalLens = Enum("LogicalLens", ["LEFT", "RIGHT"])

@@ -57,14 +57,14 @@ def __logical_lens_to_zed_lens(logical_lens):
 	Returns:
 		sl.VIEW: the logical lens used.
 	"""
-	if logical_lens == LogicalLens.right:
+	if logical_lens == LogicalLens.RIGHT:
 		return sl.VIEW.RIGHT
-	elif logical_lens == LogicalLens.left:
+	elif logical_lens == LogicalLens.LEFT:
 		return sl.VIEW.LEFT
 	else:
 		raise ValueError(f"Unknown logical lens value: {logical_lens}")
 
-def capture_image(camera, lens=LogicalLens.right):
+def capture_image(camera, lens=LogicalLens.RIGHT):
 	"""
 	Captures an image using the specified camera object.
 
@@ -87,7 +87,7 @@ def capture_image(camera, lens=LogicalLens.right):
 	else:
 		raise ValueError(f"Failed to capture image: {error_code}")
 
-def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.right):
+def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
 	"""
 	Takes a photo with the camera and applies a crop box to it.
 
