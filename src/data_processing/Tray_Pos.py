@@ -124,13 +124,15 @@ def determine_tray_movement():
 # get_position_from_bounding_box([340, 288, 685, 575], "full")
 # # calls the check_move function, this returns the relevant move text
 # print(check_move())
-def get_states(detections, model):
-	class Traystate(enum):
-		not_present = 0
-		full = 1
-		empty = 2
-		part_full = 3
 
+
+class Traystate(Enum):
+	not_present = 0
+	full = 1
+	empty = 2
+	part_full = 3
+
+def __get_states(detections, model):
 	__tray2 = "tray 2"
 	__tray1 = "tray 1"
 	__assembly = "assembly"
@@ -172,6 +174,20 @@ def get_states(detections, model):
 					__tray_states.update({__tray1: Traystate.not_present})
 	return __tray_states
 
+def __get_movement(tray_states):
+	if tray_states.get("assembly") == Traystate.not_present:
+		if tray_states.get("tray 1") == Traystate.full:
+			return TrayMovement.move_tray1_assembly
+		elif tray_states.get("tray 2") == Traystate.full:
+			return TrayMovement.move_tray2_assembly
+	elif tray_states.get("assembly") == Traystate.empty:
+		if tray_states.get("tray 1") == Traystate.not_present:
+			return TrayMovement.move_assembly_tray1
+		elif tray_states.get("tray 2") == Traystate.not_present:
+			return TrayMovement.move_assembly_tray2
+	else:
+		return TrayMovement.no_move
 
 def determine_move(detections, model):
-	pass
+	tray_states = __get_states(detections, model)
+	return __get_movement(tray_states)
