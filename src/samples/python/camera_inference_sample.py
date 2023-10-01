@@ -4,6 +4,7 @@ from datetime import datetime
 from camera.camera_lens import LogicalLens
 
 from data_processing.convert_case import convert_case_bounding_boxes
+from data_processing.box_pos import get_chip_slot_number
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from models.python.object_detection_model import ObjectDetectionModel
@@ -68,21 +69,32 @@ Select a model to run:
 				crop_boxes = config.get('chip_slot_crop_box')
 				model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 
+				# run inference using the logical left lens and calculate the chips' positions
 				left_lens_output_dir = os.path.join(output_path, "left")
 				if not os.path.exists(left_lens_output_dir):
 					os.mkdir(left_lens_output_dir)
 				print(left_lens_output_dir)
 				left_crop_box = read_crop_box(crop_boxes.get('left'))
 				cropped_image = get_rgb_cropped_image(camera, left_crop_box, LogicalLens.LEFT)
-				detections = run_inference(model, cropped_image, left_lens_output_dir)
+				left_lens_detections = run_inference(model, cropped_image, left_lens_output_dir)[0]
+				left_lens_positions = []
+				for detected_chip in left_lens_detections:
+					left_lens_positions.append(get_chip_slot_number(detected_chip.bounding_box))
+				print(f"Detected {len(left_lens_positions)} chips at position: {left_lens_positions}")
 
+				# run inference using the logical right lens and calculate the chips' positions
 				right_lens_output_dir = os.path.join(output_path, "right")
 				if not os.path.exists(right_lens_output_dir):
 					os.mkdir(right_lens_output_dir)
 				print(right_lens_output_dir)
 				right_crop_box =  read_crop_box(crop_boxes.get('right'))
 				cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.RIGHT)
-				detections = run_inference(model, cropped_image, right_lens_output_dir)
+				right_lens_detections = run_inference(model, cropped_image, right_lens_output_dir)[0]
+				right_lens_positions = []
+				for detected_chip in right_lens_detections:
+					right_lens_positions.append(get_chip_slot_number(detected_chip.bounding_box))
+				print(f"Detected {len(right_lens_positions)} chips at position: {right_lens_positions}")
+
 
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('right'))
