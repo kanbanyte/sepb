@@ -54,8 +54,8 @@ def main():
 ===============================================
 Select a model to run:
 \t- 0: run chip detection model using both lenses
-\t- 1: run tray detection model using physically left lens
-\t- 2: run case detection model using physically left lens
+\t- 1: run tray detection model using physical left lens
+\t- 2: run case detection model using physical left lens
 ''')
 		choice = input("Choose model to run. Press `q` to quit: ")
 		if choice == 'q':
