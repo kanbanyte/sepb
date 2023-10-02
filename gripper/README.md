@@ -10,19 +10,12 @@ ROS drivers for OnRobot Grippers.
 
 ## Installation
 ```bash
-cd ~/Documents/repos/sepb/gripper/src
+cd ~/Documents/repos/sepb/gripper
 ```
 
 ```bash
-git clone https://github.com/takuya-ki/onrobot.git --depth 1
-```
-
-```bash
-cd ..
-```
-
-```bash
-sudo apt install ros-humble-ros-control ros-humble-ros-controllers
+# cannot be found?
+# sudo apt install ros-humble-ros-control ros-humble-ros-controllers
 ```
 
 ```bash
@@ -40,12 +33,16 @@ colcon build --symlink-install
 ```
 
 ```bash
+# also works...
+colcon build
+```
+
+```bash
 colcon build --packages-select onrobot_rg_control
 ```
 
 ```bash
-# currently unsure if this will actually build though...
-colcon build --packages-select onrobot_rg_modbus_tcp
+# colcon build --packages-select onrobot_rg_modbus_tcp
 ```
 
 ## Usage
@@ -58,7 +55,8 @@ colcon build --packages-select onrobot_rg_modbus_tcp
 ##### Interactive mode
 ```bash
 # might be able to execute line without "gripper:=rg2 ip:=172.21.0.121" appended to the end?
-ros2 launch onrobot_rg_control rg2_launch.py gripper:=rg2 ip:=172.21.0.121
+# ros2 launch onrobot_rg_control rg2_launch.py gripper:=rg2 ip:=172.21.0.121
+ros2 launch onrobot_rg_control rg2_launch.py
 ```
 
 ```bash
@@ -68,7 +66,8 @@ ros2 run onrobot_rg_control rg2_controller.py
 ##### ROS2 service call
 ```bash
 # might be server_launch.py instead?
-ros2 launch onrobot_rg_control rg2_launch.py gripper:=rg2 ip:=172.21.0.121
+# ros2 launch onrobot_rg_control rg2_launch.py gripper:=rg2 ip:=172.21.0.121
+ros2 launch onrobot_rg_control server_launch.py
 ```
 
 ```bash
