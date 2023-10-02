@@ -15,11 +15,11 @@ from pick_place_interfaces.srv import Chip
 class CameraServer(Node):
 	def __init__(self):
 		super().__init__('camera_server')
-		self.case_srv = self.create_service(Case, 'case', self.add_two_ints_callback)
+		self.case_srv = self.create_service(Case, 'case', self.get_case_position)
 		# self.chip_srv = self.create_service(Chip, 'chip', self.add_two_ints_callback)
 		# self.tray_srv = self.create_service(Tray, 'tray', self.add_two_ints_callback)
 
-	def add_two_ints_callback(self, request, response):
+	def get_case_position(self, request, response):
 		# response.sum = request.a + request.b
 		# self.get_logger().info('Incoming request\na: %d b: %d' % (request.a, request.b))
 
@@ -34,10 +34,14 @@ class CameraServer(Node):
 
 		if len(detections.items()) == 0:
 			response.case_number = -1
+		else:
+			# the case detection model only has 1 class ("Case")
+			detected_cases = detections[0]
 
-		# return response
-		detected_case = detections[0][0]
-		response.case_number = convert_case_bounding_boxes(detected_case)
+			# we only pick the first detected case
+			# if the detection dictionary has a class as its key, that class is guaranteed to have at least 1 detection
+			detected_case = detected_cases[0]
+			response.case_number = convert_case_bounding_boxes(detected_case)
+
 		self.get_logger().info(f"Request: {request}, Case Number: {response.case_number}")
-
 		return response
