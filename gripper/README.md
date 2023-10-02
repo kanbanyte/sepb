@@ -24,25 +24,16 @@ init_ros
 ```
 
 ```bash
-# might be fine without "--ignore-packages-from-source" included?
-rosdep install -i --from-paths src --ignore-packages-from-source --rosdistro humble -y
-```
-
-```bash
-colcon build --symlink-install
-```
-
-```bash
-# also works...
+# colcon build --symlink-install
 colcon build
 ```
 
 ```bash
-colcon build --packages-select onrobot_rg_control
+rosdep install -i --from-paths src --rosdistro humble -y
 ```
 
 ```bash
-# colcon build --packages-select onrobot_rg_modbus_tcp
+source install/local_setup.bash
 ```
 
 ## Usage
