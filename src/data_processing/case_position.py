@@ -15,7 +15,7 @@ def convert_case_bounding_boxes(detected_case):
 	the height of the image is around 514px.
 
 	Args:
-		list(detected_object): a list of detected cases.
+		detected_object: detected case.
 
 	Returns:
 		int|None: Case position in the rack which ranges from 1 to 17 or None if the input cannot be converted to a valid position.
@@ -26,8 +26,10 @@ def convert_case_bounding_boxes(detected_case):
 	_, _, _, detected_case_bottom_y = detected_case.bounding_box
 	# without subtracting the value from __POSITION_COUNT, the function would return a position in reverse order.
 	# 1 is added to the value to make sure the "inverted" position is correct
-	position = __POSITION_COUNT - round((detected_case_bottom_y - __TOP_Y_COORDINATE)/ __POSITION_GAP) + 1
+	position = __POSITION_COUNT - round((detected_case_bottom_y - __TOP_Y_COORDINATE)/ __POSITION_GAP)
 	if position < 1 or position > __POSITION_COUNT:
 		return None
 
 	return position
+
+# 
