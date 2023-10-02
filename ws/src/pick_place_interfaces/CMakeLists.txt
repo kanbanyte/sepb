@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.8)
+project(pick_place_interfaces)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# if(NOT WIN32)
+# 	add_definitions(-std=c++11)
+# endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+set(srv_files
+	"srv/Case.srv"
+	"srv/Chip.srv"
+	"srv/Tray.srv"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+	${srv_files}
+)
+
+ament_export_dependencies(rosidl_default_runtime)
+
+ament_package()
