@@ -24,12 +24,10 @@ def convert_case_bounding_boxes(detected_case):
 		raise ValueError("Detected case object is null")
 
 	_, _, _, detected_case_bottom_y = detected_case.bounding_box
+
 	# without subtracting the value from __POSITION_COUNT, the function would return a position in reverse order.
-	# 1 is added to the value to make sure the "inverted" position is correct
 	position = __POSITION_COUNT - round((detected_case_bottom_y - __TOP_Y_COORDINATE)/ __POSITION_GAP)
 	if position < 1 or position > __POSITION_COUNT:
 		return None
 
 	return position
-
-# 
