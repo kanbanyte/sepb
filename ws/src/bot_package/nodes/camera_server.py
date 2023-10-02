@@ -1,13 +1,12 @@
 from rclpy.node import Node
 
 # TODO: fix import to avoid * imports
-from camera.camera_capture import *
-from models.python.object_detection_model import *
-from models.python.detected_object import *
-from data_processing.case_position import *
-from data_processing.tray_position import *
-from data_processing.chip_position import *
-from util.file_reader import *
+from camera.camera_capture import read_crop_box, get_rgb_cropped_image, LogicalLens, open_camera
+from models.python.object_detection_model import ObjectDetectionModel
+from data_processing.case_position import convert_case_bounding_boxes
+from data_processing.tray_position import determine_move
+from data_processing.chip_position import get_chip_slot_number
+from util.file_reader import read_yaml
 
 from pick_place_interfaces.srv import Case
 from pick_place_interfaces.srv import Tray
@@ -18,20 +17,24 @@ class CameraServer(Node):
 		super().__init__('camera_server')
 		self.case_srv = self.create_service(Case, 'case', self.get_case_position)
 		self.chip_srv = self.create_service(Chip, 'chip', self.get_chip_position)
-		# self.tray_srv = self.create_service(Tray, 'tray', self.add_two_ints_callback)
-
-	def get_case_position(self, request, response):
-		# response.sum = request.a + request.b
-		# self.get_logger().info('Incoming request\na: %d b: %d' % (request.a, request.b))
+		self.tray_srv = self.create_service(Tray, 'tray', self.get_tray_movement)
 
 		# TODO: move this path to the startup argument list
 		config_file_path = "/home/cobot/Documents/models/config.yaml"
-		config = read_yaml(config_file_path)
-		crop_box = read_crop_box(config.get('case_crop_box').get('right'))
-		model = ObjectDetectionModel(config.get('model').get('detect_case'))
+		self.config = read_yaml(config_file_path)
 
-		camera = open_camera(config.get('camera'))
-		cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.RIGHT)
+		# TODO: investigate a way to call camera.close() before destroying the node
+		self.camera = open_camera(self.config.get('camera'))
+
+		# TODO: check this initializing models on startup cause any errors
+		# self.case_model = ObjectDetectionModel(self.config.get('model').get('detect_case'))
+		# self.chip_model = ObjectDetectionModel(self.config.get('model').get('detect_chip'))
+		# self.tray_model = ObjectDetectionModel(self.config.get('model').get('detect_tray'))
+
+	def get_case_position(self, request, response):
+		crop_box = read_crop_box(self.config.get('case_crop_box').get('right'))
+		model = ObjectDetectionModel(self.config.get('model').get('detect_case'))
+		cropped_image = get_rgb_cropped_image(self.camera, crop_box, LogicalLens.RIGHT)
 		detections = model.run_inference(cropped_image)
 
 		if len(detections.items()) == 0:
@@ -49,23 +52,22 @@ class CameraServer(Node):
 		return response
 
 	def get_chip_position(self, request, response):
-		# TODO: move this path to the startup argument list
-		config_file_path = "/home/cobot/Documents/models/config.yaml"
-		config = read_yaml(config_file_path)
-		crop_boxes = config.get('chip')
-		camera = open_camera(config.get('camera'))
-		model = ObjectDetectionModel(config.get('model').get('detect_case'))
+		crop_boxes = self.config.get('chip')
+		model = ObjectDetectionModel(self.config.get('model').get('detect_case'))
 
+		# get chip positions from image captured with logical left lens
 		left_crop_box = read_crop_box(crop_boxes.get('left'))
-		left_cropped_image = get_rgb_cropped_image(camera, left_crop_box, LogicalLens.LEFT)
+		left_cropped_image = get_rgb_cropped_image(self.camera, left_crop_box, LogicalLens.LEFT)
 		left_detections = model.run_inference(left_cropped_image)
 		left_chip_positions = get_chip_slot_number(left_chip_positions[0]) if len(left_detections) > 0 else []
 
+		# get chip positions from image captured with logical right lens
 		right_crop_box = read_crop_box(crop_boxes.get('right'))
-		right_cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.RIGHT)
+		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
 		right_detections = model.run_inference(right_cropped_image)
 		right_chip_positions = get_chip_slot_number(left_chip_positions[0]) if len(right_detections) > 0 else []
 
+		# combine results from both lens to reduce the chance of missing a chip
 		chip_positions =  set(left_chip_positions + right_chip_positions)
 		self.get_logger().info(f"Detected chips at the following positions: {chip_positions}")
 
@@ -78,14 +80,11 @@ class CameraServer(Node):
 		return response
 
 	def get_tray_movement(self, request, response):
-		config_file_path = "/home/cobot/Documents/models/config.yaml"
-		config = read_yaml(config_file_path)
-		crop_boxes = config.get('tray')
-		camera = open_camera(config.get('camera'))
-		model = ObjectDetectionModel(config.get('model').get('detect_case'))
+		crop_boxes = self.config.get('tray')
+		model = ObjectDetectionModel(self.config.get('model').get('detect_case'))
 
 		right_crop_box = read_crop_box(crop_boxes.get('right'))
-		right_cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.RIGHT)
+		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
 		right_detections = model.run_inference(right_cropped_image)
 
 		best_move = determine_move(right_detections, model)
