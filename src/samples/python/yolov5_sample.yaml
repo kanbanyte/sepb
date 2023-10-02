@@ -5,7 +5,7 @@ model:
       width: 640
       height: 640
     iou: 0.7
-    confidence: 0.25
+    confidence: 0.5
     max_det: 48
   detect_white_tray:
     file: "/path/to/model"
