@@ -5,15 +5,15 @@
 <!-- TOC -->
 
 * [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflowpy)
-* [convert_case.py](#convert_casepy)
+* [case_position.py](#case_positionpy)
 * [copy-by-interval.ps1](#copy-by-intervalps1)
 * [crop.py](#croppy)
 * [image_processing.py](#image_processingpy)
 * [random_crop.py](#random_croppy)
 * [rename.ps1](#renameps1)
 * [slice.py](#slicepy)
-* [Tray_pos.py](#tray_pospy)
-* [Box_Pos.py](#box_pospy)
+* [tray_position.py](#tray_positionpy)
+* [chip_position.py](#chip_positionpy)
 
 <!-- /TOC -->
 
@@ -21,7 +21,7 @@
 Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
 This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
 
-## convert_case.py
+## case_position.py
 Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.\
 This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and
 the height of the image is around 514px.
@@ -60,11 +60,11 @@ Slice the images into a grid of 4 columns and 6 rows, corresponding to the struc
 This is to check how tight the crop box is so we can translate the concrete coordinates of bounding boxes into the position matrix easily.
 
 
-## Tray_pos.py
+## tray_position.py
 Used regularly by sample programs to translate tray bounding boxes into readable formats.
 It is also used to determine what the next robot arm action, in relation to trays should be.
 Generally this application should be called from code rather than ran independently.
 
-## Box_Pos.py
+## chip_position.py
 Used regularly by sample programs to translate chip bounding boxes into usable numerical data.
 Generally not recommended to be calling this alone outside of testing applications

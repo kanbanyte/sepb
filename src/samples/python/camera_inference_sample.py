@@ -3,9 +3,9 @@ import time
 from datetime import datetime
 from camera.camera_lens import LogicalLens
 
-from data_processing.convert_case import convert_case_bounding_boxes
-from data_processing.Tray_Pos import determine_move
-from data_processing.box_pos import get_chip_slot_number
+from data_processing.case_position import convert_case_bounding_boxes
+from data_processing.tray_position import determine_move
+from data_processing.chip_position import get_chip_slot_number
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from models.python.object_detection_model import ObjectDetectionModel
