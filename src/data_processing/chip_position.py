@@ -10,21 +10,22 @@ def get_chip_col(x1,x2):
 	Returns:
 		int : the column number of the chip, or -1 for invalid column
 	'''
-	if x1 >= 4 and x2 <= 32:
+	xcen = (x1 + x2) / 2 #finds the center of the chips x coords
+	if xcen >= 4 and xcen <= 32:
 		return 0
-	if x1 >= 61 and x2 <= 81:
+	if xcen >= 61 and xcen <= 81:
 		return 1
-	if x1 >= 110 and x2 <= 130:
+	if xcen >= 110 and xcen <= 130:
 		return 2
-	if x1 >= 160 and x2 <= 177:
+	if xcen >= 160 and xcen <= 177:
 		return 3
-	if x1 >= 209 and x2 <= 228:
+	if xcen >= 209 and xcen <= 228:
 		return 4
-	if x1 >= 258 and x2 <= 274:
+	if xcen >= 258 and xcen <= 274:
 		return 5
-	if x1 >= 307 and x2 <= 324:
+	if xcen >= 307 and xcen <= 324:
 		return 6
-	if x1 >= 356 and x2 <= 376:
+	if xcen >= 356 and xcen <= 376:
 		return 7
 	else:
 		return -1
@@ -41,17 +42,18 @@ def get_chip_row(y1,y2):
 	Returns:
 		int : the row number of the chip, or -1 for invalid row
 	'''
-	if y1 >= 0 and y2 <= 40:
+	ycen = (y1 + y2) / 2 #finds the center of the chips y coords
+	if ycen >= 0 and ycen <= 40:
 		return 0
-	if y1 >= 39 and y2 <= 76:
+	if ycen >= 39 and ycen <= 76:
 		return 1
-	if y1 >= 70 and y2 <= 113:
+	if ycen >= 70 and ycen <= 113:
 		return 2
-	if y1 >= 112 and y2 <= 151:
+	if ycen >= 112 and ycen <= 151:
 		return 3
-	if y1 >= 150 and y2 <= 189:
+	if ycen >= 150 and ycen <= 189:
 		return 4
-	if y1 >= 184 and y2 <= 223:
+	if ycen >= 184 and ycen <= 223:
 		return 5
 	else:
 		return -1
