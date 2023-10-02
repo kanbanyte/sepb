@@ -24,7 +24,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'bot_node = bot_package.bot_node:main'
+            'bot_node = bot_package.bot_node:main',
+            'camera_node = bot_package.camera_node:main'
+
         ],
     },
 )

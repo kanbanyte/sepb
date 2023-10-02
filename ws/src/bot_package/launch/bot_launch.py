@@ -16,6 +16,13 @@ def generate_launch_description():
 				name="bot_positions",
 				parameters=[position_goals],
 				output="screen",
+			),
+			Node(
+				package="bot_package",
+				executable="camera_node",
+				name="bot_positions",
+				parameters=[position_goals],
+				output="screen",
 			)
 		]
 	)
