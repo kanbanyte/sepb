@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 
 from data_processing.convert_case import convert_case_bounding_boxes
+from data_processing.Tray_Pos import determine_move
 from data_processing.box_pos import get_chip_slot_number
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
@@ -19,10 +20,10 @@ def run_inference(detection_model, cropped_image, output_folder = None):
 	inference_time = time.perf_counter()
 
 	for class_index, detected_objects in detections.items():
-		for i, detected_object in enumerate(detected_objects):
+		for i, detected_tray in enumerate(detected_objects):
 			print(f"Object {i + 1}/{len(detected_objects)} in class {detection_model.classes[class_index]}: ")
-			print(f"\tConfidence: {detected_object.confidence}")
-			print(f"\tBox: {detected_object.bounding_box}")
+			print(f"\tConfidence: {detected_tray.confidence}")
+			print(f"\tBox: {detected_tray.bounding_box}")
 
 	print(f"Inference time: {inference_time - start_time:.4f} seconds")
 	return detections
@@ -75,6 +76,9 @@ Select a model to run:
 				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box)
 				detections = run_inference(model, cropped_image, output_path)
+
+				print(f"Best Tray movement is: {determine_move(detections, model)}")
+
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('left'))
 				model = ObjectDetectionModel(config.get('model').get('detect_case'))
