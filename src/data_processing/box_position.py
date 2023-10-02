@@ -1,16 +1,15 @@
-'''
-This method translated x coordinates into the appropriate chip column number.
-We start from 0 and go to 7. This is to be the correct format for the equation later
+def get_chip_col(x1,x2):
+	'''
+	This method translated x coordinates into the appropriate chip column number.
+	We start from 0 and go to 7. This is to be the correct format for the equation later
 
-	args:
+	Args:
 		x1 (int) : the x coordinate of the top left corner of the bounding box
 		x2 (int) : the x coordinate of the bottom right corner of the bounding box
 
-	returns:
+	Returns:
 		int : the column number of the chip, or -1 for invalid column
-'''
-
-def get_chip_col(x1,x2):
+	'''
 	if x1 >= 4 and x2 <= 32:
 		return 0
 	if x1 >= 61 and x2 <= 81:
@@ -30,18 +29,18 @@ def get_chip_col(x1,x2):
 	else:
 		return -1
 
-'''
-This method translated y coordinates into the appropriate chip row number.
-We start from 0 and go to 5. This is to be the correct format for the equation later
+def get_chip_row(y1,y2):
+	'''
+	This method translated y coordinates into the appropriate chip row number.
+	We start from 0 and go to 5. This is to be the correct format for the equation later
 
-	args:
+	Args:
 		y1 (int) : the y coordinate of the top left corner of the bounding box
 		y2 (int) : the y coordinate of the bottom right corner of the bounding box
 
-	returns:
+	Returns:
 		int : the row number of the chip, or -1 for invalid row
-'''
-def get_chip_row(y1,y2):
+	'''
 	if y1 >= 0 and y2 <= 40:
 		return 0
 	if y1 >= 39 and y2 <= 76:
@@ -57,18 +56,18 @@ def get_chip_row(y1,y2):
 	else:
 		return -1
 
-'''
-This method takes in the bounding box of a chip and returns the chip number
-The chip number is calculated by the equation (8 * row) + col + 1
-The above formulae was devised as the best way to communicate positions to the ROS team
+def get_chip_slot_number(bounding_box):
+	'''
+	This method takes in the bounding box of a chip and returns the chip number
+	The chip number is calculated by the equation (8 * row) + col + 1
+	The above formulae was devised as the best way to communicate positions to the ROS team
 
-	args:
+	Args:
 		bounding_box (list) : the bounding box of the chip
 
-	returns:
+	Returns:
 		int : the chip number, or None for invalid chip
-'''
-def get_chip_slot_number(bounding_box):
+	'''
 	x1, y1, x2, y2 = bounding_box
 	row = get_chip_row(y1, y2)
 	if row == -1:
