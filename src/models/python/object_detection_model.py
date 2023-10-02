@@ -50,7 +50,7 @@ class ObjectDetectionModel:
 
 	def run_inference(self, image, result_img_path=None):
 		"""
-		Draw a green bounding box on an image.
+		Run inference on the given image and optionally save the image to the specified file.
 
 		Args:
 			image (np.array): Input image as a NumPy array.

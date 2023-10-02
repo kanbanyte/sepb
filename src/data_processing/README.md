@@ -36,7 +36,7 @@ Defines a crop box and applies it to all selected files.\
 The following options are supported:
 1. Select an image to define a crop box, then apply it to a set of selected images and save them to a folder.
 2. Enter the crop box coordinates into the console, apply it to a set of images and save them to a folder.
-3. Capture an image from the ZED camera and use it to define a crop box.
+3. Capture an image from the ZED camera and use it to define a crop box, then apply it to a set of images and save them to a folder.
 
 > **Note**:\
 > The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
