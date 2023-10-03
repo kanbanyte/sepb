@@ -1,0 +1,8 @@
+# Request
+bool perform_pick_place
+---
+# Result
+bool task_successful
+---
+# Feedback
+JointTrajectory current_trajectory

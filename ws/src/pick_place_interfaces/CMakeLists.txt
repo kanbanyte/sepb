@@ -19,8 +19,13 @@ set(srv_files
 	"srv/Tray.srv"
 )
 
+set(action_files
+	"action/PickPlace.action"
+)
+
 rosidl_generate_interfaces(${PROJECT_NAME}
 	${srv_files}
+	${action_files}
 )
 
 ament_export_dependencies(rosidl_default_runtime)

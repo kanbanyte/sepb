@@ -1,13 +1,16 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
 from std_msgs.msg import Float64
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
+
 from pick_place_interfaces.srv import Case
 from pick_place_interfaces.srv import Tray
 from pick_place_interfaces.srv import Chip
+from pick_place_interfaces.action import PickPlace
 
 import copy
 
@@ -38,6 +41,12 @@ class PublisherJointTrajectory(Node):
 		while not self.case_cli.wait_for_service(timeout_sec=1.0):
 			self.get_logger().info("service not available, trying again...")
 		self.request = Case.Request()
+
+		self.action_server = ActionServer(
+			self,
+			PickPlace,
+			'perform_pick_place',
+			self.action_callback)
 
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
@@ -100,12 +109,24 @@ class PublisherJointTrajectory(Node):
 		self.i = 0
 
 	# Works for just case for now
+	# TODO: Change to work for all services once .srv files have been reduced to one .srv file
 	def send_request(self, detect_case):
 		self.request.detect_case = detect_case
 		self.future = self.case_cli.call_async(self.request)
 		rclpy.spin_until_future_complete(self, self.future)
 
 		return self.future.result()
+	
+	# TODO: Add calling of send_request for each service to detect objects
+	# TODO: Add building of trajectories after responses have been received
+	# TODO: Finally, add creation of timer at the end to move through trajectories 
+	def action_callback(self, goal_handle):
+		self.get_logger().info("Executing pick and place task...")
+		goal_handle.succeed()
+		result = PickPlace.Result()
+		
+		return result
+		
 
 	def timer_callback(self):
 		if self.starting_point_ok:
