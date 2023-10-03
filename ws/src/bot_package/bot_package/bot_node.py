@@ -2,7 +2,6 @@
 import rclpy
 # Import the PublisherJointTrajectory class from the 'bot_move' module.
 from nodes.bot_move import PublisherJointTrajectory
-from nodes.camera_server import CameraServer
 
 
 def main(args=None):

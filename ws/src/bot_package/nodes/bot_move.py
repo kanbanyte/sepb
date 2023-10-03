@@ -1,9 +1,13 @@
+import rclpy
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectory
 from std_msgs.msg import Float64
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
+from pick_place_interfaces.srv import Case
+from pick_place_interfaces.srv import Tray
+from pick_place_interfaces.srv import Chip
 
 import copy
 
@@ -24,6 +28,16 @@ class PublisherJointTrajectory(Node):
 		self.joints = self.get_parameter("joints").value
 		self.check_starting_point = self.get_parameter("check_starting_point").value
 		self.starting_point = {}
+
+		# Create client for case, chip, and tray services
+		self.case_cli = self.create_client(Case, 'case')
+		# self.chip_cli = self.create_client(Chip, 'chip')
+		# self.tray_cli = self.create_client(Tray, 'tray')
+
+		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
+		while not self.case_cli.wait_for_service(timeout_sec=1.0):
+			self.get_logger().info("service not available, trying again...")
+		self.request = Case.Request()
 
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
@@ -58,7 +72,7 @@ class PublisherJointTrajectory(Node):
 
 		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
 
-		speed_scale_topic = "/speed_scaling_state_broadcaster/speed_scaling"
+		# speed_scale_topic = "/speed_scaling_state_broadcaster/speed_scaling"
 
 		# self.get_logger().info(f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every "{wait_sec_between_publish} s"')
 		self.get_logger().info(f'\n\tPublishing {len(goal_names)}...\n')
@@ -84,6 +98,14 @@ class PublisherJointTrajectory(Node):
 		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
+
+	# Works for just case for now
+	def send_request(self, detect_case):
+		self.request.detect_case = detect_case
+		self.future = self.case_cli.call_async(self.request)
+		rclpy.spin_until_future_complete(self, self.future)
+
+		return self.future.result()
 
 	def timer_callback(self):
 		if self.starting_point_ok:
