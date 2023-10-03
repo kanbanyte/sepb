@@ -140,14 +140,31 @@ the testing strategy centers around assessing its proficiency in selecting items
 as opposed to the pre-existing trial-and-error approach across the entirety of the trays.
 
 ## Tested Features
-The following features will undergo testing:
-* The system establishes a stable connection between the camera and robot arm controller software.
-* The system inititates an image capture and inference request to the model before the robot arm resets to its initial position.
-* The system identifies the presence of chips on both trays before determining which to pick up.
-* The system identifies the presence of shells on from their stack before determining which to pick up.
-* The system identifies the presence of batteries on from their stack before determining which to pick up.
-* The system stops when items are not correctly positioned (e.g., fallen over, being outside of their allocated tray/stack etc.).
-* The annotated images resulting from the inference are recorded for subsequent review.
+The tested features are divided into 3 categories: the vision system, the cobot controller software and the integration between the two.
+The vision system is further subdivided into the AI Models and Camera Server:
+* AI models: YOLOv5 models retrained on images captured by the camera. Note that images are specifically cropped to the region containing objects of interest to increse accuracy.
+All three AI models (chip detection, case detection and tray detection) require a different crop box on an image captured by the camera.
+* Camera Server: the ROS service that captures images from the camera, run inference using the AI models and respond to the cobot controller.
+
+The following features in the vision system are tested:
+* AI Models:
+	* The chip detection model correctly detects chips in all available slots from a correctly cropped image.
+	* The case detection model correctly detects cases in all available positions on the case rack from a correctly cropped image.
+	* The tray detection model correctly detects all three classes of trays from a corectly cropped image: Full, Partially Full and Empty.
+* Camera Server:
+	* A stable connection between the ZED camera and camera server is established.
+	* Appropriate camera settings specified in a YAML configuration file are applied.
+	* Images are cropped as specified in the configuration file before being fed to the AI models for evaluation.
+	* The position of the chip and case to pick up or the best tray movement is calculated from the detections made by the AI models.
+
+The following features in the robot system are tested:
+* The cobot moves to pick up all available items and transfers them to a tray.
+* The cobot moves the trays from and to the human operator.
+
+The following features of the integrated system are tested:
+* Initiating the camera server and establishing a connection with the cobot controller.
+* The camera server responds to requests from the cobot controller with positions of requested items or best tray movement to execute.
+* The cobot controller performs no movement if directed by the camera server or if the returned position is invalid.
 
 ## Test Cases
 The creation of well-structured test cases in important for evaluating software.\
