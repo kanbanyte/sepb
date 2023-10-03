@@ -31,7 +31,7 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-exclude = ["training"]
+exclude = ["training", "tests"]
 
 [project.scripts]
 camera_inference_sample = "samples.python.camera_inference_sample:main"
