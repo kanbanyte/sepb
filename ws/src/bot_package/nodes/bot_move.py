@@ -7,10 +7,9 @@ from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
 
-from pick_place_interfaces.srv import Case
-from pick_place_interfaces.srv import Tray
-from pick_place_interfaces.srv import Chip
 # from pick_place_interfaces.action import PickPlace
+
+from pick_place_interfaces.srv import PickPlaceObject
 
 import copy
 
@@ -33,14 +32,14 @@ class PublisherJointTrajectory(Node):
 		self.starting_point = {}
 
 		# Create client for case, chip, and tray services
-		self.case_cli = self.create_client(Case, 'case')
-		# self.chip_cli = self.create_client(Chip, 'chip')
-		# self.tray_cli = self.create_client(Tray, 'tray')
+		self.case_cli = self.create_client(PickPlaceObject, 'case')
+		self.chip_cli = self.create_client(PickPlaceObject, 'chip')
+		self.tray_cli = self.create_client(PickPlaceObject, 'tray')
 
 		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
 		while not self.case_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info("service not available, trying again...")
-		self.request = Case.Request()
+		self.request = PickPlaceObject.Request()
 
 		# self.action_server = ActionServer(self, PickPlace, 'perform_pick_place', self.action_callback)
 
@@ -106,8 +105,9 @@ class PublisherJointTrajectory(Node):
 
 	# Works for just case for now
 	# TODO: Change to work for all services once .srv files have been reduced to one .srv file
-	def send_request(self, detect_case):
-		self.request.detect_case = detect_case
+	def send_request(self, detect):
+		# self.request.detect_case = detect_case
+		self.request.detect = detect
 		self.future = self.case_cli.call_async(self.request)
 		rclpy.spin_until_future_complete(self, self.future)
 

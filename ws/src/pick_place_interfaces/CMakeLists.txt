@@ -14,9 +14,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 set(srv_files
-	"srv/Case.srv"
-	"srv/Chip.srv"
-	"srv/Tray.srv"
+	"srv/PickPlaceObject.srv"
 )
 
 set(action_files

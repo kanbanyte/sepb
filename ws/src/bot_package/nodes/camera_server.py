@@ -7,16 +7,17 @@ from data_processing.tray_position import determine_move
 from data_processing.chip_position import get_chip_slot_number
 from util.file_reader import read_yaml
 
-from pick_place_interfaces.srv import Case
-from pick_place_interfaces.srv import Tray
-from pick_place_interfaces.srv import Chip
+from pick_place_interfaces.srv import PickPlaceObject
 
 class CameraServer(Node):
 	def __init__(self):
 		super().__init__('camera_server')
-		self.case_srv = self.create_service(Case, 'case', self.get_case_position)
-		self.chip_srv = self.create_service(Chip, 'chip', self.get_chip_position)
-		self.tray_srv = self.create_service(Tray, 'tray', self.get_tray_movement)
+		# self.case_srv = self.create_service(Case, 'case', self.get_case_position)
+		# self.chip_srv = self.create_service(Chip, 'chip', self.get_chip_position)
+		# self.tray_srv = self.create_service(Tray, 'tray', self.get_tray_movement)
+		self.case_srv = self.create_service(PickPlaceObject, 'case', self.get_case_position)
+		self.chip_srv = self.create_service(PickPlaceObject, 'chip', self.get_chip_position)
+		self.tray_srv = self.create_service(PickPlaceObject, 'tray', self.get_tray_movement)
 
 		# TODO: move this path to the startup argument list
 		config_file_path = "/home/cobot/Documents/models/config.yaml"
@@ -44,7 +45,8 @@ class CameraServer(Node):
 		cropped_image = get_rgb_cropped_image(self.camera, crop_box, LogicalLens.RIGHT)
 		detections = self.case_model.run_inference(cropped_image)
 		if len(detections.items()) == 0:
-			response.case_number = -1
+			# response.case_number = -1
+			response.signal = -1
 		else:
 			# the case detection model only has 1 class ("Case")
 			detected_cases = detections[0]
@@ -52,9 +54,11 @@ class CameraServer(Node):
 			# we only pick the first detected case
 			# if the detection dictionary has a class as its key, that class is guaranteed to have at least 1 detection
 			detected_case = detected_cases[0]
-			response.case_number = convert_case_bounding_boxes(detected_case)
+			# response.case_number = convert_case_bounding_boxes(detected_case)
+			response.signal = convert_case_bounding_boxes(detected_case)
 
-		self.get_logger().info(f"Request: {request}, Case Number: {response.case_number}")
+		# self.get_logger().info(f"Request: {request}, Case Number: {response.case_number}")
+		self.get_logger().info(f"Request: {request}, Case Number: {response.signal}")
 		return response
 
 	def get_chip_position(self, request, response):
@@ -81,12 +85,15 @@ class CameraServer(Node):
 		self.get_logger().info(f"Detected chips at the following positions: {chip_positions}")
 
 		if len(chip_positions) == 0:
-			response.chip_number = -1
+			# response.chip_number = -1
+			response.signal = -1
 		else:
 			print(next(iter(chip_positions)))
-			response.chip_number = next(iter(chip_positions))
+			# response.chip_number = next(iter(chip_positions))
+			response.signal = next(iter(chip_positions))
 
-		self.get_logger().info(f"Request: {request}, Chip Number: {response.chip_number}")
+		# self.get_logger().info(f"Request: {request}, Chip Number: {response.chip_number}")
+		self.get_logger().info(f"Request: {request}, Chip Number: {response.signal}")
 		return response
 
 	def get_tray_movement(self, request, response):
@@ -97,7 +104,8 @@ class CameraServer(Node):
 
 		right_detections = self.tray_model.run_inference(right_cropped_image)
 		best_move = determine_move(right_detections, self.tray_model)
-		response.tray_movement = best_move.value
+		# response.tray_movement = best_move.value
+		response.signal = best_move.value
 
 		self.get_logger().info(f"Request: {request}, Best Tray Movement: {best_move.name}")
 		return response
