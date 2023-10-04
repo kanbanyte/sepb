@@ -52,43 +52,47 @@ class CameraServer(Node):
 		return response
 
 	def get_chip_position(self, request, response):
-		crop_boxes = self.config.get('chip')
-		model = ObjectDetectionModel(self.config.get('model').get('detect_case'))
+		crop_boxes = self.config.get('chip_slot_crop_box')
+		model = ObjectDetectionModel(self.config.get('model').get('detect_chip'))
 
 		# get chip positions from image captured with logical left lens
 		left_crop_box = read_crop_box(crop_boxes.get('left'))
 		left_cropped_image = get_rgb_cropped_image(self.camera, left_crop_box, LogicalLens.LEFT)
 		left_detections = model.run_inference(left_cropped_image)
-		left_chip_positions = get_chip_slot_number(left_chip_positions[0]) if len(left_detections) > 0 else []
+		left_chip_positions = []
+		if len(left_detections) > 0:
+			left_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in left_detections[0])
 
 		# get chip positions from image captured with logical right lens
 		right_crop_box = read_crop_box(crop_boxes.get('right'))
 		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
 		right_detections = model.run_inference(right_cropped_image)
-		right_chip_positions = get_chip_slot_number(left_chip_positions[0]) if len(right_detections) > 0 else []
+		right_chip_positions = []
+		if len(right_detections) > 0:
+			right_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in right_detections[0])
 
 		# combine results from both lens to reduce the chance of missing a chip
 		chip_positions =  set(left_chip_positions + right_chip_positions)
 		self.get_logger().info(f"Detected chips at the following positions: {chip_positions}")
 
 		if len(chip_positions) == 0:
-			response.case_number = -1
+			response.chip_number = -1
 		else:
-			response.case_number = convert_case_bounding_boxes(chip_positions[0])
+			response.chip_number = next(iter(chip_positions))
 
-		self.get_logger().info(f"Request: {request}, Chip Number: {response.case_number}")
+		self.get_logger().info(f"Request: {request}, Chip Number: {response.chip_number}")
 		return response
 
 	def get_tray_movement(self, request, response):
-		crop_boxes = self.config.get('tray')
-		model = ObjectDetectionModel(self.config.get('model').get('detect_case'))
+		crop_boxes = self.config.get('tray_crop_box')
+		model = ObjectDetectionModel(self.config.get('model').get('detect_tray'))
 
 		right_crop_box = read_crop_box(crop_boxes.get('right'))
 		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
 		right_detections = model.run_inference(right_cropped_image)
 
 		best_move = determine_move(right_detections, model)
-		response.tray_movement = int(best_move)
+		response.tray_movement = best_move.value
 
 		self.get_logger().info(f"Request: {request}, Best Tray Movement: {best_move.name}")
 		return response

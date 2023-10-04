@@ -20,6 +20,7 @@ def main(args=None):
 	# Shutdown the ROS2 client library when done.
 	rclpy.shutdown()
 
+
 if __name__ == "__main__":
 	# Call the main function to start the ROS2 node.
 	main()
