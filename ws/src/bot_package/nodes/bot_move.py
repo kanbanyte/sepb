@@ -103,12 +103,23 @@ class PublisherJointTrajectory(Node):
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
-	# Works for just case for now
-	# TODO: Change to work for all services once .srv files have been reduced to one .srv file
-	def send_request(self, detect):
-		# self.request.detect_case = detect_case
+	def send_case_request(self, detect):
 		self.request.detect = detect
 		self.future = self.case_cli.call_async(self.request)
+		rclpy.spin_until_future_complete(self, self.future)
+
+		return self.future.result()
+
+	def send_chip_request(self, detect):
+		self.request.detect = detect
+		self.future = self.chip_cli.call_async(self.request)
+		rclpy.spin_until_future_complete(self, self.future)
+
+		return self.future.result()
+
+	def send_tray_request(self, detect):
+		self.request.detect = detect
+		self.future = self.tray_cli.call_async(self.request)
 		rclpy.spin_until_future_complete(self, self.future)
 
 		return self.future.result()
