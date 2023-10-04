@@ -5,25 +5,23 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# if(NOT WIN32)
-# 	add_definitions(-std=c++11)
-# endif()
-
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(trajectory_msgs REQUIRED)
 
 set(srv_files
-	"srv/PickPlaceObject.srv"
+	"srv/PickPlaceService.srv"
 )
 
 set(action_files
-	"action/PickPlace.action"
+	"action/PickPlaceAction.action"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
 	${srv_files}
-#	${action_files}
+	${action_files}
+	DEPENDENCIES trajectory_msgs
 )
 
 ament_export_dependencies(rosidl_default_runtime)

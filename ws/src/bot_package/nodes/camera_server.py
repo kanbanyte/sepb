@@ -7,14 +7,14 @@ from data_processing.tray_position import determine_move
 from data_processing.chip_position import get_chip_slot_number
 from util.file_reader import read_yaml
 
-from pick_place_interfaces.srv import PickPlaceObject
+from pick_place_interfaces.srv import PickPlaceService
 
 class CameraServer(Node):
 	def __init__(self):
 		super().__init__('camera_server')
-		self.case_srv = self.create_service(PickPlaceObject, 'case', self.get_case_position)
-		self.chip_srv = self.create_service(PickPlaceObject, 'chip', self.get_chip_position)
-		self.tray_srv = self.create_service(PickPlaceObject, 'tray', self.get_tray_movement)
+		self.case_srv = self.create_service(PickPlaceService, 'case', self.get_case_position)
+		self.chip_srv = self.create_service(PickPlaceService, 'chip', self.get_chip_position)
+		self.tray_srv = self.create_service(PickPlaceService, 'tray', self.get_tray_movement)
 
 		# TODO: move this path to the startup argument list
 		config_file_path = "/home/cobot/Documents/models/config.yaml"

@@ -7,9 +7,9 @@ from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
 
-# from pick_place_interfaces.action import PickPlace
+from pick_place_interfaces.action import PickPlaceAction
 
-from pick_place_interfaces.srv import PickPlaceObject
+from pick_place_interfaces.srv import PickPlaceService
 
 import copy
 
@@ -32,16 +32,16 @@ class PublisherJointTrajectory(Node):
 		self.starting_point = {}
 
 		# Create client for case, chip, and tray services
-		self.case_cli = self.create_client(PickPlaceObject, 'case')
-		self.chip_cli = self.create_client(PickPlaceObject, 'chip')
-		self.tray_cli = self.create_client(PickPlaceObject, 'tray')
+		self.case_cli = self.create_client(PickPlaceService, 'case')
+		self.chip_cli = self.create_client(PickPlaceService, 'chip')
+		self.tray_cli = self.create_client(PickPlaceService, 'tray')
 
 		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
 		while not self.case_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info("service not available, trying again...")
-		self.request = PickPlaceObject.Request()
+		self.request = PickPlaceService.Request()
 
-		# self.action_server = ActionServer(self, PickPlace, 'perform_pick_place', self.action_callback)
+		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.action_callback)
 
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
@@ -103,23 +103,9 @@ class PublisherJointTrajectory(Node):
 		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
-	def send_case_request(self, detect):
+	def send_request(self, service, detect):
 		self.request.detect = detect
-		self.future = self.case_cli.call_async(self.request)
-		rclpy.spin_until_future_complete(self, self.future)
-
-		return self.future.result()
-
-	def send_chip_request(self, detect):
-		self.request.detect = detect
-		self.future = self.chip_cli.call_async(self.request)
-		rclpy.spin_until_future_complete(self, self.future)
-
-		return self.future.result()
-
-	def send_tray_request(self, detect):
-		self.request.detect = detect
-		self.future = self.tray_cli.call_async(self.request)
+		self.future = service.call_async(self.request)
 		rclpy.spin_until_future_complete(self, self.future)
 
 		return self.future.result()
@@ -127,12 +113,12 @@ class PublisherJointTrajectory(Node):
 	# TODO: Add calling of send_request for each service to detect objects
 	# TODO: Add building of trajectories after responses have been received
 	# TODO: Finally, add creation of timer at the end to move through trajectories
-	# def action_callback(self, goal_handle):
-	# 	self.get_logger().info("Executing pick and place task...")
-	# 	goal_handle.succeed()
-	# 	result = PickPlace.Result()
+	def action_callback(self, goal_handle):
+		self.get_logger().info(f"Executing pick and place task with goal: {goal_handle}...")
+		goal_handle.succeed()
+		result = PickPlaceAction.Result()
 
-	# 	return result
+		return result
 
 	def timer_callback(self):
 		if self.starting_point_ok:
