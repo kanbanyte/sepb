@@ -1,4 +1,5 @@
 #!/bin/bash
+
 rm -r /home/cobot/Documents/repos/sepb/ws/build
 rm -r /home/cobot/Documents/repos/sepb/ws/install
 rm -r /home/cobot/Documents/repos/sepb/ws/log
