@@ -10,6 +10,7 @@ class MainActionClient(Node):
 		super().__init__('main_action_client')
 
 		# Create an action client to interact with the 'perform_pick_place' action server.
+		self.get_logger().info("Starting action client...")
 		self._action_client = ActionClient(self, PickPlaceAction, 'perform_pick_place')
 
 	# Define a method to send a goal to the action server.

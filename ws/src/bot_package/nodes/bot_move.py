@@ -2,7 +2,6 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
-from std_msgs.msg import Float64
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
@@ -25,7 +24,7 @@ class PublisherJointTrajectory(Node):
 
 		# Read parameters
 		controller_name = self.get_parameter("controller_name").value
-		wait_sec_between_publish = self.get_parameter("wait_sec_between_publish").value
+		self.wait_sec_between_publish = self.get_parameter("wait_sec_between_publish").value
 		goal_names = self.get_parameter("goal_names").value
 		self.joints = self.get_parameter("joints").value
 		self.check_starting_point = self.get_parameter("check_starting_point").value
@@ -83,7 +82,7 @@ class PublisherJointTrajectory(Node):
 
 		# Get list of all trajectories to move to
 		# Args: joints, goals, chip_number, case_number, tray_number
-		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
+		# self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
 		self.trajectory_names = BotMethods.get_trajectory_names()
 
 		# Trajectories to move the cobot to a safe position and back to home
@@ -100,7 +99,7 @@ class PublisherJointTrajectory(Node):
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
-		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
+		self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
 	def send_request(self, service, detect):
@@ -114,7 +113,19 @@ class PublisherJointTrajectory(Node):
 	# TODO: Add building of trajectories after responses have been received
 	# TODO: Finally, add creation of timer at the end to move through trajectories
 	def action_callback(self, goal_handle):
-		self.get_logger().info(f"Executing pick and place task with goal: {goal_handle}...")
+		self.get_logger().info(f"Executing pick and place task...")
+
+		chip_position = self.send_request(self.chip_cli, True)
+		case_position = self.send_request(self.case_cli, True)
+		tray_movement = self.send_request(self.tray_cli, True)
+
+		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
+
+		# self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
+
+		# TODO: Find a way to publish current joint position as feedback
+		# goal_handle.publish_feedback(self.joints)
+
 		goal_handle.succeed()
 		result = PickPlaceAction.Result()
 

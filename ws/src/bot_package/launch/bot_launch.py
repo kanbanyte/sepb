@@ -10,7 +10,7 @@ def generate_launch_description():
 		Node(
 			package="bot_package",
 			executable="bot_node",
-			name="bot_positions",
+			name="bot_node",
 			parameters=[position_goals],
 			output="screen",
 		),
