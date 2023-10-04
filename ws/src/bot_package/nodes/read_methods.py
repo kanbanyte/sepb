@@ -4,9 +4,9 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 
 
 class ReadMethods:
-	"""
+	'''
 	ReadMethods defines all functions that affect the output inside the terminal.
-	"""
+	'''
 
 	@classmethod
 	def read_positions_from_parameters(self, pjt, goal_names: list):

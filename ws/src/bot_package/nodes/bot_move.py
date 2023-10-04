@@ -42,11 +42,7 @@ class PublisherJointTrajectory(Node):
 			self.get_logger().info("service not available, trying again...")
 		self.request = Case.Request()
 
-		# self.action_server = ActionServer(
-		# 	self,
-		# 	PickPlace,
-		# 	'perform_pick_place',
-		# 	self.action_callback)
+		# self.action_server = ActionServer(self, PickPlace, 'perform_pick_place', self.action_callback)
 
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
@@ -126,7 +122,6 @@ class PublisherJointTrajectory(Node):
 	# 	result = PickPlace.Result()
 
 	# 	return result
-
 
 	def timer_callback(self):
 		if self.starting_point_ok:
