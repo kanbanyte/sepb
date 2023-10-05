@@ -14,11 +14,14 @@ def main(args=None):
 	# Enter the ROS2 event loop and spin the publisher node.
 	rclpy.spin(camera_server)
 
+	camera_server.prepare_shutdown()
+
 	# Destroy the publisher node.
 	camera_server.destroy_node()
 
 	# Shutdown the ROS2 client library when done.
 	rclpy.shutdown()
+
 
 if __name__ == "__main__":
 	# Call the main function to start the ROS2 node.

@@ -5,4 +5,4 @@ bool perform_pick_place
 bool task_successful
 ---
 # Feedback
-JointTrajectory current_trajectory
+trajectory_msgs/JointTrajectory current_trajectory

@@ -2,15 +2,13 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
-from std_msgs.msg import Float64
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
 
-from pick_place_interfaces.srv import Case
-from pick_place_interfaces.srv import Tray
-from pick_place_interfaces.srv import Chip
-from pick_place_interfaces.action import PickPlace
+from pick_place_interfaces.action import PickPlaceAction
+
+from pick_place_interfaces.srv import PickPlaceService
 
 import copy
 
@@ -26,27 +24,23 @@ class PublisherJointTrajectory(Node):
 
 		# Read parameters
 		controller_name = self.get_parameter("controller_name").value
-		wait_sec_between_publish = self.get_parameter("wait_sec_between_publish").value
+		self.wait_sec_between_publish = self.get_parameter("wait_sec_between_publish").value
 		goal_names = self.get_parameter("goal_names").value
 		self.joints = self.get_parameter("joints").value
 		self.check_starting_point = self.get_parameter("check_starting_point").value
 		self.starting_point = {}
 
 		# Create client for case, chip, and tray services
-		self.case_cli = self.create_client(Case, 'case')
-		# self.chip_cli = self.create_client(Chip, 'chip')
-		# self.tray_cli = self.create_client(Tray, 'tray')
+		self.case_cli = self.create_client(PickPlaceService, 'case')
+		self.chip_cli = self.create_client(PickPlaceService, 'chip')
+		self.tray_cli = self.create_client(PickPlaceService, 'tray')
 
 		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
-		while not self.case_cli.wait_for_service(timeout_sec=1.0):
+		while not self.case_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info("service not available, trying again...")
-		self.request = Case.Request()
+		self.request = PickPlaceService.Request()
 
-		self.action_server = ActionServer(
-			self,
-			PickPlace,
-			'perform_pick_place',
-			self.action_callback)
+		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.action_callback)
 
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
@@ -88,7 +82,7 @@ class PublisherJointTrajectory(Node):
 
 		# Get list of all trajectories to move to
 		# Args: joints, goals, chip_number, case_number, tray_number
-		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
+		# self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
 		self.trajectory_names = BotMethods.get_trajectory_names()
 
 		# Trajectories to move the cobot to a safe position and back to home
@@ -105,28 +99,37 @@ class PublisherJointTrajectory(Node):
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
-		self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback)
+		self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
-	# Works for just case for now
-	# TODO: Change to work for all services once .srv files have been reduced to one .srv file
-	def send_request(self, detect_case):
-		self.request.detect_case = detect_case
-		self.future = self.case_cli.call_async(self.request)
+	def send_request(self, service, detect):
+		self.request.detect = detect
+		self.future = service.call_async(self.request)
 		rclpy.spin_until_future_complete(self, self.future)
 
 		return self.future.result()
-	
+
 	# TODO: Add calling of send_request for each service to detect objects
 	# TODO: Add building of trajectories after responses have been received
-	# TODO: Finally, add creation of timer at the end to move through trajectories 
+	# TODO: Finally, add creation of timer at the end to move through trajectories
 	def action_callback(self, goal_handle):
-		self.get_logger().info("Executing pick and place task...")
+		self.get_logger().info(f"Executing pick and place task...")
+
+		chip_position = self.send_request(self.chip_cli, True)
+		case_position = self.send_request(self.case_cli, True)
+		tray_movement = self.send_request(self.tray_cli, True)
+
+		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
+
+		# self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
+
+		# TODO: Find a way to publish current joint position as feedback
+		# goal_handle.publish_feedback(self.joints)
+
 		goal_handle.succeed()
-		result = PickPlace.Result()
-		
+		result = PickPlaceAction.Result()
+
 		return result
-		
 
 	def timer_callback(self):
 		if self.starting_point_ok:

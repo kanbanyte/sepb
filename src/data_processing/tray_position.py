@@ -89,7 +89,8 @@ def __get_movement(tray_states):
 		tray_states (dict): dictionary of tray states
 	Returns:
 		TrayMovement: movement of the tray
-'''
+	'''
+	# TODO: clean this
 	if tray_states.get("assembly") == Traystate.not_present:
 		if tray_states.get("tray 1") == Traystate.full:
 			return TrayMovement.move_tray1_assembly
