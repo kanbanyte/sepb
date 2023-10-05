@@ -3,7 +3,7 @@ from collections import defaultdict
 from ultralytics import YOLO
 
 from .detected_object import DetectedObject
-from data_processing.image_processing import draw_bounding_box
+from data_processing.image_processing import draw_bounding_box, show_image_non_block
 
 class ObjectDetectionModel:
 	def __init__(self, model_config):
@@ -48,13 +48,14 @@ class ObjectDetectionModel:
 		"""
 		return self.__classes
 
-	def run_inference(self, image, result_img_path=None):
+	def run_inference(self, image, result_img_path=None, show_image=False):
 		"""
 		Run inference on the given image and optionally save the image to the specified file.
 
 		Args:
 			image (np.array): Input image as a NumPy array.
 			result_img_path (None|str): optional file path to which the resulting image is saved.
+			show_image(boolean): optionally display the image wih bounding boxes of all detections.
 
 		Returns:
 			defaultdict(list): Dictionary where the keys are the indices of the classes and
@@ -82,6 +83,10 @@ class ObjectDetectionModel:
 			if result_img_path:
 				# if the model detects no objects, we save the raw image so the user can still check the model's accuracy
 				cv2.imwrite(result_img_path, image)
+    
+			if show_image:
+				show_image_non_block(image, f"Showing image '{result_img_path}'")
+    
 			return detected_objects
 
 		x1_tensor = result.boxes.xyxy[:, 0]
@@ -89,7 +94,6 @@ class ObjectDetectionModel:
 		x2_tensor = result.boxes.xyxy[:, 2]
 		y2_tensor = result.boxes.xyxy[:, 3]
 
-		image_copy = image.copy()
 		for (object_class, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
 			# these values are still 1D tensors and need to be converted to scalar values
 			object_class_index = int(object_class)
@@ -101,7 +105,10 @@ class ObjectDetectionModel:
 
 			detected_objects[object_class_index].append(detected_object)
 			if result_img_path:
-				draw_bounding_box(image_copy, bounding_box)
-				cv2.imwrite(result_img_path, image_copy)
+				draw_bounding_box(image, bounding_box)
+				cv2.imwrite(result_img_path, image)
+
+		if show_image:
+			show_image_non_block(image, f"Showing image '{result_img_path}'")
 
 		return detected_objects

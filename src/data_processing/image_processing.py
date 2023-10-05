@@ -1,4 +1,5 @@
 import cv2
+import threading
 
 def crop_image(image, crop_box):
 	"""
@@ -70,3 +71,33 @@ def draw_bounding_box(image, bounding_box):
 
 	green = (0, 255, 0)
 	cv2.rectangle(image, (x1_int, y1_int), (x2_int, y2_int), green, 2)
+
+def show_image_non_block(image, name='Image'):
+	'''
+		Show image without blocking the current thread.
+		The image is opened by another thread running `show_image` which terminates when the window is closed.
+	
+	Args:
+		image (np.array): Input image as a NumPy array.
+		name (str): Window name.
+  
+	Returns:
+		None
+	'''
+	image_thread = threading.Thread(target=show_image, args=(image,name))
+	image_thread.start()
+
+def show_image(image, name='Image'):
+	'''
+		Show image and blocks the thread until the window is closed.
+	
+	Args:
+		image (np.array): Input image as a NumPy array.
+		name (str): Window name.
+  
+	Returns:
+		None
+	'''
+	cv2.imshow(name, image)
+	cv2.waitKey(0)
+	cv2.destroyAllWindows()

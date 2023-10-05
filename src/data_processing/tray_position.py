@@ -95,11 +95,20 @@ def __get_movement(tray_states):
 			return TrayMovement.move_tray1_assembly
 		elif tray_states.get("tray 2") == Traystate.full:
 			return TrayMovement.move_tray2_assembly
+		else:
+			return TrayMovement.no_move
 	elif tray_states.get("assembly") == Traystate.empty:
 		if tray_states.get("tray 1") == Traystate.not_present:
 			return TrayMovement.move_assembly_tray1
 		elif tray_states.get("tray 2") == Traystate.not_present:
 			return TrayMovement.move_assembly_tray2
+		else:
+			if tray_states.get("tray 1") == Traystate.full:
+				return TrayMovement.move_tray1_assembly
+			elif tray_states.get("tray 2") == Traystate.full:
+				return TrayMovement.move_tray2_assembly
+			else:
+				return TrayMovement.no_move
 	else:
 		return TrayMovement.no_move
 
