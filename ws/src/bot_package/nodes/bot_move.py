@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
+from ur_dashboard_msgs import Load
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
@@ -35,6 +36,9 @@ class PublisherJointTrajectory(Node):
 		self.chip_cli = self.create_client(PickPlaceService, 'chip')
 		self.tray_cli = self.create_client(PickPlaceService, 'tray')
 
+		self.load_program_cli = self.create_client(Load, '/dashboard_client/load_program')
+		# self.load_program_cli.call()
+
 		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
 		while not self.case_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info(f"{self.case_cli.srv_name} service not available, trying again...")
@@ -51,6 +55,8 @@ class PublisherJointTrajectory(Node):
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
 
+		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
+
 		# starting point stuff
 		if self.check_starting_point:
 			# declare nested params
@@ -62,6 +68,7 @@ class PublisherJointTrajectory(Node):
 			for name in self.joints:
 				if len(self.starting_point[name]) != 2:
 					raise Exception('"starting_point" parameter is not set correctly!')
+			self.joint_state_pub = self.create_publisher(JointTrajectory, publish_topic, 1)
 			self.joint_state_sub = self.create_subscription(JointState, "joint_states", self.joint_state_callback, 10)
 
 		# initialize starting point status
@@ -79,9 +86,7 @@ class PublisherJointTrajectory(Node):
 			self.get_logger().error("No valid goal found. Exiting...")
 			exit(1)
 
-		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
-
-		self.get_logger().info(f'\n\tPublishing {len(goal_names)} goals ever {self.wait_sec_between_publish}...\n')
+		self.get_logger().info(f'\n\tPublishing {len(goal_names)} goals every {self.wait_sec_between_publish} secs...\n')
 
 		# Get list of all trajectories to move to
 		# Args: joints, goals, chip_number, case_number, tray_number
@@ -124,6 +129,7 @@ class PublisherJointTrajectory(Node):
 
 		return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
 
+	# TODO: Find a way to restart after all trajectories have been moved through
 	def timer_callback(self):
 		if self.starting_point_ok:
 			# Return trajectories to move from home to chip 1
@@ -147,6 +153,7 @@ class PublisherJointTrajectory(Node):
 				self.get_logger().info("Pick and place task complete. Recalculating trajectories...")
 				self.i = 0
 				self.trajectories = self.populate_trajectories()
+				self.timer.reset()
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
 			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
@@ -172,7 +179,7 @@ class PublisherJointTrajectory(Node):
 
 				for traj in temp_traj:
 					temp_pos = traj
-					self._publisher.publish(temp_pos)
+					self.joint_state_pub.publish(temp_pos)
 
 				self.starting_point_ok = True
 			else:

@@ -21,11 +21,11 @@ def generate_launch_description():
 			parameters=[position_goals],
 			output="screen",
 		),
-		Node(
-			package="bot_package",
-			executable="main_node",
-			name="main_node",
-			parameters=[position_goals],
-			output="screen",
-		)
+		# Node(
+		# 	package="bot_package",
+		# 	executable="main_node",
+		# 	name="main_node",
+		# 	parameters=[position_goals],
+		# 	output="screen",
+		# )
 	])
