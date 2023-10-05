@@ -225,20 +225,34 @@ These issues have a severe negative impact on usability and heavily impact a use
 These issues often lead to task failure and user frustration.\
 High severity issues for this project include:
 
-##### Safety Critical Error
+* Safety Critical Error:
 The software occasionally fails to detect an obstacle in the robotic arm's path, leading to a collision risk.\
 This is a high-severity problem because it directly threatens safety.
 
-##### System Freeze
+* System Freeze:
 The system occasionally freezes during operation, rendering the robotic arm unresponsive.\
  This is a high-severity issue because it halts production and may result in damage to equipment.
 
-##### Inaccurate Object Detection:
-The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target. This high-severity problem impacts the system's efficiency.
+* Inaccurate Object Detection:
+The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target.\
+This high-severity problem impacts the system's efficiency.
 
 #### Medium Severity
 These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.\
-While not critical, these issues still need to be addressed to ensure a smoother user experience.
+While not critical, these issues still need to be addressed to ensure a smoother user experience.\
+Medium severity issues for this project include:
+
+* Inefficient Path Planning:
+The software takes longer than expected to calculate the optimal path for the robotic arm, causing minor delays in task completion.\
+While this does not affect safety, it impacts efficiency.
+
+* Interface Confusion:
+Some operators occasionally struggle to understand a specific feature of the user interface, leading to slower operation.\
+This is a moderate-severity issue as it affects usability.
+
+* Intermittent Connectivity Issues:
+The system experiences occasional communication problems between the depth camera, neural network, and robot operating software.\
+While this can disrupt operation, it's not a constant or critical issue.
 
 #### Low Severity
 These issues have minimal impact on usability and do not significantly hinder users from completing their tasks.\
