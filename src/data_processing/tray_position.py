@@ -52,7 +52,7 @@ def __get_states(detections, model):
 			# detected_tray is a DetectedObject, in this format:
 			# DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))
 			x1, y1, x2, y2 = detected_tray.bounding_box
-			if x1 >= 0 and y1 >= 140 and x2 <= 335 and y2 <= 400:
+			if x1 >= 0 and y1 >= 140 and x2 <= 335 and y2 <= 420:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__assembly: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -61,7 +61,7 @@ def __get_states(detections, model):
 					__tray_states.update({__assembly: Traystate.part_full})
 				else:
 					__tray_states.update({__assembly: Traystate.not_present})
-			elif x1 >= 340 and y1 >= 0 and x2 <= 672 and y2 <= 265:
+			elif x1 >= 340 and y1 >= 0 and x2 <= 690 and y2 <= 270:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__tray2: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -70,7 +70,7 @@ def __get_states(detections, model):
 					__tray_states.update({__tray2: Traystate.part_full})
 				else:
 					__tray_states.update({__tray2: Traystate.not_present})
-			elif x1 >= 340 and y1 >= 288 and x2 <= 685 and y2 <= 575:
+			elif x1 >= 340 and y1 >= 288 and x2 <= 700 and y2 <= 590:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__tray1: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
