@@ -89,7 +89,7 @@ Development of the overall system is still in progress, so additional tests may 
 <!-- TOC ignore:true -->
 ### Constraints
 * Testing of the cobot's movement can be done in a simulated environment, however must ultimately be performed at the F.o.F.
-* Testing the integration of the vision system will the movement system will need to be done at the F.o.F.
+* Testing the integration of the vision system and the movement system will need to be done at the F.o.F.
 
 <!-- TOC ignore:true -->
 ### Methods of Testing
