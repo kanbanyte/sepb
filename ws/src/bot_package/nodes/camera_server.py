@@ -40,7 +40,7 @@ class CameraServer(Node):
 	def get_case_position(self, request, response):
 		crop_box = read_crop_box(self.config.get('case_crop_box').get('right'))
 		cropped_image = get_rgb_cropped_image(self.camera, crop_box, LogicalLens.RIGHT)
-		detections = self.case_model.run_inference(cropped_image)
+		detections = self.case_model.run_inference(cropped_image, show_image=True)
 		if len(detections.items()) == 0:
 			response.signal = -1
 		else:
@@ -61,7 +61,7 @@ class CameraServer(Node):
 		# get chip positions from image captured with logical left lens
 		left_crop_box = read_crop_box(crop_boxes.get('left'))
 		left_cropped_image = get_rgb_cropped_image(self.camera, left_crop_box, LogicalLens.LEFT)
-		left_detections = self.chip_model.run_inference(left_cropped_image)
+		left_detections = self.chip_model.run_inference(left_cropped_image, show_image=True)
 		left_chip_positions = []
 		if len(left_detections) > 0:
 			left_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in left_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
@@ -69,7 +69,7 @@ class CameraServer(Node):
 		# get chip positions from image captured with logical right lens
 		right_crop_box = read_crop_box(crop_boxes.get('right'))
 		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
-		right_detections = self.chip_model.run_inference(right_cropped_image)
+		right_detections = self.chip_model.run_inference(right_cropped_image, show_image=True)
 		right_chip_positions = []
 		if len(right_detections) > 0:
 			right_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in right_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
@@ -93,7 +93,7 @@ class CameraServer(Node):
 		right_crop_box = read_crop_box(crop_boxes.get('right'))
 		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
 
-		right_detections = self.tray_model.run_inference(right_cropped_image)
+		right_detections = self.tray_model.run_inference(right_cropped_image, show_image=True)
 		best_move = determine_move(right_detections, self.tray_model)
 
 		response.signal = best_move.value

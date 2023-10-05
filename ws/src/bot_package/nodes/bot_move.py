@@ -97,6 +97,8 @@ class PublisherJointTrajectory(Node):
 		self.safe_start_trajectories[0].points.append(self.goals["safe_start"])
 		self.safe_start_trajectories[1].points.append(self.goals["home"])
 
+		self.wait_for_trajectories = False
+
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
 		self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
@@ -117,57 +119,75 @@ class PublisherJointTrajectory(Node):
 
 		chip_position = self.send_request(self.chip_cli, True)
 		case_position = self.send_request(self.case_cli, True)
-		tray_movement = self.send_request(self.tray_cli, True)
+
+		while chip_position.signal == -1:
+			self.get_logger().info(f"chip signal is negative one.\n")
+			chip_position = self.send_request(self.chip_cli, True)
+
+		while case_position.signal == -1:
+			self.get_logger().info(f"case signal is negative one.\n")
+			case_position = self.send_request(self.case_cli, True)
+
+		# tray_movement = self.send_request(self.tray_cli, True)
+
+		self.get_logger().info(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!before...\n")
 
 		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
 
+		self.get_logger().info(f"...after!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+
 		# self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
+		self.wait_for_trajectories = True
 
 		# TODO: Find a way to publish current joint position as feedback
 		# goal_handle.publish_feedback(self.joints)
 
 		goal_handle.succeed()
 		result = PickPlaceAction.Result()
+		result.task_successful = True
 
 		return result
 
 	def timer_callback(self):
 		if self.starting_point_ok:
-			# goal = self.goal_names[self.i]
+			if self.wait_for_trajectories:
+				# goal = self.goal_names[self.i]
 
-			# trajectories = BotMethods.move_chip(self, self.joints, self.goals, 33)
+				# trajectories = BotMethods.move_chip(self, self.joints, self.goals, 33)
 
-			# Return trajectories to move from home to chip 1
-			if self.i < len(self.trajectories):
-				traj = self.trajectories[self.i]
-				traj_name = self.trajectory_names[self.i]
-				self.get_logger().info(f'Goal Name: {traj_name}')
-				traj_goal = traj.points[0]
+				# Return trajectories to move from home to chip 1
+				if self.i < len(self.trajectories):
+					traj = self.trajectories[self.i]
+					traj_name = self.trajectory_names[self.i]
+					self.get_logger().info(f'Goal Name: {traj_name}')
+					traj_goal = traj.points[0]
 
-				# traj_goal.velocities = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+					# traj_goal.velocities = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
 
-				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {traj_goal.velocities}'
+					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+					pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
+					f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {traj_goal.velocities}'
 
-				# Using goals as dict type
-				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+					# Using goals as dict type
+					self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
 
-				#region KEEPME
-				# traj = JointTrajectory()
-				# traj.joint_names = self.joints
-				# # traj.points.append(self.goals[self.i])
-				# traj.points.append(self.goals[goal]) # Using goals as dict type
-				#endregion KEEPME
+					#region KEEPME
+					# traj = JointTrajectory()
+					# traj.joint_names = self.joints
+					# # traj.points.append(self.goals[self.i])
+					# traj.points.append(self.goals[goal]) # Using goals as dict type
+					#endregion KEEPME
 
-				self._publisher.publish(traj)
+					self._publisher.publish(traj)
 
-				# speed_scale = Float64()
-				# speed_scale.data = 50.0
-				# self._speed_publisher.publish(speed_scale)
+					# speed_scale = Float64()
+					# speed_scale.data = 50.0
+					# self._speed_publisher.publish(speed_scale)
 
-				self.i += 1
-				# self.i %= len(trajectories)
+					self.i += 1
+					# self.i %= len(trajectories)
+			else:
+				self.get_logger().info(f"Waiting for trajectories...\n")
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
 			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
