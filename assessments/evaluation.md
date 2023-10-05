@@ -147,8 +147,8 @@ As such, what will be evaluated will be limited to the tasks that system complet
 The tasks and activities are listed below.
 * The user should be able to easily run scripts that launch the system.
 * The user should be able to stop the robot using the emergency buttons available on the PLC controller, should the need arise.
-* The robot should be able to return to its home position, if the robot is starting at an odd or undefined position
-(This will be needed if ever the emergency stop button is used or due to any other external factors e.g. power loss).
+* The robot should be able to return to its home position, if the robot is starting at an odd or undefined position.\
+This will be needed if ever the emergency stop button is used or due to any other external factors e.g. power loss.
 * The robot must be able to pick up the correct objects and plac them in the correct position on the assembly tray.
 * The robot must be able to pick up and place the assembly tray in the ready position when all parts and accumulated and placed in the assembly tray.
 * The system must be able to identify when the assembly tray is empty and return the robot to its home position.
