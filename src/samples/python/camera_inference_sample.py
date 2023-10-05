@@ -97,24 +97,20 @@ Select a model to run:
 				# get chip positions from image captured with logical right lens
 				right_crop_box = read_crop_box(crop_boxes.get('right'))
 				right_cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.RIGHT)
-				right_detections = run_inference(mode,  right_cropped_image, left_lens_output_dir)
+				right_detections = run_inference(model, right_cropped_image, left_lens_output_dir)
 				right_chip_positions = []
 				if len(right_detections) > 0:
 					right_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in right_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
 
-					for object in right_detections[0]:
-						draw_bounding_box(right_cropped_image, object.bounding_box)
-
 				# combine results from both lens to reduce the chance of missing a chip
 				chip_positions = set(left_chip_positions + right_chip_positions)
 
-				chip_number = 0
-				if len(chip_positions) == 0:
-					chip_number = -1
-				else:
+				chip_number = -1
+				if len(chip_positions) > 0:
 					chip_number = next(iter(chip_positions))
 
-				print(chip_number)
+				print(f"Detected chip positions: {chip_positions}")
+				print(f"Chip selected for transfer: {chip_number}")
 
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('right'))
