@@ -226,15 +226,15 @@ These issues often lead to task failure and user frustration.\
 High severity issues for this project include:
 
 * Safety Critical Error:
-The software occasionally fails to detect an obstacle in the robotic arm's path, leading to a collision risk.\
+The software occasionally fails to detect an obstacle in the robotic arm's path, leading to a collision risk.
 This is a high-severity problem because it directly threatens safety.
 
 * System Freeze:
-The system occasionally freezes during operation, rendering the robotic arm unresponsive.\
+The system occasionally freezes during operation, rendering the robotic arm unresponsive.
  This is a high-severity issue because it halts production and may result in damage to equipment.
 
 * Inaccurate Object Detection:
-The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target.\
+The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target.
 This high-severity problem impacts the system's efficiency.
 
 #### Medium Severity
@@ -243,20 +243,32 @@ While not critical, these issues still need to be addressed to ensure a smoother
 Medium severity issues for this project include:
 
 * Inefficient Path Planning:
-The software takes longer than expected to calculate the optimal path for the robotic arm, causing minor delays in task completion.\
+The software takes longer than expected to calculate the optimal path for the robotic arm, causing minor delays in task completion.
 While this does not affect safety, it impacts efficiency.
 
 * Interface Confusion:
-Some operators occasionally struggle to understand a specific feature of the user interface, leading to slower operation.\
+Some operators occasionally struggle to understand a specific feature of the user interface, leading to slower operation.
 This is a moderate-severity issue as it affects usability.
 
 * Intermittent Connectivity Issues:
-The system experiences occasional communication problems between the depth camera, neural network, and robot operating software.\
+The system experiences occasional communication problems between the depth camera, neural network, and robot operating software.
 While this can disrupt operation, it's not a constant or critical issue.
 
 #### Low Severity
 These issues have minimal impact on usability and do not significantly hinder users from completing their tasks.\
-They may however reduce the quality of a user's experience and therefore should be addressed and fixed.
+They may however reduce the quality of a user's experience and therefore should be addressed and fixed.\
+Low severity issues for this project include:
+
+* Minor Interface Clutter:
+The user interface has some non-essential elements that clutter the screen but do not impede the main operation.
+This is a low-severity issue as it doesn't hinder usability significantly.
+
+* Occasional False Alarms:
+The system occasionally triggers false alarms for object detection, but these are infrequent and easily dismissed by operators.
+While it may cause minor interruptions, it's low in severity.
+
+* Non-Critical Visual Glitch: There are occasional minor visual glitches in the user interface, such as graphical artifacts,
+but they do not affect the system's core functionality or safety.
 
 # Reporting Results
 Upon conclusion of testing the Test results will be summarised in a clear and concise way with appropriate captions and information in a report.
