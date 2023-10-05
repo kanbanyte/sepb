@@ -217,12 +217,24 @@ Less than 10% of the participants encountered the issue.\
 These problems may only affect a small subset of users, but they are still worth addressing to enhance the product's usability.
 
 ## Severity Ranking
-Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts, 
+Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts,
 enabling the team to focus resources on addressing critical user experience problems first.
 
 #### High Severity
 These issues have a severe negative impact on usability and heavily impact a user's ability to achieve their goals.\
-These issues often lead to task failure and user frustration.
+These issues often lead to task failure and user frustration.\
+High severity issues for this project include:
+
+##### Safety Critical Error
+The software occasionally fails to detect an obstacle in the robotic arm's path, leading to a collision risk.\
+This is a high-severity problem because it directly threatens safety.
+
+##### System Freeze
+The system occasionally freezes during operation, rendering the robotic arm unresponsive.\
+ This is a high-severity issue because it halts production and may result in damage to equipment.
+
+##### Inaccurate Object Detection:
+The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target. This high-severity problem impacts the system's efficiency.
 
 #### Medium Severity
 These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.\
