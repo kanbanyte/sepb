@@ -28,10 +28,12 @@ class PublisherJointTrajectory(Node):
 		self.check_starting_point = self.get_parameter("check_starting_point").value
 		self.starting_point = {}
 
+		self.subnode = rclpy.create_node('subnode')
+
 		# Create client for case, chip, and tray services
-		self.case_cli = self.create_client(PickPlaceService, 'case')
-		self.chip_cli = self.create_client(PickPlaceService, 'chip')
-		self.tray_cli = self.create_client(PickPlaceService, 'tray')
+		self.case_cli = self.subnode.create_client(PickPlaceService, 'case')
+		self.chip_cli = self.subnode.create_client(PickPlaceService, 'chip')
+		self.tray_cli = self.subnode.create_client(PickPlaceService, 'tray')
 
 		self.load_program_cli = self.create_client(Load, '/dashboard_client/load_program')
 		# self.load_program_cli.call()
