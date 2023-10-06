@@ -1,13 +1,10 @@
 import rclpy
 from rclpy.node import Node
-from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
-from ur_dashboard_msgs import Load
+from ur_dashboard_msgs.srv import Load
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
-
-from pick_place_interfaces.action import PickPlaceAction
 
 from pick_place_interfaces.srv import PickPlaceService
 
