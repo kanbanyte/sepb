@@ -52,7 +52,7 @@ def __get_states(detections, model):
 			# detected_tray is a DetectedObject, in this format:
 			# DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))
 			x1, y1, x2, y2 = detected_tray.bounding_box
-			if x1 >= 0 and y1 >= 140 and x2 <= 335 and y2 <= 420:
+			if x1 >= 0 and y1 >= 140 and x2 <= 360 and y2 <= 420:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__assembly: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -79,6 +79,8 @@ def __get_states(detections, model):
 					__tray_states.update({__tray1: Traystate.part_full})
 				else:
 					__tray_states.update({__tray1: Traystate.not_present})
+			else:
+				print("Out of bounds position detected")
 	return __tray_states
 
 def __get_movement(tray_states):
@@ -95,11 +97,15 @@ def __get_movement(tray_states):
 			return TrayMovement.move_tray1_assembly
 		elif tray_states.get("tray 2") == Traystate.full:
 			return TrayMovement.move_tray2_assembly
+		else:
+			return TrayMovement.no_move
 	elif tray_states.get("assembly") == Traystate.empty:
 		if tray_states.get("tray 1") == Traystate.not_present:
 			return TrayMovement.move_assembly_tray1
 		elif tray_states.get("tray 2") == Traystate.not_present:
 			return TrayMovement.move_assembly_tray2
+		else:
+			return TrayMovement.no_move
 	else:
 		return TrayMovement.no_move
 

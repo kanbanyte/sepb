@@ -1,41 +1,80 @@
 # FILEPATH: test_tray_position.py
 
 import unittest
-from tray_position import determine_move
+from data_processing.tray_position import determine_move
+from models.python.detected_object import DetectedObject
+
+#model classes:
+#	0: empty
+#	1: full
+#	2: partially full
+class model:
+	classes = ["empty", "full", "partially full"]
 
 class TestTrayPosition(unittest.TestCase):
-    # invalid test cases
-	def test_invalid_bounding_boxes(self):
-		invalid_bounding_boxes = [
-		#generate some random bounding boxes
-		(-1, 139, 336, 401), #test if x1 < 0
-		(339, -1, 673, 266), #test if y1 < 140
-		(339, 287, 686, 576), #test if y1 < 140
-		(686, 293, 345, 564), #test if x1 > x2
-		(0,0,0,0)
-		]
-		for bounding_box in invalid_bounding_boxes:
-			self.assertEqual(determine_move(bounding_box), -1)
-
 	#tray assembly coords: (3, 157, 350, 418)
 	#tray 1 coords: (352, 302, 690, 586)
 	#tray 2 coords: (367, 7, 684, 259)
+#region valid tests
+	def test_tray1_assem_move(self):
+		#tray 1 full, assembly not present
+		detections = {1: [DetectedObject(0.9, (352, 302, 690, 586))],
+				0: [DetectedObject(0.9, (367, 7, 684, 259))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 3, "Should be move_tray1_assembly")
 
-	def test_positions(self):
-		bounding_boxes = [
-		(3, 157, 350, 418), #tray assembly
-		(352, 302, 690, 586), #tray 1
-		(367, 7, 684, 259) #tray 2
-		]
-	#empty dictonary
-	__false_detections = defaultdict(list)
+	def test_tray2_assem_move(self):
+		#tray 2 full, assembly not present
+		detections = {1: [DetectedObject(0.9, (367, 7, 684, 259))],
+					0: [DetectedObject(0.9, (352, 302, 690, 586))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 4, "Should be move_tray2_assembly")
 
-	for i, bounding_box in enumerate(bounding_boxes):
-		__false_detections[i].append(DetectedObject(confidence=0.9711142182350159, bounding_box=bounding_box))
+	def test_assem_tray1_move(self):
+		#assembly empty, tray 1 not present
+		detections = {0: [DetectedObject(0.9,(3, 157, 350, 418))],
+				2: [DetectedObject(0.9,(367, 7, 684, 259))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 1, "Should be move_assembly_tray1")
 
-	result = determine_move(__false_detections, model)
+	def test_assem_tray2_move(self):
+		#assembly empty, tray 2 not present
+		detections = {0: [DetectedObject(0.9, (3, 157, 350, 418))],
+					1: [DetectedObject(0.9, (352, 302, 690, 586))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 2, "Should be move_assembly_tray2")
 
+	def test_no_move(self):
+		#tray 1 empty, tray 2 empty
+		detections = {0: [DetectedObject(0.9, (352, 302, 690, 586))],
+					0: [DetectedObject(0.9, (367, 7, 684, 259))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 5, "Should be no_move")
+#endregion
+#region out of bounds tests
+	def test_out_of_bounds_pos(self):
+		detections = {0: [DetectedObject(0.9, (352, 302, 690, 586))],
+					0: [DetectedObject(0.9, (367, 7, 684, 1000))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 5, "Should be no_move")
 
+	def test_empty_pos(self):
+		detections = {0: [DetectedObject(0.9, (0,0,0,0))],
+			0: [DetectedObject(0.9, (367, 7, 684, 259))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 5, "Should be no_move")
+	def test_negative_pos(self):
+		detections = {0: [DetectedObject(
+			0.9, (-1,-1,-1,-1))], 0: [DetectedObject(0.9, (367, 7, 684, 259))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 5, "Should be no_move")
+	def test_three_pos(self):
+		detections = {0: [DetectedObject(0.9, (3, 157, 350, 4181))],
+				0: [DetectedObject(0.9, (352, 302, 690, 586))],
+				0: [DetectedObject(0.9, (367, 7, 684, 259))]}
+		self.assertEqual(determine_move(detections, model).value,
+		                 5, "Should be no_move")
 
+#endregion
 if __name__ == '__main__':
     unittest.main()
