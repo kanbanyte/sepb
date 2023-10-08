@@ -70,6 +70,6 @@ class TestChipPosition(unittest.TestCase):
 		[-9, 9, 81, 42] #negative
 		]
 		for bounding_box in invalid_bounding_boxes:
-			self.assertEqual(get_chip_slot_number(bounding_box), None, f"Position of chip{bounding_box} should be none")
+			self.assertEqual(get_chip_slot_number(bounding_box), None, f"Position of chip {bounding_box} should be None")
 if __name__ == '__main__':
     unittest.main()
