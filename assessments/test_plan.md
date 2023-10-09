@@ -141,10 +141,10 @@ as opposed to the pre-existing trial-and-error approach across the entirety of t
 
 ## Tested Features
 The tested features are divided into 3 categories: the vision system, the cobot controller software and the integration between the two.
-The vision system is further subdivided into the AI Models and Camera Server:
+The vision system is further divided into the AI Models and Camera Server:
 * AI models: YOLOv5 models retrained on images captured by the camera.
 Images are cropped to the region containing objects of interest during training and evaluation.
-All three AI models (chip detection, case detection and tray detection) require a different crop box on an image captured by the camera.
+There 3 AI models: chip detection, case detection and tray detection, all of which require a different crop box on the input image.
 * Camera Server: the ROS service that captures images from the camera, run inference using the AI models and respond to the cobot controller.
 
 The following features in the vision system are tested:
@@ -159,7 +159,7 @@ The following features in the vision system are tested:
 	* The position of the chip and case to pick up or the best tray movement is calculated from the detections made by the AI models.
 
 The following features in the robot system are tested:
-* The cobot moves to pick up all available items and transfers them to a tray.
+* The cobot moves to pick up items from valid positions and transfer them to the tray.
 * The cobot moves the trays from and to the human operator.
 
 The following features of the integrated system are tested:
