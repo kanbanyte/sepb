@@ -4,7 +4,7 @@
 	<name>pick_place_interfaces</name>
 	<version>0.0.0</version>
 	<description>TODO: Package description</description>
-	<maintainer email="75763222+finnmcgearey@users.noreply.github.com">cobot</maintainer>
+	<maintainer email="kanbanyte@outlook.com.au">cobot</maintainer>
 	<license>TODO: License declaration</license>
 
 	<buildtool_depend>ament_cmake</buildtool_depend>

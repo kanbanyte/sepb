@@ -1,12 +1,10 @@
 import rclpy
 from rclpy.node import Node
-from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
+from ur_dashboard_msgs.srv import Load
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
-
-from pick_place_interfaces.action import PickPlaceAction
 
 from pick_place_interfaces.srv import PickPlaceService
 
@@ -30,20 +28,33 @@ class PublisherJointTrajectory(Node):
 		self.check_starting_point = self.get_parameter("check_starting_point").value
 		self.starting_point = {}
 
+		self.subnode = rclpy.create_node('subnode')
+
 		# Create client for case, chip, and tray services
-		self.case_cli = self.create_client(PickPlaceService, 'case')
-		self.chip_cli = self.create_client(PickPlaceService, 'chip')
-		self.tray_cli = self.create_client(PickPlaceService, 'tray')
+		self.case_cli = self.subnode.create_client(PickPlaceService, 'case')
+		self.chip_cli = self.subnode.create_client(PickPlaceService, 'chip')
+		self.tray_cli = self.subnode.create_client(PickPlaceService, 'tray')
+
+		self.load_program_cli = self.create_client(Load, '/dashboard_client/load_program')
+		# self.load_program_cli.call()
 
 		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
 		while not self.case_cli.wait_for_service(timeout_sec=10.0):
-			self.get_logger().info("service not available, trying again...")
+			self.get_logger().info(f"{self.case_cli.srv_name} service not available, trying again...")
 		self.request = PickPlaceService.Request()
 
-		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.action_callback)
+		while not self.chip_cli.wait_for_service(timeout_sec=10.0):
+			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again...")
+		self.request = PickPlaceService.Request()
+
+		while not self.tray_cli.wait_for_service(timeout_sec=10.0):
+			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again...")
+		self.request = PickPlaceService.Request()
 
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
+
+		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
 
 		# starting point stuff
 		if self.check_starting_point:
@@ -56,6 +67,7 @@ class PublisherJointTrajectory(Node):
 			for name in self.joints:
 				if len(self.starting_point[name]) != 2:
 					raise Exception('"starting_point" parameter is not set correctly!')
+			self.joint_state_pub = self.create_publisher(JointTrajectory, publish_topic, 1)
 			self.joint_state_sub = self.create_subscription(JointState, "joint_states", self.joint_state_callback, 10)
 
 		# initialize starting point status
@@ -73,12 +85,7 @@ class PublisherJointTrajectory(Node):
 			self.get_logger().error("No valid goal found. Exiting...")
 			exit(1)
 
-		publish_topic = "/" + controller_name + "/" + "joint_trajectory"
-
-		# speed_scale_topic = "/speed_scaling_state_broadcaster/speed_scaling"
-
-		# self.get_logger().info(f'Publishing {len(goal_names)} goals on topic "{publish_topic}" every "{wait_sec_between_publish} s"')
-		self.get_logger().info(f'\n\tPublishing {len(goal_names)}...\n')
+		self.get_logger().info(f'\n\tPublishing {len(goal_names)} goals every {self.wait_sec_between_publish} secs...\n')
 
 		# Get list of all trajectories to move to
 		# Args: joints, goals, chip_number, case_number, tray_number
@@ -91,16 +98,12 @@ class PublisherJointTrajectory(Node):
 		self.safe_start_trajectories[0].joint_names = self.joints
 		self.safe_start_trajectories[1].joint_names = self.joints
 
-		# for traj in self.safe_start_trajectories:
-		# 	traj.joint_names = self.joints
-
 		self.safe_start_trajectories[0].points.append(self.goals["safe_start"])
 		self.safe_start_trajectories[1].points.append(self.goals["home"])
 
-		self.wait_for_trajectories = False
+		self.trajectories = self.populate_trajectories()
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
-		# self._speed_publisher = self.create_publisher(Float64, speed_scale_topic, 1)
 		self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
@@ -109,85 +112,61 @@ class PublisherJointTrajectory(Node):
 		self.future = service.call_async(self.request)
 		rclpy.spin_until_future_complete(self, self.future)
 
-		return self.future.result()
+		# return self.future.result()
+		return self.future
 
-	# TODO: Add calling of send_request for each service to detect objects
-	# TODO: Add building of trajectories after responses have been received
-	# TODO: Finally, add creation of timer at the end to move through trajectories
-	def action_callback(self, goal_handle):
-		self.get_logger().info(f"Executing pick and place task...")
+	def populate_trajectories(self):
+		future = self.send_request(self.chip_cli, True)
+		rclpy.spin_until_future_complete(self.subnode, future)
 
-		chip_position = self.send_request(self.chip_cli, True)
-		case_position = self.send_request(self.case_cli, True)
+		# chip_position = self.send_request(self.chip_cli, True)
+		# case_position = self.send_request(self.case_cli, True)
+		# tray_position = self.send_request(self.tray_cli, True)
 
-		while chip_position.signal == -1:
-			self.get_logger().info(f"chip signal is negative one.\n")
-			chip_position = self.send_request(self.chip_cli, True)
+		# while chip_position.signal == -1:
+		# 	chip_position = self.send_request(self.chip_cli, True)
+		# while case_position.signal == -1:
+		# 	case_position = self.send_request(self.case_cli, True)
+		# while tray_position.signal == -1:
+		# 	tray_position = self.send_request(self.tray_cli, True)
 
-		while case_position.signal == -1:
-			self.get_logger().info(f"case signal is negative one.\n")
-			case_position = self.send_request(self.case_cli, True)
+		if future.result() is not None:
+			result = future.result()
+			chip_position = result.signal
+			self.get_logger().info(f"Populated trajectories: True")
 
-		# tray_movement = self.send_request(self.tray_cli, True)
+			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, 1, 2)
+		else:
+			self.get_logger().error(f"Error when populating trajectories: {future.exception()}")
+			return
 
-		self.get_logger().info(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!before...\n")
+		# return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
 
-		self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
-
-		self.get_logger().info(f"...after!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
-
-		# self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
-		self.wait_for_trajectories = True
-
-		# TODO: Find a way to publish current joint position as feedback
-		# goal_handle.publish_feedback(self.joints)
-
-		goal_handle.succeed()
-		result = PickPlaceAction.Result()
-		result.task_successful = True
-
-		return result
-
+	# TODO: Find a way to restart after all trajectories have been moved through
 	def timer_callback(self):
 		if self.starting_point_ok:
-			if self.wait_for_trajectories:
-				# goal = self.goal_names[self.i]
+			# Return trajectories to move from home to chip 1
+			if self.i < len(self.trajectories):
+				traj = self.trajectories[self.i]
+				traj_name = self.trajectory_names[self.i]
+				self.get_logger().info(f'Goal Name: {traj_name}')
+				traj_goal = traj.points[0]
 
-				# trajectories = BotMethods.move_chip(self, self.joints, self.goals, 33)
+				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
+				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {traj_goal.velocities}'
 
-				# Return trajectories to move from home to chip 1
-				if self.i < len(self.trajectories):
-					traj = self.trajectories[self.i]
-					traj_name = self.trajectory_names[self.i]
-					self.get_logger().info(f'Goal Name: {traj_name}')
-					traj_goal = traj.points[0]
+				# Using goals as dict type
+				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
 
-					# traj_goal.velocities = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+				self._publisher.publish(traj)
 
-					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-					pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-					f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {traj_goal.velocities}'
-
-					# Using goals as dict type
-					self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
-
-					#region KEEPME
-					# traj = JointTrajectory()
-					# traj.joint_names = self.joints
-					# # traj.points.append(self.goals[self.i])
-					# traj.points.append(self.goals[goal]) # Using goals as dict type
-					#endregion KEEPME
-
-					self._publisher.publish(traj)
-
-					# speed_scale = Float64()
-					# speed_scale.data = 50.0
-					# self._speed_publisher.publish(speed_scale)
-
-					self.i += 1
-					# self.i %= len(trajectories)
+				self.i += 1
 			else:
-				self.get_logger().info(f"Waiting for trajectories...\n")
+				self.get_logger().info("Pick and place task complete. Recalculating trajectories...")
+				self.i = 0
+				self.trajectories = self.populate_trajectories()
+				self.timer.reset()
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
 			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
@@ -213,17 +192,7 @@ class PublisherJointTrajectory(Node):
 
 				for traj in temp_traj:
 					temp_pos = traj
-					self._publisher.publish(temp_pos)
-
-				# temp = self.safe_start_trajectories[self.i]
-
-				# self._publisher.publish(temp)
-
-				# self.i += 1
-
-				# if self.i == 2:
-				# 	self.i = 0
-				# 	self.starting_point_ok = True
+					self.joint_state_pub.publish(temp_pos)
 
 				self.starting_point_ok = True
 			else:

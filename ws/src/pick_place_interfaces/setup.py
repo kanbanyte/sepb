@@ -17,7 +17,7 @@ setup(
 	install_requires=['setuptools'],
 	zip_safe=True,
 	maintainer='cobot',
-	maintainer_email='75763222+finnmcgearey@users.noreply.github.com',
+	maintainer_email='kanbanyte@outlook.com.au',
 	description='TODO: Package description',
 	license='TODO: License declaration',
 	tests_require=['pytest'],
