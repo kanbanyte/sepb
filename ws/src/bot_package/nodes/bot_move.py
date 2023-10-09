@@ -112,21 +112,35 @@ class PublisherJointTrajectory(Node):
 		self.future = service.call_async(self.request)
 		rclpy.spin_until_future_complete(self, self.future)
 
-		return self.future.result()
+		# return self.future.result()
+		return self.future
 
 	def populate_trajectories(self):
-		chip_position = self.send_request(self.chip_cli, True)
-		case_position = self.send_request(self.case_cli, True)
-		tray_position = self.send_request(self.tray_cli, True)
+		future = self.send_request(self.chip_cli, True)
+		rclpy.spin_until_future_complete(self.subnode, future)
 
-		while chip_position.signal == -1:
-			chip_position = self.send_request(self.chip_cli, True)
-		while case_position.signal == -1:
-			case_position = self.send_request(self.case_cli, True)
-		while tray_position.signal == -1:
-			tray_position = self.send_request(self.tray_cli, True)
+		# chip_position = self.send_request(self.chip_cli, True)
+		# case_position = self.send_request(self.case_cli, True)
+		# tray_position = self.send_request(self.tray_cli, True)
 
-		return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
+		# while chip_position.signal == -1:
+		# 	chip_position = self.send_request(self.chip_cli, True)
+		# while case_position.signal == -1:
+		# 	case_position = self.send_request(self.case_cli, True)
+		# while tray_position.signal == -1:
+		# 	tray_position = self.send_request(self.tray_cli, True)
+
+		if future.result() is not None:
+			result = future.result()
+			chip_position = result.signal
+			self.get_logger().info(f"Populated trajectories: True")
+
+			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, 1, 2)
+		else:
+			self.get_logger().error(f"Error when populating trajectories: {future.exception()}")
+			return
+
+		# return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
 
 	# TODO: Find a way to restart after all trajectories have been moved through
 	def timer_callback(self):
