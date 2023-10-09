@@ -86,7 +86,8 @@ The working space, which includes the robotic arm, the item trays and and the hu
 
 <!-- TOC ignore:true -->
 ### Tools
-A new depth camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
+The ZED2i camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
+The camera must be aligned such that the trays, chips, and cases can be captured effectively.
 Other tools include the items to be assembled, a conveyor belt that delivers a shell, and the robot arm, all of which already exist.
 
 <!-- TOC ignore:true -->
@@ -121,7 +122,7 @@ The average value is used to account for items that are further away from the co
 <!-- TOC ignore:true -->
 ### Satisfaction Assessment
 After the experiment, the participant would be asked to fill a form detailing their experience with the system.
-In particular, they will be prompted to comment on the safety and speed and efficiency in the comparison with the original system.
+In particular, they will be prompted to comment on the safety, speed, and efficiency in the comparison with the original system.
 
 # Participants
 The primary user of the system is an operator who undertakes the task of assembling items delivered by a robot.\
