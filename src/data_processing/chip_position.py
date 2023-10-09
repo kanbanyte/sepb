@@ -10,23 +10,29 @@ def get_chip_col(x1,x2):
 	Returns:
 		int : the column number of the chip, or -1 for invalid column
 	'''
-	if x1 >= 4 and x2 <= 32:
-		return 0
-	if x1 >= 61 and x2 <= 81:
-		return 1
-	if x1 >= 110 and x2 <= 130:
-		return 2
-	if x1 >= 160 and x2 <= 177:
-		return 3
-	if x1 >= 209 and x2 <= 228:
-		return 4
-	if x1 >= 258 and x2 <= 274:
-		return 5
-	if x1 >= 307 and x2 <= 324:
-		return 6
-	if x1 >= 356 and x2 <= 376:
-		return 7
+	if x1 < x2 and x1 >=0 and x2 >= 0:
+		xcen = (x1 + x2) / 2 #finds the center of the chips x coords
+		if xcen >= 4 and xcen <= 37:
+			return 0
+		if xcen >= 56 and xcen <= 86:
+			return 1
+		if xcen >= 105 and xcen <= 135:
+			return 2
+		if xcen >= 155 and xcen <= 182:
+			return 3
+		if xcen >= 204 and xcen <= 233:
+			return 4
+		if xcen >= 253 and xcen <= 284:
+			return 5
+		if xcen >= 302 and xcen <= 329:
+			return 6
+		if xcen >= 351 and xcen <= 381:
+			return 7
+		else:
+			print(f"X-center out of bounds: {xcen}")
+			return -1
 	else:
+		print("Invalid X-coordinates")
 		return -1
 
 def get_chip_row(y1,y2):
@@ -41,19 +47,25 @@ def get_chip_row(y1,y2):
 	Returns:
 		int : the row number of the chip, or -1 for invalid row
 	'''
-	if y1 >= 0 and y2 <= 40:
-		return 0
-	if y1 >= 39 and y2 <= 76:
-		return 1
-	if y1 >= 70 and y2 <= 113:
-		return 2
-	if y1 >= 112 and y2 <= 151:
-		return 3
-	if y1 >= 150 and y2 <= 189:
-		return 4
-	if y1 >= 184 and y2 <= 223:
-		return 5
+	if y1 < y2 and y1 >=0 and y2 >= 0:
+		ycen = (y1 + y2) / 2 #finds the center of the chips y coords
+		if ycen >= 0 and ycen <= 40:
+			return 0
+		if ycen >= 39 and ycen <= 76:
+			return 1
+		if ycen >= 70 and ycen <= 113:
+			return 2
+		if ycen >= 112 and ycen <= 151:
+			return 3
+		if ycen >= 150 and ycen <= 189:
+			return 4
+		if ycen >= 184 and ycen <= 223:
+			return 5
+		else:
+			print(f"Y-center out of bounds: {ycen}")
+			return -1
 	else:
+		print("Invalid Y-coordinates")
 		return -1
 
 def get_chip_slot_number(bounding_box):
