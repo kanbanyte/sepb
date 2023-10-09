@@ -52,23 +52,30 @@ class TestTrayPosition(unittest.TestCase):
 		                 5, "Should be no_move")
 #endregion
 #region out of bounds tests
-	def test_out_of_bounds_pos(self):
-		detections = {0: [DetectedObject(0.9, (352, 302, 690, 586))],
-					0: [DetectedObject(0.9, (367, 7, 684, 1000))]}
-		self.assertEqual(determine_move(detections, model).value,
-		                 5, "Should be no_move")
 
-	def test_empty_pos(self):
-		detections = {0: [DetectedObject(0.9, (0,0,0,0))],
-			0: [DetectedObject(0.9, (367, 7, 684, 259))]}
-		self.assertEqual(determine_move(detections, model).value,
-		                 5, "Should be no_move")
-	def test_negative_pos(self):
-		detections = {0: [DetectedObject(
-			0.9, (-1,-1,-1,-1))], 0: [DetectedObject(0.9, (367, 7, 684, 259))]}
-		self.assertEqual(determine_move(detections, model).value,
-		                 5, "Should be no_move")
-	def test_three_pos(self):
+	def test_invalid_detection_bounding_boxes(self):
+		invalid_detections = [
+			{
+				0: [DetectedObject(0.9, (352, 302, 690, 586))],
+				0: [DetectedObject(0.9, (367, 7, 684, 1000))]
+			},
+			{
+				0: [DetectedObject(0.9, (0,0,0,0))],
+				0: [DetectedObject(0.9, (367, 7, 684, 259))]
+			},
+			{
+				0: [DetectedObject(0.9, (-1,-1,-1,-1))],
+				0: [DetectedObject(0.9, (367, 7, 684, 259))]
+			}
+		]
+
+		for invalid_detection in invalid_detections:
+			self.assertEqual(
+				determine_move(invalid_detection, model).value,
+		        5,
+				"Should be no_move")
+
+	def test_three_empty_trays(self):
 		detections = {0: [DetectedObject(0.9, (3, 157, 350, 4181))],
 				0: [DetectedObject(0.9, (352, 302, 690, 586))],
 				0: [DetectedObject(0.9, (367, 7, 684, 259))]}
