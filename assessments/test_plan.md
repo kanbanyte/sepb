@@ -140,18 +140,18 @@ the testing strategy centers around assessing its proficiency in selecting items
 as opposed to the pre-existing trial-and-error approach across the entirety of the trays.
 
 ## Tested Features
-The tested features are divided into 3 categories: the vision system, the cobot controller software and the integration between the two.
+The tested features are divided into 3 categories: the vision system, the cobot controller software and the integration between the two.\
 The vision system is further divided into the AI Models and Camera Server:
 * AI models: YOLOv5 models retrained on images captured by the camera.
 Images are cropped to the region containing objects of interest during training and evaluation.
-There 3 AI models: chip detection, case detection and tray detection, all of which require a different crop box on the input image.
-* Camera Server: the ROS service that captures images from the camera, run inference using the AI models and respond to the cobot controller.
+There are 3 AI models: chip detection, case detection and tray detection; all of which require a different crop box on the input image.
+* Camera Server: The ROS service that captures images from the camera, run inference using the AI models and respond to the cobot controller.
 
 The following features in the vision system are tested:
 * AI Models:
 	* The chip detection model correctly detects chips in all available slots from a correctly cropped image.
 	* The case detection model correctly detects cases in all available positions on the case rack from a correctly cropped image.
-	* The tray detection model correctly detects all three classes of trays from a corectly cropped image: Full, Partially Full and Empty.
+	* The tray detection model correctly detects all three classes of trays from a correctly cropped image: Full, Partially Full and Empty.
 * Camera Server:
 	* A stable connection between the ZED camera and camera server is established.
 	* Appropriate camera settings specified in a YAML configuration file are applied.
