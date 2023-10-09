@@ -44,7 +44,10 @@ def __get_states(detections, model):
 	}
 
 	# detections is a dictionary of detected objects, in this format:
-	# dict_items([(0, [DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))]), (1, [DetectedObject(confidence=0.950691819190979, bounding_box=(344, 293, 675, 574))])])
+	# dict_items([
+	# 	(0, [DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))]),
+	# 	(1, [DetectedObject(confidence=0.950691819190979, bounding_box=(344, 293, 675, 574))])
+	# ])
 	for class_index, detected_objects in detections.items():
 		# detected_objects is a list of DetectedObject, in this format:
 		# [DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))]
