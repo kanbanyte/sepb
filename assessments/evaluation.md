@@ -180,8 +180,11 @@ Analysis of the collected time data will inform system enhancements, aligning wi
 This data-driven approach ensures continual refinement and optimisation of the system's performance.
 
 # Usability Goals
-The usability of the system will be measured in the success of the software, that being through successfully selecting appropriate objects for use.
-The system will achieve a 100% success rate whereas the success of the software is harder to measure due to the variance that exists in prediction software.
+Creating usability for the system will be determined by the success of movements of the robot arm.
+Through correct software evaluation appropriate objects will be moved, the measurement of this success will be done through unit tests.\
+Part of the software system is prediction as we leverage AI models,
+to effectively test this we evaluate the expected results as users and then compare that to the models output.\
+These two testing methods will result in being able to effectively measure the usability of the arm and by extension the whole system.
 
 # Problem Severity
 Problems that are discovered during the  testing procedures will be classified based on severity, of which are influenced by impact and frequency.
@@ -217,7 +220,7 @@ Less than 10% of the participants encountered the issue.\
 These problems may only affect a small subset of users, but they are still worth addressing to enhance the product's usability.
 
 ## Severity Ranking
-Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts, 
+Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts,
 enabling the team to focus resources on addressing critical user experience problems first.
 
 #### High Severity
