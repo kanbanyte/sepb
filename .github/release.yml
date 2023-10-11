@@ -7,6 +7,27 @@ changelog:
     authors:
       - Danaclocs
   categories:
+    - title: Test Plan
+      labels:
+        - test
+    - title: Usability Evaluation Plan
+      labels:
+        - eval
+    - title: Test Report
+      labels:
+        - test-report
+    - title: Usability Assessment Report
+      labels:
+        - usability-report
+    - title: Technical Documentations
+      labels:
+        - technical
+    - title: Robotic Operating System and Collaborative Robot
+      labels:
+        - ROS2
+    - title: Artificial Intelligence
+      labels:
+        - AI
     - title: Team Leader and Client Liaison
       labels:
         - Slothman1
