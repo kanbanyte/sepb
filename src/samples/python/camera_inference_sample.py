@@ -35,6 +35,8 @@ def main():
 	if not file_path:
 		raise ValueError("No configuration file selected")
 
+	print(f"Using configuration file '{file_path}'")
+
 	save_output_choice = input("Save output image (y/any key)?: ")
 	output_path = None
 	if save_output_choice == 'y':
@@ -46,9 +48,14 @@ def main():
 			os.mkdir(output_path)
 
 	config = read_yaml(file_path)
+ 
 	camera = open_camera(config.get('camera'))
 
-	model = None
+	print("Initializing detection models")
+	chip_model = ObjectDetectionModel(config.get('model').get('detect_chip'))
+	tray_model = ObjectDetectionModel(config.get('model').get('detect_tray'))
+	case_model = ObjectDetectionModel(config.get('model').get('detect_case'))
+ 
 	cropped_image = None
 
 	while True:
@@ -69,7 +76,6 @@ Select a model to run:
 		try:
 			if choice == '0':
 				crop_boxes = config.get('chip_slot_crop_box')
-				model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 
 				left_lens_output_dir = None
 				right_lens_output_dir = None
@@ -89,7 +95,7 @@ Select a model to run:
 				# get chip positions from image captured with logical left lens
 				left_crop_box = read_crop_box(crop_boxes.get('left'))
 				left_cropped_image = get_rgb_cropped_image(camera, left_crop_box, LogicalLens.LEFT)
-				left_detections = run_inference(model, left_cropped_image, left_lens_output_dir)
+				left_detections = run_inference(chip_model, left_cropped_image, left_lens_output_dir)
 				left_chip_positions = []
 				if len(left_detections) > 0:
 					left_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in left_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
@@ -97,7 +103,7 @@ Select a model to run:
 				# get chip positions from image captured with logical right lens
 				right_crop_box = read_crop_box(crop_boxes.get('right'))
 				right_cropped_image = get_rgb_cropped_image(camera, right_crop_box, LogicalLens.RIGHT)
-				right_detections = run_inference(model, right_cropped_image, left_lens_output_dir)
+				right_detections = run_inference(chip_model, right_cropped_image, right_lens_output_dir)
 				right_chip_positions = []
 				if len(right_detections) > 0:
 					right_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in right_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
@@ -114,18 +120,16 @@ Select a model to run:
 
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('right'))
-				model = ObjectDetectionModel(config.get('model').get('detect_tray'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.RIGHT)
-				detections = run_inference(model, cropped_image, output_path)
-				best_move = determine_move(detections, model)
+				detections = run_inference(tray_model, cropped_image, output_path)
+				best_move = determine_move(detections, tray_model)
 
 				print(f"Best Tray movement is: {best_move.name}")
 
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('right'))
-				model = ObjectDetectionModel(config.get('model').get('detect_case'))
 				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.RIGHT)
-				detections = run_inference(model, cropped_image, output_path)
+				detections = run_inference(case_model, cropped_image, output_path)
 
 				if len(detections.items()) == 0:
 					continue
