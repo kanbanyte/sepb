@@ -48,14 +48,14 @@ def main():
 			os.mkdir(output_path)
 
 	config = read_yaml(file_path)
- 
+
 	camera = open_camera(config.get('camera'))
 
 	print("Initializing detection models")
 	chip_model = ObjectDetectionModel(config.get('model').get('detect_chip'))
 	tray_model = ObjectDetectionModel(config.get('model').get('detect_tray'))
 	case_model = ObjectDetectionModel(config.get('model').get('detect_case'))
- 
+
 	cropped_image = None
 
 	while True:
@@ -66,7 +66,8 @@ Select a model to run:
 \t- 0: run chip detection model using both lenses
 \t- 1: run tray detection model using physical left lens
 \t- 2: run case detection model using physical left lens
-''')
+'''
+		)
 		choice = input("Choose model to run. Press `q` to quit: ")
 		if choice == 'q':
 			print("Closing camera")
@@ -86,7 +87,7 @@ Select a model to run:
 					if not os.path.exists(left_lens_output_dir):
 						os.mkdir(left_lens_output_dir)
 					print(f"Saving output of left lens in '{left_lens_output_dir}'")
-		
+
 					right_lens_output_dir = os.path.join(output_path, "right")
 					if not os.path.exists(right_lens_output_dir):
 						os.mkdir(right_lens_output_dir)
@@ -98,7 +99,9 @@ Select a model to run:
 				left_detections = run_inference(chip_model, left_cropped_image, left_lens_output_dir)
 				left_chip_positions = []
 				if len(left_detections) > 0:
-					left_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in left_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
+					left_chip_positions.extend(
+						get_chip_slot_number(x.bounding_box) for x in left_detections[0] if get_chip_slot_number(x.bounding_box) is not None
+					)
 
 				# get chip positions from image captured with logical right lens
 				right_crop_box = read_crop_box(crop_boxes.get('right'))
@@ -106,7 +109,9 @@ Select a model to run:
 				right_detections = run_inference(chip_model, right_cropped_image, right_lens_output_dir)
 				right_chip_positions = []
 				if len(right_detections) > 0:
-					right_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in right_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
+					right_chip_positions.extend(
+						get_chip_slot_number(x.bounding_box) for x in right_detections[0] if get_chip_slot_number(x.bounding_box) is not None
+					)
 
 				# combine results from both lens to reduce the chance of missing a chip
 				chip_positions = set(left_chip_positions + right_chip_positions)

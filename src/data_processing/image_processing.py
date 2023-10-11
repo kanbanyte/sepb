@@ -4,7 +4,7 @@ from threading import Lock
 import tkinter as tk
 
 def crop_image(image, crop_box):
-	"""
+	'''
 	Crops an image based on the specified crop box.
 
 	Args:
@@ -13,7 +13,7 @@ def crop_image(image, crop_box):
 
 	Returns:
 		np.array: Cropped Image
-	"""
+	'''
 
 	if image.size == 0:
 		raise ValueError(f"Input image size must not be 0")
@@ -30,7 +30,7 @@ def crop_image(image, crop_box):
 	return image[y1:y2, x1:x2]
 
 def tile_image(image, num_rows, num_cols):
-	"""
+	'''
 	Tile an image with the specified grid size.
 
 	Args:
@@ -40,7 +40,7 @@ def tile_image(image, num_rows, num_cols):
 
 	Returns:
 		List[np.array]: list of tiled images.
-	"""
+	'''
 	tile_height = int(image.shape[0] / num_rows)
 	tile_width = int(image.shape[1] / num_cols)
 	tiled_images = []
@@ -55,7 +55,7 @@ def tile_image(image, num_rows, num_cols):
 	return tiled_images
 
 def draw_bounding_box(image, bounding_box):
-	"""
+	'''
 	Draw a green bounding box on an image.
 
 	Args:
@@ -64,7 +64,7 @@ def draw_bounding_box(image, bounding_box):
 
 	Returns:
 		None
-	"""
+	'''
 	x1, y1, x2, y2 = bounding_box
 	point1 = (round(x1), round(y1))
 	point2 = (round(x2), round(y2))

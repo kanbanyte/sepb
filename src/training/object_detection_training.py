@@ -1,4 +1,4 @@
-"""
+'''
 Usage:
 1. Run object_detection_training notebook as a single python script
 2. The functionalities are largely similar, except:
@@ -6,23 +6,23 @@ Usage:
 	- directory changes are removed
 	- the Roboflow API key input is not hidden
 	- file download at the end is removed
-"""
+'''
 
 import os
 import subprocess
 
 def run_command(command):
-	"""
+	'''
 	Run a CLI command and stops the script if the command fails.
 	Copied directly from cli_runner.py.
 	This function is not needed in Jupyter notebooks since they support cli commands natively.
 
 	Args:
 		command (str): command to run
-		
+
 	Returns:
 		None
-	"""
+	'''
 	print(f"Running command `{command}`")
 	exit_code = subprocess.call(command.split())
 	if exit_code is not 0:

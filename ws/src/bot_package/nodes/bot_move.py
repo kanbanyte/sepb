@@ -5,6 +5,7 @@ from trajectory_msgs.msg import JointTrajectory
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
+from data_processing.tray_position import TrayMovement
 
 from pick_place_interfaces.srv import PickPlaceService
 from pick_place_interfaces.action import PickPlaceAction
@@ -103,18 +104,28 @@ class PublisherJointTrajectory(Node):
 		return self.future
 
 	def populate_trajectories(self):
+		future_tray = self.send_request(self.tray_cli, True)
+		rclpy.spin_until_future_complete(self.subnode, future_tray)
+
+		tray_position = self.send_request(self.tray_cli, True)
+
+		while tray_position.result() and tray_position.result().signal == -1:
+			tray_position = self.send_request(self.tray_cli, True)
+			self.get_logger().info('Waiting for tray signal to become available...')
+
+		while tray_position.result() and tray_position.result().signal == TrayMovement.no_move:
+			tray_position = self.send_request(self.tray_cli, True)
+			self.get_logger().info('Tray signal is no_move. Waiting for movement to be available...')
+
 		future_chip = self.send_request(self.chip_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_chip)
 
 		future_case = self.send_request(self.case_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_case)
 
-		future_tray = self.send_request(self.tray_cli, True)
-		rclpy.spin_until_future_complete(self.subnode, future_tray)
-
 		chip_position = self.send_request(self.chip_cli, True)
 		case_position = self.send_request(self.case_cli, True)
-		tray_position = self.send_request(self.tray_cli, True)
+
 		# if chip_position.result() is None:
 		# 	self.get_logger().error(f"chip result is none: {chip_position.exception()}")
 		# else:
@@ -133,10 +144,6 @@ class PublisherJointTrajectory(Node):
 			case_position = self.send_request(self.case_cli, True)
 			self.get_logger().info('Waiting for case signal to become available...')
 
-		while tray_position.result() and tray_position.result().signal == -1:
-			tray_position = self.send_request(self.tray_cli, True)
-			self.get_logger().info('Waiting for tray signal to become available...')
-
 		if future_chip.result() and future_case.result() and future_tray.result() is not None :
 			chip_result = future_chip.result()
 			chip_position = chip_result.signal
@@ -148,7 +155,7 @@ class PublisherJointTrajectory(Node):
 			tray_position = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
-			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position, case_position, 2)
+			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position, case_position, tray_position)
 		else:
 			self.get_logger().error(f"Error when populating trajectories: {future_chip.exception()}")
 

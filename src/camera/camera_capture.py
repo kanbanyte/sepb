@@ -6,7 +6,7 @@ from .camera_lens import LogicalLens
 from data_processing.image_processing import crop_image
 
 def open_camera(camera_config):
-	"""
+	'''
 	Open the ZED camera and applies settings specified in the yaml configuration file.
 
 	Args:
@@ -14,7 +14,7 @@ def open_camera(camera_config):
 
 	Returns:
 		sl.Camera: Opened and calibrated ZED camera object.
-	"""
+	'''
 	brightness = camera_config.get('brightness')
 	contrast = camera_config.get('contrast')
 	hue = camera_config.get('hue')
@@ -49,7 +49,7 @@ def open_camera(camera_config):
 	return camera
 
 def __logical_lens_to_zed_lens(logical_lens):
-	"""
+	'''
 	Converts logical lens enum value to enum used by the ZED SDK.
 
 	Args:
@@ -57,7 +57,7 @@ def __logical_lens_to_zed_lens(logical_lens):
 
 	Returns:
 		sl.VIEW: the logical lens used.
-	"""
+	'''
 	if logical_lens == LogicalLens.RIGHT:
 		return sl.VIEW.RIGHT
 	elif logical_lens == LogicalLens.LEFT:
@@ -66,7 +66,7 @@ def __logical_lens_to_zed_lens(logical_lens):
 		raise ValueError(f"Unknown logical lens value: {logical_lens}")
 
 def capture_image(camera, lens=LogicalLens.RIGHT):
-	"""
+	'''
 	Captures an image using the specified camera object.
 
 	Args:
@@ -75,7 +75,7 @@ def capture_image(camera, lens=LogicalLens.RIGHT):
 
 	Returns:
 		np.array: The captured image as an array.
-	"""
+	'''
 	image = sl.Mat()
 	error_code = camera.grab()
 	if error_code == sl.ERROR_CODE.SUCCESS:
@@ -89,7 +89,7 @@ def capture_image(camera, lens=LogicalLens.RIGHT):
 		raise ValueError(f"Failed to capture image: {error_code}")
 
 def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
-	"""
+	'''
 	Takes a photo with the camera and applies a crop box to it.
 
 	Args:
@@ -99,7 +99,7 @@ def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
 
 	Returns:
 		np.array: The cropped image.
-	"""
+	'''
 	image = capture_image(camera, lens)
 	cropped_image = crop_image(image, crop_box)
 
@@ -110,11 +110,11 @@ def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
 	# from datetime import datetime
 	# current_time = datetime.now().strftime("%H-%M-%S")
 	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)
- 
+
 	return np.ascontiguousarray(cropped_image, dtype=np.uint8)
 
 def read_crop_box(crop_box_config):
-	"""
+	'''
 	Get the crop box in the xyxy format as specified in the yaml configuration file.
 
 	Args:
@@ -122,7 +122,7 @@ def read_crop_box(crop_box_config):
 
 	Returns:
 		int, int, int, int: Coordinates of the crop box in the (left, top, right, bottom) format
-	"""
+	'''
 	x1 = crop_box_config.get('x1')
 	x2 = crop_box_config.get('x2')
 	y1 = crop_box_config.get('y1')

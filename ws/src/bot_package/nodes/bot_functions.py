@@ -1,5 +1,6 @@
 from trajectory_msgs.msg import JointTrajectory
 import copy
+from data_processing.tray_position import TrayMovement
 
 
 class BotMethods:
@@ -180,14 +181,30 @@ class BotMethods:
 			traj.points.clear()
 
 	@staticmethod
-	def get_all_trajectories(joints, goals, chip_number, case_number, tray_number):
+	def get_all_trajectories(joints, goals, chip_number, case_number, tray_movement):
 		# Generate and return a list of all trajectories for various movements.
+		if tray_movement == TrayMovement.move_assembly_tray1:
+			tray_number = 1
+			BotMethods.replace_tray(joints, goals, tray_number)
+		elif tray_movement == TrayMovement.move_assembly_tray2:
+			tray_number = 2
+			BotMethods.replace_tray(joints, goals, tray_number)
+		elif tray_movement == TrayMovement.move_tray1_assembly:
+			BotMethods.move_tray(joints, goals, 1)
+		elif tray_movement == TrayMovement.move_tray2_assembly:
+			BotMethods.move_tray(joints, goals, 2)
+		else:
+			return None
+
 		BotMethods.move_home(joints, goals)
 		BotMethods.move_chip(joints, goals, chip_number, tray_number)
 		BotMethods.move_case(joints, goals, case_number, tray_number)
 		BotMethods.move_battery(joints, goals, tray_number)
-		BotMethods.move_tray(joints, goals, tray_number)
-		BotMethods.replace_tray(joints, goals, tray_number)
+
+		if tray_movement == TrayMovement.move_tray1_assembly:
+			BotMethods.move_tray(joints, goals, 1)
+		elif tray_movement == TrayMovement.move_tray2_assembly:
+			BotMethods.move_tray(joints, goals, 2)
 
 		return BotMethods.trajectories
 
