@@ -15,9 +15,10 @@ class MainActionClient(Node):
 		self._action_client = ActionClient(self, PickPlaceAction, 'perform_pick_place')
 
 	# Define a method to send a goal to the action server.
-	def send_goal(self):
+	def send_goal(self, goal):
 		# Create a PickPlaceAction action goal message.
 		goal_msg = PickPlaceAction.Goal()
+		goal_msg.goal = goal
 
 		# Wait for the action server to be available.
 		self._action_client.wait_for_server()
@@ -41,9 +42,9 @@ class MainActionClient(Node):
 
 	def get_result_callback(self, future):
 		result = future.result().result
-		self.get_logger().info(f'Task Successful: {result.task_successful}')
+		self.get_logger().info(f'Task successful: {result.task_successful}')
 		rclpy.shutdown()
 
 	def feedback_callback(self, feedback_msg):
 		feedback = feedback_msg.feedback
-		self.get_logger().info('Received current_goal: {0}'.format(feedback.current_movement))
+		self.get_logger().info(f'Received current_goal as feedback: {feedback.current_movement}')

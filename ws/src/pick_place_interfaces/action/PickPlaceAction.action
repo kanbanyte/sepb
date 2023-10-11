@@ -1,4 +1,5 @@
 # Goal
+bool goal
 ---
 # Result
 bool task_successful

@@ -70,22 +70,22 @@ def draw_bounding_box(image, bounding_box):
 	point2 = (round(x2), round(y2))
 
 	green = (0, 255, 0)
-	
+
 	cv2.rectangle(image, point1, point2, color=green, thickness=2)
 
 def show_image_non_block(image, name='Image'):
 	'''
 	Show image without blocking the current thread.
 	The image is opened by another thread running `show_image` which terminates when the window is closed.
-	
+
 	Args:
 		image (np.array): Input image as a NumPy array.
 		name (str): Window name.
-  
+
 	Returns:
 		None
 	'''
-	
+
 	image_thread = threading.Thread(target=show_image, args=(image,name))
 	image_thread.start()
 
@@ -93,11 +93,11 @@ __IMAGE_LOCK = Lock()
 def show_image(image, name='Image'):
 	'''
 	Show image and blocks the thread until the window is closed.
-	
+
 	Args:
 		image (np.array): Input image as a NumPy array.
 		name (str): Window name.
-  
+
 	Returns:
 		None
 	'''
@@ -106,7 +106,7 @@ def show_image(image, name='Image'):
 	screen_height = root.winfo_screenheight()
 	root.destroy()
 	new_height = screen_height * 3 / 4
- 
+
 	# get the width/height ratio
 	aspect_ratio = float(image.shape[1]) / float(image.shape[0])
 	new_height = int(new_height)

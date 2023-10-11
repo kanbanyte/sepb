@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(std_srvs REQUIRED)
 
 set(srv_files
 	"srv/PickPlaceService.srv"
@@ -20,6 +21,7 @@ set(action_files
 rosidl_generate_interfaces(${PROJECT_NAME}
 	${srv_files}
 	${action_files}
+	# DEPENDENCIES std_srvs
 )
 
 ament_export_dependencies(rosidl_default_runtime)
