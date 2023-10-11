@@ -1,24 +1,24 @@
 # Import the ROS2 Python library for communication.
 import rclpy
 # Import the PublisherJointTrajectory class from the 'bot_move' module.
-from nodes.bot_move import PublisherJointTrajectory
+from nodes.gripper_server import GripperServer
 
 
 def main(args=None):
 	# Initialize the ROS2 Python client library.
 	rclpy.init(args=args)
 
-	# Create an instance of the PublisherJointTrajectory class.
-	publisher_joint_trajectory = PublisherJointTrajectory()
+	# Create an instance of the GripperNode class.
+	gripper_server = GripperServer()
 
 	# Enter the ROS2 event loop and spin the publisher node.
-	rclpy.spin(publisher_joint_trajectory)
+	rclpy.spin(gripper_server)
 
 	# Destroy the publisher node.
-	# publisher_joint_trajectory.destroy_node()
+	gripper_server.destroy_node()
 
 	# Shutdown the ROS2 client library when done.
-	# rclpy.shutdown()
+	rclpy.shutdown()
 
 
 if __name__ == "__main__":

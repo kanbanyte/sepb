@@ -11,12 +11,9 @@ def main(args=None):
 	# Create an instance of the MainActionClient class, which is responsible for sending action goals.
 	action_client = MainActionClient()
 
-	# Send a goal using the action client and store the returned Future object.
-	future = action_client.send_goal(True)
+	action_client.send_goal(True)
 
-	# Spin until the specified future is complete, which involves handling callbacks.
-	rclpy.spin_until_future_complete(action_client, future)
-
+	rclpy.spin(action_client)
 
 if __name__ == '__main__':
 	# Call the main function when this script is executed directly.

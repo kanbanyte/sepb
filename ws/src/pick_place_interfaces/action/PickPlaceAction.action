@@ -1,8 +1,8 @@
 # Goal
-bool perform_pick_place
+bool goal
 ---
 # Result
 bool task_successful
 ---
 # Feedback
-trajectory_msgs/JointTrajectory current_trajectory
+string current_movement
