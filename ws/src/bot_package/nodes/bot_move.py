@@ -1,14 +1,16 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
-from ur_dashboard_msgs.srv import Load
 from sensor_msgs.msg import JointState
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
 
 from pick_place_interfaces.srv import PickPlaceService
+from pick_place_interfaces.action import PickPlaceAction
 
 import copy
+import time
 
 class PublisherJointTrajectory(Node):
 	def __init__(self):
@@ -30,25 +32,24 @@ class PublisherJointTrajectory(Node):
 
 		self.subnode = rclpy.create_node('subnode')
 
+		# Create action server
+		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.action_callback)
+
 		# Create client for case, chip, and tray services
 		self.case_cli = self.subnode.create_client(PickPlaceService, 'case')
 		self.chip_cli = self.subnode.create_client(PickPlaceService, 'chip')
 		self.tray_cli = self.subnode.create_client(PickPlaceService, 'tray')
 
-		self.load_program_cli = self.create_client(Load, '/dashboard_client/load_program')
-		# self.load_program_cli.call()
-
 		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
 		while not self.case_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info(f"{self.case_cli.srv_name} service not available, trying again...")
-		self.request = PickPlaceService.Request()
 
 		while not self.chip_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again...")
-		self.request = PickPlaceService.Request()
 
 		while not self.tray_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again...")
+
 		self.request = PickPlaceService.Request()
 
 		if self.joints is None or len(self.joints) == 0:
@@ -87,30 +88,16 @@ class PublisherJointTrajectory(Node):
 
 		self.get_logger().info(f'\n\tPublishing {len(goal_names)} goals every {self.wait_sec_between_publish} secs...\n')
 
-		# Get list of all trajectories to move to
-		# Args: joints, goals, chip_number, case_number, tray_number
-		# self.trajectories = BotMethods.get_all_trajectories(self.joints, self.goals, 24, 1, 2)
-		self.trajectory_names = BotMethods.get_trajectory_names()
-
-		# Trajectories to move the cobot to a safe position and back to home
-		self.safe_start_trajectories = [JointTrajectory(), JointTrajectory()]
-
-		self.safe_start_trajectories[0].joint_names = self.joints
-		self.safe_start_trajectories[1].joint_names = self.joints
-
-		self.safe_start_trajectories[0].points.append(self.goals["safe_start"])
-		self.safe_start_trajectories[1].points.append(self.goals["home"])
-
-		self.trajectories = self.populate_trajectories()
+		self.current_movement = "home"
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
-		self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
+		# self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
 		self.i = 0
 
 	def send_request(self, service, detect):
 		self.request.detect = detect
 		self.future = service.call_async(self.request)
-		rclpy.spin_until_future_complete(self, self.future)
+		# rclpy.spin_until_future_complete(self, self.future)
 
 		# return self.future.result()
 		return self.future
@@ -133,14 +120,52 @@ class PublisherJointTrajectory(Node):
 		if future.result() is not None:
 			result = future.result()
 			chip_position = result.signal
-			self.get_logger().info(f"Populated trajectories: True")
+			self.get_logger().info(f"Populating trajectories...")
 
 			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, 1, 2)
 		else:
 			self.get_logger().error(f"Error when populating trajectories: {future.exception()}")
-			return
 
 		# return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
+
+	def action_callback(self, goal_handle):
+		self.get_logger().info("Executing pick and place task...")
+
+		feedback_msg = PickPlaceAction.Feedback()
+		feedback_msg.current_movement = self.current_movement
+
+		self.trajectories = self.populate_trajectories()
+		self.trajectory_names = BotMethods.get_trajectory_names()
+
+		if self.starting_point_ok:
+			for i in range(len(self.trajectories)):
+				traj = self.trajectories[i]
+				# traj_name = self.trajectory_names[i]
+				feedback_msg.current_movement = self.trajectory_names[i]
+				self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+				traj_goal = traj.points[0]
+
+				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
+				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
+
+				# Using goals as dict type
+				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+
+				self._publisher.publish(traj)
+
+				# Wait for number of seconds defined in config file
+				time.sleep(self.wait_sec_between_publish)
+
+			goal_handle.succeed()
+			self.get_logger().info("Pick and place task complete.")
+			result = PickPlaceAction.Result()
+			result.task_successful = True
+
+			return result
+
+		elif self.check_starting_point and not self.joint_state_msg_received:
+			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
 
 	# TODO: Find a way to restart after all trajectories have been moved through
 	def timer_callback(self):

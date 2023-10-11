@@ -15,10 +15,10 @@ def main(args=None):
 	rclpy.spin(publisher_joint_trajectory)
 
 	# Destroy the publisher node.
-	publisher_joint_trajectory.destroy_node()
+	# publisher_joint_trajectory.destroy_node()
 
 	# Shutdown the ROS2 client library when done.
-	rclpy.shutdown()
+	# rclpy.shutdown()
 
 
 if __name__ == "__main__":
