@@ -73,6 +73,9 @@ def draw_bounding_box(image, bounding_box):
 	
 	cv2.rectangle(image, point1, point2, color=green, thickness=2)
 
+from threading import Lock
+image_lock = Lock()
+
 def show_image_non_block(image, name='Image'):
 	'''
 		Show image without blocking the current thread.
@@ -85,6 +88,7 @@ def show_image_non_block(image, name='Image'):
 	Returns:
 		None
 	'''
+	
 	image_thread = threading.Thread(target=show_image, args=(image,name))
 	image_thread.start()
 
@@ -99,6 +103,10 @@ def show_image(image, name='Image'):
 	Returns:
 		None
 	'''
-	cv2.imshow(name, image)
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
+ 
+	global image_lock
+	with image_lock:
+		cv2.namedWindow(name, cv2.WINDOW_NORMAL)
+		cv2.imshow(name, image)
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
