@@ -13,6 +13,7 @@ def select_folder_from_dialog(prompt):
     """
     root = __init_tkinter()
     folder = filedialog.askdirectory(parent=root, initialdir=os.getcwd(), title=prompt)
+    root.destroy()
 
     return folder
 
@@ -29,6 +30,8 @@ def select_files_from_dialog(prompt, allowed_extensions):
     """
     root = __init_tkinter()
     file_paths = list(filedialog.askopenfilenames(parent=root, initialdir=os.getcwd(), title=prompt, filetypes=[("Allowed Files", f"*.{ext}") for ext in allowed_extensions]))
+    root.destroy()
+    
     return file_paths
 
 def select_file_from_dialog(prompt, allowed_extensions):
@@ -44,11 +47,13 @@ def select_file_from_dialog(prompt, allowed_extensions):
     """
     root = __init_tkinter()
     file_path = filedialog.askopenfilename(parent=root, initialdir=os.getcwd(), title=prompt, filetypes=[("Allowed Files", f"*.{ext}") for ext in allowed_extensions])
+    root.destroy()
+    
     return file_path
 
 def __init_tkinter():
     """
-    Initialize Tkinter and make sure the file dialog opens in the foreground.
+    Initialize Tkinter and ensure the file dialog opens in the foreground.
 
     Args: None
 
