@@ -57,3 +57,5 @@
 ## Errors
 ## Client Evaluations
 # Reporting Results
+Overall, the testing covered in this document leaves enough confidence in the system for it to achieve the goal of being autonomous.\
+Going off the established criteria covered earlier, the system is very usable and meets the expectations laid out.
