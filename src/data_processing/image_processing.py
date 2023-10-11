@@ -1,6 +1,8 @@
 import cv2
 import threading
 
+import numpy as np
+
 def crop_image(image, crop_box):
 	"""
 	Crops an image based on the specified crop box.
@@ -64,13 +66,12 @@ def draw_bounding_box(image, bounding_box):
 		None
 	"""
 	x1, y1, x2, y2 = bounding_box
-	x1_int = round(x1)
-	y1_int = round(y1)
-	x2_int = round(x2)
-	y2_int = round(y2)
+	point1 = (round(x1), round(y1))
+	point2 = (round(x2), round(y2))
 
 	green = (0, 255, 0)
-	cv2.rectangle(image, (x1_int, y1_int), (x2_int, y2_int), green, 2)
+	
+	cv2.rectangle(image, point1, point2, color=green, thickness=2)
 
 def show_image_non_block(image, name='Image'):
 	'''

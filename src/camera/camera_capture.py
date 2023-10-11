@@ -1,5 +1,6 @@
 import numpy
 import pyzed.sl as sl
+import numpy as np
 
 from .camera_lens import LogicalLens
 from data_processing.image_processing import crop_image
@@ -109,8 +110,8 @@ def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
 	# from datetime import datetime
 	# current_time = datetime.now().strftime("%H-%M-%S")
 	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)
-
-	return cropped_image
+ 
+	return np.ascontiguousarray(cropped_image, dtype=np.uint8)
 
 def read_crop_box(crop_box_config):
 	"""
