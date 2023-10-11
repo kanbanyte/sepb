@@ -56,6 +56,10 @@
 <div class="page"/><!-- page break -->
 
 # Introduction
+This document is made to report on and cover the results of tests outlined in the test plan, discussing and evaluating their success.
+The document will cover the items being tested, the appropriate test cases for them as well as the pass/fail criteria of these tests.\
+This document is going to justify the test choices and the validity in relation to the system.
+
 # Results
 ## Test Items
 ## Test Cases
