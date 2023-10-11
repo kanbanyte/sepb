@@ -1,7 +1,7 @@
 import cv2
 import threading
-
-import numpy as np
+from threading import Lock
+import tkinter as tk
 
 def crop_image(image, crop_box):
 	"""
@@ -73,13 +73,10 @@ def draw_bounding_box(image, bounding_box):
 	
 	cv2.rectangle(image, point1, point2, color=green, thickness=2)
 
-from threading import Lock
-image_lock = Lock()
-
 def show_image_non_block(image, name='Image'):
 	'''
-		Show image without blocking the current thread.
-		The image is opened by another thread running `show_image` which terminates when the window is closed.
+	Show image without blocking the current thread.
+	The image is opened by another thread running `show_image` which terminates when the window is closed.
 	
 	Args:
 		image (np.array): Input image as a NumPy array.
@@ -92,9 +89,10 @@ def show_image_non_block(image, name='Image'):
 	image_thread = threading.Thread(target=show_image, args=(image,name))
 	image_thread.start()
 
+__IMAGE_LOCK = Lock()
 def show_image(image, name='Image'):
 	'''
-		Show image and blocks the thread until the window is closed.
+	Show image and blocks the thread until the window is closed.
 	
 	Args:
 		image (np.array): Input image as a NumPy array.
@@ -103,10 +101,21 @@ def show_image(image, name='Image'):
 	Returns:
 		None
 	'''
+
+	root = tk.Tk()
+	screen_height = root.winfo_screenheight()
+	root.destroy()
+	new_height = screen_height * 3 / 4
  
-	global image_lock
-	with image_lock:
-		cv2.namedWindow(name, cv2.WINDOW_NORMAL)
+	# get the width/height ratio
+	aspect_ratio = float(image.shape[1]) / float(image.shape[0])
+	new_height = int(new_height)
+	new_width = int(aspect_ratio * new_height)
+
+	global __IMAGE_LOCK
+	with __IMAGE_LOCK:
+		cv2.namedWindow(name, cv2.WINDOW_KEEPRATIO | cv2.WINDOW_NORMAL)
+		cv2.resizeWindow(name, (new_width, new_height))
 		cv2.imshow(name, image)
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()
