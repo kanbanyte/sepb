@@ -103,38 +103,54 @@ class PublisherJointTrajectory(Node):
 		return self.future
 
 	def populate_trajectories(self):
-		future = self.send_request(self.chip_cli, True)
-		rclpy.spin_until_future_complete(self.subnode, future)
+		future_chip = self.send_request(self.chip_cli, True)
+		rclpy.spin_until_future_complete(self.subnode, future_chip)
+
+		future_case = self.send_request(self.case_cli, True)
+		rclpy.spin_until_future_complete(self.subnode, future_case)
+
+		future_tray = self.send_request(self.tray_cli, True)
+		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
 		chip_position = self.send_request(self.chip_cli, True)
-		if chip_position.result() is None:
-			self.get_logger().error(f"chip result is none: {chip_position.exception()}")
-		else:
-			self.get_logger().info('chip result is good.')
-			if chip_position.result().signal is None:
-				self.get_logger().error(f"chip signal result is none: {chip_position.exception()}")
-			else:
-				self.get_logger().info('chip signal result is good.')
-		self.get_logger().info(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{chip_position}")
-		# case_position = self.send_request(self.case_cli, True)
-		# tray_position = self.send_request(self.tray_cli, True)
+		case_position = self.send_request(self.case_cli, True)
+		tray_position = self.send_request(self.tray_cli, True)
+		# if chip_position.result() is None:
+		# 	self.get_logger().error(f"chip result is none: {chip_position.exception()}")
+		# else:
+		# 	self.get_logger().info('chip result is good.')
+		# 	if chip_position.result().signal is None:
+		# 		self.get_logger().error(f"chip signal result is none: {chip_position.exception()}")
+		# 	else:
+		# 		self.get_logger().info('chip signal result is good.')
+		# self.get_logger().info(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{chip_position}")
 
 		while chip_position.result() and chip_position.result().signal == -1:
 			chip_position = self.send_request(self.chip_cli, True)
 			self.get_logger().info('Waiting for chip signal to become available...')
-		# while case_position.signal == -1:
-		# 	case_position = self.send_request(self.case_cli, True)
-		# while tray_position.signal == -1:
-		# 	tray_position = self.send_request(self.tray_cli, True)
 
-		if future.result() is not None:
-			result = future.result()
-			chip_position = result.signal
+		while case_position.result() and case_position.result().signal == -1:
+			case_position = self.send_request(self.case_cli, True)
+			self.get_logger().info('Waiting for case signal to become available...')
+
+		while tray_position.result() and tray_position.result().signal == -1:
+			tray_position = self.send_request(self.tray_cli, True)
+			self.get_logger().info('Waiting for tray signal to become available...')
+
+		if future_chip.result() and future_case.result() and future_tray.result() is not None :
+			chip_result = future_chip.result()
+			chip_position = chip_result.signal
+
+			case_result = future_case.result()
+			case_position = case_result.signal
+
+			tray_result = future_tray.result()
+			tray_position = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
-			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position, 1, 2)
+			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position, case_position, 2)
 		else:
-			self.get_logger().error(f"Error when populating trajectories: {future.exception()}")
+			self.get_logger().error(f"Error when populating trajectories: {future_chip.exception()}")
 
 		# return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
 
