@@ -69,7 +69,7 @@ This was especially important when moving the assembly tray filled with parts, e
 The testing was also carried out with the participant paying particular attention to the procedures and activities the system carried out.
 As mentioned in the participants feedback, they were notably happy with the results that were produced.
 
-As planned, the location of all the objects were kept constant, such as the locations of the chips, cases and trays.
+As planned, the location of all the objects were kept constant, such as the locations of the chips, cases, and trays.
 This ensured that the development of the system was targeted more towards the development of the movement and detection algorithms.
 
 Overall, considering the results of the tests, it can be considered that the above mentioned goals and aims were successfully achieved.
