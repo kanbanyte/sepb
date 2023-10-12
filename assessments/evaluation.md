@@ -86,22 +86,60 @@ The working space, which includes the robotic arm, the item trays and and the hu
 
 <!-- TOC ignore:true -->
 ### Tools
-A new depth camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
+The ZED 2i camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
+The camera must be aligned such that the trays, chips, and cases can be captured effectively.
 Other tools include the items to be assembled, a conveyor belt that delivers a shell, and the robot arm, all of which already exist.
 
 <!-- TOC ignore:true -->
 ### Measures
-The metrics used involve precision rate, recall rate (also known as True Positive Rate) and time-to-complete a pick-and-place cycle.
-Precision measures how conservative the system is when identifying the presence of an item.
-Recall measures how sensitive the system is when identifying items that are actually present.
-Recall is used a metric to gauge false-negative cases (skipping a slot that actually holds the item to be moved),
-which whether the aid of objection detection technology is fully utilised.
-Finally, the time consumed to complete a pick-and-place cycle, with a vision system incorporated, remains similar, if not superior, to the pre-existing system.
+Various metrics are employed to assess the performance of both AI models and cobot movement.
+Metrics for the AI models primarily center around the accuracy of predictions made by the models.
+Metrics for the cobot primarily focus item placement and time consumption.
+
+For the AI Models, metrics are based on a confusion matrix,
+a table that visualizes the model's performance by classifying its predictions into 4 categories:
+True Positive (TP), False Positive (FP), True Negative (TN) and False Negative (FN).\
+These categories can then be used to calculate the following metrics which are best examined collectively:
+* Precision: defined as the rate of positive identifications that are actually correct.\
+A high precision rate indicates that the model is conservative in labeling items as positive.\
+Consequently, it may potentially overlook some true positive cases in its attempt to avoid false positives.\
+Precision can be calculated by:
+```math
+$$
+TP \over TP + FP
+$$
+```
+* Recall: also known sensitivity, calculated as the rate of actually positive cases that are actually identified.\
+Higher recall rates implies that the model can identify most of the correct cases at the expense of a higher false positive rate.\
+Recall can be calculated by:
+```math
+$$
+TP \over TP + FN
+$$
+```
+* Accuracy: the rate of correct predictions, calculated as:
+```math
+$$
+TP + TN \over TP + FP + TN + FN
+$$
+```
+
+For the cobot, metrics involved with the cobot's performance and movement are used:
+* Accuracy: the distance between the position where an item is placed to the ideal placement position.\
+The definition of "ideal" varies depending on the type of item being moved:
+	* Chips: the v-shaped slot in the lower right compartment of the white tray.\
+	The orientation of the chip within the slot is not considered.
+	* Battery: at the center of the upper right compartment of the tray.
+	* PCB: at the center of the at the center of the upper left compartment of the tray.
+	* Case: at the center of the center of the lower left compartment of the tray.
+* Average time to completion: the average amount of time the cobot requires to populate a white tray and deliver it to the human operator,
+assuming that the predictions made by the AI models are correct.\
+The average value is used to account for items that are further away from the cobot and therefore, requires more time to be moved.
 
 <!-- TOC ignore:true -->
 ### Satisfaction Assessment
 After the experiment, the participant would be asked to fill a form detailing their experience with the system.
-In particular, they will be prompted to comment on the safety and speed and efficiency in the comparison with the original system.
+In particular, they will be prompted to comment on the safety, speed, and efficiency in the comparison with the original system.
 
 # Participants
 The primary user of the system is an operator who undertakes the task of assembling items delivered by a robot.\
