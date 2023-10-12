@@ -65,7 +65,7 @@ there by reducing the inputs need from the user. The robot arm is also able to s
 and this is a built in feature with the robot arm alongside the emergency buttons in the lab environment. However, functionality has been developed to ensure that,
 post an event stops the robot mid movement, the robot arm is able to move to a pre determined position in a safe manner, and continue it's normal function.
 
-Asides from the above addressed criteria, the system is also able to completed the main tasks set out at the start of project.
+Asides from the above addressed criteria, the system is also able to complete the main tasks set out at the start of project.
 Using the CV algorithms that have been developed, the system is able to successfully detect the presence of chips and cases in the lab environment,
 and provide the correct locations of the respective chips and cases to the system for the robot arm to move to the correct locations and pick up the parts.
 The CV algorithms are also able to detect if all the required parts have been accumulated on the assembly tray and is ready to be provided to the assembly worker, 
