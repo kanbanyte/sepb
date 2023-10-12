@@ -52,6 +52,29 @@
 
 # Executive Summary
 # Usability Tasks
+The Usability Evaluation provided a large amount of detail into the specific tasks or goals that the system must accomplish to be considered a success,
+mainly focusing around how the user (or test participant) will need to intereact with the entire system.
+Goals and aims were also listed to ensure that the system was able to meet any requirements that the client had set at the start of the project,
+while maintaining the goal to achieve a seemless and easy experience. This section will address the requirements set out in the Usability Evaluation Plan,
+and discuss whether they were achieved or not.
+
+The robot arm was able to successfully achieve all of its requirements, problems arising along the way, but being solved with further problem solving by the team.
+The robot arm initially was very difficult to set up and connect to the PC. This required many commands to be sequentially completed to successfully lauch the system.
+While the system still requires multiple commands, scripts have been written to complete sevaral at a time in an automated fashion,
+there by reducing the inputs need from the user. The robot arm is also able to stop automatically if impacted in an adverse fashion,
+and this is a built in feature with the robot arm alongside the emergency buttons in the lab environment. However, functionality has been developed to ensure that,
+post an event stops the robot mid movement, the robot arm is able to move to a pre determined position in a safe manner, and continue it's normal function.
+
+Asides from the above addressed criteria, the system is also able to completed the main tasks set out at the start of project.
+Using the CV algorithms that have been developed, the system is able to successfully detect the presence of chips and cases in the lab environment,
+and provide the correct locations of the respective chips and cases to the system for the robot arm to move to the correct locations and pick up the parts.
+The CV algorithms are also able to detect if all the required parts have been accumulated on the assembly tray and is ready to be provided to the assembly worker, 
+and vice versa, the CV algorithm is aslo able to detect when the assembly tray has been emptied by the worker,
+and can instruct the system to return the empty assembly tray to its original position.
+
+Overall, as the system is able to achieve all the task that were laid out in the Usability Evaluation Plan,
+the system can be considered a success and classified as straight-forward and intuitive.
+
 # Usability Metrics
 ## Completed Scenarios
 ## Errors
