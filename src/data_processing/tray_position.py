@@ -52,7 +52,7 @@ def __get_states(detections, model):
 			# detected_tray is a DetectedObject, in this format:
 			# DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))
 			x1, y1, x2, y2 = detected_tray.bounding_box
-			if x1 >= 0 and y1 >= 160 and x2 <= 400 and y2 <= 420:
+			if x1 >= 0 and y1 >= 140 and x2 <= 400 and y2 <= 420:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__assembly: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -70,7 +70,7 @@ def __get_states(detections, model):
 					__tray_states.update({__tray2: Traystate.part_full})
 				else:
 					__tray_states.update({__tray2: Traystate.not_present})
-			elif x1 >= 340 and y1 >= 288 and x2 <= 685 and y2 <= 575:
+			elif x1 >= 340 and y1 >= 288 and x2 <= 720 and y2 <= 590:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__tray1: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -91,6 +91,7 @@ def __get_movement(tray_states):
 		TrayMovement: movement of the tray
 	'''
 	# TODO: clean this
+	print(f" states:{tray_states}")
 	if tray_states.get("assembly") == Traystate.not_present:
 		if tray_states.get("tray 1") == Traystate.full:
 			return TrayMovement.move_tray1_assembly
