@@ -69,11 +69,11 @@ However, functionality has been developed to ensure that, post an event stops th
 the robot arm is able to move to a pre determined position in a safe manner, and continue it's normal function.
 
 Asides from the above addressed criteria, the system is also able to complete the main tasks set out at the start of project.
-Using the CV algorithms that have been developed, the system is able to successfully detect the presence of chips and cases in the lab environment,
-and provide the correct locations of the respective chips and cases to the system for the robot arm to move to the correct locations and pick up the parts.
-The CV algorithms are also able to detect if all the required parts have been accumulated on the assembly tray and is ready to be provided to the assembly worker, 
-and vice versa, the CV algorithm is aslo able to detect when the assembly tray has been emptied by the worker,
-and can instruct the system to return the empty assembly tray to its original position.
+Using the CV algorithms that have been developed, the system is able to successfully detect the presence of chips and cases in the lab environment, and
+provide the correct locations of the respective chips and cases to the system for the robot arm to move to the correct locations and pick up the parts.
+The CV algorithms are also able to detect if all the required parts have been accumulated on the assembly tray and is ready to be provided to the assembly worker, and
+vice versa, the CV algorithm is also able to detect when the assembly tray has been emptied by the worker, and
+can instruct the system to return the empty assembly tray to its original position.
 
 Overall, as the system is able to achieve all the task that were laid out in the Usability Evaluation Plan,
 the system can be considered a success and classified as straight-forward and intuitive.
