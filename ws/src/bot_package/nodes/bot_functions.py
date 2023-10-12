@@ -183,6 +183,7 @@ class BotMethods:
 	@staticmethod
 	def get_all_trajectories(joints, goals, chip_number, case_number, tray_movement):
 		# Generate and return a list of all trajectories for various movements.
+		tray_number = 1
 		if tray_movement == TrayMovement.move_assembly_tray1:
 			tray_number = 1
 			BotMethods.replace_tray(joints, goals, tray_number)
@@ -193,7 +194,9 @@ class BotMethods:
 			BotMethods.move_tray(joints, goals, 1)
 		elif tray_movement == TrayMovement.move_tray2_assembly:
 			BotMethods.move_tray(joints, goals, 2)
-		else:
+		elif tray_movement == TrayMovement.both_empty:
+			tray_number = 1
+		elif tray_movement == TrayMovement.no_move:
 			return None
 
 		BotMethods.move_home(joints, goals)
@@ -201,10 +204,7 @@ class BotMethods:
 		BotMethods.move_case(joints, goals, case_number, tray_number)
 		BotMethods.move_battery(joints, goals, tray_number)
 
-		if tray_movement == TrayMovement.move_tray1_assembly:
-			BotMethods.move_tray(joints, goals, 1)
-		elif tray_movement == TrayMovement.move_tray2_assembly:
-			BotMethods.move_tray(joints, goals, 2)
+		BotMethods.move_tray(joints, goals, tray_number)
 
 		return BotMethods.trajectories
 

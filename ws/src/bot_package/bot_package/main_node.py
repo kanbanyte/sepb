@@ -11,7 +11,7 @@ def main(args=None):
 	# Create an instance of the MainActionClient class, which is responsible for sending action goals.
 	action_client = MainActionClient()
 
-	action_client.send_goal(True)
+	future = action_client.send_goal(True)
 
 	rclpy.spin(action_client)
 

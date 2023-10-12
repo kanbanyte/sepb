@@ -102,7 +102,7 @@ class ReadMethods:
 					f'Wrist 1: {point.positions[3]}, Wrist 2: {point.positions[4]}, Wrist 3: {point.positions[5]}]'
 
 					# Display the goal's positions in the terminal.
-					pjt.get_logger().info(f'\n\tGoal "{name}":\n\t\t{pos}\n')
+					# pjt.get_logger().info(f'\n\tGoal "{name}":\n\t\t{pos}\n')
 
 				else:
 					# Display a warning message for incorrectly defined goals.

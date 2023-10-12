@@ -12,7 +12,7 @@ class TrayMovement(Enum):
 	move_tray1_assembly = 3
 	move_tray2_assembly = 4
 	no_move = 5
-
+	both_empty = 6
 '''
 Enum of each Tray positions possible states
 '''
@@ -97,7 +97,7 @@ def __get_movement(tray_states):
 		elif tray_states.get("tray 2") == Traystate.full:
 			return TrayMovement.move_tray2_assembly
 		else:
-			return TrayMovement.no_move
+			return TrayMovement.both_empty
 	elif tray_states.get("assembly") == Traystate.empty:
 		if tray_states.get("tray 1") == Traystate.not_present:
 			return TrayMovement.move_assembly_tray1
@@ -110,6 +110,8 @@ def __get_movement(tray_states):
 				return TrayMovement.move_tray2_assembly
 			else:
 				return TrayMovement.no_move
+	# elif tray_states.get("tray 1") == Traystate.empty and tray_states.get("tray 2") == Traystate.empty:
+	# 	return TrayMovement.both_empty
 	else:
 		return TrayMovement.no_move
 

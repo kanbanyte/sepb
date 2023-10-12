@@ -13,6 +13,7 @@ from pick_place_interfaces.action import PickPlaceAction
 import copy
 import time
 
+
 class PublisherJointTrajectory(Node):
 	def __init__(self):
 		super().__init__("publisher_position_trajectory_controller")
@@ -49,7 +50,7 @@ class PublisherJointTrajectory(Node):
 			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again...")
 
 		while not self.tray_cli.wait_for_service(timeout_sec=10.0):
-			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again...")
+			self.get_logger().info(f"{self.tray_cli.srv_name} service not available, trying again...")
 
 		self.request = PickPlaceService.Request()
 
@@ -87,7 +88,7 @@ class PublisherJointTrajectory(Node):
 			self.get_logger().error("No valid goal found. Exiting...")
 			exit(1)
 
-		self.get_logger().info(f'\n\tPublishing {len(goal_names)} goals every {self.wait_sec_between_publish} secs...\n')
+		# self.get_logger().info(f'\n\tPublishing {len(goal_names)} goals every {self.wait_sec_between_publish} secs...\n')
 
 		self.current_movement = "home"
 
@@ -107,15 +108,11 @@ class PublisherJointTrajectory(Node):
 		future_tray = self.send_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
-		tray_position = self.send_request(self.tray_cli, True)
-
-		while tray_position.result() and tray_position.result().signal == -1:
-			tray_position = self.send_request(self.tray_cli, True)
-			self.get_logger().info('Waiting for tray signal to become available...')
-
-		while tray_position.result() and tray_position.result().signal == TrayMovement.no_move:
-			tray_position = self.send_request(self.tray_cli, True)
+		while future_tray.result() and future_tray.result().signal == TrayMovement.no_move:
+			future_tray = self.send_request(self.tray_cli, True)
+			rclpy.spin_until_future_complete(self.subnode, future_tray)
 			self.get_logger().info('Tray signal is no_move. Waiting for movement to be available...')
+			time.sleep(1)
 
 		future_chip = self.send_request(self.chip_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_chip)
@@ -123,28 +120,17 @@ class PublisherJointTrajectory(Node):
 		future_case = self.send_request(self.case_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_case)
 
-		chip_position = self.send_request(self.chip_cli, True)
-		case_position = self.send_request(self.case_cli, True)
-
-		# if chip_position.result() is None:
-		# 	self.get_logger().error(f"chip result is none: {chip_position.exception()}")
-		# else:
-		# 	self.get_logger().info('chip result is good.')
-		# 	if chip_position.result().signal is None:
-		# 		self.get_logger().error(f"chip signal result is none: {chip_position.exception()}")
-		# 	else:
-		# 		self.get_logger().info('chip signal result is good.')
-		# self.get_logger().info(f"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{chip_position}")
-
-		while chip_position.result() and chip_position.result().signal == -1:
-			chip_position = self.send_request(self.chip_cli, True)
+		while future_chip.result() and future_chip.result().signal == -1:
+			future_chip = self.send_request(self.chip_cli, True)
+			rclpy.spin_until_future_complete(self.subnode, future_chip)
 			self.get_logger().info('Waiting for chip signal to become available...')
 
-		while case_position.result() and case_position.result().signal == -1:
-			case_position = self.send_request(self.case_cli, True)
+		while future_case.result() and future_case.result().signal == -1:
+			future_case = self.send_request(self.case_cli, True)
+			rclpy.spin_until_future_complete(self.subnode, future_case)
 			self.get_logger().info('Waiting for case signal to become available...')
 
-		if future_chip.result() and future_case.result() and future_tray.result() is not None :
+		if future_chip.result() and future_case.result() and future_tray.result():
 			chip_result = future_chip.result()
 			chip_position = chip_result.signal
 
@@ -157,12 +143,15 @@ class PublisherJointTrajectory(Node):
 
 			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position, case_position, tray_position)
 		else:
-			self.get_logger().error(f"Error when populating trajectories: {future_chip.exception()}")
+			self.get_logger().error(f"Error when populating trajectories...")
+			return None
 
 		# return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
 
 	def action_callback(self, goal_handle):
 		self.get_logger().info("Executing pick and place task...")
+
+		result = PickPlaceAction.Result()
 
 		feedback_msg = PickPlaceAction.Feedback()
 		feedback_msg.current_movement = self.current_movement
@@ -171,34 +160,42 @@ class PublisherJointTrajectory(Node):
 		self.trajectory_names = BotMethods.get_trajectory_names()
 
 		if self.starting_point_ok:
-			for i in range(len(self.trajectories)):
-				traj = self.trajectories[i]
-				# traj_name = self.trajectory_names[i]
-				feedback_msg.current_movement = self.trajectory_names[i]
-				self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
-				traj_goal = traj.points[0]
+			if self.trajectories is not None:
+				for i in range(len(self.trajectories)):
+					traj = self.trajectories[i]
+					# traj_name = self.trajectory_names[i]
+					feedback_msg.current_movement = self.trajectory_names[i]
+					self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+					traj_goal = traj.points[0]
 
-				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
+					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+					pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
+					f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
 
-				# Using goals as dict type
-				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+					# Using goals as dict type
+					self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
 
-				self._publisher.publish(traj)
+					self._publisher.publish(traj)
 
-				# Wait for number of seconds defined in config file
-				time.sleep(self.wait_sec_between_publish)
+					# Wait for number of seconds defined in config file
+					time.sleep(self.wait_sec_between_publish)
 
-			goal_handle.succeed()
-			self.get_logger().info("Pick and place task complete.")
-			result = PickPlaceAction.Result()
-			result.task_successful = True
+				goal_handle.succeed()
+				self.get_logger().info("Pick and place task complete.")
+				result.task_successful = True
 
-			return result
+				return result
+			else:
+				self.get_logger().warn('Tray position is "no_move".')
+				result.task_successful = True
+
+				return result
 
 		elif self.check_starting_point and not self.joint_state_msg_received:
 			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
+
+			result.task_successful = False
+			return result
 
 	# TODO: Find a way to restart after all trajectories have been moved through
 	def timer_callback(self):
