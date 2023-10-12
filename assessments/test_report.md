@@ -69,6 +69,8 @@ Note that the red slots only hold blue chips whereas the white slots only hold t
 * The case detection model is tested on all possible 17 possible positions on the case rack.
 * The tray detection model is tested on all possible variations of a white tray, in all 3 positions.
 The trays are divided into 3 classes: Full, Empty, and Partially Full, of which there are many possible combinations.
+* The camera connects to the computer and successfully applies the settings specified in a configuration YAML file.
+* Crop boxes specific to the chip model, tray model, and case model are applied to the raw image captured by the camera.
 
 For the cobot, movements accuracy and speed are tested on all possible positions of items to be picked and moved.
 These include:
