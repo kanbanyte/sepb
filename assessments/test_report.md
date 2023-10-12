@@ -72,7 +72,7 @@ As mentioned in the participants feedback, they were notably happy with the resu
 As planned, the location of all the objects were kept constant, such as the locations of the chips, cases, and trays.
 This ensured that the development of the system was targeted more towards the development of the movement and detection algorithms.
 
-Overall, considering the results of the tests, it can be considered that the above mentioned goals and aims were successfully achieved.
+Overall, considering the goals and aims that the tests targeted, the results were successfully achieved.
 
 ## Testing Tasks
 # Pass/Fail Criteria
