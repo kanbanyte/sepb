@@ -53,7 +53,7 @@
 # Executive Summary
 # Usability Tasks
 The Usability Evaluation provided a large amount of detail into the specific tasks or goals that the system must accomplish to be considered a success,
-mainly focusing around how the user (or test participant) will need to intereact with the entire system.
+mainly focusing around how the user (or test participant) will need to interact with the entire system.
 Goals and aims were also listed to ensure that the system was able to meet any requirements that the client had set at the start of the project,
 while maintaining the goal to achieve a seemless and easy experience. This section will address the requirements set out in the Usability Evaluation Plan,
 and discuss whether they were achieved or not.
