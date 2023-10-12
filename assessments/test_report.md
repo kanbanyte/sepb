@@ -66,28 +66,32 @@
 # Pass/Fail Criteria
 ## Product Level
 ## Testing Stages
-Referring to our test plan we relevant pass/fail criteria were established.
+Referring to our test plan, relevant pass/fail criteria were established.
 As Testing has concluded we will review the criteria again and compare them to the tested system.
 
-#### Unit Testing
-This testing stage was primarily applied to the AI code, or more to the point the intermediary code of turning AI outputs into a ros usable format.
-So going off the established requirements the testing was sufficient, covering a good amount of code.\
-Alongside this a few bugs were identified and promptly fixed, overall this testing stage passed.
+<!-- TOC ignore:true -->
+### Unit Testing
+This testing stage was primarily applied to the AI code; or more to the point, the intermediary code of turning AI outputs into a ROS usable format.
+So, going off the established requirements: the testing was sufficient, covering a good amount of code.\
+Alongside this, a few bugs were identified and promptly fixed; overall this testing stage passed.
 
-#### Integration Testing
-In the development much of the code was made into a library style, thus making integration easier and more consistent.
-The integration is also made so that the AI and ROS code can interact and "talk" to each other effectively.\
-As the criteria states, this section was well integrated and made solidly therefore this would be a pass.
+<!-- TOC ignore:true -->
+### Integration Testing
+In the development, much of the code was made into a library style; thus making integration easier and more consistent.
+The integration is also made to ensure the AI and ROS code can interact and "talk" to each other effectively.\
+As the criteria states, this section was well integrated and made solidly; therefore this would be a pass.
 
-#### System testing
+<!-- TOC ignore:true -->
+### System testing
 This section was of testing the system as a whole, this referring to the arm making and executing appropriate movements.
-This stage was the longest as ensuring that the predicted outcomes were in fact working took a good degree of time,
+This stage was the longest as ensuring that the predicted outcomes were in fact working took a good degree of time;
 as mentioned in the prior section [Product Level](#product-level), the system was effective and worked as intended.\
 Judging off the established criteria, we get a confident pass.
 
-#### Acceptance testing
-A simple stage, asking the client if they approve. Currently this section is a pass,
-they are happy with progress and the integration; with only minor changes requested.
-Those  particularly being cosmetic/naming convention related rather than major issues with code or choices made.
+<!-- TOC ignore:true -->
+### Acceptance testing
+A simple stage, asking the client if they approve.
+Currently this section is a pass, they are happy with progress and the integration; with only minor changes requested.
+Those particular changes being cosmetic/naming convention related rather than major issues with code or choices made around the project.
 
 # Outcome
