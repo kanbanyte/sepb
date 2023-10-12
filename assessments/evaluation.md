@@ -180,12 +180,16 @@ The trainer will explain the evaluation test to the participant and answer any p
 
 # Usability Tasks
 As the goal of this project is the automation of a pick and place task, the resultant system will require limited human interaction.\
-As such, what will be evaluated will be limited to the tasks that system completes.
+As such, what will be evaluated will be limited to the tasks that system completes and any activities that the user will need to complete to setup the system.
 
-These tasks include:
-* Picking up the correct objects and placing them in the correct position on the assembly tray.
-* Picking up and placing the assembly tray in the ready position when all parts and accumulated and placed in the assembly tray.
-* Identifying when the assembly tray is empty and returning it to its original position.
+The tasks and activities are listed below.
+* The user should be able to easily run scripts that launch the system.
+* The user should be able to stop the robot using the emergency buttons available on the PLC controller, should the need arise.
+* The robot should be able to return to its home position, if the robot is starting at an odd or undefined position.\
+This will be needed if ever the emergency stop button is used or due to any other external factors e.g. power loss.
+* The robot must be able to pick up the correct objects and place them in the correct position on the assembly tray.
+* The robot must be able to pick up and transfer the tray to the operator when all parts have been accumulated and placed in the assembly tray.
+* The system must be able to identify when the assembly tray is empty and return the robot to its home position.
 
 # Usability Metrics
 To ensure that the above mentioned tasks are completed to a satisfactory level, a series of usability metrics will be employed.\
