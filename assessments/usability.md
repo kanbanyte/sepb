@@ -59,11 +59,14 @@ while maintaining the goal to achieve a seamless and easy experience.
 This section will address the requirements set out in the Usability Evaluation Plan, and discuss whether they were achieved or not.
 
 The robot arm was able to successfully achieve all of its requirements, problems arising along the way, but being solved with further problem solving by the team.
-The robot arm initially was very difficult to set up and connect to the PC. This required many commands to be sequentially completed to successfully lauch the system.
-While the system still requires multiple commands, scripts have been written to complete sevaral at a time in an automated fashion,
-there by reducing the inputs need from the user. The robot arm is also able to stop automatically if impacted in an adverse fashion,
-and this is a built in feature with the robot arm alongside the emergency buttons in the lab environment. However, functionality has been developed to ensure that,
-post an event stops the robot mid movement, the robot arm is able to move to a pre determined position in a safe manner, and continue it's normal function.
+The robot arm initially was very difficult to set up and connect to the PC.
+This required many commands to be sequentially completed to successfully launch the system.
+While the system still requires multiple commands,
+scripts have been written to complete several at a time in an automated fashion, there by reducing the inputs need from the user.
+The robot arm is also able to stop automatically if impacted in an adverse fashion, and
+this is a built in feature with the robot arm alongside the emergency buttons in the lab environment.
+However, functionality has been developed to ensure that, post an event stops the robot mid movement,
+the robot arm is able to move to a pre determined position in a safe manner, and continue it's normal function.
 
 Asides from the above addressed criteria, the system is also able to complete the main tasks set out at the start of project.
 Using the CV algorithms that have been developed, the system is able to successfully detect the presence of chips and cases in the lab environment,
