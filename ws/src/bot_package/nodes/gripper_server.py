@@ -16,26 +16,26 @@ class GripperServer(Node):
 		self.subnode = rclpy.create_node('subnode')
 
 		# Create clients for various services
-		# self.play_cli = self.subnode.create_client(Trigger, '/dashboard_client/play')
-		# self.load_program_cli = self.subnode.create_client(Load, '/dashboard_client/load_program')
+		self.play_cli = self.subnode.create_client(Trigger, '/dashboard_client/play')
+		self.load_program_cli = self.subnode.create_client(Load, '/dashboard_client/load_program')
 		self.switch_pin_io_cli = self.subnode.create_client(SetIO, '/io_and_status_controller/set_io')
 
 		# Define the gripper program file name
-		# file_name = 'gripper_test.urp'
+		file_name = 'gripper_test.urp'
 
 		# Wait for services to become available
-		# while not self.load_program_cli.wait_for_service(timeout_sec=10.0):
-		# 	self.get_logger().info(f"{self.load_program_cli.srv_name} service not available, trying again...")
-		# while not self.switch_pin_io_cli.wait_for_service(timeout_sec=10.0):
-		# 	self.get_logger().info(f"{self.switch_pin_io_cli.srv_name} service not available, trying again...")
+		while not self.load_program_cli.wait_for_service(timeout_sec=10.0):
+			self.get_logger().info(f"{self.load_program_cli.srv_name} service not available, trying again...")
+		while not self.switch_pin_io_cli.wait_for_service(timeout_sec=10.0):
+			self.get_logger().info(f"{self.switch_pin_io_cli.srv_name} service not available, trying again...")
 
 		# Load the gripper program and log the result
-		# self.loaded_program = self.load_gripper_file(file_name).success
-		# self.get_logger().info(f"Loaded program success: {self.loaded_program}")
+		self.loaded_program = self.load_gripper_file(file_name).success
+		self.get_logger().info(f"Loaded program success: {self.loaded_program}")
 
 		# Play the loaded program and log the result
-		# self.playing_program = self.play_program().success
-		# self.get_logger().info(f"Success: {self.playing_program}. Playing program...")
+		self.playing_program = self.play_program().success
+		self.get_logger().info(f"Success: {self.playing_program}. Playing program...")
 
 	# TODO: Not working figure out how to make program play
 	def play_program(self):
