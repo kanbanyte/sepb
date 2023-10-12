@@ -67,7 +67,7 @@
 ## Product Level
 As discussed in the test plan, a long list of appropriate and relevant pass/ fail criteria for the product level were established.
 with the conclusion of the testing it is important to look over these established criteria to ensure that the system, as defined by the criteria, passes.\
-The initial criteria can be split into two sections, the arm/gripper criteria and the  CV component. We will cover the arm/gripper first.
+The initial criteria can be split into two sections, the arm/gripper criteria and the CV component. We will cover the arm/gripper first.
 #### Arm retrieves item
 The testing of the system has concluded that the arm, and by extension the gripper can successfully retrieve items.\
 The auto stop feature of the gripper made this process simpler as well,
