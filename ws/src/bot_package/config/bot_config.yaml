@@ -95,9 +95,8 @@ bot_node:
       "tray_pick_2_above",
       "tray_unload",
       "tray_unload_above",
-      # "gripper_open_full",
-
     ]
+
     home:
       positions: [-1.568876465,-2.34362812,2.104518012,-1.361007751,-1.565385806,-4.708374723]
     safe_start:
@@ -280,8 +279,6 @@ bot_node:
       positions: [-0.309446876,-1.000073661,1.541474795,-2.123367568,-1.575683249,-3.441614752]
     tray_unload_above:
       positions: [-0.309446876,-1.086641992,1.440769298,-1.935919206,-1.575683249,-3.441963818]
-    # gripper_open_full:
-    #   positions:
 
     joints:
       - shoulder_pan_joint
@@ -299,3 +296,25 @@ bot_node:
       wrist_1_joint: [-1.37,-1.35]
       wrist_2_joint: [-1.57,-1.55]
       wrist_3_joint: [-4.71,-4.69]
+
+    gripper_outputs: [
+      "open_full",
+      "open_chip",
+      "close_chip",
+      "open_case",
+      "close_case",
+      "open_battery",
+      "close_battery",
+      "open_tray",
+      "close_tray",
+    ]
+
+    open_full: 1
+    open_chip: 3
+    close_chip: 2
+    open_case: 1
+    close_case: 3
+    open_battery: 3
+    close_battery: 4
+    open_tray: 4
+    close_tray: 5

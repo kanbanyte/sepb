@@ -117,3 +117,36 @@ class ReadMethods:
 
 		# Return the dictionary of goal positions.
 		return goals
+
+	@staticmethod
+	def read_gripper_outputs_from_parameters(pjt, output_names: list):
+		# Initialize an empty dictionary to store gripper outputs.
+		outputs = {}
+
+		# Iterate through the list of output names.
+		for name in output_names:
+			# Declare a parameter with the current output name and enable dynamic typing.
+			pjt.declare_parameter(name, descriptor=ParameterDescriptor(dynamic_typing=True))
+
+			# Get the value of the parameter, which represents the output.
+			output = pjt.get_parameter(name).value
+
+			if not isinstance(output, int):
+				pjt.get_logger().error(f"Gripper output '{name}' must be of type int. Is type {type(output)}")
+				raise TypeError(f"Expected type int, got type {type(output)}")
+
+			one_ok = True
+
+			# If the output is ok, place it in the outputs dictionary using the name as key
+			if one_ok:
+				outputs[name] = output
+
+			else:
+				# Display a warning message for incorrectly defined outputs.
+				pjt.get_logger().warn(
+					f'Gripper output "{name}" definition is wrong.\nThis output will not be used.\nUse the following structure:\n'
+					"<gripper_output_name>: <int_output_value>"
+				)
+
+		# Return the dictionary of gripper output values.
+		return outputs

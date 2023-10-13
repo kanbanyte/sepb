@@ -24,6 +24,7 @@ class PublisherJointTrajectory(Node):
 		self.declare_parameter("goal_names", ["pos1", "pos2"])
 		self.declare_parameter("joints", [""])
 		self.declare_parameter("check_starting_point", False)
+		self.declare_parameter("gripper_outputs", [""])
 
 		# Read parameters
 		controller_name = self.get_parameter("controller_name").value
@@ -32,6 +33,7 @@ class PublisherJointTrajectory(Node):
 		self.joints = self.get_parameter("joints").value
 		self.check_starting_point = self.get_parameter("check_starting_point").value
 		self.starting_point = {}
+		gripper_output_names = self.get_parameter("gripper_outputs").value
 
 		self.subnode = rclpy.create_node('subnode')
 
@@ -87,27 +89,25 @@ class PublisherJointTrajectory(Node):
 		# Read all positions from parameters
 		# Dict of JointTrajectoryPoint
 		self.goals = ReadMethods.read_positions_from_parameters(self, goal_names)
-
 		self.goal_names = list(self.goals.keys())
+
+		# Read all gripper outputs from parameters
+		# Dict of int
+		self.gripper_outputs = ReadMethods.read_gripper_outputs_from_parameters(self, gripper_output_names)
+		self.gripper_output_names = list(self.gripper_outputs.keys())
 
 		if len(self.goals) < 1:
 			self.get_logger().error("No valid goal found. Exiting...")
 			exit(1)
 
-		# self.get_logger().info(f'\n\tPublishing {len(goal_names)} goals every {self.wait_sec_between_publish} secs...\n')
-
 		self.current_movement = "home"
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
-		# self.timer = self.create_timer(self.wait_sec_between_publish, self.timer_callback)
-		self.i = 0
 
 	def send_request(self, service, detect):
 		self.request.detect = detect
 		self.future = service.call_async(self.request)
-		# rclpy.spin_until_future_complete(self, self.future)
 
-		# return self.future.result()
 		return self.future
 
 	def populate_trajectories(self):
@@ -152,8 +152,6 @@ class PublisherJointTrajectory(Node):
 			self.get_logger().error(f"Error when populating trajectories...")
 			return None
 
-		# return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position.signal, case_position.signal, 2)
-
 	def action_callback(self, goal_handle):
 		self.get_logger().info("Executing pick and place task...")
 
@@ -169,7 +167,6 @@ class PublisherJointTrajectory(Node):
 			if self.trajectories is not None:
 				for i in range(len(self.trajectories)):
 					traj = self.trajectories[i]
-					# traj_name = self.trajectory_names[i]
 					feedback_msg.current_movement = self.trajectory_names[i]
 					self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
 					traj_goal = traj.points[0]
