@@ -108,7 +108,7 @@ class PublisherJointTrajectory(Node):
 		future_tray = self.send_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
-		while future_tray.result() and future_tray.result().signal == TrayMovement.no_move:
+		while future_tray.result() and future_tray.result().signal == TrayMovement.no_move.value:
 			future_tray = self.send_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
 			self.get_logger().info('Tray signal is no_move. Waiting for movement to be available...')

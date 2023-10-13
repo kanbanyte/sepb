@@ -4,6 +4,8 @@ from ur_dashboard_msgs.srv import Load
 from ur_msgs.srv import SetIO
 from std_srvs.srv import Trigger
 
+import time
+
 
 class GripperServer(Node):
 	def __init__(self):
@@ -20,8 +22,9 @@ class GripperServer(Node):
 		self.load_program_cli = self.subnode.create_client(Load, '/dashboard_client/load_program')
 		self.switch_pin_io_cli = self.subnode.create_client(SetIO, '/io_and_status_controller/set_io')
 
-		# Define the gripper program file name
-		file_name = 'gripper_test.urp'
+		# Define the gripper program and ros program file names
+		self.gripper_file_name = 'gripper_test.urp'
+		self.ros_file_name = 'ROS.urp'
 
 		# Wait for services to become available
 		while not self.load_program_cli.wait_for_service(timeout_sec=10.0):
@@ -29,30 +32,26 @@ class GripperServer(Node):
 		while not self.switch_pin_io_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info(f"{self.switch_pin_io_cli.srv_name} service not available, trying again...")
 
-		# Load the gripper program and log the result
-		self.loaded_program = self.load_gripper_file(file_name).success
-		self.get_logger().info(f"Loaded program success: {self.loaded_program}")
-
-		# Play the loaded program and log the result
-		self.playing_program = self.play_program().success
-		self.get_logger().info(f"Success: {self.playing_program}. Playing program...")
+		self.get_logger().info(f"Started gripper service...")
 
 	# TODO: Not working figure out how to make program play
 	def play_program(self):
+		play_request = Trigger.Request()
+
 		# Call the play program service asynchronously
-		self.future = self.play_cli.call_async(Trigger.Request())
-		rclpy.spin_until_future_complete(self, self.future)
+		self.future = self.play_cli.call_async(play_request)
+		rclpy.spin_until_future_complete(self.subnode, self.future)
 
 		return self.future.result()
 
-	def load_gripper_file(self, file_name):
+	def load_file(self, file_name):
 		# Create a request to load a program file
 		load_request = Load.Request()
 		load_request.filename = file_name
 
 		# Call the load program service asynchronously
 		self.future = self.load_program_cli.call_async(load_request)
-		rclpy.spin_until_future_complete(self, self.future)
+		rclpy.spin_until_future_complete(self.subnode, self.future)
 
 		return self.future.result()
 
@@ -62,7 +61,22 @@ class GripperServer(Node):
 
 		return self.future
 
+	def load_and_play_program(self, file_name):
+		self.loaded_program = self.load_file(file_name).success
+		self.get_logger().info(f"Loaded program success: {self.loaded_program}")
+
+		# Play the loaded program and log the result
+		self.program_playing = self.play_program().success
+		success_string = f"Success: {self.program_playing}"
+		if self.program_playing:
+			self.get_logger().info(f"{success_string}. Playing program...")
+		else:
+			self.get_logger().info(f"{success_string}. Program failed to play...")
+
 	def gripper_callback(self, request, response):
+		# Load the gripper program and log the result
+		self.load_and_play_program(self.gripper_file_name)
+
 		self.get_logger().info(f"Receiving request: pin={request.pin}, state={request.state}")
 
 		# Create a request to switch pin I/O
@@ -80,6 +94,11 @@ class GripperServer(Node):
 			result = future.result()
 			self.get_logger().info(f"Gripper service call success: {result.success}")
 			response.success = result.success
+
+			time.sleep(1)
+
+			# Load the gripper program and log the result
+			self.load_and_play_program(self.ros_file_name)
 
 			return response
 		else:
