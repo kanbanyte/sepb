@@ -60,7 +60,13 @@ class PublisherJointTrajectory(Node):
 		while not self.tray_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info(f"{self.tray_cli.srv_name} service not available, trying again...")
 
-		self.request = PickPlaceService.Request()
+		self.pick_place_request = PickPlaceService.Request()
+		self.gripper_request = SetIO.Request()
+
+		# Set fun and state for gripper request.
+		# State is always 1.0 because gripper program resets state after it is called.
+		self.gripper_request.fun = 1
+		self.gripper_request.state = 1.0
 
 		if self.joints is None or len(self.joints) == 0:
 			raise Exception('"joints" parameter is not set!')
@@ -104,35 +110,41 @@ class PublisherJointTrajectory(Node):
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 
-	def send_request(self, service, detect):
-		self.request.detect = detect
-		self.future = service.call_async(self.request)
+	def send_pick_place_request(self, service, detect):
+		self.pick_place_request.detect = detect
+		self.future = service.call_async(self.pick_place_request)
+
+		return self.future
+
+	def send_gripper_request(self, output_pin):
+		self.gripper_request.pin = output_pin
+		self.future = self.gripper_cli.call_async(self.gripper_request)
 
 		return self.future
 
 	def populate_trajectories(self):
-		future_tray = self.send_request(self.tray_cli, True)
+		future_tray = self.send_pick_place_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
 		while future_tray.result() and future_tray.result().signal == TrayMovement.no_move.value:
-			future_tray = self.send_request(self.tray_cli, True)
+			future_tray = self.send_pick_place_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
 			self.get_logger().info('Tray signal is no_move. Waiting for movement to be available...')
 			time.sleep(1)
 
-		future_chip = self.send_request(self.chip_cli, True)
+		future_chip = self.send_pick_place_request(self.chip_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_chip)
 
-		future_case = self.send_request(self.case_cli, True)
+		future_case = self.send_pick_place_request(self.case_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_case)
 
 		while future_chip.result() and future_chip.result().signal == -1:
-			future_chip = self.send_request(self.chip_cli, True)
+			future_chip = self.send_pick_place_request(self.chip_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_chip)
 			self.get_logger().info('Waiting for chip signal to become available...')
 
 		while future_case.result() and future_case.result().signal == -1:
-			future_case = self.send_request(self.case_cli, True)
+			future_case = self.send_pick_place_request(self.case_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_case)
 			self.get_logger().info('Waiting for case signal to become available...')
 
