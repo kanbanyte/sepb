@@ -60,7 +60,7 @@
 ## Test Items
 ## Test Cases
 ### Tested Features
-As outlined in the Test Plan document, the features to be tested are categorized into vision-related, cobot-related, and integration of the two.
+As outlined in the Test Plan document, the features to be tested are categorised into vision-related, cobot-related, and integration of the two.
 This section outlies detailed features to be tested for all three categories.
 
 For the vision system, the following items are tested on the camera and AI models:
@@ -79,8 +79,8 @@ These include:
 * Movement to pick up PCB shells delivered to a specific location by the conveyor belt to the upper left compartment of the tray.
 * Movement to pick up batteries from the battery rack and place them on the upper left compartment of the tray.
 * Movement to pick up trays and deliver them to and from the human operator, including:
-	* Movement to pick up a fully filled tray on the upper left to the human operator
-	* Movement to pick up a fully filled tray on the lower left to the human operator
+	* Movement to pick up a fully filled tray on the upper left to the human operator.
+	* Movement to pick up a fully filled tray on the lower left to the human operator.
 	* Movement to pick up an empty tray from the human operator back to a empty spot to be filled up again.
 
 For integration-related features, the following items are tested:
