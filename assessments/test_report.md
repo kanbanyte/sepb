@@ -61,7 +61,8 @@
 The cobot already possesses the ability to pick up objects from pre-defined positions and place them on a tray to be transferred to a human operator.
 The project's objective is to equip the cobot with an AI-based vision system that precisely guides the selection of objects.
 As a result, the focus of the tests will revolve around this new functionality.
-The tested items will span from AI models used to detect the presence of various types of objects for pickup, to the integration of these models with the cobot's movement controller.
+The tested items will span from AI models used to detect the presence of various types of objects for pickup,
+to the integration of these models with the cobot's movement controller.
 As the software operates autonomously, the user interface is primarily confined to the terminal, which displays log messages indicating the system's current state.
 
 ## Test Cases
