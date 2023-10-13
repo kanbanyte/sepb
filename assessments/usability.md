@@ -51,6 +51,12 @@
 <div class="page"/><!-- page break -->
 
 # Executive Summary
+This document is a reflective analysis of the methodology utilised to evaluate the usability of the system.\
+The evaluation is done through having a participant perform actions in the system in a controlled setting; as the product is autonomous,
+much of these tasks are booting up and establishing the system and subsequent powering/shutting down of said system.\
+The incorporation of user feedback and performance metrics helped identify areas of improvement and enhanced the prototype.
+With the release of the end product on the horizon, the collected and used data from usability testing has been invaluable to the constant improvement to the system.
+
 # Usability Tasks
 The Usability Evaluation provided a large amount of detail into the specific tasks or goals that the system must accomplish to be considered a success,
 mainly focusing around how the user (or test participant) will need to interact with the entire system.
