@@ -90,7 +90,7 @@ The following usability scenarios have been evaluated:
 * The cobot makes no move in the following scenario:
 	* The delivered tray has not been emptied by the human operator.
 	* The trays to be delivered has not been filled with correct items.
-	* The trays are missing/ not represent
+	* The trays are missing/not represent
 * The cobot stops immediately when the emergency button is pressed.
 
 ## Errors
