@@ -159,7 +159,7 @@ class PublisherJointTrajectory(Node):
 			tray_position = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
-			return BotMethods.get_all_trajectories(self.joints, self.goals, chip_position, case_position, tray_position)
+			return BotMethods.get_all_trajectories(self.joints, self.goals, self.gripper_outputs, chip_position, case_position, tray_position)
 		else:
 			self.get_logger().error(f"Error when populating trajectories...")
 			return None
@@ -178,22 +178,30 @@ class PublisherJointTrajectory(Node):
 		if self.starting_point_ok:
 			if self.trajectories is not None:
 				for i in range(len(self.trajectories)):
-					traj = self.trajectories[i]
-					feedback_msg.current_movement = self.trajectory_names[i]
-					self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
-					traj_goal = traj.points[0]
+					# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
+					if type(self.trajectories[i]) is JointTrajectory:
+						traj = self.trajectories[i]
+						feedback_msg.current_movement = self.trajectory_names[i]
+						self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+						traj_goal = traj.points[0]
 
-					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-					pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-					f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
+						# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+						pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
+						f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
 
-					# Using goals as dict type
-					self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+						# Using goals as dict type
+						self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
 
-					self._publisher.publish(traj)
+						self._publisher.publish(traj)
 
-					# Wait for number of seconds defined in config file
-					time.sleep(self.wait_sec_between_publish)
+						# Wait for number of seconds defined in config file
+						time.sleep(self.wait_sec_between_publish)
+
+					# Otherwise the trajectory is a gripper movement.
+					else:
+						future_grip = self.send_gripper_request(self.trajectories[i])
+						rclpy.spin_until_future_complete(self.subnode, future_grip)
+						time.sleep(1)
 
 				goal_handle.succeed()
 				self.get_logger().info("Pick and place task complete.")

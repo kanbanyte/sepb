@@ -298,23 +298,25 @@ bot_node:
       wrist_3_joint: [-4.71,-4.69]
 
     gripper_outputs: [
-      "open_full",
-      "open_chip",
-      "close_chip",
-      "open_case",
-      "close_case",
-      "open_battery",
-      "close_battery",
-      "open_tray",
-      "close_tray",
+      "gripper_open_home",
+      "gripper_open_full",
+      "gripper_open_chip",
+      "gripper_close_chip",
+      "gripper_open_case",
+      "gripper_close_case",
+      "gripper_open_battery",
+      "gripper_close_battery",
+      "gripper_open_tray",
+      "gripper_close_tray",
     ]
 
-    open_full: 1
-    open_chip: 3
-    close_chip: 2
-    open_case: 1
-    close_case: 3
-    open_battery: 3
-    close_battery: 4
-    open_tray: 4
-    close_tray: 5
+    gripper_open_home: 4
+    gripper_open_full: 1
+    gripper_open_chip: 4
+    gripper_close_chip: 2
+    gripper_open_case: 1
+    gripper_close_case: 4
+    gripper_open_battery: 3
+    gripper_close_battery: 4
+    gripper_open_tray: 4
+    gripper_close_tray: 5

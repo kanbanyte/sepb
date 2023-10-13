@@ -42,7 +42,7 @@ class GripperServer(Node):
 		self.future = self.play_cli.call_async(play_request)
 		rclpy.spin_until_future_complete(self.subnode, self.future)
 
-		return self.future.result()
+		return self.future
 
 	def load_file(self, file_name):
 		# Create a request to load a program file
@@ -66,7 +66,13 @@ class GripperServer(Node):
 		self.get_logger().info(f"Loaded program success: {self.loaded_program}")
 
 		# Play the loaded program and log the result
-		self.program_playing = self.play_program().success
+		self.future_play = self.play_program()
+		while not self.future_play.result().success:
+			self.future_play = self.play_program()
+			rclpy.spin_until_future_complete(self.subnode, self.future_play)
+
+		self.program_playing = self.future_play.result().success
+
 		success_string = f"Success: {self.program_playing}"
 		if self.program_playing:
 			self.get_logger().info(f"{success_string}. Playing program...")
