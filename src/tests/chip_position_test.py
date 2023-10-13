@@ -4,7 +4,7 @@ from data_processing.chip_position import get_chip_slot_number
 
 class TestChipPosition(unittest.TestCase):
 
-	def test_all_positons(self):
+	def test_all_positions(self):
 		# Test all positions
 		valid_pos = [
 			[13, 7, 31, 41],  # 1
@@ -59,7 +59,7 @@ class TestChipPosition(unittest.TestCase):
 		for i, bounding_box in enumerate(valid_pos):
 			self.assertEqual(get_chip_slot_number(bounding_box), i + 1, f"Position of chip{bounding_box} should be {i + 1}")
 
-	def test_invalid_positons(self):
+	def test_invalid_positions(self):
 		invalid_bounding_boxes = [
 		[0, 0, 0, 0], #null
 		[65, 9, 81, 593], #exceptionally large
