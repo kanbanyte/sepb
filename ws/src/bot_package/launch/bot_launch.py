@@ -12,8 +12,8 @@ def generate_launch_description():
 	return LaunchDescription([
 		Node(
 			package="bot_package",
-			executable="bot_node",
-			name="bot_node",
+			executable="gripper_node",
+			name="gripper_node",
 			parameters=[position_goals],
 			output="screen",
 		),
@@ -26,16 +26,16 @@ def generate_launch_description():
 		),
 		Node(
 			package="bot_package",
+			executable="bot_node",
+			name="bot_node",
+			parameters=[position_goals],
+			output="screen",
+		),
+		Node(
+			package="bot_package",
 			executable="main_node",
 			name="main_node",
 			parameters=[position_goals],
 			output="screen",
-		)
-		# Node(
-		# 	package="bot_package",
-		# 	executable="gripper_node",
-		# 	name="gripper_node",
-		# 	parameters=[position_goals],
-		# 	output="screen",
-		# )
+		),
 	])

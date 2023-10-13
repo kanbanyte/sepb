@@ -95,6 +95,8 @@ bot_node:
       "tray_pick_2_above",
       "tray_unload",
       "tray_unload_above",
+      # "gripper_open_full",
+
     ]
     home:
       positions: [-1.568876465,-2.34362812,2.104518012,-1.361007751,-1.565385806,-4.708374723]
@@ -278,6 +280,8 @@ bot_node:
       positions: [-0.309446876,-1.000073661,1.541474795,-2.123367568,-1.575683249,-3.441614752]
     tray_unload_above:
       positions: [-0.309446876,-1.086641992,1.440769298,-1.935919206,-1.575683249,-3.441963818]
+    # gripper_open_full:
+    #   positions:
 
     joints:
       - shoulder_pan_joint

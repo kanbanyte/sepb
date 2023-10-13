@@ -186,13 +186,17 @@ class BotMethods:
 		tray_number = 1
 		if tray_movement == TrayMovement.move_assembly_tray1.value:
 			tray_number = 1
+			BotMethods.move_home(joints, goals)
 			BotMethods.replace_tray(joints, goals, tray_number)
 		elif tray_movement == TrayMovement.move_assembly_tray2.value:
 			tray_number = 2
+			BotMethods.move_home(joints, goals)
 			BotMethods.replace_tray(joints, goals, tray_number)
 		elif tray_movement == TrayMovement.move_tray1_assembly.value:
+			BotMethods.move_home(joints, goals)
 			BotMethods.move_tray(joints, goals, 1)
 		elif tray_movement == TrayMovement.move_tray2_assembly.value:
+			BotMethods.move_home(joints, goals)
 			BotMethods.move_tray(joints, goals, 2)
 		elif tray_movement == TrayMovement.both_empty.value:
 			tray_number = 1

@@ -10,8 +10,8 @@ class ReadMethods:
 	ReadMethods defines all functions that affect the output inside the terminal.
 	'''
 
-	@classmethod
-	def read_positions_from_parameters(cls, pjt, goal_names: list):
+	@staticmethod
+	def read_positions_from_parameters(pjt, goal_names: list):
 		# Initialize an empty dictionary to store goal positions.
 		goals = {}
 

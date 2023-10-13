@@ -3,6 +3,7 @@ from rclpy.node import Node
 from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
 from sensor_msgs.msg import JointState
+from ur_msgs.srv import SetIO
 from nodes.bot_functions import BotMethods
 from nodes.read_methods import ReadMethods
 from data_processing.tray_position import TrayMovement
@@ -37,12 +38,17 @@ class PublisherJointTrajectory(Node):
 		# Create action server
 		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.action_callback)
 
+		# Create client for gripper service
+		self.gripper_cli = self.subnode.create_client(SetIO, 'gripper_service')
+
 		# Create client for case, chip, and tray services
 		self.case_cli = self.subnode.create_client(PickPlaceService, 'case')
 		self.chip_cli = self.subnode.create_client(PickPlaceService, 'chip')
 		self.tray_cli = self.subnode.create_client(PickPlaceService, 'tray')
 
-		# TODO: Replace Case.srv, Chip.srv, and Tray.srv with one .srv file because all take request: bool, response: int64
+		while not self.gripper_cli.wait_for_service(timeout_sec=10.0):
+			self.get_logger().info(f"{self.gripper_cli.srv_name} service not available, trying again...")
+
 		while not self.case_cli.wait_for_service(timeout_sec=10.0):
 			self.get_logger().info(f"{self.case_cli.srv_name} service not available, trying again...")
 
@@ -196,35 +202,6 @@ class PublisherJointTrajectory(Node):
 
 			result.task_successful = False
 			return result
-
-	# TODO: Find a way to restart after all trajectories have been moved through
-	def timer_callback(self):
-		if self.starting_point_ok:
-			# Return trajectories to move from home to chip 1
-			if self.i < len(self.trajectories):
-				traj = self.trajectories[self.i]
-				traj_name = self.trajectory_names[self.i]
-				self.get_logger().info(f'Goal Name: {traj_name}')
-				traj_goal = traj.points[0]
-
-				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-				pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-				f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}] Velocity: {traj_goal.velocities}'
-
-				# Using goals as dict type
-				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
-
-				self._publisher.publish(traj)
-
-				self.i += 1
-			else:
-				self.get_logger().info("Pick and place task complete. Recalculating trajectories...")
-				self.i = 0
-				self.trajectories = self.populate_trajectories()
-				self.timer.reset()
-
-		elif self.check_starting_point and not self.joint_state_msg_received:
-			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
 
 	def joint_state_callback(self, msg):
 		if not self.joint_state_msg_received:
