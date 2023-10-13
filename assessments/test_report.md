@@ -65,30 +65,35 @@
 ## Testing Tasks
 # Pass/Fail Criteria
 ## Product Level
-As discussed in the test plan, a long list of appropriate and relevant pass/ fail criteria for the product level were established.
-with the conclusion of the testing it is important to look over these established criteria to ensure that the system, as defined by the criteria, passes.\
-The initial criteria can be split into two sections, the arm/gripper criteria and the CV component. We will cover the arm/gripper first.
-#### Arm retrieves item
-The testing of the system has concluded that the arm, and by extension the gripper can successfully retrieve items.\
-The auto stop feature of the gripper made this process simpler as well,
-the robot having programmatically controlled movements meant that the whole system worked beautifully once correctly established; a definite pass.
+As discussed in the test plan, a long list of appropriate and relevant pass/fail criteria for the product level were established.
+With the conclusion of the testing, it is important to look over these established criteria to ensure that the system as defined by the criteria passes.\
+The initial criteria can be split into two sections, the arm/gripper criteria and the CV component.
+We will cover the arm/gripper first.
 
-#### Arm places item
-Similar to the prior criteria this one was also satisfied,
-utilising similar technology the arm and gripper were able to work in tandem to places items in the correct spots.
+<!-- TOC ignore:true -->
+### Arm Retrieves Item
+The testing of the system has concluded that the arm (and by extension the gripper) can successfully retrieve items.\
+The auto stop feature of the gripper made this process simpler as well.
+The robot having programmatically controlled movements, meant that the whole system worked beautifully once correctly established; a definite pass.
 
-#### Computer vision identifies items
-Through thorough testing and training the model came out the other side robust and well trained,
-both effectively performing analysis and reporting correct evaluations majority of the time.\
-In terms of the fail criteria, only the third, CV doesn't label anything, occurs when there is serious disturbance to the image,
-such as the presence of someone's head, or body.\
-The model contained arms within the training set it, therefore it performs just fine with minor interferences.\
-Overall the CV passed in all requested use cases.
+<!-- TOC ignore:true -->
+### Arm Places Item
+Similar to the prior criteria, this was also satisfactory.
+Utilising similar technology, the arm and gripper were able to work in tandem to place items in the correct spots.
 
-#### Camera outputs a feed
-With the way the model was programmed it was established early to allow this functionality to be provided,
-as such this was done early on and handled well. As a result this system is very solidly passing.
+<!-- TOC ignore:true -->
+### Computer Vision Identifies Items
+Through thorough testing and training,
+the model came out the other side robust and well trained as both effectively performing analysis and reporting correct evaluations majority of the time.\
+In terms of the fail criteria, we consistently only had the third criteria fail (when CV doesn't label anything).
+This occurs when there is serious disturbance to the image; such as the presence of a human head and/or body.\
+The model contained instance of human arms within the training set; therefore, it performs just fine with minor interferences.\
+Overall, the CV passed in all requested use cases.
 
+<!-- TOC ignore:true -->
+### Camera Outputs a Feed
+With the way the model was programmed, it was established early to allow this functionality to be provided; as such, this was done early on and handled well.
+As a result, this system is very solidly passing.
 
 ## Testing Stages
 # Outcome
