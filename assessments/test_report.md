@@ -58,12 +58,13 @@
 # Introduction
 # Results
 ## Test Items
-The cobot already possesses the ability to pick up objects from pre-defined positions and place them on a tray to be transferred to a human operator.
-The project's objective is to equip the cobot with an AI-based vision system that precisely guides the selection of objects.
-As a result, the focus of the tests will revolve around this new functionality.
+The cobot already possesses the ability to pick up objects from pre-defined positions and place them on a tray to be transferred to a human operator via a PLC controller.
+The project's objective is to equip the cobot with an AI-based vision system that precisely guides the selection of objects,
+and replicate the existing movements via a new software implemented with ROS, collectively known as the movement controller.
+As a result, the focus of the tests will revolve around the new functionalities.
 The tested items will span from AI models used to detect the presence of various types of objects for pickup,
-to the integration of these models with the cobot's movement controller.
-As the software operates autonomously, the user interface is primarily confined to the terminal, which displays log messages indicating the system's current state.
+the implementation of a cobot movement controller to the integration between the two.
+As the software operates autonomously, the user interface is primarily confined to the terminals, which displays log messages indicating the system's current state.
 
 ## Test Cases
 ### Tested Features
