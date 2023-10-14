@@ -86,6 +86,19 @@ the system can be considered a success and classified as straight-forward and in
 
 # Usability Metrics
 ## Completed Scenarios
+The following usability scenarios have been evaluated:
+* The vision system detects and guides the cobot to move the chips to the correct compartment in the white tray.
+* The vision system  detects and guides the cobot to move the case to the correct compartment in the white tray.
+* The cobot moves the battery to the correct compartment in the white tray.
+* The cobot moves the PCB shell to the correct compartment in the white tray.
+* The vision system detects a correctly filled tray and guides the cobot to move it to the human operator working space.
+* The vision system detects an emptied tray from the human operator working space and guides the cobot to move it back to be filled up again.
+* The cobot makes no move in the following scenario:
+	* The delivered tray has not been emptied by the human operator.
+	* The trays to be delivered has not been filled with correct items.
+	* The trays are missing/not represent.
+* The cobot stops immediately when the emergency button is pressed.
+
 ## Errors
 ## Client Evaluations
 # Reporting Results
