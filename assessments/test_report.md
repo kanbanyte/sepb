@@ -67,14 +67,14 @@ a series of the test cases were developed in the test plan to ensure that all th
 In this section of the report, each of the test cases and the details of their success/failure will be discussed.
 
 #### Unit Tests
-* **Establish connection with Robot Arm**
+* **Establish connection with the Robot Arm**
 
 	The system was able to achieve the expected results, with the Linux PC able send information to the robot arm across the network using ROS2,
 	and the robot arm able to follow those instructions and move accordingly.
 
 	Therefore, this test can be considered a success.
 
-* **Set up Depth Camera**
+* **Set up the Depth Camera**
 
 	Once connect to the PC, the code that was developed by the team and the software that was provided by the camera manufacturers,
 	were able to connect to the camera and view a feed from it.
@@ -82,7 +82,7 @@ In this section of the report, each of the test cases and the details of their s
 
 	Therefore, this test can be considered a success.
 
-* **Initialise Machine Learning (ML) Model**
+* **Initialise the Machine Learning (ML) Model**
 
 	The trained ML model was able to obtain images from the camera of the workspace, correctly identify where in the appropriate feeders parts were located, and
 	report them back.
@@ -91,7 +91,7 @@ In this section of the report, each of the test cases and the details of their s
 	Therefore, this test can be considered a success.
 
 #### Integration Tests
-* **Connect ML model and Robot arm through PC**
+* **Connect the ML model and the robot arm through the PC**
 
 	Using ROS2, the ML model is able to provide the required information to the ROS2 service that controls the movements of the robot arm.
 	Using this information, the service is able to plan the movements required for the robot arm to pick and place the correct items in the correct locations.
