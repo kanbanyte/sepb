@@ -87,6 +87,30 @@ the system can be considered a success and classified as straight-forward and in
 # Usability Metrics
 ## Completed Scenarios
 ## Errors
+In the evaluation of Project24, several critical aspects of usability came to light, with a particular focus on the examination of errors.
+These errors encompassed issues related to positioning accuracy, object recognition failures, communication glitches, and deviations in task execution.
+
+Of notable concern were the instances of positioning inaccuracies,
+where the system occasionally failed to accurately position the robotic arm and gripper, resulting in misalignments during task execution.
+These inaccuracies were categorised based on their severity,
+ranging from critical errors that significantly disrupted task performance to major errors with a noticeable adverse impact and
+minor errors with comparatively minor consequences.
+
+The evaluation also identified object recognition failures,
+where the system encountered challenges in correctly identifying and distinguishing between objects, leading to errors in object handling.
+Similar to positioning inaccuracies, these errors were classified into critical, major, and minor categories.
+
+Furthermore, the evaluation documented instances of communication glitches between system components, which presented obstacles to the seamless execution of the task.
+Once again, these glitches were assessed for severity and categorised as critical, major, or minor.
+
+Lastly, deviations in task execution were acknowledged, with the system occasionally deviating from the intended path,
+even when there were no overt issues with positioning or object recognition.
+These deviations, like other error categories, underwent an evaluation that considered their severity within the critical, major, and minor spectrum.
+
+The simultaneous documentation of these errors and
+the classification of their severity provide a robust foundation for the improvement of the system's performance and
+reliability through a process of iterative refinement.
+
 ## Client Evaluations
 # Reporting Results
 Overall, the testing covered in this document leaves enough confidence in the system for it to achieve the goal of being autonomous.\
