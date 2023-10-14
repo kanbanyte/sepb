@@ -60,6 +60,35 @@
 ## Test Items
 ## Test Cases
 ### Tested Features
+As outlined in the Test Plan document, the features to be tested are categorised into vision-related, cobot-related, and integration of the two.
+This section outlines detailed features to be tested for all three categories.
+
+For the vision system, the following items are tested on the camera and AI models:
+* The chip detection model is tested on chips in all 48 possible slots with chips leaning in both directions.
+Note that the red slots only hold blue chips whereas the white slots only hold the yellow chips.
+* The case detection model is tested on all possible 17 possible positions on the case rack.
+* The tray detection model is tested on all possible variations of a white tray, in all 3 positions.
+The trays are divided into 3 classes: Full, Empty, and Partially Full, of which there are many possible combinations.
+* The camera connects to the computer and successfully applies the settings specified in a configuration YAML file.
+* Crop boxes specific to the chip model, tray model, and case model are applied to the raw image captured by the camera.
+
+For the cobot, movements accuracy and speed are tested on all possible positions of items to be picked and moved.
+These include:
+* Movement to pick up chips from 48 possible slots and place them on the lower right compartment of the tray.
+* Movement to pick up cases from 17 possible positions and place them on the lower left compartment of the tray.
+* Movement to pick up PCB shells delivered to a specific location by the conveyor belt to the upper left compartment of the tray.
+* Movement to pick up batteries from the battery rack and place them on the upper left compartment of the tray.
+* Movement to pick up trays and deliver them to and from the human operator, including:
+	* Movement to pick up a fully filled tray on the upper left to the human operator.
+	* Movement to pick up a fully filled tray on the lower left to the human operator.
+	* Movement to pick up an empty tray from the human operator back to a empty spot to be filled up again.
+
+For integration-related features, the following items are tested:
+* Bounding boxes from chip detection model correctly converted to chip positions defined by the cobot.
+* Bounding boxes from case detection model correctly converted to case positions defined by the cobot.
+* Bounding boxes from tray detection model correctly converted to best tray movement for the cobot.
+* Signal containing item position or tray movement communicated to the cobot motion controller, which acts upon that information.
+
 ### Functional Test Cases
 ### Non-functional Testing
 Following the requirements that were listed in the Test Plan,
