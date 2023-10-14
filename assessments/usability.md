@@ -88,6 +88,15 @@ the system can be considered a success and classified as straight-forward and in
 ## Completed Scenarios
 ## Errors
 ## Client Evaluations
+In the assessment of Project24, subjective evaluations play a pivotal role.
+The clients feedback offers valuable insights, helping the HeeHooVision identify trends and patterns that guide iterative improvements.
+By systematically collecting and assessing client evaluations, a bridge is established between technical development and practical needs.
+This holistic approach ensures that the system continually evolves to better meet client expectations.
+
+The incorporation of client perspectives and feedback into the development process is a commitment taken seriously.
+It drives continual enhancements to the Robot Vision System, resulting in a more efficient solution.
+Through this client-centric approach, the aim is to develop a system that truly serves its purpose.
+
 # Reporting Results
 Overall, the testing covered in this document leaves enough confidence in the system for it to achieve the goal of being autonomous.\
 Going off the established criteria covered earlier, the system is very usable and meets the expectations laid out.
