@@ -61,7 +61,7 @@
 ## Test Cases
 ### Tested Features
 As outlined in the Test Plan document, the features to be tested are categorised into vision-related, cobot-related, and integration of the two.
-This section outlies detailed features to be tested for all three categories.
+This section outlines detailed features to be tested for all three categories.
 
 For the vision system, the following items are tested on the camera and AI models:
 * The chip detection model is tested on chips in all 48 possible slots with chips leaning in both directions.
