@@ -85,8 +85,14 @@ Overall, as the system is able to achieve all the task that were laid out in the
 the system can be considered a success and classified as straight-forward and intuitive.
 
 # Usability Metrics
-This section covers the usability requirements can be evaluated using usability metrics used in this project to evaluate usability requirements.
-These include; scenario completion rates, error rates and client evaluations.
+Usability metrics serve as objective and data-driven tools for evaluating different parts of the user experience.
+They provide insight into the system's performance, user satisfaction, and efficiency. 
+These metrics help us understand how well our project aligns with user expectations and requirements, and where improvements can be made.
+
+The following section looks at the usability metrics used to assess our project's performance.
+These metrics include the completed scenarios and the errors found.
+By analysing these metrics, HeeHooVision aims to identify strengths and weaknesses within the system.
+The analysis also allows us to identify were refinements and improvements can be made.
 
 ## Completed Scenarios
 The following usability scenarios have been evaluated:
