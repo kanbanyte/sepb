@@ -61,6 +61,16 @@ This document will cover the items being tested, the appropriate test cases for 
 It is also going to justify the test choices and the validity of them in relation to the system.
 
 # Results
+The assessment centred on the AI-based vision system and cobot movement controller, testing various features outlined in the test cases.
+Vision-related capabilities like chip and case detection along with camera functionality were closely examined.
+The system's proficiency in cobot-related functions including item handling was a key focus.
+
+Functional tests confirmed the system's robust performance ensuring precise robotic movements and item handling, maintaining autonomous functionality.
+Non-functional testing affirmed consistent task execution, client satisfaction, and object positioning stability.
+
+The validation process including unit and integration testing, client acceptance tests, and
+documentation review; ensured functionality, documentation clarity plus accuracy for the intended application, and met client expectations.
+
 ## Test Items
 The cobot already possesses the ability to pick up objects from pre-defined positions and place them on a tray to be transferred to a human operator via a PLC controller.
 The project's objective is to equip the cobot with an AI-based vision system that precisely guides the selection of objects,
