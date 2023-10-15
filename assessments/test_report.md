@@ -71,6 +71,18 @@ the implementation of a cobot movement controller to the integration between the
 As the software operates autonomously, the user interface is primarily confined to the terminals, which displays log messages indicating the system's current state.
 
 ## Test Cases
+This section will cover the features that were tested as well as the functional test cases that were used to evaluate the features.
+It is important that the success or failure of the test cases are properly described in order to evaluate the success of the project.
+
+The features that were tested were chosen to be the most likely cases faced by real world use of the project.
+Programming for every edge case was not the priority of this project so ensuring that software and
+hardware worked in the intended way was deemed the most important for testing.
+
+The test cases chosen were selected to test the entirety of the project as best as possible.
+With many different parts that all interconnect, it was important to HeeHooVision that the initialisation of each component was tested.
+This ensured that further testing would be valid as we could be confident all components worked individually and
+any problems would be caused by connection issues rather than a individual component.
+
 ### Tested Features
 As outlined in the Test Plan document, the features to be tested are categorised into vision-related, cobot-related, and integration of the two.
 This section outlines detailed features to be tested for all three categories.
