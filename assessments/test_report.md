@@ -193,6 +193,15 @@ In summary, this testing phase was successful in verifying the functionality and
 meeting client expectations and establishing robust documentation for reference.
 
 # Pass/Fail Criteria
+This section outlines the standards that the project must meet to be considered acceptable for deployment.
+This will be done by looking at the product level as well as the testing stages.
+
+The pass/fail criteria used is the on outlined in the test plan.
+Within the test plan document, it is described that the criteria will help make sure that the project meets the necessary requirements
+as well as ensuring the project is at an acceptable standard of quality.
+The predefined criteria provided clear guidelines for assessing whether the system meets the desired level of functionality,
+performance and other relevant attributes whilst under the testing conditions.
+
 ## Product Level
 As discussed in the test plan, a long list of appropriate and relevant pass/fail criteria for the product level were established.
 With the conclusion of the testing, it is important to look over these established criteria to ensure that the system as defined by the criteria passes.\
