@@ -98,10 +98,9 @@ with no interference or interaction with the surrounding environment.
 
 Therefore, this test can be considered a success.
 
-#### The system is able to continue functioning autonomously
-After completing a single cycle of the procedure,
-the robot system is able to repeat the process of the analysing images from the camera to find locations of parts, transmitting the data of the locations,
-planning the paths required of the robot arm, and making the robot arm conduct the actions.
+#### System Continues Autonomous Functionality
+After completing a single cycle of the procedure, the robot system is able to repeat the process of the analysing images from the camera to find locations of parts,
+transmitting the data of the locations, planning the paths required of the robot arm, and making the robot arm conduct the actions.
 
 Therefore, this test can be considered a success.
 
