@@ -94,6 +94,49 @@ For integration-related features, the following items are tested:
 * Signal containing item position or tray movement communicated to the cobot motion controller, which acts upon that information.
 
 ### Functional Test Cases
+Based on the features listed in the previous section, and they're specific criteria,
+a series of the test cases were developed in the test plan to ensure that all the criteria were met and the final product was of a satisfactory standard.
+
+In this section of the report, each of the test cases and the details of their success/failure will be discussed.
+
+#### Establish Cobot Connection
+The system was able to achieve the expected results, with the Linux PC able send information to the robot arm across the network using ROS2, and
+the robot arm able to follow those instructions and move accordingly.
+
+Therefore, this test can be considered a success.
+
+#### Setup Depth Camera
+Once connect to the PC, the code that was developed by the team and the software that was provided by the camera manufacturers,
+were able to connect to the camera and view a feed from it.
+The code was also able to take and store pictures of what the camera was seeing.
+
+Therefore, this test can be considered a success.
+
+#### Initialise Model
+The trained machine learning (ML) model was able to obtain images from the camera of the workspace,
+correctly identify where in the appropriate feeders parts were located and report them back.
+The processed images with the detected locations can also be viewed by the user, if needed.
+
+Therefore, this test can be considered a success.
+
+#### Model and Cobot Connection via PC
+Using ROS2, the ML model is able to provide the required information to the ROS2 service that controls the movements of the robot arm.
+Using this information, the service is able to plan the movements required for the robot arm to pick and place the correct items in the correct locations.
+
+Therefore, this test can be considered a success.
+
+#### Cobot Movement via Command
+After receiving the required movement information, the robot arm is able to execute them correctly and smoothly,
+with no interference or interaction with the surrounding environment.
+
+Therefore, this test can be considered a success.
+
+#### System Continues Autonomous Functionality
+After completing a single cycle of the procedure, the robot system is able to repeat the process of the analysing images from the camera to find locations of parts,
+transmitting the data of the locations, planning the paths required of the robot arm, and making the robot arm conduct the actions.
+
+Therefore, this test can be considered a success.
+
 ### Non-functional Testing
 Following the requirements that were listed in the Test Plan,
 the system was able to repeatedly complete its tasks correctly and consistently while carrying out its movements in a smooth manner.
