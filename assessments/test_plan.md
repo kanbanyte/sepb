@@ -135,7 +135,7 @@ The following equipment and items are required:
 
 # Test Items
 The product to be tested is the robot arm upgraded with object detection technology.
-As the robot arm already posseses the ability to precisely pick and move items to the human operator,
+As the robot arm already possesses the ability to precisely pick and move items to the human operator,
 the testing strategy centers around assessing its proficiency in selecting items that are currently available,
 as opposed to the pre-existing trial-and-error approach across the entirety of the trays.
 

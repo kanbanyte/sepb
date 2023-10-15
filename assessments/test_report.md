@@ -62,6 +62,14 @@ It is also going to justify the test choices and the validity of them in relatio
 
 # Results
 ## Test Items
+The cobot already possesses the ability to pick up objects from pre-defined positions and place them on a tray to be transferred to a human operator via a PLC controller.
+The project's objective is to equip the cobot with an AI-based vision system that precisely guides the selection of objects,
+and replicate the existing movements via a new software implemented with ROS, collectively known as the movement controller.
+As a result, the focus of the tests will revolve around the new functionalities.
+The tested items will span from AI models used to detect the presence of various types of objects for pickup,
+the implementation of a cobot movement controller to the integration between the two.
+As the software operates autonomously, the user interface is primarily confined to the terminals, which displays log messages indicating the system's current state.
+
 ## Test Cases
 ### Tested Features
 As outlined in the Test Plan document, the features to be tested are categorised into vision-related, cobot-related, and integration of the two.
