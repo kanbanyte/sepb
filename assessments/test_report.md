@@ -66,7 +66,7 @@ a series of the test cases were developed in the test plan to ensure that all th
 
 In this section of the report, each of the test cases and the details of their success/failure will be discussed.
 
-#### Establish connection with the Robot Arm
+#### Establish Cobot Connection
 The system was able to achieve the expected results, with the Linux PC able send information to the robot arm across the network using ROS2, and
 the robot arm able to follow those instructions and move accordingly.
 
@@ -86,13 +86,13 @@ The processed images with the detected locations can also be viewed by the user,
 
 Therefore, this test can be considered a success.
 
-#### Connect the ML model and the robot arm through the PC
+#### Model and Cobot Connection via PC
 Using ROS2, the ML model is able to provide the required information to the ROS2 service that controls the movements of the robot arm.
 Using this information, the service is able to plan the movements required for the robot arm to pick and place the correct items in the correct locations.
 
 Therefore, this test can be considered a success.
 
-#### The robot arm is able to move on command
+#### Cobot Movement via Command
 After receiving the required movement information, the robot arm is able to execute them correctly and smoothly,
 with no interference or interaction with the surrounding environment.
 
