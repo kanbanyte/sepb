@@ -72,7 +72,7 @@ the robot arm able to follow those instructions and move accordingly.
 
 Therefore, this test can be considered a success.
 
-#### Set up the Depth Camera
+#### Setup Depth Camera
 Once connect to the PC, the code that was developed by the team and the software that was provided by the camera manufacturers,
 were able to connect to the camera and view a feed from it.
 The code was also able to take and store pictures of what the camera was seeing.
