@@ -104,6 +104,27 @@ This ensured that the development of the system was targeted more towards the de
 Overall, considering the goals and aims that the tests targeted, the results were successfully achieved.
 
 ## Testing Tasks
+In the testing phase, HeeHooVision diligently tackled several essential tasks.
+To begin with, they developed comprehensive unit test cases for the various components of the vision system,
+encompassing object detection algorithms, position estimation, and robot control mechanisms.
+The results of these unit tests consistently fell within the predefined parameters, with no observed deviations from the expected behaviour.
+
+Following this, integration tests were conducted to ensure the seamless communication between the computer vision modules and the ROS2 framework.
+These tests convincingly verified the effective interaction of the vision system components with ROS2,
+confirming the smooth exchange of data, synchronization, and compatibility among the integrated modules.
+
+Additionally, HeeHooVision worked closely with the client to execute acceptance tests.
+During these assessments, they meticulously verified that the vision system met all specified requirements and objectives.
+The client actively participated in these evaluations and expressed approval of the system's performance and functionality,
+signifying alignment with their expectations.
+
+Finally, HeeHooVision thoroughly reviewed and validated the accuracy and comprehensiveness of the documentation.
+The primary objective was to ensure that it serves as a valuable guide for both end-users and developers.
+It can be confidently stated that the documentation, after this validation, provides clear and accurate guidance, making it an invaluable resource for the future.
+
+In summary, this testing phase was successful in verifying the functionality and performance of the vision system,
+meeting client expectations and establishing robust documentation for reference.
+
 # Pass/Fail Criteria
 ## Product Level
 As discussed in the test plan, a long list of appropriate and relevant pass/fail criteria for the product level were established.
