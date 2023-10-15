@@ -79,9 +79,9 @@ The code was also able to take and store pictures of what the camera was seeing.
 
 Therefore, this test can be considered a success.
 
-#### Initialise the Machine Learning (ML) Model
-The trained ML model was able to obtain images from the camera of the workspace, correctly identify where in the appropriate feeders parts were located, and
-report them back.
+#### Initialise Model
+The trained machine learning (ML) model was able to obtain images from the camera of the workspace,
+correctly identify where in the appropriate feeders parts were located and report them back.
 The processed images with the detected locations can also be viewed by the user, if needed.
 
 Therefore, this test can be considered a success.
