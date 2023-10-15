@@ -57,6 +57,16 @@
 
 # Introduction
 # Results
+The assessment centred on the AI-based vision system and cobot movement controller, testing various features outlined in the test cases.
+Vision-related capabilities like chip and case detection along with camera functionality were closely examined.
+The system's proficiency in cobot-related functions including item handling was a key focus.
+
+Functional tests confirmed the system's robust performance ensuring precise robotic movements and item handling, maintaining autonomous functionality.
+Non-functional testing affirmed consistent task execution, client satisfaction, and object positioning stability.
+
+The validation process including unit and integration testing, client acceptance tests, and
+documentation review; ensured functionality, documentation clarity plus accuracy for the intended application, and met client expectations.
+
 ## Test Items
 ## Test Cases
 ### Tested Features
