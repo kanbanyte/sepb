@@ -85,14 +85,14 @@ Overall, as the system is able to achieve all the task that were laid out in the
 the system can be considered a success and classified as straight-forward and intuitive.
 
 # Usability Metrics
-Usability metrics serve as objective and data-driven tools for evaluating different parts of Project24.
-They provide insight into the system's performance, efficiency, and client satisfaction.
+Usability metrics serve as objective and data-driven tools for evaluating different parts of Project24;
+providing insight into the system's performance, efficiency, and client satisfaction.
 These metrics help understand how well Project24 aligns with the clients expectations and requirements, and where improvements can be made.
 
-The following section looks at the usability metrics used to assess Project24 performance.
-These metrics include the completed scenarios and the errors found.
+The following section looks at the usability metrics used to assess Project24 performance,
+including the completed scenarios and the errors found.
 By analysing these metrics, HeeHooVision aims to identify strengths and weaknesses within the system.
-The analysis also identifies were refinements and improvements can be made.
+The analysis also identifies where refinements and improvements can be made.
 
 ## Completed Scenarios
 The following usability scenarios have been evaluated:
