@@ -85,6 +85,9 @@ Overall, as the system is able to achieve all the task that were laid out in the
 the system can be considered a success and classified as straight-forward and intuitive.
 
 # Usability Metrics
+This section covers the usability requirements can be evaluated using usability metrics used in this project to evaluate usability requirements.
+These include; scenario completion rates, error rates and client evaluations.
+
 ## Completed Scenarios
 The following usability scenarios have been evaluated:
 * The vision system detects and guides the cobot to move the chips to the correct compartment in the white tray.
