@@ -79,7 +79,7 @@ class ObjectDetectionModel:
 				cv2.imwrite(result_img_path, image)
 
 			if show_image:
-				show_image_non_block(image, f"Showing image '{result_img_path}'")
+				show_image_non_block(image, f"Showing image '{result_img_path}'. No detections.")
 
 			return detected_objects
 
@@ -96,8 +96,8 @@ class ObjectDetectionModel:
 			detected_object = DetectedObject(bounding_box=bounding_box, confidence=confidence)
 
 			detected_objects[object_class_index].append(detected_object)
+			draw_bounding_box(image, bounding_box)
 			if result_img_path:
-				draw_bounding_box(image, bounding_box)
 				cv2.imwrite(result_img_path, image)
 
 		if show_image:

@@ -4,7 +4,7 @@ from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
 from sensor_msgs.msg import JointState
 from ur_msgs.srv import SetIO
-from nodes.bot_functions import BotMethods
+from nodes.cobot_methods import CobotMethods
 from nodes.read_methods import ReadMethods
 from data_processing.tray_position import TrayMovement
 
@@ -15,9 +15,9 @@ import copy
 import time
 
 
-class PublisherJointTrajectory(Node):
+class CobotMovement(Node):
 	def __init__(self):
-		super().__init__("publisher_position_trajectory_controller")
+		super().__init__("cobot_movement_node")
 		# Declare all parameters
 		self.declare_parameter("controller_name", "position_trajectory_controller")
 		self.declare_parameter("wait_sec_between_publish", 6)
@@ -159,7 +159,7 @@ class PublisherJointTrajectory(Node):
 			tray_position = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
-			return BotMethods.get_all_trajectories(self.joints, self.goals, self.gripper_outputs, chip_position, case_position, tray_position)
+			return CobotMethods.get_all_trajectories(self.joints, self.goals, self.gripper_outputs, chip_position, case_position, tray_position)
 		else:
 			self.get_logger().error(f"Error when populating trajectories...")
 			return None
@@ -173,7 +173,7 @@ class PublisherJointTrajectory(Node):
 		feedback_msg.current_movement = self.current_movement
 
 		self.trajectories = self.populate_trajectories()
-		self.trajectory_names = BotMethods.get_trajectory_names()
+		self.trajectory_names = CobotMethods.get_trajectory_names()
 
 		if self.starting_point_ok:
 			if self.trajectories is not None:

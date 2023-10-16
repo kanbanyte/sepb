@@ -1,4 +1,4 @@
-bot_node:
+cobot_node:
   ros__parameters:
 
     controller_name: "scaled_joint_trajectory_controller"

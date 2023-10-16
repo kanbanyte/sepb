@@ -3,9 +3,9 @@ import copy
 from data_processing.tray_position import TrayMovement
 
 
-class BotMethods:
+class CobotMethods:
 	'''
-	BotMethods defines all functions that involve moving the cobot to pick and place each object.
+	CobotMethods defines all functions that involve moving the cobot to pick and place each object.
 	'''
 	# trajectories = {}
 
@@ -29,11 +29,11 @@ class BotMethods:
 		traj.points.append(goals["home"])
 
 		# Copy the trajectory and name to the lists.
-		BotMethods.trajectories.append(copy.deepcopy(traj))
-		BotMethods.trajectory_names.append("home")
+		CobotMethods.trajectories.append(copy.deepcopy(traj))
+		CobotMethods.trajectory_names.append("home")
 
-		BotMethods.trajectories.append(gripper_outputs["gripper_open_home"])
-		BotMethods.trajectory_names.append("gripper_open_home")
+		CobotMethods.trajectories.append(gripper_outputs["gripper_open_home"])
+		CobotMethods.trajectory_names.append("gripper_open_home")
 
 		# Clear the trajectory for future use.
 		traj.points.clear()
@@ -77,12 +77,12 @@ class BotMethods:
 
 		for goal_name in goal_names:
 			if goal_name.startswith("gripper"):
-				BotMethods.trajectories.append(gripper_outputs[goal_name])
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(gripper_outputs[goal_name])
+				CobotMethods.trajectory_names.append(goal_name)
 			else:
 				traj.points.append(goals[goal_name])
-				BotMethods.trajectories.append(copy.deepcopy(traj))
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(copy.deepcopy(traj))
+				CobotMethods.trajectory_names.append(goal_name)
 				traj.points.clear()
 
 	@staticmethod
@@ -110,12 +110,12 @@ class BotMethods:
 		# Append each goal to the trajectory, copy to lists, and clear the trajectory.
 		for goal_name in goal_names:
 			if goal_name.startswith("gripper"):
-				BotMethods.trajectories.append(gripper_outputs[goal_name])
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(gripper_outputs[goal_name])
+				CobotMethods.trajectory_names.append(goal_name)
 			else:
 				traj.points.append(goals[goal_name])
-				BotMethods.trajectories.append(copy.deepcopy(traj))
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(copy.deepcopy(traj))
+				CobotMethods.trajectory_names.append(goal_name)
 				traj.points.clear()
 
 	@staticmethod
@@ -144,12 +144,12 @@ class BotMethods:
 		# Append each goal to the trajectory, copy to lists, and clear the trajectory.
 		for goal_name in goal_names:
 			if goal_name.startswith("gripper"):
-				BotMethods.trajectories.append(gripper_outputs[goal_name])
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(gripper_outputs[goal_name])
+				CobotMethods.trajectory_names.append(goal_name)
 			else:
 				traj.points.append(goals[goal_name])
-				BotMethods.trajectories.append(copy.deepcopy(traj))
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(copy.deepcopy(traj))
+				CobotMethods.trajectory_names.append(goal_name)
 				traj.points.clear()
 
 	@staticmethod
@@ -175,12 +175,12 @@ class BotMethods:
 		# Append each goal to the trajectory, copy to lists, and clear the trajectory.
 		for goal_name in goal_names:
 			if goal_name.startswith("gripper"):
-				BotMethods.trajectories.append(gripper_outputs[goal_name])
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(gripper_outputs[goal_name])
+				CobotMethods.trajectory_names.append(goal_name)
 			else:
 				traj.points.append(goals[goal_name])
-				BotMethods.trajectories.append(copy.deepcopy(traj))
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(copy.deepcopy(traj))
+				CobotMethods.trajectory_names.append(goal_name)
 				traj.points.clear()
 
 	@staticmethod
@@ -206,12 +206,12 @@ class BotMethods:
 		# Append each goal to the trajectory, copy to lists, and clear the trajectory.
 		for goal_name in goal_names:
 			if goal_name.startswith("gripper"):
-				BotMethods.trajectories.append(gripper_outputs[goal_name])
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(gripper_outputs[goal_name])
+				CobotMethods.trajectory_names.append(goal_name)
 			else:
 				traj.points.append(goals[goal_name])
-				BotMethods.trajectories.append(copy.deepcopy(traj))
-				BotMethods.trajectory_names.append(goal_name)
+				CobotMethods.trajectories.append(copy.deepcopy(traj))
+				CobotMethods.trajectory_names.append(goal_name)
 				traj.points.clear()
 
 	@staticmethod
@@ -220,33 +220,33 @@ class BotMethods:
 		tray_number = 1
 		if tray_movement == TrayMovement.move_assembly_tray1.value:
 			tray_number = 1
-			BotMethods.move_home(joints, goals, gripper_outputs)
-			BotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
+			CobotMethods.move_home(joints, goals, gripper_outputs)
+			CobotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
 		elif tray_movement == TrayMovement.move_assembly_tray2.value:
 			tray_number = 2
-			BotMethods.move_home(joints, goals, gripper_outputs)
-			BotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
+			CobotMethods.move_home(joints, goals, gripper_outputs)
+			CobotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
 		elif tray_movement == TrayMovement.move_tray1_assembly.value:
-			BotMethods.move_home(joints, goals, gripper_outputs)
-			BotMethods.move_tray(joints, goals, gripper_outputs, 1)
+			CobotMethods.move_home(joints, goals, gripper_outputs)
+			CobotMethods.move_tray(joints, goals, gripper_outputs, 1)
 		elif tray_movement == TrayMovement.move_tray2_assembly.value:
-			BotMethods.move_home(joints, goals, gripper_outputs)
-			BotMethods.move_tray(joints, goals, gripper_outputs, 2)
+			CobotMethods.move_home(joints, goals, gripper_outputs)
+			CobotMethods.move_tray(joints, goals, gripper_outputs, 2)
 		elif tray_movement == TrayMovement.both_empty.value:
 			tray_number = 1
 		elif tray_movement == TrayMovement.no_move.value:
 			return None
 
-		BotMethods.move_home(joints, goals, gripper_outputs)
-		BotMethods.move_chip(joints, goals, gripper_outputs, chip_number, tray_number)
-		BotMethods.move_case(joints, goals, gripper_outputs, case_number, tray_number)
-		BotMethods.move_battery(joints, goals, gripper_outputs, tray_number)
+		CobotMethods.move_home(joints, goals, gripper_outputs)
+		CobotMethods.move_chip(joints, goals, gripper_outputs, chip_number, tray_number)
+		CobotMethods.move_case(joints, goals, gripper_outputs, case_number, tray_number)
+		CobotMethods.move_battery(joints, goals, gripper_outputs, tray_number)
 
-		BotMethods.move_tray(joints, goals, gripper_outputs, tray_number)
+		CobotMethods.move_tray(joints, goals, gripper_outputs, tray_number)
 
-		return BotMethods.trajectories
+		return CobotMethods.trajectories
 
 	# Must be called after get_all_trajectories
 	@staticmethod
 	def get_trajectory_names():
-		return BotMethods.trajectory_names
+		return CobotMethods.trajectory_names

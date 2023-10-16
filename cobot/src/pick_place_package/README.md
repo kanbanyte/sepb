@@ -54,12 +54,12 @@ ros2 service list
 > Output.
 
 ```txt
-/bot_node/describe_parameters
-/bot_node/get_parameter_types
-/bot_node/get_parameters
-/bot_node/list_parameters
-/bot_node/set_parameters
-/bot_node/set_parameters_atomically
+/cobot_node/describe_parameters
+/cobot_node/get_parameter_types
+/cobot_node/get_parameters
+/cobot_node/list_parameters
+/cobot_node/set_parameters
+/cobot_node/set_parameters_atomically
 /camera_node/describe_parameters
 /camera_node/get_parameter_types
 /camera_node/get_parameters
@@ -187,7 +187,7 @@ ros2 node list
 > Output.
 
 ```txt
-/bot_node
+/cobot_node
 /camera_node
 /controller_manager
 /controller_stopper

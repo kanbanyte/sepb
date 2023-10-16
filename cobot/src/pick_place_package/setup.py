@@ -2,7 +2,7 @@ import os
 from glob import glob
 from setuptools import find_packages, setup
 
-package_name = 'bot_package'
+package_name = 'pick_place_package'
 
 setup(
 	name=package_name,
@@ -23,10 +23,10 @@ setup(
 	tests_require=['pytest'],
 	entry_points={
 		'console_scripts': [
-			'bot_node = bot_package.bot_node:main',
-			'camera_node = bot_package.camera_node:main',
-			'gripper_node = bot_package.gripper_node:main',
-			'main_node = bot_package.main_node:main'
+			'cobot_node = pick_place_package.cobot_node:main',
+			'camera_node = pick_place_package.camera_node:main',
+			'gripper_node = pick_place_package.gripper_node:main',
+			'main_node = pick_place_package.main_node:main'
 		],
 	},
 )
