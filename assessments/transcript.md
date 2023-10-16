@@ -31,7 +31,7 @@ we're able to set up communication between the machine learning models and the r
 > [Start showing scrolling images of code that develops trajectories.]
 
 Once the code that operates the robot arm receives this data,
-functionality has been developed for the code to be able to automatically determine locations position that robot will need to move through,
+functionality has been developed for the code to be able to automatically determine locations that the robot will need to move through,
 to ensure that any parts that it picks and moves has no chance of interacting or bumping into its surrounding environment.
 
 > [Images of factory of the future, and maybe some images of robotic assembly lines?]
