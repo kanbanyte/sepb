@@ -30,13 +30,13 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["./src"]
 exclude = ["training", "tests"]
 
 [project.scripts]
-camera_inference_sample = "samples.python.camera_inference_sample:main"
-yolov5_sample = "samples.python.yolov5_sample:main"
-crop="data_processing.crop:main"
-random_crop="data_processing.random_crop:main"
-slice="data_processing.slice:main"
-calculate_training_ratio_roboflow="data_processing.calculate_training_ratio_roboflow:main"
+camera_inference_sample = "samples.camera_inference_sample:main"
+yolov5_sample = "samples.yolov5_sample:main"
+define_crop="scripts.define_crop:main"
+random_crop="scripts.random_crop:main"
+copy_interval="scripts.copy_interval:main"
+calculate_training_ratio_roboflow="scripts.calculate_training_ratio_roboflow:main"

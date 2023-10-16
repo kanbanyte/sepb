@@ -1,6 +1,6 @@
 import unittest
 from data_processing.case_position import convert_case_bounding_boxes
-from models.python.detected_object import DetectedObject
+from models.detected_object import DetectedObject
 
 class CasePositionTest(unittest.TestCase):
 

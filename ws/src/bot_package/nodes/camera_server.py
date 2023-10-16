@@ -1,6 +1,6 @@
 from rclpy.node import Node
 from camera.camera_capture import read_crop_box, get_rgb_cropped_image, LogicalLens, open_camera
-from models.python.object_detection_model import ObjectDetectionModel
+from models.object_detection_model import ObjectDetectionModel
 from data_processing.case_position import convert_case_bounding_boxes
 from data_processing.tray_position import determine_move
 from data_processing.chip_position import get_chip_slot_number
