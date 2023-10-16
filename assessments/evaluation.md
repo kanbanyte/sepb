@@ -235,8 +235,21 @@ Problems that are discovered during the  testing procedures will be classified b
 Ranking problems helps prioritize which issues need immediate attention and which ones can be addressed later.
 
 #### High
-Critical errors that have a significant negative effect on the user experience.\
-High impact errors lead to frustration, task failure, and a substantial reduction in user satisfaction.
+High impact problems are critical errors that have a significant negative effect on the user experience.\
+These problems usually lead to frustration, task failure, and a substantial reduction in user satisfaction.\
+High impact issues for this project include:
+
+* Safety Hazards:
+The incorrect coding of positions or software glitches causing the robotic arm to move unpredictably,
+poses a high risk of collisions, equipment damage, or injury to operators.
+
+* Halting of Production:
+Critical software failures due to connection issues or bugs resulting in frequent and or prolonged system downtime,
+causes a high impact on manufacturing productivity and user satisfaction.
+
+* Missed Picks:
+The vision system consistently failing to detect objects, leads to a high impact on efficiency and productivity,
+potentially causing production delays and user frustration.
 
 #### Moderate
 Issues that negatively affect the user's experience noticeably but which may not be as serious as high impact problems.\
