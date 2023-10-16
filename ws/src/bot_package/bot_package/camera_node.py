@@ -1,7 +1,7 @@
 # Import the ROS2 Python library for communication.
 import rclpy
-# Import the PublisherJointTrajectory class from the 'bot_move' module.
-from nodes.bot_move import PublisherJointTrajectory
+# Import the CameraServer class from the 'camera_server' module.
+from nodes.camera_server import CameraServer
 
 
 def main(args=None):
@@ -9,16 +9,18 @@ def main(args=None):
 	rclpy.init(args=args)
 
 	# Create an instance of the PublisherJointTrajectory class.
-	publisher_joint_trajectory = PublisherJointTrajectory()
+	camera_server = CameraServer()
 
 	# Enter the ROS2 event loop and spin the publisher node.
-	rclpy.spin(publisher_joint_trajectory)
+	rclpy.spin(camera_server)
+
+	camera_server.prepare_shutdown()
 
 	# Destroy the publisher node.
-	# publisher_joint_trajectory.destroy_node()
+	camera_server.destroy_node()
 
 	# Shutdown the ROS2 client library when done.
-	# rclpy.shutdown()
+	rclpy.shutdown()
 
 
 if __name__ == "__main__":

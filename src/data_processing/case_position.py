@@ -4,7 +4,7 @@ __POSITION_COUNT = 17
 __POSITION_GAP = (__BOTTOM_Y_COORDINATE - __TOP_Y_COORDINATE) / (__POSITION_COUNT - 1)
 
 def convert_case_bounding_boxes(detected_case):
-	"""
+	'''
 	Convert the bounding boxes of cases into its position.
 	The position values range from 1 to 17, with 1 being the position closest to the human operator.
 
@@ -19,7 +19,7 @@ def convert_case_bounding_boxes(detected_case):
 
 	Returns:
 		int|None: Case position in the rack which ranges from 1 to 17 or None if the input cannot be converted to a valid position.
-	"""
+	'''
 	if not detected_case:
 		raise ValueError("Detected case object is null")
 

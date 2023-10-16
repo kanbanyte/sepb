@@ -12,7 +12,7 @@ class TrayMovement(Enum):
 	move_tray1_assembly = 3
 	move_tray2_assembly = 4
 	no_move = 5
-
+	both_empty = 6
 '''
 Enum of each Tray positions possible states
 '''
@@ -55,7 +55,7 @@ def __get_states(detections, model):
 			# detected_tray is a DetectedObject, in this format:
 			# DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))
 			x1, y1, x2, y2 = detected_tray.bounding_box
-			if x1 >= 0 and y1 >= 140 and x2 <= 360 and y2 <= 420:
+			if x1 >= 0 and y1 >= 140 and x2 <= 400 and y2 <= 420:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__assembly: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -64,7 +64,7 @@ def __get_states(detections, model):
 					__tray_states.update({__assembly: Traystate.part_full})
 				else:
 					__tray_states.update({__assembly: Traystate.not_present})
-			elif x1 >= 340 and y1 >= 0 and x2 <= 690 and y2 <= 270:
+			elif x1 >= 340 and y1 >= 0 and x2 <= 720 and y2 <= 265:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__tray2: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -73,7 +73,7 @@ def __get_states(detections, model):
 					__tray_states.update({__tray2: Traystate.part_full})
 				else:
 					__tray_states.update({__tray2: Traystate.not_present})
-			elif x1 >= 340 and y1 >= 288 and x2 <= 700 and y2 <= 590:
+			elif x1 >= 340 and y1 >= 288 and x2 <= 720 and y2 <= 590:
 				if model.classes[class_index].lower() == "empty":
 					__tray_states.update({__tray1: Traystate.empty})
 				elif model.classes[class_index].lower() == "full":
@@ -95,20 +95,29 @@ def __get_movement(tray_states):
 	Returns:
 		TrayMovement: movement of the tray
 	'''
+	# TODO: clean this
+	print(f" states:{tray_states}")
 	if tray_states.get("assembly") == Traystate.not_present:
 		if tray_states.get("tray 1") == Traystate.full:
 			return TrayMovement.move_tray1_assembly
 		elif tray_states.get("tray 2") == Traystate.full:
 			return TrayMovement.move_tray2_assembly
 		else:
-			return TrayMovement.no_move
+			return TrayMovement.both_empty
 	elif tray_states.get("assembly") == Traystate.empty:
 		if tray_states.get("tray 1") == Traystate.not_present:
 			return TrayMovement.move_assembly_tray1
 		elif tray_states.get("tray 2") == Traystate.not_present:
 			return TrayMovement.move_assembly_tray2
 		else:
-			return TrayMovement.no_move
+			if tray_states.get("tray 1") == Traystate.full:
+				return TrayMovement.move_tray1_assembly
+			elif tray_states.get("tray 2") == Traystate.full:
+				return TrayMovement.move_tray2_assembly
+			else:
+				return TrayMovement.no_move
+	# elif tray_states.get("tray 1") == Traystate.empty and tray_states.get("tray 2") == Traystate.empty:
+	# 	return TrayMovement.both_empty
 	else:
 		return TrayMovement.no_move
 
