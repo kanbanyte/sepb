@@ -9,7 +9,7 @@ from data_processing.tray_position import determine_move
 from data_processing.chip_position import get_chip_slot_number
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
-from models.python.object_detection_model import ObjectDetectionModel
+from models.object_detection_model import ObjectDetectionModel
 from camera.camera_capture import read_crop_box, open_camera, get_rgb_cropped_image
 
 def run_inference(detection_model, cropped_image, output_location = None):

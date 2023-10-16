@@ -6,7 +6,7 @@ from ultralytics import YOLO
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
 from data_processing.image_processing import tile_image
-from models.python.object_detection_model import ObjectDetectionModel
+from models.object_detection_model import ObjectDetectionModel
 
 # Constants for drawing bounding boxes and text on images
 BOX_THICKNESS = 2

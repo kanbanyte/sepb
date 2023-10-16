@@ -2,7 +2,7 @@
 
 import unittest
 from data_processing.tray_position import determine_move
-from models.python.detected_object import DetectedObject
+from models.detected_object import DetectedObject
 
 #model classes:
 #	0: empty
