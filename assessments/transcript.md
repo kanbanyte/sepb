@@ -8,7 +8,8 @@
 Hi!
 We're HeeHooVision.
 Last semester, you may remember the video we presented about setting up a robot arm to be able to pick and place parts that will be used along an assembly line.
-Well, good news! We're happy to report that we've completed the project!
+Well, good news!
+We're happy to report that we've completed the project!
 Through tons of research and development, and consistent communication with our client, we've been able to achieve the product that we set out to create!
 We've built a solid foundation for the Factory of the Future to be able to continue developing this system and perfecting it for future applications.
 
