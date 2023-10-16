@@ -25,7 +25,7 @@ once they have been emptied by the workstation attendant, who is assembly the fi
 
 > [Start showing images of terminal output for locations.]
 
-Using something call ROS2, or the second iteration of the Robot Operating System,
+Using something called ROS2, or the second iteration of the Robot Operating System,
 we're able to set up communication between the machine learning models and the robot arm, passing the preassigned numbers for the chips and cases.
 
 > [Start showing scrolling images of code that develops trajectories.]
