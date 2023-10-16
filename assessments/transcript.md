@@ -21,7 +21,7 @@ As you can see, we're able to capture images from the camera that is now mounted
 run specific models on specific cropped portions of the image, allowing us to develop multiple,
 high accurate models that can detect the locations of chips that are present and the location of the next case.
 We're also able to detect the state of the assembly trays as they get populated through out the pick and place task,
-once they have been emptied by the workstation attendant, who is assembly the final product.
+as well as when the tray has been emptied by the workstation attendant, who is assembling the final product.
 
 > [Start showing images of terminal output for locations.]
 
