@@ -30,7 +30,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["./src"]
 exclude = ["training", "tests"]
 
 [project.scripts]
