@@ -247,13 +247,23 @@ poses a high risk of collisions, equipment damage, or injury to operators.
 Critical software failures due to connection issues or bugs resulting in frequent and or prolonged system downtime,
 causes a high impact on manufacturing productivity and user satisfaction.
 
-* Missed Picks:
+* Consistent Missed Picks:
 The vision system consistently failing to detect objects, leads to a high impact on efficiency and productivity,
 potentially causing production delays and user frustration.
 
 #### Moderate
 Issues that negatively affect the user's experience noticeably but which may not be as serious as high impact problems.\
-They might make users more frustrated and less productive.
+They might make users more frustrated, less productive and impact the usability and performance of the overall system.\
+Moderate impact issues for this project include:
+
+* Intermittent Software Lag:
+The system occasionally experiences slight delays in response times, causing moderate productivity slowdowns without compromising safety.
+
+* Inconsistent Object Detection:
+The neural network's occasional difficulty in detecting objects leads to some missed picks, affecting efficiency but not causing major disruptions.
+
+* Moderate Interface Complexity:
+Some elements of the user interface require extra effort to understand, impacting usability but not causing critical errors.
 
 #### Low
 Non critical errors that have a minimal negative impact on the user's experience.\
