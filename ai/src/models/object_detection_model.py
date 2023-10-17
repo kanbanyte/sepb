@@ -3,7 +3,8 @@ from collections import defaultdict
 from ultralytics import YOLO
 
 from .detected_object import DetectedObject
-from data_processing.image_processing import draw_bounding_box, show_image_non_block
+# from data_processing.image_processing import draw_bounding_box, show_image_non_block
+from data_processing.image_processing import draw_bounding_box, show_image as image_show
 
 class ObjectDetectionModel:
 	def __init__(self, model_config):
@@ -79,7 +80,8 @@ class ObjectDetectionModel:
 				cv2.imwrite(result_img_path, image)
 
 			if show_image:
-				show_image_non_block(image, f"Showing image '{result_img_path}'. No detections.")
+				# show_image_non_block(image, f"Showing image '{result_img_path}'")
+				image_show(image, f"Showing image '{result_img_path}'. No detections.")
 
 			return detected_objects
 
@@ -101,6 +103,7 @@ class ObjectDetectionModel:
 				cv2.imwrite(result_img_path, image)
 
 		if show_image:
-			show_image_non_block(image, f"Showing image '{result_img_path}'")
+			# show_image_non_block(image, f"Showing image '{result_img_path}'")
+			image_show(image, f"Showing image '{result_img_path}'")
 
 		return detected_objects
