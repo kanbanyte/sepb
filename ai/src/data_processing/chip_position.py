@@ -1,4 +1,6 @@
-def get_chip_col(x1,x2):
+__ROW_COUNT = 8
+
+def __get_chip_col(x1, x2):
 	'''
 	This method translated x coordinates into the appropriate chip column number.
 	We start from 0 and go to 7. This is to be the correct format for the equation later
@@ -11,31 +13,31 @@ def get_chip_col(x1,x2):
 		int : the column number of the chip, or -1 for invalid column
 	'''
 	if x1 < x2 and x1 >=0 and x2 >= 0:
-		xcen = (x1 + x2) / 2 #finds the center of the chips x coords
-		if xcen >= 4 and xcen <= 37:
+		x_center = (x1 + x2) / 2
+		if x_center >= 4 and x_center <= 37:
 			return 0
-		if xcen >= 56 and xcen <= 86:
+		if x_center >= 56 and x_center <= 86:
 			return 1
-		if xcen >= 105 and xcen <= 135:
+		if x_center >= 105 and x_center <= 135:
 			return 2
-		if xcen >= 155 and xcen <= 182:
+		if x_center >= 155 and x_center <= 182:
 			return 3
-		if xcen >= 204 and xcen <= 233:
+		if x_center >= 204 and x_center <= 233:
 			return 4
-		if xcen >= 253 and xcen <= 284:
+		if x_center >= 253 and x_center <= 284:
 			return 5
-		if xcen >= 302 and xcen <= 329:
+		if x_center >= 302 and x_center <= 329:
 			return 6
-		if xcen >= 351 and xcen <= 381:
+		if x_center >= 351 and x_center <= 381:
 			return 7
 		else:
-			print(f"X-center out of bounds: {xcen}")
+			print(f"X-center out of bounds: {x_center}")
 			return -1
 	else:
 		print("Invalid X-coordinates")
 		return -1
 
-def get_chip_row(y1,y2):
+def __get_chip_row(y1, y2):
 	'''
 	This method translated y coordinates into the appropriate chip row number.
 	We start from 0 and go to 5. This is to be the correct format for the equation later
@@ -48,21 +50,21 @@ def get_chip_row(y1,y2):
 		int : the row number of the chip, or -1 for invalid row
 	'''
 	if y1 < y2 and y1 >=0 and y2 >= 0:
-		ycen = (y1 + y2) / 2 #finds the center of the chips y coords
-		if ycen >= 0 and ycen <= 40:
+		y_center = (y1 + y2) / 2
+		if y_center >= 0 and y_center <= 40:
 			return 0
-		if ycen >= 39 and ycen <= 76:
+		if y_center >= 39 and y_center <= 76:
 			return 1
-		if ycen >= 70 and ycen <= 113:
+		if y_center >= 70 and y_center <= 113:
 			return 2
-		if ycen >= 112 and ycen <= 151:
+		if y_center >= 112 and y_center <= 151:
 			return 3
-		if ycen >= 150 and ycen <= 189:
+		if y_center >= 150 and y_center <= 189:
 			return 4
-		if ycen >= 184 and ycen <= 223:
+		if y_center >= 184 and y_center <= 223:
 			return 5
 		else:
-			print(f"Y-center out of bounds: {ycen}")
+			print(f"Y-center out of bounds: {y_center}")
 			return -1
 	else:
 		print("Invalid Y-coordinates")
@@ -70,9 +72,7 @@ def get_chip_row(y1,y2):
 
 def get_chip_slot_number(bounding_box):
 	'''
-	This method takes in the bounding box of a chip and returns the chip number
-	The chip number is calculated by the equation (8 * row) + col + 1
-	The above formulae was devised as the best way to communicate positions to the ROS team
+	This method takes in the bounding box of a chip and returns the chip number defined by the cobot code.
 
 	Args:
 		bounding_box (list) : the bounding box of the chip
@@ -81,10 +81,12 @@ def get_chip_slot_number(bounding_box):
 		int : the chip number, or None for invalid chip
 	'''
 	x1, y1, x2, y2 = bounding_box
-	row = get_chip_row(y1, y2)
+	row = __get_chip_row(y1, y2)
 	if row == -1:
 		return None
-	col = get_chip_col(x1, x2)
+
+	col = __get_chip_col(x1, x2)
 	if col == -1:
 		return None
-	return 6 * col + row + 1
+
+	return __ROW_COUNT * col + row + 1

@@ -106,11 +106,6 @@ def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
 	# ZED returns an image in the RGBA format but the alpha channel is not needed
 	cropped_image = cropped_image[:, :, 0:3]
 
-	# import cv2
-	# from datetime import datetime
-	# current_time = datetime.now().strftime("%H-%M-%S")
-	# cv2.imwrite(f"raw.{current_time}.png", cropped_image)
-
 	return np.ascontiguousarray(cropped_image, dtype=np.uint8)
 
 def read_crop_box(crop_box_config):
