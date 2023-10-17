@@ -13,7 +13,7 @@ BOX_THICKNESS = 2
 GREEN_RGB = (0, 255, 0)
 FONT_THICKNESS = 2
 
-def version_0(tiled_images):
+def run_with_ultralytics_api(tiled_images):
 	model_file = select_file_from_dialog("Select model file", ["pt"])
 	if not model_file:
 		raise ValueError("No model file selected")
@@ -28,7 +28,7 @@ def version_0(tiled_images):
 	# Close all open windows when processing is complete
 	cv2.destroyAllWindows()
 
-def version_1(tiled_images):
+def run_with_custom_api(tiled_images):
 	config_file = select_file_from_dialog("Select configuration file", ["yaml"])
 	if not config_file:
 		raise ValueError("No config file selected")
@@ -73,15 +73,16 @@ def main():
 	tiled_images = tile_image(image, num_rows, num_cols)
 	print(
 '''
+===============================================
 Select option to run.
-- 0: shows individual image tiles with bounding boxes and print result details to the console
-- 1: only prints bounding boxes with confidence level and asks the user to select the configuration file
+\t- 0: Shows image tiles with bounding boxes and print results to the console. No model configuration supported.
+\t- 1: Print bounding boxes with confidence level to the console. Model configuration defined by user.
 ''')
-	version = int(input("Enter your option: "))
-	if version == 0:
-		version_0(tiled_images)
-	elif version == 1:
-		version_1(tiled_images)
+	option = int(input("Enter your option: "))
+	if option == 0:
+		run_with_ultralytics_api(tiled_images)
+	elif option == 1:
+		run_with_custom_api(tiled_images)
 
 if __name__ == "__main__":
 	main()

@@ -1,3 +1,4 @@
+# SAMPLE CONFIGURATION YAML FILE
 camera:
   brightness: 5
   contrast: 4
@@ -5,17 +6,16 @@ camera:
   saturation: 8
   sharpness: 4
   gamma: 4
-  # -1 indicates that an automatic setting is applied
-  white_balance: -1
+  white_balance: -1 # -1 indicates that an automatic setting is applied
   gain: -1
   exposure: -1
-chip_slot_crop_box:
-  left:
-    x1: 805
-    y1: 212
-    x2: 1196
-    y2: 451
-  right:
+chip_slot_crop_box: # should be adjusted as needed
+  left: # crop box coordinates for images captured by the logical left lens.
+    x1: 805 # left coordinate
+    y1: 212 # top coordinate
+    x2: 1196 # right coordinate
+    y2: 451 # bottom coordinate
+  right: # crop box coordinates for images captured by the logical right lens
     x1: 656
     y1: 208
     x2: 1055
@@ -44,16 +44,26 @@ case_crop_box:
     y2: 516
 model:
   detect_chip:
+    file: "/path/to/model" # full path to the .pt model file
+    image_size: # input image size. Should be of similar size as images used in training
+      width: 640
+      height: 640
+    iou: 0.7 # Intersection over Union threshold
+    confidence: 0.25 # confidence level
+    detection_limit: 48 # maximum detection count
+  detect_tray:
+    file: "/path/to/model"
+    detection_limit: 3
+    image_size:
+      width: 640
+      height: 640
+    iou: 0.7
+    confidence: 0.25
+  detect_case:
     file: "/path/to/model"
     image_size:
       width: 640
       height: 640
     iou: 0.7
     confidence: 0.25
-    max_det: 48
-  detect_tray:
-    file: "/path/to/model"
-    max_det: 3
-  detect_case:
-    file: "/path/to/model"
-    max_det: 100
+    detection_limit: 100
