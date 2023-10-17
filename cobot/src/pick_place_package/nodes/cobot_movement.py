@@ -126,10 +126,10 @@ class CobotMovement(Node):
 		future_tray = self.send_pick_place_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
-		while future_tray.result() and future_tray.result().signal == TrayMovement.no_move.value:
+		while future_tray.result() and future_tray.result().signal == TrayMovement.NONE.value:
 			future_tray = self.send_pick_place_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
-			self.get_logger().info('Tray signal is no_move. Waiting for movement to be available...')
+			self.get_logger().info('Tray signal is NONE. Waiting for movement to be available...')
 			time.sleep(1)
 
 		future_chip = self.send_pick_place_request(self.chip_cli, True)
@@ -209,7 +209,7 @@ class CobotMovement(Node):
 
 				return result
 			else:
-				self.get_logger().warn('Tray position is "no_move".')
+				self.get_logger().warn('Tray movement is "NONE".')
 				result.task_successful = True
 
 				return result
