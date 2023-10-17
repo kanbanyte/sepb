@@ -2,9 +2,10 @@
 The below list provides an overview of the directory structure.
 See the `README.md` files within individual subdirectories for more details.
 * [camera](camera/README.md): contains modules interacting with the ZED SDK Python API.
-* [data_processing](data_processing/README.md): contains modules and runnable scripts that process images and interact with the ZED2i camera.
-* [models](models/python/README.md): contains modules related to a Python class representing a trained model.
-* [samples](samples/python/README.md): contains sample programs that use trained models to detect objects and demonstrate usage of supported APIs.
+* [data_processing](data_processing/README.md): contains modules that process images and interact with the ZED2i camera.
+* [models](models/README.md): contains modules related to a Python class representing a trained model.
+* [samples](samples/README.md): contains sample programs that use trained models to detect objects and demonstrate usage of supported APIs.
+* [scripts](scripts/README.md): containing runnable scripts that process training data. These scripts are converted into executable files when the AI package is installed.
 * [training](training/README.md): contains notebooks and scripts that train a model and visualize its metrics.
 * [util](util/README.md): utility functions, mostly related to the file system.
 

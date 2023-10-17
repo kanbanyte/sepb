@@ -1,4 +1,4 @@
-__ROW_COUNT = 8
+__ROW_COUNT = 6
 
 def __get_chip_col(x1, x2):
 	'''
@@ -31,10 +31,10 @@ def __get_chip_col(x1, x2):
 		if x_center >= 351 and x_center <= 381:
 			return 7
 		else:
-			print(f"X-center out of bounds: {x_center}")
+			print(f"Chip Position Conversion Error: X-center out of bounds: {x_center}")
 			return -1
 	else:
-		print("Invalid X-coordinates")
+		print("Chip Position Conversion Error: Invalid X-coordinates")
 		return -1
 
 def __get_chip_row(y1, y2):
@@ -64,10 +64,10 @@ def __get_chip_row(y1, y2):
 		if y_center >= 184 and y_center <= 223:
 			return 5
 		else:
-			print(f"Y-center out of bounds: {y_center}")
+			print(f"Chip Position Conversion Error:  Y-center out of bounds: {y_center}")
 			return -1
 	else:
-		print("Invalid Y-coordinates")
+		print("Chip Position Conversion Error:  Invalid Y-coordinates")
 		return -1
 
 def get_chip_slot_number(bounding_box):
@@ -78,7 +78,7 @@ def get_chip_slot_number(bounding_box):
 		bounding_box (list) : the bounding box of the chip
 
 	Returns:
-		int : the chip number, or None for invalid chip
+		int : the chip number, or None for invalid chip position.
 	'''
 	x1, y1, x2, y2 = bounding_box
 	row = __get_chip_row(y1, y2)

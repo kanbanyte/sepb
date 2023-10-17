@@ -86,7 +86,7 @@ def __get_states(detections, model):
 				else:
 					tray_states.update({tray1: TrayState.not_present})
 			else:
-				print("Out of bounds position detected")
+				print("Tray Position Conversion Error: Out of bounds position detected")
 	return tray_states
 
 def __get_movement(tray_states):

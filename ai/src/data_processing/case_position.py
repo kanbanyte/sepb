@@ -28,6 +28,7 @@ def convert_case_bounding_boxes(detected_case):
 	# without subtracting the value from __POSITION_COUNT, the function would return a position in reverse order.
 	position = __POSITION_COUNT - round((detected_case_bottom_y - __TOP_Y_COORDINATE)/ __POSITION_GAP)
 	if position < 1 or position > __POSITION_COUNT:
+		print(f"Case Position Conversion Error: {position} is invalid.")
 		return None
 
 	return position
