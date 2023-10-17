@@ -126,6 +126,8 @@ class CobotMovement(Node):
 		future_tray = self.send_pick_place_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
+		# TODO (H): since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and therefore the cobot should not load a tray unless it is empty, in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
+		# change to while not future_tray.result() or future_tray.result().signal == CobotMovement.NONE.value or future_tray.result().signal == CobotMovement.CONTINUE_TRAY1_LOAD.value or future_tray.result().signal == CobotMovement.CONTINUE_TRAY2_LOAD.value:
 		while future_tray.result() and future_tray.result().signal == TrayMovement.NONE.value:
 			future_tray = self.send_pick_place_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
@@ -159,6 +161,7 @@ class CobotMovement(Node):
 			tray_position = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
+			# TODO(H): is it possible to split this into 2 methods: one to populate trajectories to load items, and one to handle case movement? If we separate them, we can insert an extra call to get the tray movement before actually moving it, otherwise, the cobot will not realize its mistake (if any) and underutilize the tray model. It would also be a good thing to demonstrate that the cobot is smarter than before by messing with the loaded item, and show that the cobot responds to that.
 			return CobotMethods.get_all_trajectories(self.joints, self.goals, self.gripper_outputs, chip_position, case_position, tray_position)
 		else:
 			self.get_logger().error(f"Error when populating trajectories...")

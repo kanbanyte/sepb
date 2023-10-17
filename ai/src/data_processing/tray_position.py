@@ -127,6 +127,63 @@ def __get_movement(tray_states):
 
 	return TrayMovement.NONE
 
+class CobotMovement(Enum):
+	NONE = 0
+	ASSEMBLY_TO_TRAY1 = 1
+	ASSEMBLY_TO_TRAY2 = 2
+	TRAY1_TO_ASSEMBLY = 3
+	TRAY2_TO_ASSEMBLY = 4
+	START_TRAY1_LOAD = 5
+	START_TRAY2_LOAD = 6
+	CONTINUE_TRAY1_LOAD = 7
+	CONTINUE_TRAY2_LOAD = 8
+
+def __get_cobot_move(tray_states):
+	'''
+	Returns the movement of the tray by taking in a dictionary of states
+
+	Args:
+		tray_states (dict): dictionary of tray states
+
+	Returns:
+		TrayMovement: movement of the tray
+	'''
+	print(f"Tray states: {tray_states}")
+
+	# if assembly tray is empty, we move it back for future loading
+	if tray_states.get(__ASSEMBLY) == TrayState.EMPTY:
+		if tray_states.get(__TRAY_1) == TrayState.ABSENT:
+			return CobotMovement.ASSEMBLY_TO_TRAY1
+
+		if tray_states.get(__TRAY_2) == TrayState.ABSENT:
+			return CobotMovement.ASSEMBLY_TO_TRAY2
+
+		return CobotMovement.NONE
+
+	# if assembly tray is absent, we move any full tray there
+	if tray_states.get(__ASSEMBLY) == TrayState.ABSENT:
+		if tray_states.get(__TRAY_1) == TrayState.FULL:
+			return CobotMovement.TRAY1_TO_ASSEMBLY
+
+		if tray_states.get(__TRAY_2) == TrayState.FULL:
+			return CobotMovement.TRAY2_TO_ASSEMBLY
+
+	# if tray 1 or 2 are empty, we start loading that tray
+	if tray_states.get(__TRAY_1) == TrayState.EMPTY:
+		return CobotMovement.START_TRAY1_LOAD
+
+	if tray_states.get(__TRAY_2) == TrayState.EMPTY:
+		return CobotMovement.START_TRAY2_LOAD
+
+	# if tray 1 or 2 are empty, we continue loading that tray
+	if tray_states.get(__TRAY_1) == TrayState.PARTIALLY_FULL:
+		return CobotMovement.CONTINUE_TRAY1_LOAD
+
+	if tray_states.get(__TRAY_2) == TrayState.PARTIALLY_FULL:
+		return CobotMovement.CONTINUE_TRAY1_LOAD
+
+	return CobotMovement.NONE
+
 def determine_move(detections, model):
 	'''
 		Returns the movement of the tray by taking in a dictionary of detected objects and a model
@@ -138,4 +195,5 @@ def determine_move(detections, model):
 			TrayMovement: movement of the tray
 	'''
 	tray_states = __get_states(detections, model)
+	tray_states = __get_cobot_move(detections, model)
 	return __get_movement(tray_states)
