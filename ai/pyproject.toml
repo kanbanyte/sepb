@@ -34,9 +34,9 @@ where = ["./src"]
 exclude = ["training", "tests"]
 
 [project.scripts]
-camera_inference_sample = "samples.camera_inference_sample:main"
-yolov5_sample = "samples.yolov5_sample:main"
+camera_sample = "samples.camera_sample:main"
+basic_sample = "samples.basic_sample:main"
 define_crop="scripts.define_crop:main"
 random_crop="scripts.random_crop:main"
 copy_interval="scripts.copy_interval:main"
-calculate_training_ratio_roboflow="scripts.calculate_training_ratio_roboflow:main"
+dataset_balancer="scripts.dataset_balancer:main"

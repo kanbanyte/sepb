@@ -4,14 +4,14 @@
 **Table of Contents**
 <!-- TOC -->
 
-* [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflowpy)
+* [dataset_balancer.py](#dataset_balancerpy)
 * [copy_interval.py](#copy_intervalpy)
 * [define_crop.py](#define_croppy)
 * [random_crop.py](#random_croppy)
 
 <!-- /TOC -->
 
-## calculate_training_ratio_roboflow.py
+## dataset_balancer.py
 <!-- TOC ignore:true -->
 ### Purpose
 Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
