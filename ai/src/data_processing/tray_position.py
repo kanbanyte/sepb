@@ -14,6 +14,70 @@ __TRAY_1 = "tray 1"
 __TRAY_2 = "tray 2"
 __ASSEMBLY = "assembly"
 
+def __convert_class_to_state(class_name):
+	if class_name.lower() == "empty":
+		return TrayState.EMPTY
+
+	if class_name.lower() == "partially full":
+		return TrayState.PARTIALLY_FULL
+
+	if class_name.lower() == "full":
+		return TrayState.FULL
+
+	raise ValueError(f"Invalid class name from Tray Detection Model: {class_name}")
+
+def __convert_bounding_boxes_to_states(detections, model):
+	'''
+	Returns a dictionary of the tray states
+
+	Args:
+		detections (dict): dictionary of detected objects
+		model (ObjectDetectionModel): model used to get the detections
+
+	Returns:
+		dict[int, list[DetectedObjects]]: dictionary of tray states
+	'''
+
+	tray_states = {
+		__TRAY_1: TrayState.ABSENT,
+		__TRAY_2: TrayState.ABSENT,
+		__ASSEMBLY: TrayState.ABSENT
+	}
+
+	# detections is a dictionary of detected objects, in this format:
+	# dict_items([
+	# 	(0, [DetectedObject(confidence=0.9711142182350159, bounding_box=(2, 144, 331, 400))]),
+	# 	(1, [DetectedObject(confidence=0.950691819190979, bounding_box=(344, 293, 675, 574))])
+	# ])
+	for class_index, detected_objects in detections.items():
+		tray_state = __convert_class_to_state(model.classes[class_index])
+		for detected_tray in detected_objects:
+
+			x1, y1, x2, y2 = detected_tray.bounding_box
+			x_center = round((x1 + x2) / 2)
+			y_center = round((y1 + y2) / 2)
+
+			# the crop box is around 600 pixels in height,
+			# and there are 2 trays on the right from the POV of the human operator
+			if y_center > 300:
+				tray_states.update({__TRAY_1: tray_state})
+				continue
+
+			if y_center < 300:
+				tray_states.update({__TRAY_2: tray_state})
+				continue
+
+			# the crop box is around 700 pixels in width,
+			# and there is only one tray on the left from the POV of the human operator
+			if x_center < 350:
+				tray_states.update({__ASSEMBLY: tray_state})
+				continue
+
+			print(f"Tray Position Conversion Error: Out of bounds position detected. Tray at ({detected_tray.bounding_box}) treated as absent")
+
+	return tray_states
+
+# TODO(H): remove after testing __convert_bounding_boxes_to_states
 def __get_states(detections, model):
 	'''
 	Returns a dictionary of the tray states
@@ -163,5 +227,6 @@ def determine_move(detections, model):
 		Returns:
 			TrayMovement: movement of the tray
 	'''
-	tray_states = __get_states(detections, model)
+	# tray_states = __get_states(detections, model)
+	tray_states = __convert_bounding_boxes_to_states(detections, model)
 	return __get_best_move(tray_states)

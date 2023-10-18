@@ -165,10 +165,6 @@ class CobotMovementActionServer(Node):
 			tray_position = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
-			# TODO(H): is it possible to split this into 2 methods: one to populate trajectories to load items, and one to handle case movement?
-			# If we separate them, we can insert an extra call to get the tray movement before actually moving it,
-			# otherwise, the cobot will not realize its mistake (if any) and underutilize the tray model.
-			# It would also be a good thing to demonstrate that the cobot is smarter than before by messing with the loaded item, and
 			# show that the cobot responds to that.
 			return CobotMethods.get_all_trajectories(
 				self.joints,
@@ -204,10 +200,6 @@ class CobotMovementActionServer(Node):
 			best_cobot_move = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
-			# TODO(H): is it possible to split this into 2 methods: one to populate trajectories to load items, and one to handle case movement?
-			# If we separate them, we can insert an extra call to get the tray movement before actually moving it,
-			# otherwise, the cobot will not realize its mistake (if any) and underutilize the tray model.
-			# It would also be a good thing to demonstrate that the cobot is smarter than before by messing with the loaded item, and
 			# show that the cobot responds to that.
 			return CobotMethods.get_tray_movement_trajectories(
 				self.joints,

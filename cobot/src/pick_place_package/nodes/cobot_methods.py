@@ -7,17 +7,6 @@ class CobotMethods:
 	'''
 	CobotMethods defines all functions that involve moving the cobot to pick and place each object.
 	'''
-	# trajectories = {}
-
-	# @staticmethod
-	# def get_trajectories():
-	# 	# calculate and get trajectories
-	# 	pass
-
-	# A list to store joint trajectories.
-	trajectories = []
-	# A list to store the names of the trajectories.
-	trajectory_names = []
 
 	@staticmethod
 	def move_home(joints, goals, gripper_outputs):
@@ -245,6 +234,14 @@ class CobotMethods:
 
 	@staticmethod
 	def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movement):
+		'''
+		Get trajectories to move trays to and from the human operator.
+
+		Args:
+
+		Return:
+			tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		'''
 		if cobot_movement == CobotMovement.ASSEMBLY_TO_TRAY1.value:
 			tray_number = 1
 			move_home_trajectories = CobotMethods.move_home(joints, goals, gripper_outputs)
@@ -291,7 +288,7 @@ class CobotMethods:
 		Args:
 
 		Return:
-
+			tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
 		'''
 
 		tray_number = None
@@ -311,8 +308,3 @@ class CobotMethods:
 			move_home_trajectories[0] + move_chip_trajectories[0] + move_case_trajectories[0] + move_battery_trajectories[0],
 			move_home_trajectories[1] + move_chip_trajectories[1] + move_case_trajectories[1] + move_battery_trajectories[1]
 		)
-
-	# Must be called after get_all_trajectories
-	@staticmethod
-	def get_trajectory_names():
-		return CobotMethods.trajectory_names
