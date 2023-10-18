@@ -28,7 +28,7 @@ class MainActionClient(Node):
 		self._send_goal_future.add_done_callback(self.goal_response_callback)
 
 		# Send the goal asynchronously and return the Future object.
-		return self._action_client.send_goal_async(goal_msg)
+		return self._send_goal_future
 
 	def goal_response_callback(self, future):
 		goal_handle = future.result()

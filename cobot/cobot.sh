@@ -1,12 +1,70 @@
 #!/bin/bash
 
-#region Package
+# Ping cobot twice
+function ping_cobot() {
+	ping -c 2 172.21.0.121
+}
+
 # Initialise ROS2
 function init_ros2() {
 	source /opt/ros/humble/setup.bash
 	export ROS_DOMAIN_ID=10
 }
 
+# Launch cobot driver
+function launch_driver() {
+	ros2 launch ur_robot_driver ur_control.launch.py \
+	ur_type:=ur5e robot_ip:=172.21.0.121 launch_rviz:=false use_tool_communication:=true kinematics_config:=ur5e_fof_calibration.yaml
+	# ur_type:=ur5e kinematics_config:=ur5e_fof_calibration.yaml use_tool_communication:=true robot_ip:=172.21.0.121 launch_rviz:=false
+}
+
+# Establish cobot connection
+function connect_cobot() {
+	ping_cobot
+	init_ros2
+	launch_driver
+}
+
+#region Bootup
+# If not done manually, load the program ROS.urp which allows remote control.
+# This can be done manually, or via command line.
+# If done via command line makes the driver crash, so restart the robot driver.
+function load_ros_file() {
+	ros2 service call /dashboard_client/load_program ur_dashboard_msgs/srv/Load filename:\ \'ROS.urp\'
+}
+
+# Power on the robot motors.
+function power_on_cobot() {
+	ros2 service call /dashboard_client/power_on std_srvs/srv/Trigger
+}
+
+# Release break.
+function release_brake() {
+	ros2 service call /dashboard_client/brake_release std_srvs/srv/Trigger
+}
+
+# IMPORTANT: Stop and start the program if it is already running.
+# This was causing the robot not moving for no reason.
+# Make sure you stop and start the program if you are restarting the driver.
+function play_cobot() {
+	ros2 service call /dashboard_client/play std_srvs/srv/Trigger
+}
+
+# Check controllers, switch to "scaled_joint_trajectory_controller".
+# Check again after switching JIC
+function switch_controllers() {
+	ros2 control switch_controllers --activate scaled_joint_trajectory_controller
+}
+
+# Launch MoveIt with Rviz.
+# IMPORTANT: If the Rviz robot position is not like the real robot, something has gone wrong.
+# So, restart the driver, stop, play, switch controller, MoveIt
+function launch_rviz() {
+	ros2 launch ur_moveit_config ur_moveit.launch.py ur_type:=ur5e launch_rviz:=true
+}
+#endregion Bootup
+
+#region Package
 # Rebuild cobot package
 function rebuild_cobot() {
 	rm -r /home/cobot/Documents/repos/sepb/cobot/build

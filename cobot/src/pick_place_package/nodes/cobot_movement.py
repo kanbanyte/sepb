@@ -122,7 +122,7 @@ class CobotMovementActionServer(Node):
 
 		return self.future
 
-	def populate_trajectories(self):
+	def populate_tray_load_trajectories(self):
 		future_tray = self.send_pick_place_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
@@ -136,7 +136,7 @@ class CobotMovementActionServer(Node):
 			future_tray = self.send_pick_place_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
 			self.get_logger().info(f"Tray signal is {CobotMovement(future_tray.result().signal).name}. Waiting for valid movement to be available...")
-			time.sleep(1)
+			time.sleep(5)
 
 		future_chip = self.send_pick_place_request(self.chip_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_chip)
@@ -170,10 +170,141 @@ class CobotMovementActionServer(Node):
 			# otherwise, the cobot will not realize its mistake (if any) and underutilize the tray model.
 			# It would also be a good thing to demonstrate that the cobot is smarter than before by messing with the loaded item, and
 			# show that the cobot responds to that.
-			return CobotMethods.get_all_trajectories(self.joints, self.goals, self.gripper_outputs, chip_position, case_position, tray_position)
+			return CobotMethods.get_all_trajectories(
+				self.joints,
+				self.goals,
+				self.gripper_outputs,
+				chip_position,
+				case_position,
+				tray_position)
 		else:
 			self.get_logger().error(f"Error when populating trajectories...")
-			return None
+			return ([], [])
+
+	def populate_tray_movement_trajectories(self):
+		future_tray = self.send_pick_place_request(self.tray_cli, True)
+		rclpy.spin_until_future_complete(self.subnode, future_tray)
+
+		# since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
+		# therefore the cobot should not load a tray unless it is empty,
+		# in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
+		while (not future_tray.result() or
+				future_tray.result().signal == CobotMovement.NONE.value or
+				future_tray.result().signal == CobotMovement.CONTINUE_TRAY1_LOAD.value or
+				future_tray.result().signal == CobotMovement.CONTINUE_TRAY2_LOAD.value):
+			future_tray = self.send_pick_place_request(self.tray_cli, True)
+			rclpy.spin_until_future_complete(self.subnode, future_tray)
+			self.get_logger().info(f"Tray signal is {CobotMovement(future_tray.result().signal).name}. Waiting for valid movement to be available...")
+			time.sleep(5)
+
+
+		if future_tray.result():
+
+			tray_result = future_tray.result()
+			best_cobot_move = tray_result.signal
+			self.get_logger().info(f"Populating trajectories...")
+
+			# TODO(H): is it possible to split this into 2 methods: one to populate trajectories to load items, and one to handle case movement?
+			# If we separate them, we can insert an extra call to get the tray movement before actually moving it,
+			# otherwise, the cobot will not realize its mistake (if any) and underutilize the tray model.
+			# It would also be a good thing to demonstrate that the cobot is smarter than before by messing with the loaded item, and
+			# show that the cobot responds to that.
+			return CobotMethods.get_tray_movement_trajectories(
+				self.joints,
+				self.goals,
+				self.gripper_outputs,
+				best_cobot_move)
+		else:
+			self.get_logger().error(f"Error when populating trajectories...")
+			return ([], [])
+
+	def load_tray(self):
+		self.get_logger().info("Loading tray...")
+
+		feedback_msg = PickPlaceAction.Feedback()
+		feedback_msg.current_movement = self.current_movement
+
+		(trajectories, trajectory_names) = self.populate_tray_load_trajectories()
+
+		if not self.starting_point_ok:
+			return False
+
+		if trajectories is None or len(trajectories) == 0:
+			self.get_logger().error("No trajectories returned")
+			return False
+
+		for i, trajectory in enumerate(trajectories):
+			# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
+			if isinstance(trajectory, JointTrajectory):
+				feedback_msg.current_movement = trajectory_names[i]
+				self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+				trajectory_goal = trajectory.points[0]
+
+				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+				pos = f'[Base: {trajectory_goal.positions[0]}, Shoulder: {trajectory_goal.positions[1]}, Elbow: {trajectory_goal.positions[2]}, ' +\
+				f'Wrist 1: {trajectory_goal.positions[3]}, Wrist 2: {trajectory_goal.positions[4]}, Wrist 3: {trajectory_goal.positions[5]}]'
+
+				# Using goals as dict type
+				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+
+				self._publisher.publish(trajectory)
+
+				# Wait for number of seconds defined in config file
+				time.sleep(self.wait_sec_between_publish)
+
+			# Otherwise the trajectory is a gripper movement.
+			else:
+				future_grip = self.send_gripper_request(trajectory)
+				rclpy.spin_until_future_complete(self.subnode, future_grip)
+				time.sleep(1)
+
+		self.get_logger().info("Tray loaded.")
+
+		return True
+
+	def move_tray(self):
+		self.get_logger().info("Moving tray...")
+
+		feedback_msg = PickPlaceAction.Feedback()
+		feedback_msg.current_movement = self.current_movement
+
+		(trajectories, trajectory_names) = self.populate_tray_movement_trajectories()
+
+		if not self.starting_point_ok:
+			return False
+
+		if trajectories is None or len(trajectories) == 0:
+			self.get_logger().error("No trajectories returned")
+			return False
+
+		for i, trajectory in enumerate(trajectories):
+			# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
+			if isinstance(trajectory, JointTrajectory):
+				feedback_msg.current_movement = trajectory_names[i]
+				self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+				trajectory_goal = trajectory.points[0]
+
+				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+				pos = f'[Base: {trajectory_goal.positions[0]}, Shoulder: {trajectory_goal.positions[1]}, Elbow: {trajectory_goal.positions[2]}, ' +\
+				f'Wrist 1: {trajectory_goal.positions[3]}, Wrist 2: {trajectory_goal.positions[4]}, Wrist 3: {trajectory_goal.positions[5]}]'
+
+				# Using goals as dict type
+				self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+
+				self._publisher.publish(trajectory)
+
+				# Wait for number of seconds defined in config file
+				time.sleep(self.wait_sec_between_publish)
+
+			# Otherwise the trajectory is a gripper movement.
+			else:
+				future_grip = self.send_gripper_request(trajectory)
+				rclpy.spin_until_future_complete(self.subnode, future_grip)
+				time.sleep(1)
+
+		self.get_logger().info("Tray moved.")
+
+		return True
 
 	def action_callback(self, goal_handle):
 		self.get_logger().info("Executing pick and place task...")
@@ -183,53 +314,79 @@ class CobotMovementActionServer(Node):
 		feedback_msg = PickPlaceAction.Feedback()
 		feedback_msg.current_movement = self.current_movement
 
-		self.trajectories = self.populate_trajectories()
-		self.trajectory_names = CobotMethods.get_trajectory_names()
-
-		if self.starting_point_ok:
-			if self.trajectories is not None:
-				for i in range(len(self.trajectories)):
-					# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
-					if type(self.trajectories[i]) is JointTrajectory:
-						traj = self.trajectories[i]
-						feedback_msg.current_movement = self.trajectory_names[i]
-						self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
-						traj_goal = traj.points[0]
-
-						# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-						pos = f'[Base: {traj_goal.positions[0]}, Shoulder: {traj_goal.positions[1]}, Elbow: {traj_goal.positions[2]}, ' +\
-						f'Wrist 1: {traj_goal.positions[3]}, Wrist 2: {traj_goal.positions[4]}, Wrist 3: {traj_goal.positions[5]}]'
-
-						# Using goals as dict type
-						self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
-
-						self._publisher.publish(traj)
-
-						# Wait for number of seconds defined in config file
-						time.sleep(self.wait_sec_between_publish)
-
-					# Otherwise the trajectory is a gripper movement.
-					else:
-						future_grip = self.send_gripper_request(self.trajectories[i])
-						rclpy.spin_until_future_complete(self.subnode, future_grip)
-						time.sleep(1)
-
-				goal_handle.succeed()
-				self.get_logger().info("Pick and place task complete.")
-				result.task_successful = True
-
-				return result
-			else:
-				self.get_logger().warn('Tray movement is "NONE".')
-				result.task_successful = True
-
-				return result
-
-		elif self.check_starting_point and not self.joint_state_msg_received:
-			self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
+		if not self.starting_point_ok:
+			if self.check_starting_point and not self.joint_state_msg_received:
+				self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
 
 			result.task_successful = False
 			return result
+
+		if self.load_tray() and self.move_tray():
+			goal_handle.succeed()
+			self.get_logger().info("Pick and place task complete.")
+			result.task_successful = True
+
+			return result
+		else:
+			self.get_logger().error('An error occurred...')
+			result.task_successful = False
+
+			return result
+
+
+	# def action_callback(self, goal_handle):
+	# 	self.get_logger().info("Executing pick and place task...")
+
+	# 	result = PickPlaceAction.Result()
+
+	# 	feedback_msg = PickPlaceAction.Feedback()
+	# 	feedback_msg.current_movement = self.current_movement
+
+	# 	(trajectories, trajectory_names) = self.populate_tray_load_trajectories()
+
+	# 	if self.starting_point_ok:
+	# 		if trajectories is not None:
+	# 			for i, trajectory in enumerate(trajectories):
+	# 				# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
+	# 				if isinstance(trajectory, JointTrajectory):
+	# 					feedback_msg.current_movement = trajectory_names[i]
+	# 					self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+	# 					trajectory_goal = trajectory.points[0]
+
+	# 					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
+	# 					pos = f'[Base: {trajectory_goal.positions[0]}, Shoulder: {trajectory_goal.positions[1]}, Elbow: {trajectory_goal.positions[2]}, ' +\
+	# 					f'Wrist 1: {trajectory_goal.positions[3]}, Wrist 2: {trajectory_goal.positions[4]}, Wrist 3: {trajectory_goal.positions[5]}]'
+
+	# 					# Using goals as dict type
+	# 					self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
+
+	# 					self._publisher.publish(trajectory)
+
+	# 					# Wait for number of seconds defined in config file
+	# 					time.sleep(self.wait_sec_between_publish)
+
+	# 				# Otherwise the trajectory is a gripper movement.
+	# 				else:
+	# 					future_grip = self.send_gripper_request(trajectory)
+	# 					rclpy.spin_until_future_complete(self.subnode, future_grip)
+	# 					time.sleep(1)
+
+	# 			goal_handle.succeed()
+	# 			self.get_logger().info("Pick and place task complete.")
+	# 			result.task_successful = True
+
+	# 			return result
+	# 		else:
+	# 			self.get_logger().warn('Tray movement is "NONE".')
+	# 			result.task_successful = True
+
+	# 			return result
+
+	# 	elif self.check_starting_point and not self.joint_state_msg_received:
+	# 		self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
+
+	# 		result.task_successful = False
+	# 		return result
 
 	def joint_state_callback(self, msg):
 		if not self.joint_state_msg_received:

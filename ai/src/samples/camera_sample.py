@@ -45,7 +45,7 @@ def main():
 			raise ValueError("Selected output path is empty")
 
 		if not os.path.exists(output_path):
-			os.mkdir(output_path)
+			os.makedirs(output_path)
 
 	config = read_yaml(file_path)
 
@@ -85,12 +85,12 @@ Select a model to run:
 					# run inference using the logical left lens and calculate the chips' positions
 					left_lens_output_dir = os.path.join(output_path, "left")
 					if not os.path.exists(left_lens_output_dir):
-						os.mkdir(left_lens_output_dir)
+						os.makedirs(left_lens_output_dir)
 					print(f"Saving output of left lens in '{left_lens_output_dir}'")
 
 					right_lens_output_dir = os.path.join(output_path, "right")
 					if not os.path.exists(right_lens_output_dir):
-						os.mkdir(right_lens_output_dir)
+						os.makedirs(right_lens_output_dir)
 					print(f"Saving output of right lens in '{right_lens_output_dir}'")
 
 				# get chip positions from image captured with logical left lens

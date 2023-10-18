@@ -46,22 +46,22 @@ class CameraServer(Node):
 		self.left_chip_detections_dir = os.path.join(chip_detections_dir, "left")
 		if not os.path.exists(self.left_chip_detections_dir):
 			self.get_logger().info(f"Creating output directory for chip detections from logical left lens")
-			os.mkdir(self.left_chip_detections_dir)
+			os.makedirs(self.left_chip_detections_dir)
 
 		self.right_chip_detections_dir = os.path.join(chip_detections_dir, "right")
 		if not os.path.exists(self.right_chip_detections_dir):
 			self.get_logger().info(f"Creating output directory for chip detections from logical right lens")
-			os.mkdir(self.right_chip_detections_dir)
+			os.makedirs(self.right_chip_detections_dir)
 
 		self.tray_detections_dir = os.path.join(output_dir, "tray")
 		if not os.path.exists(self.tray_detections_dir):
 			self.get_logger().info(f"Creating output directory for tray detections from logical right lens")
-			os.mkdir(self.tray_detections_dir)
+			os.makedirs(self.tray_detections_dir)
 
 		self.case_detections_dir = os.path.join(output_dir, "case")
 		if not os.path.exists(self.case_detections_dir):
 			self.get_logger().info(f"Creating output directory for case detections from logical right lens")
-			os.mkdir(self.case_detections_dir)
+			os.makedirs(self.case_detections_dir)
 
 	def prepare_shutdown(self):
 		# Close the camera when shutting down
