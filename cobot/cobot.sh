@@ -15,7 +15,6 @@ function init_ros2() {
 function launch_driver() {
 	ros2 launch ur_robot_driver ur_control.launch.py \
 	ur_type:=ur5e robot_ip:=172.21.0.121 launch_rviz:=false use_tool_communication:=true kinematics_config:=ur5e_fof_calibration.yaml
-	# ur_type:=ur5e kinematics_config:=ur5e_fof_calibration.yaml use_tool_communication:=true robot_ip:=172.21.0.121 launch_rviz:=false
 }
 
 # Establish cobot connection
@@ -48,6 +47,11 @@ function release_brake() {
 # Make sure you stop and start the program if you are restarting the driver.
 function play_cobot() {
 	ros2 service call /dashboard_client/play std_srvs/srv/Trigger
+}
+
+# Pause cobot
+function stop_cobot() {
+	ros2 service call /dashboard_client/stop std_srvs/srv/Trigger
 }
 
 # Check controllers, switch to "scaled_joint_trajectory_controller".
@@ -132,3 +136,35 @@ function send_goal_action() {
 	ros2 action send_goal /perform_pick_place pick_place_interfaces/action/PickPlaceAction "{perform_pick_place: True}"
 }
 #endregion Services
+
+#region Gripper I/O
+# Load Gripper file for Tests
+function load_gripper_file() {
+	ros2 service call /dashboard_client/load_program ur_dashboard_msgs/srv/Load filename:\ \'gripper_test.urp\'
+}
+
+# Completely Close Gripper
+function close_fully() {
+	ros2 service call /gripper_service ur_msgs/srv/SetIO "{fun: 1, pin: 2, state: 1.0}"
+}
+
+# Completely Open Gripper
+function open_fully() {
+	ros2 service call /gripper_service ur_msgs/srv/SetIO "{fun: 1, pin: 1, state: 1.0}"
+}
+
+# Open Gripper for Tray
+function open_partly() {
+	ros2 service call /gripper_service ur_msgs/srv/SetIO "{fun: 1, pin: 3, state: 1.0}"
+}
+
+# Open Gripper for Battery
+function open_grip() {
+	ros2 service call /gripper_service ur_msgs/srv/SetIO "{fun: 1, pin: 4, state: 1.0}"
+}
+
+# Pinch Gripper for Chip
+function pinch_grip() {
+	ros2 service call /gripper_service ur_msgs/srv/SetIO "{fun: 1, pin: 5, state: 1.0}"
+}
+#endregion Gripper I/O

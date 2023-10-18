@@ -183,6 +183,7 @@ class CobotMethods:
 		above_tray_name = f"above_tray_{str(tray_number)}"
 		tray_pick_name = f"tray_pick_{str(tray_number)}"
 		goal_names = [
+			above_tray_name,
 			tray_pick_name,
 			"gripper_close_tray",
 			above_tray_name,

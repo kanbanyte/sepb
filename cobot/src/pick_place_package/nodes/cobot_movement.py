@@ -229,9 +229,13 @@ class CobotMovementActionServer(Node):
 		if not self.starting_point_ok:
 			return False
 
-		if trajectories is None or len(trajectories) == 0:
+		if trajectories is None:
 			self.get_logger().error("No trajectories returned")
 			return False
+
+		if len(trajectories) == 0:
+			self.get_logger().info("Not moving trays...")
+			return True
 
 		for i, trajectory in enumerate(trajectories):
 			# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
@@ -321,13 +325,14 @@ class CobotMovementActionServer(Node):
 			result.task_successful = False
 			return result
 
-		if self.load_tray() and self.move_tray():
+		if self.move_tray() and self.load_tray() and self.move_tray():
 			goal_handle.succeed()
 			self.get_logger().info("Pick and place task complete.")
 			result.task_successful = True
 
 			return result
 		else:
+			goal_handle.abort()
 			self.get_logger().error('An error occurred...')
 			result.task_successful = False
 
