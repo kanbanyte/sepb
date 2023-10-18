@@ -1,6 +1,5 @@
 # Import the ROS2 Python library for communication.
 import rclpy
-# Import the CobotMovement class from the 'cobot_movement' module.
 from nodes.gripper_server import GripperServer
 
 

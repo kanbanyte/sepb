@@ -1,15 +1,15 @@
 # Import the ROS2 Python library for communication.
 import rclpy
 # Import the CobotMovement class from the 'cobot_movement' module.
-from nodes.cobot_movement import CobotMovement
+from nodes.cobot_movement import CobotMovementActionServer
 
 
 def main(args=None):
 	# Initialize the ROS2 Python client library.
 	rclpy.init(args=args)
 
-	# Create an instance of the CobotMovement class.
-	publisher_joint_trajectory = CobotMovement()
+	# Create an instance of the CobotMovementActionServer class.
+	publisher_joint_trajectory = CobotMovementActionServer()
 
 	# Enter the ROS2 event loop and spin the publisher node.
 	rclpy.spin(publisher_joint_trajectory)

@@ -6,7 +6,7 @@ from sensor_msgs.msg import JointState
 from ur_msgs.srv import SetIO
 from nodes.cobot_methods import CobotMethods
 from nodes.read_methods import ReadMethods
-from data_processing.tray_position import TrayMovement
+from data_processing.tray_position import CobotMovement
 
 from pick_place_interfaces.srv import PickPlaceService
 from pick_place_interfaces.action import PickPlaceAction
@@ -15,7 +15,7 @@ import copy
 import time
 
 
-class CobotMovement(Node):
+class CobotMovementActionServer(Node):
 	def __init__(self):
 		super().__init__("cobot_movement_node")
 		# Declare all parameters
@@ -126,12 +126,16 @@ class CobotMovement(Node):
 		future_tray = self.send_pick_place_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
-		# TODO (H): since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and therefore the cobot should not load a tray unless it is empty, in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
-		# change to while not future_tray.result() or future_tray.result().signal == CobotMovement.NONE.value or future_tray.result().signal == CobotMovement.CONTINUE_TRAY1_LOAD.value or future_tray.result().signal == CobotMovement.CONTINUE_TRAY2_LOAD.value:
-		while future_tray.result() and future_tray.result().signal == TrayMovement.NONE.value:
+		# since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
+		# therefore the cobot should not load a tray unless it is empty,
+		# in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
+		while (not future_tray.result() or
+				future_tray.result().signal == CobotMovement.NONE.value or
+				future_tray.result().signal == CobotMovement.CONTINUE_TRAY1_LOAD.value or
+				future_tray.result().signal == CobotMovement.CONTINUE_TRAY2_LOAD.value):
 			future_tray = self.send_pick_place_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
-			self.get_logger().info('Tray signal is NONE. Waiting for movement to be available...')
+			self.get_logger().info(f"Tray signal is {CobotMovement(future_tray.result().signal).name}. Waiting for valid movement to be available...")
 			time.sleep(1)
 
 		future_chip = self.send_pick_place_request(self.chip_cli, True)
@@ -161,7 +165,11 @@ class CobotMovement(Node):
 			tray_position = tray_result.signal
 			self.get_logger().info(f"Populating trajectories...")
 
-			# TODO(H): is it possible to split this into 2 methods: one to populate trajectories to load items, and one to handle case movement? If we separate them, we can insert an extra call to get the tray movement before actually moving it, otherwise, the cobot will not realize its mistake (if any) and underutilize the tray model. It would also be a good thing to demonstrate that the cobot is smarter than before by messing with the loaded item, and show that the cobot responds to that.
+			# TODO(H): is it possible to split this into 2 methods: one to populate trajectories to load items, and one to handle case movement?
+			# If we separate them, we can insert an extra call to get the tray movement before actually moving it,
+			# otherwise, the cobot will not realize its mistake (if any) and underutilize the tray model.
+			# It would also be a good thing to demonstrate that the cobot is smarter than before by messing with the loaded item, and
+			# show that the cobot responds to that.
 			return CobotMethods.get_all_trajectories(self.joints, self.goals, self.gripper_outputs, chip_position, case_position, tray_position)
 		else:
 			self.get_logger().error(f"Error when populating trajectories...")
@@ -242,9 +250,15 @@ class CobotMovement(Node):
 				temp_traj.append(copy.deepcopy(temp))
 				temp.points.clear()
 
+				temp.points.append(self.goals["home"])
+				temp_traj.append(copy.deepcopy(temp))
+				temp.points.clear()
+
 				for traj in temp_traj:
 					temp_pos = traj
 					self.joint_state_pub.publish(temp_pos)
+
+					time.sleep(self.wait_sec_between_publish)
 
 				self.starting_point_ok = True
 			else:

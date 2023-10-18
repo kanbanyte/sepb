@@ -13,7 +13,7 @@ def main(args=None):
 
 	future = action_client.send_goal(True)
 
-	rclpy.spin(action_client)
+	rclpy.spin_until_future_complete(action_client, future)
 
 if __name__ == '__main__':
 	# Call the main function when this script is executed directly.

@@ -314,7 +314,7 @@ cobot_node:
     gripper_open_full: 1
     gripper_open_chip: 4
     gripper_close_chip: 2
-    gripper_open_case: 1
+    gripper_open_case: 3
     gripper_close_case: 4
     gripper_open_battery: 3
     gripper_close_battery: 4

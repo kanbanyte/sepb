@@ -8,7 +8,7 @@ def main(args=None):
 	# Initialize the ROS2 Python client library.
 	rclpy.init(args=args)
 
-	# Create an instance of the CobotMovement class.
+	# Create an instance of the CameraServer class.
 	camera_server = CameraServer()
 
 	# Enter the ROS2 event loop and spin the publisher node.

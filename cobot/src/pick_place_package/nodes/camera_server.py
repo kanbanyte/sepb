@@ -6,7 +6,8 @@ from data_processing.tray_position import determine_move
 from data_processing.chip_position import get_chip_slot_number
 from util.file_reader import read_yaml
 from pick_place_interfaces.srv import PickPlaceService
-
+import os
+from datetime import datetime
 
 class CameraServer(Node):
 	def __init__(self):
@@ -20,20 +21,47 @@ class CameraServer(Node):
 		# Define the path to the configuration file
 		# TODO: move this path to the startup argument list
 		config_file_path = "/home/cobot/Documents/models/config.yaml"
+
+		self.__init_output_dirs( "/home/cobot/Documents/detections_outputs")
+
 		self.get_logger().info(f"Reading configuration file '{config_file_path}'")
 		self.config = read_yaml(config_file_path)
 
-		# TODO: investigate a way to call camera.close() before destroying the node; right now, not calling close() has not caused any issue
+		self.__init_camera()
+		self.__init_models()
 
-		# Initialize the camera
-		self.get_logger().info(f"Initializing the camera")
-		self.camera = open_camera(self.config.get('camera'))
-
-		# Load object detection models
+	def __init_models(self):
 		self.get_logger().info(f"Loading models")
 		self.case_model = ObjectDetectionModel(self.config.get('model').get('detect_case'))
 		self.chip_model = ObjectDetectionModel(self.config.get('model').get('detect_chip'))
 		self.tray_model = ObjectDetectionModel(self.config.get('model').get('detect_tray'))
+
+	def __init_camera(self):
+		self.get_logger().info(f"Initializing the camera")
+		self.camera = open_camera(self.config.get('camera'))
+
+	def __init_output_dirs(self, output_dir):
+		chip_detections_dir = os.path.join(output_dir, "chip")
+
+		self.left_chip_detections_dir = os.path.join(chip_detections_dir, "left")
+		if not os.path.exists(self.left_chip_detections_dir):
+			self.get_logger().info(f"Creating output directory for chip detections from logical left lens")
+			os.mkdir(self.left_chip_detections_dir)
+
+		self.right_chip_detections_dir = os.path.join(chip_detections_dir, "right")
+		if not os.path.exists(self.right_chip_detections_dir):
+			self.get_logger().info(f"Creating output directory for chip detections from logical right lens")
+			os.mkdir(self.right_chip_detections_dir)
+
+		self.tray_detections_dir = os.path.join(output_dir, "tray")
+		if not os.path.exists(self.tray_detections_dir):
+			self.get_logger().info(f"Creating output directory for tray detections from logical right lens")
+			os.mkdir(self.tray_detections_dir)
+
+		self.case_detections_dir = os.path.join(output_dir, "case")
+		if not os.path.exists(self.case_detections_dir):
+			self.get_logger().info(f"Creating output directory for case detections from logical right lens")
+			os.mkdir(self.case_detections_dir)
 
 	def prepare_shutdown(self):
 		# Close the camera when shutting down
@@ -49,7 +77,10 @@ class CameraServer(Node):
 		cropped_image = get_rgb_cropped_image(self.camera, crop_box, LogicalLens.RIGHT)
 
 		# Run object detection on the cropped image
-		detections = self.case_model.run_inference(cropped_image, show_image=True)
+		detections = self.case_model.run_inference(
+			cropped_image,
+			show_image=True,
+			result_img_path=self.__create_image_name(self.case_detections_dir, "case"))
 		if len(detections.items()) == 0:
 			# No case detected
 			response.signal = -1
@@ -66,6 +97,10 @@ class CameraServer(Node):
 		self.get_logger().info(f"Request: {request}, Case Number: {response.signal}")
 		return response
 
+	def __create_image_name(self, output_dir, model_name):
+		current_time = datetime.now().strftime("%H-%M-%S")
+		return os.path.join(output_dir, f"{model_name}.{current_time}.png")
+
 	def get_chip_position(self, request, response):
 		# Read crop boxes for left and right chip slots
 		crop_boxes = self.config.get('chip_slot_crop_box')
@@ -73,7 +108,10 @@ class CameraServer(Node):
 		# get chip positions from image captured with logical left lens
 		left_crop_box = read_crop_box(crop_boxes.get('left'))
 		left_cropped_image = get_rgb_cropped_image(self.camera, left_crop_box, LogicalLens.LEFT)
-		left_detections = self.chip_model.run_inference(left_cropped_image, show_image=True)
+		left_detections = self.chip_model.run_inference(
+			left_cropped_image,
+			show_image=True,
+			result_img_path=self.__create_image_name(self.left_chip_detections_dir, "chip"))
 		left_chip_positions = []
 		if len(left_detections) > 0:
 			left_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in left_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
@@ -81,7 +119,10 @@ class CameraServer(Node):
 		# get chip positions from image captured with logical right lens
 		right_crop_box = read_crop_box(crop_boxes.get('right'))
 		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
-		right_detections = self.chip_model.run_inference(right_cropped_image, show_image=True)
+		right_detections = self.chip_model.run_inference(
+			right_cropped_image,
+			show_image=True,
+			result_img_path=self.__create_image_name(self.right_chip_detections_dir, "chip"))
 		right_chip_positions = []
 		if len(right_detections) > 0:
 			right_chip_positions.extend(get_chip_slot_number(x.bounding_box) for x in right_detections[0] if get_chip_slot_number(x.bounding_box) is not None)
@@ -110,7 +151,10 @@ class CameraServer(Node):
 		right_cropped_image = get_rgb_cropped_image(self.camera, right_crop_box, LogicalLens.RIGHT)
 
 		# Run object detection on the cropped image and determine the best tray movement
-		right_detections = self.tray_model.run_inference(right_cropped_image, show_image=True)
+		right_detections = self.tray_model.run_inference(
+			right_cropped_image,
+			show_image=True,
+			result_img_path=self.__create_image_name(self.tray_detections_dir, "tray"))
 		best_move = determine_move(right_detections, self.tray_model)
 
 		response.signal = best_move.value

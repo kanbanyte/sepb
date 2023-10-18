@@ -1,18 +1,6 @@
 from enum import Enum
 
 '''
-Enum of possible tray movements.
-'''
-class TrayMovement(Enum):
-	ASSEMBLY_TO_TRAY1 = 1
-	ASSEMBLY_TO_TRAY2 = 2
-	TRAY1_TO_ASSEMBLY = 3
-	TRAY2_TO_ASSEMBLY = 4
-	NONE = 5
-	# TODO: RENAME THIS VALUE AND FIX FAILING UNIT TEST
-	both_empty = 6
-
-'''
 Enum of each Tray positions possible states
 '''
 class TrayState(Enum):
@@ -88,57 +76,38 @@ def __get_states(detections, model):
 
 	return tray_states
 
-def __get_movement(tray_states):
-	'''
-	Returns the movement of the tray by taking in a dictionary of states
-
-	Args:
-		tray_states (dict): dictionary of tray states
-
-	Returns:
-		TrayMovement: movement of the tray
-	'''
-	print(f"Tray states: {tray_states}")
-	if tray_states.get(__ASSEMBLY) == TrayState.ABSENT:
-		if tray_states.get(__TRAY_1) == TrayState.FULL:
-			return TrayMovement.TRAY1_TO_ASSEMBLY
-
-		if tray_states.get(__TRAY_2) == TrayState.FULL:
-			return TrayMovement.TRAY2_TO_ASSEMBLY
-
-		return TrayMovement.both_empty
-
-	if tray_states.get(__ASSEMBLY) == TrayState.EMPTY:
-		if tray_states.get(__TRAY_1) == TrayState.ABSENT:
-			return TrayMovement.ASSEMBLY_TO_TRAY1
-
-		if tray_states.get(__TRAY_2) == TrayState.ABSENT:
-			return TrayMovement.ASSEMBLY_TO_TRAY2
-
-		if tray_states.get(__TRAY_1) == TrayState.FULL:
-			return TrayMovement.TRAY1_TO_ASSEMBLY
-
-		if tray_states.get(__TRAY_2) == TrayState.FULL:
-			return TrayMovement.TRAY2_TO_ASSEMBLY
-
-		return TrayMovement.NONE
-	# elif tray_states.get("tray 1") == TrayState.empty and tray_states.get("tray 2") == TrayState.empty:
-	# 	return TrayMovement.both_empty
-
-	return TrayMovement.NONE
-
+'''
+Enum representing the best cobot move after detecting the trays.
+'''
 class CobotMovement(Enum):
+	# Do nothing
 	NONE = 0
+
+	# Move assembly to tray 1
 	ASSEMBLY_TO_TRAY1 = 1
+
+	# Move assembly to tray 2
 	ASSEMBLY_TO_TRAY2 = 2
+
+	# Move tray 1 to assembly
 	TRAY1_TO_ASSEMBLY = 3
+
+	# Move tray 2 to assembly
 	TRAY2_TO_ASSEMBLY = 4
+
+	# Starting loading tray 1 when it is empty
 	START_TRAY1_LOAD = 5
+
+	# Starting loading tray 2 when it is empty
 	START_TRAY2_LOAD = 6
+
+	# Continue loading tray 1 when it is partially full
 	CONTINUE_TRAY1_LOAD = 7
+
+	# Continue loading tray 2 when it is partially full
 	CONTINUE_TRAY2_LOAD = 8
 
-def __get_cobot_move(tray_states):
+def __get_best_move(tray_states):
 	'''
 	Returns the movement of the tray by taking in a dictionary of states
 
@@ -195,5 +164,4 @@ def determine_move(detections, model):
 			TrayMovement: movement of the tray
 	'''
 	tray_states = __get_states(detections, model)
-	tray_states = __get_cobot_move(detections, model)
-	return __get_movement(tray_states)
+	return __get_best_move(tray_states)

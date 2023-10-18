@@ -1,6 +1,6 @@
 from trajectory_msgs.msg import JointTrajectory
 import copy
-from data_processing.tray_position import TrayMovement
+from data_processing.tray_position import TrayMovement, CobotMovement
 
 
 class CobotMethods:
@@ -71,7 +71,7 @@ class CobotMethods:
 			chip_home_name,
 			above_tray_name,
 			chip_place_name,
-			"gripper_open_chip",
+			"gripper_open_case",
 			above_tray_name
 		]
 
@@ -97,13 +97,12 @@ class CobotMethods:
 		case_place_name = f"bottom_case_place_{str(tray_number)}"
 		goal_names = [
 			"case_pick_home",
-			"gripper_open_case",
 			case_name,
 			"gripper_close_case",
 			"case_pick_home",
 			above_tray_name,
 			case_place_name,
-			"gripper_open_case",
+			"gripper_open_battery",
 			above_tray_name
 		]
 
@@ -130,7 +129,6 @@ class CobotMethods:
 		goal_names = [
 			"home",
 			"battery_pick_home",
-			"gripper_open_battery",
 			"battery_pick",
 			"gripper_close_battery",
 			"battery_pick_home",
@@ -218,23 +216,44 @@ class CobotMethods:
 	def get_all_trajectories(joints, goals, gripper_outputs, chip_number, case_number, tray_movement):
 		# Generate and return a list of all trajectories for various movements.
 		tray_number = 1
-		if tray_movement == TrayMovement.ASSEMBLY_TO_TRAY1.value:
+		# if tray_movement == TrayMovement.ASSEMBLY_TO_TRAY1.value:
+		# 	tray_number = 1
+		# 	CobotMethods.move_home(joints, goals, gripper_outputs)
+		# 	CobotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
+		# elif tray_movement == TrayMovement.ASSEMBLY_TO_TRAY2.value:
+		# 	tray_number = 2
+		# 	CobotMethods.move_home(joints, goals, gripper_outputs)
+		# 	CobotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
+		# elif tray_movement == TrayMovement.TRAY1_TO_ASSEMBLY.value:
+		# 	CobotMethods.move_home(joints, goals, gripper_outputs)
+		# 	CobotMethods.move_tray(joints, goals, gripper_outputs, 1)
+		# elif tray_movement == TrayMovement.TRAY2_TO_ASSEMBLY.value:
+		# 	CobotMethods.move_home(joints, goals, gripper_outputs)
+		# 	CobotMethods.move_tray(joints, goals, gripper_outputs, 2)
+		# elif tray_movement == TrayMovement.both_empty.value:
+		# 	tray_number = 1
+		# elif tray_movement == TrayMovement.NONE.value:
+		# 	return None
+
+		if tray_movement == CobotMovement.ASSEMBLY_TO_TRAY1.value:
 			tray_number = 1
 			CobotMethods.move_home(joints, goals, gripper_outputs)
 			CobotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
-		elif tray_movement == TrayMovement.ASSEMBLY_TO_TRAY2.value:
+		elif tray_movement == CobotMovement.ASSEMBLY_TO_TRAY2.value:
 			tray_number = 2
 			CobotMethods.move_home(joints, goals, gripper_outputs)
 			CobotMethods.replace_tray(joints, goals, gripper_outputs, tray_number)
-		elif tray_movement == TrayMovement.TRAY1_TO_ASSEMBLY.value:
+		elif tray_movement == CobotMovement.TRAY1_TO_ASSEMBLY.value:
 			CobotMethods.move_home(joints, goals, gripper_outputs)
 			CobotMethods.move_tray(joints, goals, gripper_outputs, 1)
-		elif tray_movement == TrayMovement.TRAY2_TO_ASSEMBLY.value:
+		elif tray_movement == CobotMovement.TRAY2_TO_ASSEMBLY.value:
 			CobotMethods.move_home(joints, goals, gripper_outputs)
 			CobotMethods.move_tray(joints, goals, gripper_outputs, 2)
-		elif tray_movement == TrayMovement.both_empty.value:
+		elif tray_movement == CobotMovement.START_TRAY1_LOAD.value:
 			tray_number = 1
-		elif tray_movement == TrayMovement.NONE.value:
+		elif tray_movement == CobotMovement.START_TRAY2_LOAD.value:
+			tray_number = 2
+		elif tray_movement == CobotMovement.NONE.value:
 			return None
 
 		CobotMethods.move_home(joints, goals, gripper_outputs)
