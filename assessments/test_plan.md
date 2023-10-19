@@ -327,7 +327,7 @@ The risks and contingencies associated with testing include the following:
 if timelines become constrained, prioritise testing activities based on problem severity.
 3. Create comprehensive test plans that use techniques like equivalence partitioning.
 4. Clearly define the scope of testing in the test plan and establish a process to assess and approve any changes to the scope.
-5. Ensure clear call outs are made before making the robot move to ensure team members can make sure they are clear of the danger zone.
+5. Ensure clear call outs are made before making the robot move to allow team members time to clear themselves from the danger zone.
 
 ## Testing Tasks
 * Develop comprehensive unit test cases for individual components of the vision system,
