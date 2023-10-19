@@ -263,7 +263,8 @@ The system occasionally experiences slight delays in response times, causing mod
 The neural network's occasional difficulty in detecting objects leads to some missed picks, affecting efficiency but not causing major disruptions.
 
 * Moderate Interface Complexity:
-Some elements of the user interface require extra effort to understand, impacting usability but not causing critical errors.
+Some elements of the user interface require extra effort to understand, impacting usability and
+diminshing user satisfaction but not causing critical errors.
 
 #### Low
 Non critical errors that have a minimal negative impact on the user's experience.\
