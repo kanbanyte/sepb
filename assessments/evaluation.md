@@ -268,6 +268,7 @@ The neural network's occasional difficulty in detecting objects leads to some mi
 Some elements of the user interface require extra effort to understand, impacting usability and
 diminishing user satisfaction but not causing critical errors.
 
+<!-- TOC ignore:true -->
 #### Low
 Non critical errors that have a minimal negative impact on the user's experience.\
 They may cause slight confusion or inconvenience for the user, but they don't significantly hinder users from achieving their goal.\
