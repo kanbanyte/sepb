@@ -336,61 +336,6 @@ class CobotMovementActionServer(Node):
 
 			return result
 
-
-	# def action_callback(self, goal_handle):
-	# 	self.get_logger().info("Executing pick and place task...")
-
-	# 	result = PickPlaceAction.Result()
-
-	# 	feedback_msg = PickPlaceAction.Feedback()
-	# 	feedback_msg.current_movement = self.current_movement
-
-	# 	(trajectories, trajectory_names) = self.populate_tray_load_trajectories()
-
-	# 	if self.starting_point_ok:
-	# 		if trajectories is not None:
-	# 			for i, trajectory in enumerate(trajectories):
-	# 				# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
-	# 				if isinstance(trajectory, JointTrajectory):
-	# 					feedback_msg.current_movement = trajectory_names[i]
-	# 					self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
-	# 					trajectory_goal = trajectory.points[0]
-
-	# 					# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-	# 					pos = f'[Base: {trajectory_goal.positions[0]}, Shoulder: {trajectory_goal.positions[1]}, Elbow: {trajectory_goal.positions[2]}, ' +\
-	# 					f'Wrist 1: {trajectory_goal.positions[3]}, Wrist 2: {trajectory_goal.positions[4]}, Wrist 3: {trajectory_goal.positions[5]}]'
-
-	# 					# Using goals as dict type
-	# 					self.get_logger().info(f"Sending goal:\n\t{pos}.\n")
-
-	# 					self._publisher.publish(trajectory)
-
-	# 					# Wait for number of seconds defined in config file
-	# 					time.sleep(self.wait_sec_between_publish)
-
-	# 				# Otherwise the trajectory is a gripper movement.
-	# 				else:
-	# 					future_grip = self.send_gripper_request(trajectory)
-	# 					rclpy.spin_until_future_complete(self.subnode, future_grip)
-	# 					time.sleep(1)
-
-	# 			goal_handle.succeed()
-	# 			self.get_logger().info("Pick and place task complete.")
-	# 			result.task_successful = True
-
-	# 			return result
-	# 		else:
-	# 			self.get_logger().warn('Tray movement is "NONE".')
-	# 			result.task_successful = True
-
-	# 			return result
-
-	# 	elif self.check_starting_point and not self.joint_state_msg_received:
-	# 		self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
-
-	# 		result.task_successful = False
-	# 		return result
-
 	def joint_state_callback(self, msg):
 		if not self.joint_state_msg_received:
 			# check start state
