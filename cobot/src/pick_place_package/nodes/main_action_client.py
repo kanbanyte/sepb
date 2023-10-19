@@ -3,6 +3,7 @@ import rclpy
 from rclpy.action import ActionClient
 from rclpy.node import Node
 from pick_place_interfaces.action import PickPlaceAction
+import asyncio
 
 
 # Define a class for the main action client node.
@@ -13,7 +14,10 @@ class MainActionClient(Node):
 
 		# Create an action client to interact with the 'perform_pick_place' action server.
 		self.get_logger().info("Starting action client...")
-		self._action_client = ActionClient(self, PickPlaceAction, 'perform_pick_place')
+		self.subnode = rclpy.create_node('client_subnode')
+		self._action_client = ActionClient(self.subnode, PickPlaceAction, 'perform_pick_place')
+		# do we need a subnode here???
+		# also lets commit the tray-related code
 
 	# Define a method to send a goal to the action server.
 	def send_goal(self, goal):
@@ -24,11 +28,13 @@ class MainActionClient(Node):
 		# Wait for the action server to be available.
 		self._action_client.wait_for_server()
 
+		# self._send_goal_future = self._action_client.send_goal(goal_msg, feedback_callback=self.feedback_callback)
 		self._send_goal_future = self._action_client.send_goal_async(goal_msg, feedback_callback=self.feedback_callback)
+
 		self._send_goal_future.add_done_callback(self.goal_response_callback)
 
 		# Send the goal asynchronously and return the Future object.
-		return self._send_goal_future
+		# return self._send_goal_future
 
 	def goal_response_callback(self, future):
 		goal_handle = future.result()

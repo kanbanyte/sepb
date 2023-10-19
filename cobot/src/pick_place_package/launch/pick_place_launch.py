@@ -32,16 +32,16 @@ def generate_launch_description():
 			parameters=[position_goals],
 			output="screen",
 		),
-		TimerAction(
-			period=20.0,
-			actions=[
-				Node(
-					package="pick_place_package",
-					executable="main_node",
-					name="main_node",
-					parameters=[position_goals],
-					output="screen",
-				)
-			]
-		),
+		# TimerAction(
+		# 	period=20.0,
+		# 	actions=[
+		# 		Node(
+		# 			package="pick_place_package",
+		# 			executable="main_node",
+		# 			name="main_node",
+		# 			parameters=[position_goals],
+		# 			output="screen",
+		# 		)
+		# 	]
+		# ),
 	])

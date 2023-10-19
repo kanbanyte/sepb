@@ -4,7 +4,7 @@ from rclpy.action import ActionServer
 from trajectory_msgs.msg import JointTrajectory
 from sensor_msgs.msg import JointState
 from ur_msgs.srv import SetIO
-from nodes.cobot_methods import CobotMethods
+from nodes.cobot_methods import get_tray_movement_trajectories, get_all_trajectories
 from nodes.read_methods import ReadMethods
 from data_processing.tray_position import CobotMovement
 
@@ -166,7 +166,7 @@ class CobotMovementActionServer(Node):
 			self.get_logger().info(f"Populating trajectories...")
 
 			# show that the cobot responds to that.
-			return CobotMethods.get_all_trajectories(
+			return get_all_trajectories(
 				self.joints,
 				self.goals,
 				self.gripper_outputs,
@@ -201,7 +201,7 @@ class CobotMovementActionServer(Node):
 			self.get_logger().info(f"Populating trajectories...")
 
 			# show that the cobot responds to that.
-			return CobotMethods.get_tray_movement_trajectories(
+			return get_tray_movement_trajectories(
 				self.joints,
 				self.goals,
 				self.gripper_outputs,
@@ -210,7 +210,7 @@ class CobotMovementActionServer(Node):
 			self.get_logger().error(f"Error when populating trajectories...")
 			return ([], [])
 
-	def load_tray(self):
+	def load_tray(self, goal_handle):
 		self.get_logger().info("Loading tray...")
 
 		feedback_msg = PickPlaceAction.Feedback()
@@ -221,19 +221,16 @@ class CobotMovementActionServer(Node):
 		if not self.starting_point_ok:
 			return False
 
-		if trajectories is None:
+		if trajectories is None or len(trajectories) == 0:
 			self.get_logger().error("No trajectories returned")
 			return False
-
-		if len(trajectories) == 0:
-			self.get_logger().info("Not moving trays...")
-			return True
 
 		for i, trajectory in enumerate(trajectories):
 			# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
 			if isinstance(trajectory, JointTrajectory):
 				feedback_msg.current_movement = trajectory_names[i]
 				self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+				goal_handle.publish_feedback(feedback_msg)
 				trajectory_goal = trajectory.points[0]
 
 				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
@@ -258,7 +255,7 @@ class CobotMovementActionServer(Node):
 
 		return True
 
-	def move_tray(self):
+	def move_tray(self, goal_handle):
 		self.get_logger().info("Moving tray...")
 
 		feedback_msg = PickPlaceAction.Feedback()
@@ -269,15 +266,20 @@ class CobotMovementActionServer(Node):
 		if not self.starting_point_ok:
 			return False
 
-		if trajectories is None or len(trajectories) == 0:
+		if trajectories is None:
 			self.get_logger().error("No trajectories returned")
 			return False
+
+		if len(trajectories) == 0:
+			self.get_logger().info("Not moving trays...")
+			return True
 
 		for i, trajectory in enumerate(trajectories):
 			# Check if trajectory is a JointTrajectory. i.e. A cobot movement.
 			if isinstance(trajectory, JointTrajectory):
 				feedback_msg.current_movement = trajectory_names[i]
 				self.get_logger().info(f'Goal Name: {feedback_msg.current_movement}')
+				goal_handle.publish_feedback(feedback_msg)
 				trajectory_goal = trajectory.points[0]
 
 				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
@@ -314,10 +316,14 @@ class CobotMovementActionServer(Node):
 			if self.check_starting_point and not self.joint_state_msg_received:
 				self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
 
+			goal_handle.abort()
 			result.task_successful = False
 			return result
 
-		if self.move_tray() and self.load_tray() and self.move_tray():
+		tray_moved = self.move_tray(goal_handle)
+		tray_loaded = self.load_tray(goal_handle)
+
+		if tray_moved and tray_loaded:
 			goal_handle.succeed()
 			self.get_logger().info("Pick and place task complete.")
 			result.task_successful = True
