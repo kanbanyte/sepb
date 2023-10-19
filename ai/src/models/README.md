@@ -10,7 +10,8 @@
 <!-- /TOC -->
 
 ## detected_object.py
-Dataclass that holds the confidence and crop box of detected objects.
+Dataclass that holds the class index, confidence and crop box of detected objects.
+The class name can be retrieved using the index and `ObjectDetectionModel.classes`.
 
 ## object_detection_model.py
 Wrapper around the YOLO class from Ultralytics, created to narrow the functionalities and interface to fit this project.\
