@@ -220,55 +220,55 @@ These problems may only affect a small subset of users, but they are still worth
 Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts,
 enabling the team to focus resources on addressing critical user experience problems first.
 
-#### High Severity
+<!-- TOC ignore:true -->
+### High Severity
 These issues have a severe negative impact on usability and heavily impact a user's ability to achieve their goals.\
 These issues often lead to task failure and user frustration.\
 High severity issues for this project include:
-
-* Safety Critical Error:
+* Safety Critical Error:\
 The software occasionally fails to detect an obstacle in the robotic arm's path, leading to a collision risk.
-This is a high-severity problem because it directly threatens safety.
+This is a high-severity problem because it directly threatens human safety and potentially cause damage in the working space.
 
-* System Freeze:
+* System Freeze:\
 The system occasionally freezes during operation, rendering the robotic arm unresponsive.
- This is a high-severity issue because it halts production and may result in damage to equipment.
+This is a high-severity issue because it halts production and may result in damage to equipment.
 
-* Inaccurate Object Detection:
+* Inaccurate Object Detection:\
 The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target.
 This high-severity problem impacts the system's efficiency.
 
-#### Medium Severity
+<!-- TOC ignore:true -->
+### Medium Severity
 These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.\
 While not critical, these issues still need to be addressed to ensure a smoother user experience.\
 Medium severity issues for this project include:
-
-* Inefficient Path Planning:
+* Inefficient Path Planning:\
 The software takes longer than expected to calculate the optimal path for the robotic arm, causing minor delays in task completion.
 While this does not affect safety, it impacts efficiency.
 
-* Interface Confusion:
+* Interface Confusion:\
 Some operators occasionally struggle to understand a specific feature of the user interface, leading to slower operation.
 This is a moderate-severity issue as it affects usability.
 
-* Intermittent Connectivity Issues:
+* Intermittent Connectivity Issues:\
 The system experiences occasional communication problems between the depth camera, neural network, and robot operating software.
-While this can disrupt operation, it's not a constant or critical issue.
+While this can disrupt operation, it's not a constant or critical issue due to its rarity.
 
-#### Low Severity
+<!-- TOC ignore:true -->
+### Low Severity
 These issues have minimal impact on usability and do not significantly hinder users from completing their tasks.\
 They may however reduce the quality of a user's experience and therefore should be addressed and fixed.\
 Low severity issues for this project include:
-
-* Minor Interface Clutter:
+* Minor Interface Clutter:\
 The user interface has some non-essential elements that clutter the screen but do not impede the main operation.
 This is a low-severity issue as it doesn't hinder usability significantly.
 
-* Occasional False Alarms:
+* Occasional False Alarms:\
 The system occasionally triggers false alarms for object detection, but these are infrequent and easily dismissed by operators.
 While it may cause minor interruptions, it's low in severity.
 
-* Non-Critical Visual Glitch: There are occasional minor visual glitches in the user interface, such as graphical artifacts,
-but they do not affect the system's core functionality or safety.
+* Non-Critical Visual Glitch:\
+There are occasional minor visual glitches in the user interface, such as graphical artifacts, but they do not affect the system's core functionality or safety.
 
 # Reporting Results
 Upon conclusion of testing the Test results will be summarised in a clear and concise way with appropriate captions and information in a report.
