@@ -235,7 +235,7 @@ Problems that are discovered during the  testing procedures will be classified b
 Ranking problems helps prioritize which issues need immediate attention and which ones can be addressed later.
 
 <!-- TOC ignore:true -->
-#### High
+### High
 High impact problems are critical errors that have a significant negative effect on the user experience.\
 These problems usually lead to frustration, task failure, and a substantial reduction in user satisfaction.\
 High impact issues for this project include:
@@ -253,7 +253,7 @@ The vision system consistently failing to detect objects, leads to a high impact
 potentially causing production delays and user frustration.
 
 <!-- TOC ignore:true -->
-#### Moderate
+### Moderate
 Issues that negatively affect the user's experience noticeably but which may not be as serious as high impact problems.\
 They might make users more frustrated, less productive and impact the usability and performance of the overall system.\
 Moderate impact issues for this project include:
@@ -265,23 +265,19 @@ The system occasionally experiences slight delays in response times, causing mod
 The neural network's occasional difficulty in detecting objects leads to some missed picks, affecting efficiency but not causing major disruptions.
 
 * Moderate Interface Complexity:\
-Some elements of the user interface require extra effort to understand, impacting usability and
-diminishing user satisfaction but not causing critical errors.
+Some elements of the user interface require extra effort to understand, impacting usability and diminishing user satisfaction but not causing critical errors.
 
 <!-- TOC ignore:true -->
-#### Low
+### Low
 Non critical errors that have a minimal negative impact on the user's experience.\
 They may cause slight confusion or inconvenience for the user, but they don't significantly hinder users from achieving their goal.\
 Low impact issues for this project include:
 
 * Rare False Positives:\
-The system occasionally produces false positives in object detection,
-but these are easily rectified without causing significant disruption.
+The system occasionally produces false positives in object detection; however, these are easily rectified without causing significant disruption.
 
 * Minor Inefficiencies:\
-Some software processes take slightly longer than optimal, such as publishing the joint trajectories,
-but the delay has no impact on the systems safety.
-
+Some software processes take slightly longer than optimal, such as publishing the joint trajectories; however, the delay has no impact on the systems safety.
 
 ## Frequency Ranking
 Ranking problem frequency is valuable for understanding whether an issue is an isolated incident or a recurring problem.
