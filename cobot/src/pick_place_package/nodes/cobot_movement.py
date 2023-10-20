@@ -110,6 +110,58 @@ class CobotMovementActionServer(Node):
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 
+	def test_callback(self, goal_handle):
+		self.get_logger().info("Executing testing task...")
+
+		result = PickPlaceAction.Result()
+
+		feedback_msg = PickPlaceAction.Feedback()
+		feedback_msg.current_movement = self.current_movement
+
+		if not self.starting_point_ok:
+			if self.check_starting_point and not self.joint_state_msg_received:
+				self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
+
+		self.get_logger().info("Action in progress for 5s...\n")
+		time.sleep(5)
+		goal_handle.succeed()
+		self.get_logger().info("Test action complete.\n")
+		result.task_successful = True
+
+		return result
+
+	def action_callback(self, goal_handle):
+		self.get_logger().info("Executing pick and place task...")
+
+		result = PickPlaceAction.Result()
+
+		feedback_msg = PickPlaceAction.Feedback()
+		feedback_msg.current_movement = self.current_movement
+
+		if not self.starting_point_ok:
+			if self.check_starting_point and not self.joint_state_msg_received:
+				self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
+
+			goal_handle.abort()
+			result.task_successful = False
+			return result
+
+		tray_moved = self.move_tray(goal_handle)
+		tray_loaded = self.load_tray(goal_handle)
+
+		if tray_moved and tray_loaded:
+			goal_handle.succeed()
+			self.get_logger().info("Pick and place task complete.")
+			result.task_successful = True
+
+			return result
+		else:
+			goal_handle.abort()
+			self.get_logger().error('An error occurred...')
+			result.task_successful = False
+
+			return result
+
 	def send_pick_place_request(self, service, detect):
 		self.pick_place_request.detect = detect
 		self.future = service.call_async(self.pick_place_request)
@@ -303,38 +355,6 @@ class CobotMovementActionServer(Node):
 		self.get_logger().info("Tray moved.")
 
 		return True
-
-	def action_callback(self, goal_handle):
-		self.get_logger().info("Executing pick and place task...")
-
-		result = PickPlaceAction.Result()
-
-		feedback_msg = PickPlaceAction.Feedback()
-		feedback_msg.current_movement = self.current_movement
-
-		if not self.starting_point_ok:
-			if self.check_starting_point and not self.joint_state_msg_received:
-				self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
-
-			goal_handle.abort()
-			result.task_successful = False
-			return result
-
-		tray_moved = self.move_tray(goal_handle)
-		tray_loaded = self.load_tray(goal_handle)
-
-		if tray_moved and tray_loaded:
-			goal_handle.succeed()
-			self.get_logger().info("Pick and place task complete.")
-			result.task_successful = True
-
-			return result
-		else:
-			goal_handle.abort()
-			self.get_logger().error('An error occurred...')
-			result.task_successful = False
-
-			return result
 
 	def joint_state_callback(self, msg):
 		if not self.joint_state_msg_received:

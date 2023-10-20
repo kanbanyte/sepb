@@ -3,12 +3,25 @@ import rclpy
 # Import the MainActionClient class from the 'main_action_client' module.
 from nodes.main_action_client import MainActionClient
 
-
-def do_pick_place_async(action_client):
+def test_0(action_client):
 	while True:
-		future = action_client.send_goal(True)
+		future = action_client.send_goal_async()
 		rclpy.spin_until_future_complete(action_client, future)
 
+def test_1(action_client):
+	future = action_client.send_goal_async()
+	# TODO: if one of them returns something other than finished, loop on that value
+	print(f"Status: {future.status}")
+	print(f"Done: {future.done()}")
+	print(f"Result: {future.result()}")
+	rclpy.spin_until_future_complete(action_client, future)
+
+def test_2(action_client):
+	future = action_client.send_goal(True)
+	while not future.done():
+		print("Waiting for action request to complete")
+		# TODO: if the loop works, but only execute once, try replacing `spin_until_future_complete`
+		rclpy.spin_until_future_complete(action_client, future)
 
 import threading
 import time
@@ -20,33 +33,24 @@ def set_done_flag(future):
 		global Flag
 		Flag = True
 
-def main(args=None):
-	# Initialize the ROS 2 Python node.
-	rclpy.init(args=args)
-
-	# Create an instance of the MainActionClient class, which is responsible for sending action goals.
-	action_client = MainActionClient()
+def test_3(action_client):
 	global Flag
-	# do_pick_place_async(action_client)
 	while True:
 		with FlagLock:
 			print("Flag reset")
 			Flag = False
-		# lets test working working working  LETS wait for a few loops, are they working?, like are the loops running as expected???
-		# it went through the pick place task but now it's stopped only did it once
-		future = action_client.send_goal(True)
-		# the callback is not called goal_response_callback?
-		# no, set_done_flag
-		# wait, nvm
+
+		future = action_client.send_goal_async()
 		future.add_done_callback(set_done_flag)
+
 		while True:
 			FlagLock.acquire(blocking=True, timeout=2)
 			if Flag is True:
 				FlagLock.release()
+				print("Flag was set, request complete, exiting loop...")
 				break
 			else:
 				FlagLock.release()
-				# continue looping here
 				print("Sleeping for 2 secs")
 				time.sleep(2)
 
@@ -54,11 +58,15 @@ def main(args=None):
 				continue
 
 		print("Future is Done")
-# lets try again
-# the stupid callback is not called
+
+def main(args=None):
+	rclpy.init(args=args)
+	action_client = MainActionClient()
+
+	# test_0(action_client)
+	test_1(action_client)
+	# test_2(action_client)
+
 
 if __name__ == '__main__':
-	# Call the main function when this script is executed directly.
 	main()
-
-	# did you see the Goal Accepeted line get printed out? Seems weird, See? Kinda strange that the future is done immediately
