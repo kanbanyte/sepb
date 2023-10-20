@@ -15,7 +15,7 @@ def convert_case_bounding_boxes(detected_case):
 	the height of the image is around 514px.
 
 	Args:
-		detected_object: detected case.
+		detected_case (DetectedObject): detected case.
 
 	Returns:
 		int|None: Case position in the rack which ranges from 1 to 17 or None if the input cannot be converted to a valid position.

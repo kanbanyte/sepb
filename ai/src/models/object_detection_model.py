@@ -26,8 +26,8 @@ class ObjectDetectionModel:
 		We calculate that value to prevent this situation from the start.
 
 		Args:
-			factor (integer): Factor value.
-			number (integer): Input value.
+			factor (int): Factor value.
+			number (int): Input value.
 
 		Returns:
 			Integer: multiple of `factor` closest to `number`
@@ -45,7 +45,7 @@ class ObjectDetectionModel:
 		Gets a dictionary containing indices and names of classes detected by the model.
 
 		Returns:
-			dict: dictionary mapping class index to class name.
+			dict[int, str]: dictionary mapping class index to class name.
 		'''
 		return self.__classes
 
@@ -90,17 +90,18 @@ class ObjectDetectionModel:
 		x2_tensor = result.boxes.xyxy[:, 2]
 		y2_tensor = result.boxes.xyxy[:, 3]
 
-		for (object_class, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
+		for (class_index, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
 			# these values are still 1D tensors and need to be converted to scalar values
-			object_class_index = int(object_class)
+			class_index_int = int(class_index)
 			bounding_box = (int(x1), int(y1), int(x2), int(y2))
 			confidence = float(conf)
 			detected_object = DetectedObject(bounding_box=bounding_box, confidence=confidence)
 
-			detected_objects[object_class_index].append(detected_object)
+			detected_objects[class_index_int].append(detected_object)
 			draw_bounding_box(image, bounding_box)
-			if result_img_path:
-				cv2.imwrite(result_img_path, image)
+
+		if result_img_path:
+			cv2.imwrite(result_img_path, image)
 
 		if show_image:
 			# show_image_non_block(image, f"Showing image '{result_img_path}'")

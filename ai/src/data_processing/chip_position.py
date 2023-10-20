@@ -75,7 +75,7 @@ def get_chip_slot_number(bounding_box):
 	This method takes in the bounding box of a chip and returns the chip number defined by the cobot code.
 
 	Args:
-		bounding_box (list) : the bounding box of the chip
+		bounding_box (list[tuple]) : the bounding box of the chip
 
 	Returns:
 		int : the chip number, or None for invalid chip position.

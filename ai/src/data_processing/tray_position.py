@@ -85,7 +85,6 @@ def __convert_bounding_boxes_to_states(detections, model):
 		tray_state = __convert_class_to_state(model.classes[class_index])
 
 		for detected_tray in detected_objects:
-			print(detected_tray.bounding_box)
 			x1, y1, x2, y2 = detected_tray.bounding_box
 			x_center = round((x1 + x2) / 2)
 			y_center = round((y1 + y2) / 2)
@@ -135,30 +134,32 @@ def __get_best_move(tray_states):
 			return CobotMovement.TRAY2_TO_ASSEMBLY
 
 	# if tray 1 or 2 are empty, we start loading that tray
+	# since the model does not detect individual items on the tray, we prioritize loading an empty tray over a partially loaded one
 	if tray_states.get(__TRAY_1) == TrayState.EMPTY:
 		return CobotMovement.START_TRAY1_LOAD
 
 	if tray_states.get(__TRAY_2) == TrayState.EMPTY:
 		return CobotMovement.START_TRAY2_LOAD
 
-	# if tray 1 or 2 are empty, we continue loading that tray
+	# if tray 1 or 2 are partially loaded, we continue loading that tray
 	if tray_states.get(__TRAY_1) == TrayState.PARTIALLY_FULL:
 		return CobotMovement.CONTINUE_TRAY1_LOAD
 
 	if tray_states.get(__TRAY_2) == TrayState.PARTIALLY_FULL:
 		return CobotMovement.CONTINUE_TRAY2_LOAD
 
+	# no valid move can be made
 	return CobotMovement.NONE
 
 def determine_move(detections, model):
 	'''
-		Returns the movement of the tray by taking in a dictionary of detected objects and a model
+	Returns the movement of the tray by taking in a dictionary of detected objects and a model
 
-		Args:
-			detections (dict): dictionary of detected objects
-			model (ObjectDetectionModel): model used to detect objects
-		Returns:
-			TrayMovement: movement of the tray
+	Args:
+		detections (dict): dictionary of detected objects
+		model (ObjectDetectionModel): model used to detect objects
+	Returns:
+		TrayMovement: movement of the tray
 	'''
 	tray_states = __convert_bounding_boxes_to_states(detections, model)
 	print(f"Tray States: {tray_states}")

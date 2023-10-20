@@ -89,6 +89,7 @@ def show_image(image, name='Image'):
 		None
 	'''
 
+	# resize the image to make its height 3/4 of the screen height whilst maintaining aspect ratio
 	image_pil = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	screen_height = __get_screen_height()
 	new_height = screen_height * 3 / 4
