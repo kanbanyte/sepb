@@ -318,7 +318,7 @@ The risks and contingencies associated with testing include the following:
 2. Time pressures may result in less time being allocated to testing.
 3. Not all possible scenarios are able to be tested.
 4. The scope of testing could end up going beyond the project's boundaries, resulting in time and resource overruns.
-5. Potential danger and injuries could occur working in close proximity of the robot arm.
+5. Danger and risk is limited due to sensors in the cobots' joints that allow it to know when interacting with an impediment or obstacle.
 
 <!-- TOC ignore:true -->
 ### Contingencies
