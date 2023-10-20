@@ -6,7 +6,6 @@ from std_srvs.srv import Trigger
 
 import time
 
-
 class GripperServer(Node):
 	def __init__(self):
 		super().__init__("gripper_server")

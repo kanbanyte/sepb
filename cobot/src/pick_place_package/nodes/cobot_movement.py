@@ -14,7 +14,6 @@ from pick_place_interfaces.action import PickPlaceAction
 import copy
 import time
 
-
 class CobotMovementActionServer(Node):
 	def __init__(self):
 		super().__init__("cobot_movement_node")
@@ -37,30 +36,30 @@ class CobotMovementActionServer(Node):
 
 		self.subnode = rclpy.create_node('subnode')
 
-		# Create action server
-		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.action_callback)
+		# Create action server and hook the callback
+		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.execute_pick_and_place)
+		self.retry_limit = 1
 
-		# self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.test_callback)
+		# self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.execute_test)
 
-		# Create client for gripper service
+		# Create client for the following services: gripper, case detection, chip detection, tray detection
 		self.gripper_cli = self.subnode.create_client(SetIO, 'gripper_service')
-
-		# Create client for case, chip, and tray services
 		self.case_cli = self.subnode.create_client(PickPlaceService, 'case')
 		self.chip_cli = self.subnode.create_client(PickPlaceService, 'chip')
 		self.tray_cli = self.subnode.create_client(PickPlaceService, 'tray')
 
+		# Ensuring all four services are connected
 		while not self.gripper_cli.wait_for_service(timeout_sec=10.0):
-			self.get_logger().info(f"{self.gripper_cli.srv_name} service not available, trying again...")
+			self.get_logger().info(f"{self.gripper_cli.srv_name} service not available, trying again in 10s...")
 
 		while not self.case_cli.wait_for_service(timeout_sec=10.0):
-			self.get_logger().info(f"{self.case_cli.srv_name} service not available, trying again...")
+			self.get_logger().info(f"{self.case_cli.srv_name} service not available, trying again in 10s...")
 
 		while not self.chip_cli.wait_for_service(timeout_sec=10.0):
-			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again...")
+			self.get_logger().info(f"{self.chip_cli.srv_name} service not available, trying again in 10s...")
 
 		while not self.tray_cli.wait_for_service(timeout_sec=10.0):
-			self.get_logger().info(f"{self.tray_cli.srv_name} service not available, trying again...")
+			self.get_logger().info(f"{self.tray_cli.srv_name} service not available, trying again in 10s...")
 
 		self.pick_place_request = PickPlaceService.Request()
 		self.gripper_request = SetIO.Request()
@@ -105,14 +104,17 @@ class CobotMovementActionServer(Node):
 		self.gripper_output_names = list(self.gripper_outputs.keys())
 
 		if len(self.goals) < 1:
-			self.get_logger().error("No valid goal found. Exiting...")
+			self.get_logger().fatal("No valid goal found. Exiting...")
 			exit(1)
 
 		self.current_movement = "home"
 
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 
-	def test_callback(self, goal_handle):
+	def execute_test(self, goal_handle):
+		'''
+		Callback to test the server without moving the cobot
+		'''
 		self.get_logger().info("")
 		self.get_logger().info("Executing testing task...")
 
@@ -133,7 +135,11 @@ class CobotMovementActionServer(Node):
 
 		return result
 
-	def action_callback(self, goal_handle):
+	def execute_pick_and_place(self, goal_handle):
+		'''
+		Callback to execute a pick and place task
+		'''
+
 		self.get_logger().info("Executing pick and place task...")
 
 		result = PickPlaceAction.Result()
@@ -149,21 +155,21 @@ class CobotMovementActionServer(Node):
 			result.task_successful = False
 			return result
 
-		tray_moved = self.move_tray(goal_handle)
-		tray_loaded = self.load_tray(goal_handle)
+		# assumes the cobot is not in the clean state, we attempt to call a move on it but ignore the results
+		_ = self.move_tray(goal_handle)
 
-		if tray_moved and tray_loaded:
+		if self.load_tray(goal_handle) and self.move_tray(goal_handle):
 			goal_handle.succeed()
-			self.get_logger().info("Pick and place task complete.")
 			result.task_successful = True
+			self.get_logger().info("Pick and place task complete.")
 
-			return result
-		else:
-			goal_handle.abort()
-			self.get_logger().error('An error occurred...')
-			result.task_successful = False
+		# if the cobot already made a move out of an invalid state but still fail to load or move the tray,
+		# treat the request as a failure
+		goal_handle.abort()
+		result.task_successful = False
+		self.get_logger().error('An error occurred when moving or loading trays...')
 
-			return result
+		return result
 
 	def send_pick_place_request(self, service, detect):
 		self.pick_place_request.detect = detect
@@ -181,17 +187,20 @@ class CobotMovementActionServer(Node):
 		future_tray = self.send_pick_place_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
+		retries = 0
+
 		# since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
 		# therefore the cobot should not load a tray unless it is empty,
 		# in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
 		while (not future_tray.result() or
-				future_tray.result().signal == CobotMovement.NONE.value or
-				future_tray.result().signal == CobotMovement.CONTINUE_TRAY1_LOAD.value or
-				future_tray.result().signal == CobotMovement.CONTINUE_TRAY2_LOAD.value):
+				retries < self.retry_limit and
+				future_tray.result().signal != CobotMovement.START_TRAY1_LOAD.value and
+				future_tray.result().signal != CobotMovement.START_TRAY1_LOAD.value):
 			future_tray = self.send_pick_place_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
-			self.get_logger().info(f"Tray signal is {CobotMovement(future_tray.result().signal).name}. Waiting for valid movement to be available...")
-			time.sleep(5)
+			self.get_logger().info(f"Tray signal is {CobotMovement(future_tray.result().signal).name}. Trying again in 10s...")
+			time.sleep(10)
+			retries = retries + 1
 
 		future_chip = self.send_pick_place_request(self.chip_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_chip)
@@ -218,6 +227,7 @@ class CobotMovementActionServer(Node):
 
 			tray_result = future_tray.result()
 			tray_position = tray_result.signal
+
 			self.get_logger().info(f"Populating trajectories...")
 
 			# show that the cobot responds to that.
@@ -236,18 +246,22 @@ class CobotMovementActionServer(Node):
 		future_tray = self.send_pick_place_request(self.tray_cli, True)
 		rclpy.spin_until_future_complete(self.subnode, future_tray)
 
+		retries = 0
+
 		# since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
 		# therefore the cobot should not load a tray unless it is empty,
 		# in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
 		while (not future_tray.result() or
-				future_tray.result().signal == CobotMovement.NONE.value or
-				future_tray.result().signal == CobotMovement.CONTINUE_TRAY1_LOAD.value or
-				future_tray.result().signal == CobotMovement.CONTINUE_TRAY2_LOAD.value):
+				retries < self.retry_limit and
+				future_tray.result().signal != CobotMovement.ASSEMBLY_TO_TRAY1.value and
+				future_tray.result().signal != CobotMovement.ASSEMBLY_TO_TRAY2.value and
+				future_tray.result().signal != CobotMovement.TRAY1_TO_ASSEMBLY.value and
+				future_tray.result().signal != CobotMovement.TRAY2_TO_ASSEMBLY.value):
 			future_tray = self.send_pick_place_request(self.tray_cli, True)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
-			self.get_logger().info(f"Tray signal is {CobotMovement(future_tray.result().signal).name}. Waiting for valid movement to be available...")
-			time.sleep(5)
-
+			self.get_logger().info(f"Tray signal is {CobotMovement(future_tray.result().signal).name}. Trying again in 10s...")
+			time.sleep(10)
+			retries = retries + 1
 
 		if future_tray.result():
 
