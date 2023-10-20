@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source $HOME/Documents/repos/sepb/bash/variables.sh
+
 # Ping cobot twice
 function ping_cobot() {
 	ping -c 2 172.21.0.121
@@ -71,10 +73,10 @@ function launch_rviz() {
 #region Package
 # Rebuild cobot package
 function rebuild_cobot() {
-	rm -r /home/cobot/Documents/repos/sepb/cobot/build
-	rm -r /home/cobot/Documents/repos/sepb/cobot/install
-	rm -r /home/cobot/Documents/repos/sepb/cobot/log
-	cd /home/cobot/Documents/repos/sepb/cobot
+	rm -r $COBOT_BUILD_DIR
+	rm -r $COBOT_INSTALL_DIR
+	rm -r $COBOT_LOG_DIR
+	cd $COBOT_PATH
 	colcon build
 	source install/local_setup.bash
 	rosdep install -i --from-path src --rosdistro humble -y

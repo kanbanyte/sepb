@@ -1,12 +1,19 @@
 #!/bin/bash
 
+source $HOME/Documents/repos/sepb/bash/variables.sh
+
 # Remove build directory
 function rebuild_ai() {
-	rm -r /home/cobot/Documents/repos/sepb/ai/build
+	# Check if the directory exists
+	if [ -d $AI_BUILD_DIR ]; then
+		echo "Deleting existing build directory"
+		rm -r $AI_BUILD_DIR
+	fi
 }
 
 # Install dependencies
 function install_ai() {
+	cd $AI_PATH
 	python3 -m pip install .
 }
 
