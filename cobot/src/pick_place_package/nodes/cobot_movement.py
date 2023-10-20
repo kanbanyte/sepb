@@ -40,6 +40,8 @@ class CobotMovementActionServer(Node):
 		# Create action server
 		self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.action_callback)
 
+		# self.action_server = ActionServer(self, PickPlaceAction, 'perform_pick_place', self.test_callback)
+
 		# Create client for gripper service
 		self.gripper_cli = self.subnode.create_client(SetIO, 'gripper_service')
 
@@ -111,6 +113,7 @@ class CobotMovementActionServer(Node):
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 
 	def test_callback(self, goal_handle):
+		self.get_logger().info("")
 		self.get_logger().info("Executing testing task...")
 
 		result = PickPlaceAction.Result()
@@ -122,10 +125,10 @@ class CobotMovementActionServer(Node):
 			if self.check_starting_point and not self.joint_state_msg_received:
 				self.get_logger().warn('Start configuration could not be checked! Check "joint_state" topic!')
 
-		self.get_logger().info("Action in progress for 5s...\n")
+		self.get_logger().info("Action in progress for 5s...")
 		time.sleep(5)
 		goal_handle.succeed()
-		self.get_logger().info("Test action complete.\n")
+		self.get_logger().info("Test action complete.")
 		result.task_successful = True
 
 		return result

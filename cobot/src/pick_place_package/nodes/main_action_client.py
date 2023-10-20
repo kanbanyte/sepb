@@ -18,6 +18,8 @@ class MainActionClient(Node):
 
 	# Define a method to send a goal to the action server.
 	def send_goal_async(self):
+		self.get_logger().info("Starting an action request...")
+
 		# Create a PickPlaceAction action goal message.
 		goal_msg = PickPlaceAction.Goal()
 		goal_msg.goal = True
@@ -26,8 +28,17 @@ class MainActionClient(Node):
 		self._action_client.wait_for_server()
 
 		self._send_goal_future = self._action_client.send_goal_async(goal_msg, feedback_callback=self.feedback_callback)
-
 		self._send_goal_future.add_done_callback(self.goal_response_retrieved)
+		rclpy.spin_until_future_complete(self, self._send_goal_future)
+
+		result_handle = self._send_goal_future.result()
+
+		get_result_future = result_handle.get_result_async()
+		rclpy.spin_until_future_complete(self, get_result_future)
+
+		self.get_logger().info("Request finished")
+
+		return get_result_future.result()
 
 		# Send the goal asynchronously and return the Future object.
 		return self._send_goal_future
@@ -48,12 +59,12 @@ class MainActionClient(Node):
 		self.get_logger().info('Goal accepted')
 
 		# Get goal result via an async callback
-		self._get_result_future = goal_handle.get_result_async()
-		self._get_result_future.add_done_callback(self.get_goal_result_async)
+		# self._get_result_future = goal_handle.get_result_async()
+		# self._get_result_future.add_done_callback(self.get_goal_result_async)
 
-		# Get goal result synchronously
+		# # Get goal result synchronously
 		# result = goal_handle.get_result()
-		# get_goal_result(result)
+		# self.get_goal_result(result)
 
 	def get_goal_result_async(self, future):
 		result = future.result().result
