@@ -18,7 +18,7 @@ This document exclusively uses the Linux version.
 ```bash
 python3 -m pip install --upgrade pip
 ```
-* To install the package, navigate to the project containing `pyproject.toml` and run the below command.
+* To install the package, navigate to the project containing `pyproject.toml`, remove the any existing `build` directory and run the below command.
 This command should be run every time the package code is modified:
 ```bash
 python3 -m pip install .

@@ -3,7 +3,6 @@ from collections import defaultdict
 from ultralytics import YOLO
 
 from .detected_object import DetectedObject
-# from data_processing.image_processing import draw_bounding_box, show_image_non_block
 from data_processing.image_processing import draw_bounding_box, show_image as image_show
 
 class ObjectDetectionModel:
@@ -69,7 +68,13 @@ class ObjectDetectionModel:
 		# YOLO model class uses the (h,w) order
 		image_dimension = (self.__image_height, self.__image_width)
 
-		results = self.__model.predict(image, verbose=False, conf=self.__confidence, iou=self.__iou, imgsz=image_dimension, max_det=self.__max_det)
+		results = self.__model.predict(
+			image,
+			verbose=False,
+			conf=self.__confidence,
+			iou=self.__iou,
+			imgsz=image_dimension,
+			max_det=self.__max_det)
 
 		# defaultdict supports specifying a default for missing values
 		detected_objects = defaultdict(list)
@@ -98,7 +103,7 @@ class ObjectDetectionModel:
 			detected_object = DetectedObject(bounding_box=bounding_box, confidence=confidence)
 
 			detected_objects[class_index_int].append(detected_object)
-			draw_bounding_box(image, bounding_box)
+			draw_bounding_box(image, bounding_box, self.__classes[class_index_int])
 
 		if result_img_path:
 			cv2.imwrite(result_img_path, image)

@@ -3,7 +3,6 @@ import time
 from datetime import datetime
 from camera.camera_lens import LogicalLens
 
-from data_processing.image_processing import draw_bounding_box
 from data_processing.case_position import convert_case_bounding_boxes
 from data_processing.tray_position import determine_move
 from data_processing.chip_position import get_chip_slot_number
@@ -23,9 +22,10 @@ def run_inference(detection_model, cropped_image, output_location = None):
 
 	for class_index, detected_objects in detections.items():
 		for i, detected_tray in enumerate(detected_objects):
+			print("---")
 			print(f"Object {i + 1}/{len(detected_objects)} in class {detection_model.classes[class_index]}: ")
-			print(f"\tConfidence: {detected_tray.confidence}")
-			print(f"\tBox: {detected_tray.bounding_box}")
+			print(f"Confidence: {detected_tray.confidence}")
+			print(f"Box: {detected_tray.bounding_box}")
 
 	print(f"Inference time: {inference_time - start_time:.4f} seconds")
 	return detections
@@ -60,18 +60,18 @@ def main():
 
 	while True:
 		print(
-'''
-===============================================
+'''\n
 Select a model to run:
-\t- 0: run chip detection model using both lenses
-\t- 1: run tray detection model using physical left lens
-\t- 2: run case detection model using physical left lens
+- 0: run chip detection model using both lenses
+- 1: run tray detection model using physical left lens
+- 2: run case detection model using physical left lens
 '''
 		)
 		choice = input("Choose model to run. Press `q` to quit: ")
 		if choice == 'q':
 			print("Closing camera")
 			camera.close()
+			print("Exiting...")
 			break
 
 		try:

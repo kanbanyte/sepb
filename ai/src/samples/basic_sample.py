@@ -5,7 +5,6 @@ from ultralytics import YOLO
 
 from util.file_dialog import select_file_from_dialog, select_folder_from_dialog
 from util.file_reader import read_yaml
-from data_processing.image_processing import tile_image
 from models.object_detection_model import ObjectDetectionModel
 
 # Constants for drawing bounding boxes and text on images
@@ -13,27 +12,47 @@ BOX_THICKNESS = 2
 GREEN_RGB = (0, 255, 0)
 FONT_THICKNESS = 2
 
-def run_with_ultralytics_api(tiled_images):
-	model_file = select_file_from_dialog("Select model file", ["pt"])
-	if not model_file:
-		raise ValueError("No model file selected")
+def select_image():
+	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
+	if not image_file:
+		raise ValueError("No image file selected")
 
-	model = YOLO(model_file)
-	for tile_index, tile in enumerate(tiled_images):
-		results = model.predict(tile, verbose=True)
-		for result in results:
-			cv2.imshow(f"Tile {tile_index + 1}/{len(tiled_images)} (close window to continue)", result.plot())
-			cv2.waitKey(0)
+	return cv2.imread(image_file)
 
-	# Close all open windows when processing is complete
-	cv2.destroyAllWindows()
+def run_with_ultralytics_api():
+	while True:
+		try:
+			if input("Press 'q' to quit. Press any other key to select image and model: ") == 'q':
+				print("Exiting...")
+				break
 
-def run_with_custom_api(tiled_images):
+			image = select_image()
+			model_file = select_file_from_dialog("Select model file", ["pt"])
+			if not model_file:
+				raise ValueError("No model file selected")
+
+			model = YOLO(model_file)
+			results = model.predict(image, verbose=True)
+			for result in results:
+				cv2.imshow(f"Close window to continue", result.plot())
+				cv2.waitKey(0)
+
+			# Close all open windows when processing is complete
+			cv2.destroyAllWindows()
+		except Exception as error:
+			print(f"Error: {error}")
+
+
+def run_with_custom_api():
 	config_file = select_file_from_dialog("Select configuration file", ["yaml"])
 	if not config_file:
 		raise ValueError("No config file selected")
 
 	config = read_yaml(config_file)
+	print("Initializing models")
+	chip_model = ObjectDetectionModel(config.get('model').get('detect_chip'))
+	tray_model = ObjectDetectionModel(config.get('model').get('detect_tray'))
+	case_model = ObjectDetectionModel(config.get('model').get('detect_case'))
 
 	save_output_choice = input("Save output image (y/any key)?: ")
 	output_path = None
@@ -42,47 +61,58 @@ def run_with_custom_api(tiled_images):
 		if not output_path:
 			raise ValueError("Error: image output folder path not selected")
 
-	print(f"Saving output images to folder '{output_path}'")
-	now = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")
-	model = ObjectDetectionModel(config.get('model').get('detect_chip'))
-	for tile_index, tile in enumerate(tiled_images):
-		output_image_path = os.path.join(output_path, f"{now}-tile-{tile_index}.png")
-		print(f"Checking tile {tile_index}")
-		detections = model.run_inference(tile, output_image_path)
-		print("======")
-		print(f"Detected {len(detections)} class(es) in tile {tile_index}")
-		for class_index, detected_objects in detections.items():
-			for i, detected_object in enumerate(detected_objects):
-				print(f"Object {i + 1}/{len(detected_objects)} in class {model.classes[class_index]}: ")
-				print(f"\tConfidence: {detected_object.confidence}")
-				print(f"\tBox: {detected_object.bounding_box}")
-		print()
+	while True:
+		try:
+			if input("Press 'q' to quit. Press any other key to select image and model: ") == 'q':
+				print("Exiting...")
+				break
+
+			image = select_image()
+			print("\nChoose detection model: 0 - Chip, 1 - Case, 2 - Tray")
+			model = None
+			model_choice = input("Enter your choice: ")
+			if model_choice == '0':
+				model = chip_model
+			elif model_choice == '1':
+				model = case_model
+			elif model_choice == '2':
+				model = tray_model
+			elif model_choice == 'q':
+				print("Exiting...")
+				break
+			else:
+				raise ValueError("Invalid model choice")
+
+			output_image_path = None
+			if output_path:
+				print(f"Saving output images to folder '{output_path}'")
+				now = datetime.utcnow().strftime("%Y-%m-%dT%H-%M-%S")
+				output_image_path = os.path.join(output_path, f"{now}.png")
+
+			print("\n===")
+			detections = model.run_inference(image, result_img_path=output_image_path, show_image=True)
+			print(f"Detected {len(detections)} class(es) in image")
+			for class_index, detected_objects in detections.items():
+				for i, detected_object in enumerate(detected_objects):
+					print(f"---")
+					print(f"Object {i + 1}/{len(detected_objects)} in class {model.classes[class_index]}: ")
+					print(f"Confidence: {detected_object.confidence}")
+					print(f"Box: {detected_object.bounding_box}")
+		except Exception as error:
+			print(f"Error: {error}")
 
 def main():
-	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
-	if not image_file:
-		raise ValueError("No image file selected")
-
-	image = cv2.imread(image_file)
-
-	print("Select tile dimensions (must be the same as the dimension used to train the model)")
-	num_rows = int(input("Select row count: "))
-	num_cols = int(input("Select column count: "))
-
-	# Split the image into tiles
-	tiled_images = tile_image(image, num_rows, num_cols)
 	print(
-'''
-===============================================
+'''\n
 Select option to run.
-\t- 0: Shows image tiles with bounding boxes and print results to the console. No model configuration supported.
-\t- 1: Print bounding boxes with confidence level to the console. Model configuration defined by user.
+- 0: Model file selected by user. Model detection configuration or image cropping supported.
+- 1: Model file and detection configuration defined by user. Image cropping not supported.
 ''')
 	option = int(input("Enter your option: "))
 	if option == 0:
-		run_with_ultralytics_api(tiled_images)
+		run_with_ultralytics_api()
 	elif option == 1:
-		run_with_custom_api(tiled_images)
+		run_with_custom_api()
 
 if __name__ == "__main__":
 	main()

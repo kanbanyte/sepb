@@ -2,13 +2,12 @@ import cv2
 from PIL import Image
 import tkinter as tk
 
-
 def crop_image(image, crop_box):
 	'''
 	Crops an image based on the specified crop box.
 
 	Args:
-		image (np.array): Input image as a NumPy array.
+		image (np.array): input image as a NumPy array.
 		crop_box (x1, y1, x2, y2): Tuple containing crop box coordinates (left, top, right, bottom).
 
 	Returns:
@@ -28,47 +27,43 @@ def crop_image(image, crop_box):
 	x1, y1, x2, y2 = crop_box
 	return image[y1:y2, x1:x2]
 
-def tile_image(image, num_rows, num_cols):
-	'''
-	Tile an image with the specified grid size.
-
-	Args:
-		image (np.array): Input image as a NumPy array.
-		num_rows (int): number of rows.
-		num_cols (int): number of columns.
-
-	Returns:
-		List[np.array]: list of tiled images.
-	'''
-	tile_height = int(image.shape[0] / num_rows)
-	tile_width = int(image.shape[1] / num_cols)
-	tiled_images = []
-	for row in range(num_rows):
-		for col in range(num_cols):
-			y_start = row * tile_height
-			y_end = y_start + tile_height
-			x_start = col * tile_width
-			x_end = x_start + tile_width
-			tile = image[y_start:y_end, x_start:x_end]
-			tiled_images.append(tile)
-	return tiled_images
-
-def draw_bounding_box(image, bounding_box):
+def draw_bounding_box(image, bounding_box, name):
 	'''
 	Draw a green bounding box on an image.
 
 	Args:
-		image (np.array): Input image as a NumPy array.
+		image (np.array): input image as a NumPy array.
 		bounding_box (x1, y1, x2, y2): bounding box coordinates in the (left, top, right, bottom) format.
+		name (str): name of the class of the bounding box.
 
 	Returns:
 		None
 	'''
 	x1, y1, x2, y2 = bounding_box
-	point1 = (round(x1), round(y1))
-	point2 = (round(x2), round(y2))
+	image_top_left = (round(x1), round(y1))
+	image_bottom_right = (round(x2), round(y2))
 	green = (0, 255, 0)
-	cv2.rectangle(image, point1, point2, color=green, thickness=2)
+
+	image_height, image_width, _ = image.shape
+
+	# font scale of 1 fits an image around 600px width so we scale it with the input image
+	font_scale = 1 * (image_width / 800)
+	font = cv2.FONT_HERSHEY_DUPLEX
+
+	# position the text below the image but shift it up if the text goes out of view
+	(_, text_height), _ = cv2.getTextSize(name, font, font_scale, thickness=1)
+	text_bottom_left = (round(image_top_left[0]), round(min(image_bottom_right[1] + text_height + 2, image_height - text_height)))
+	cv2.putText(
+		image,
+		name.upper(),
+		text_bottom_left,
+		font,
+		font_scale,
+		green,
+		thickness=1,
+		lineType=cv2.LINE_AA)
+
+	cv2.rectangle(image, image_top_left, image_bottom_right, color=green, thickness=2)
 
 def __get_screen_height():
 	root = tk.Tk()
@@ -82,8 +77,8 @@ def show_image(image, name='Image'):
 	Show image without blocking the current thread.
 
 	Args:
-		image (np.array): Input image as a NumPy array.
-		name (str): Window name.
+		image (np.array): input image as a NumPy array.
+		name (str): window name.
 
 	Returns:
 		None
