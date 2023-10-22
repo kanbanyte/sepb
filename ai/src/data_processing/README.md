@@ -6,7 +6,6 @@
 
 * [case_position.py](#case_positionpy)
 * [image_processing.py](#image_processingpy)
-* [random_crop.py](#random_croppy)
 * [tray_position.py](#tray_positionpy)
 * [chip_position.py](#chip_positionpy)
 
