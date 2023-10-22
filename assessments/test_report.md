@@ -252,12 +252,39 @@ As Testing has concluded we will review the criteria again and compare them to t
 This testing stage was primarily applied to the AI code; or more to the point, the intermediary code of turning AI outputs into a ROS usable format.
 So, going off the established requirements: the testing was sufficient, covering a good amount of code.\
 Alongside this, a few bugs were identified and promptly fixed; overall this testing stage passed.
+For the units testing we followed the format of having a few Null cases and invalid test cases,
+these included exceptionally large numbers, negatives and inverted coordinates.
+
+For cases and chips all 17 and 48 valid positions were tested.
+As for the trays, movement commands were returned in all cases, defaulting to no_move where errors arise.
 
 <!-- TOC ignore:true -->
 ### Integration Testing
 In the development, much of the code was made into a library style; thus making integration easier and more consistent.
 The integration is also made to ensure the AI and ROS code can interact and "talk" to each other effectively.\
 As the criteria states, this section was well integrated and made solidly; therefore this would be a pass.
+Some proof of this was the successful results of the AI model as seen here:
+
+#### Chip Model:
+* Combined
+    * precision: 100%
+    * recall: 100%
+    * accuracy: 100%
+
+#### Tray model:
+|<div align="right">TRUTH</div> | EMPTY | FULL | PARTIAL | BCKGRND |
+|-------------------------------|-------|------|---------|---------|
+| PREDICTIONS                   |       |      |         |         |
+| EMPTY                         |  11   |      |         |         |
+| FULL                          |       |  15  |         |         |
+| PARTIAL                       |       |      |   20    |         |
+| BACKGROUND                    |       |      |         |         |
+
+#### Case Model:
+- Confusion Matrix:
+    - precision: 17/17 = 100%
+    - recall: 17/17 = 100%
+    - accuracy: 17/17 = 100%
 
 <!-- TOC ignore:true -->
 ### System testing
