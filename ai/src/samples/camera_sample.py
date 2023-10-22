@@ -125,6 +125,8 @@ Select a model to run:
 
 			elif choice == '1':
 				crop_box = read_crop_box(config.get('tray_crop_box').get('right'))
+
+				# the objects are large enough that an image from a single lens is sufficient
 				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.RIGHT)
 				detections = run_inference(tray_model, cropped_image, output_path)
 				best_move = determine_move(detections, tray_model)
@@ -133,6 +135,8 @@ Select a model to run:
 
 			elif choice == '2':
 				crop_box = read_crop_box(config.get('case_crop_box').get('right'))
+				
+				# the objects are large enough that an image from a single lens is sufficient
 				cropped_image = get_rgb_cropped_image(camera, crop_box, LogicalLens.RIGHT)
 				detections = run_inference(case_model, cropped_image, output_path)
 

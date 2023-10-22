@@ -158,6 +158,7 @@ def determine_move(detections, model):
 	Args:
 		detections (dict): dictionary of detected objects
 		model (ObjectDetectionModel): model used to detect objects
+		
 	Returns:
 		TrayMovement: movement of the tray
 	'''

@@ -52,9 +52,14 @@ The following options are supported:
 Creates a specified number of random crops from an image with the specified dimensions.
 
 Primarily used for generating background images to diversify datasets for models relying on static cropping.
-Without these additional images, the model may produce numerous false positive predictions when applied outside the cropped area within an image.
-Including these extra background images enhances the models' accuracy and resilience when used on images that were trained with varying cropping methods.
+Without these additional images, the model may produce numerous false positive predictions when applied on an image outside the cropped area.
+Including these extra background images enhances the models' accuracy and resilience when used on images that were trained with static cropping.
 
 <!-- TOC ignore:true -->
 ### Usage:
 The user will be asked to supply the source image, enter the coordinates of the crop box, the number of images to generate, and the destination folder.
+
+<!-- TOC ignore:true -->
+## Notes
+* If the file selection window does not appear, check if it opens in the background.
+* User prompts for file dialogues are provided in the file selection window name.

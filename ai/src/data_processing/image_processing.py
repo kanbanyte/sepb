@@ -11,7 +11,7 @@ def crop_image(image, crop_box):
 		crop_box (x1, y1, x2, y2): Tuple containing crop box coordinates (left, top, right, bottom).
 
 	Returns:
-		np.array: Cropped Image
+		np.array: cropped image
 	'''
 	if image.size == 0:
 		raise ValueError(f"Input image size must not be 0")

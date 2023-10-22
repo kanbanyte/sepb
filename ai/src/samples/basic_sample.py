@@ -34,6 +34,14 @@ def run_with_ultralytics_api():
 			model = YOLO(model_file)
 			results = model.predict(image, verbose=True)
 			for result in results:
+				'''
+				OpenCV is not the recommended way to use in this project as it requires the thread to be blocked until the window is closed.
+				Attempting to run the code in another thread can lead to stability issues, even with locks so Pillow should be used instead.
+
+				`result.plot()` is a convenient way to get an image with bounding boxes, labels and confidence level,
+				but the color red, which is ineligible when used on the red chip slots, cannot be adjusted.
+				The recommended alternative is `data_processing.image_processing.show_image`
+				'''
 				cv2.imshow(f"Close window to continue", result.plot())
 				cv2.waitKey(0)
 
