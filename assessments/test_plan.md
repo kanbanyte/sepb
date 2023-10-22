@@ -362,11 +362,12 @@ Test Case Pass/Fail Criteria:
 		* The Arm does nothing
 * Arm places item
 	* Pass Criteria
-		* A grabbed item is placed
+		* A single item is picked up.
 	* Fail criteria
 		* The arm places the item incorrectly or in the wrong location
-		* The arm drops an item
-		* The Arm does nothing
+		* The arm drops an item after picking it up
+		* The arm fails to grab an item
+		* The arm is completely unresponsive
 * Computer vision identifies items
 	* Pass Criteria
 		* CV consistently labels items correct
