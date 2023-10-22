@@ -49,13 +49,13 @@ class TestTrayPosition(unittest.TestCase):
 		}
 		self.assertEqual(determine_move(detections, model).value, 2, "Should be move_assembly_tray2")
 
-	def test_both_empty(self):
+	def test_no_move(self):
 		#tray 1 empty, tray 2 empty
 		detections = {
 			0: [DetectedObject(0.9, (352, 302, 690, 586))],
 			0: [DetectedObject(0.9, (367, 7, 684, 259))]
 		}
-		self.assertEqual(determine_move(detections, model).value, 6, "Should be both_empty")
+		self.assertEqual(determine_move(detections, model).value, 5, "Should be no_move")
 #endregion
 
 #region out of bounds tests
@@ -76,7 +76,7 @@ class TestTrayPosition(unittest.TestCase):
 		]
 
 		for invalid_detection in invalid_detections:
-			self.assertEqual(determine_move(invalid_detection, model).value, 6, "Should be both_empty")
+			self.assertEqual(determine_move(invalid_detection, model).value, 5, "Should be no_move")
 
 	def test_three_empty_trays(self):
 		detections = {
@@ -84,7 +84,7 @@ class TestTrayPosition(unittest.TestCase):
 			0: [DetectedObject(0.9, (352, 302, 690, 586))],
 			0: [DetectedObject(0.9, (367, 7, 684, 259))]
 		}
-		self.assertEqual(determine_move(detections, model).value, 6, "Should be both_empty")
+		self.assertEqual(determine_move(detections, model).value, 5, "Should be no_move")
 #endregion
 
 if __name__ == '__main__':
