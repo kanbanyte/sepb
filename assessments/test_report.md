@@ -266,25 +266,24 @@ As the criteria states, this section was well integrated and made solidly; there
 Some proof of this was the successful results of the AI model as seen here:
 
 #### Chip Model:
-* Combined
-    * precision: 100%
-    * recall: 100%
-    * accuracy: 100%
+|Truth|Chip|Background|
+|---|---|---|
+|Chip|130|0|
+|Background|0|0|
 
 #### Tray model:
 |<div align="right">TRUTH</div> | EMPTY | FULL | PARTIAL | BCKGRND |
-|-------------------------------|-------|------|---------|---------|
-| PREDICTIONS                   |       |      |         |         |
-| EMPTY                         |  11   |      |         |         |
-| FULL                          |       |  15  |         |         |
-| PARTIAL                       |       |      |   20    |         |
-| BACKGROUND                    |       |      |         |         |
+|---|---|---|---|---|
+|EMPTY|11|0|0|0|
+|FULL|0|15|0|0|
+|PARTIAL|0|0|20|0|
+|BACKGROUND|0|0|0|0|
 
 #### Case Model:
-- Confusion Matrix:
-    - precision: 17/17 = 100%
-    - recall: 17/17 = 100%
-    - accuracy: 17/17 = 100%
+|Truth|Case|Background|
+|---|---|---|
+|Case|17|0|
+|Background|0|0|
 
 <!-- TOC ignore:true -->
 ### System testing
