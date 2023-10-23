@@ -148,9 +148,9 @@ The code was also able to take and store pictures of what the camera was seeing.
 Therefore, this test can be considered a success.
 
 **Initialise Model**\
-The trained machine learning (ML) model was able to obtain images from the camera of the workspace,
-correctly identify where in the appropriate feeders parts were located and report them back.
-The processed images with the detected locations can also be viewed by the user, if needed.
+The trained AI models was able to apply inference settings (confidence threshold, intersection over union threshold, etc.), retrieve images from the camera,
+correctly identify positions of objects and report them back.
+The processed images with bounding boxes and labels are displayed to the user for visual verification.
 
 Therefore, this test can be considered a success.
 
