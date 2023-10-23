@@ -87,7 +87,7 @@ then verify that the robot picks up the correct object as well.
 Scalability was also a priority during development of the system.
 The way the code for the robot control has been designed, the user will be able to easily record and add positions that may be required in the future, and
 new positions can easily be added to the movements that will be required of the robot.
-This design also ensures that should the user or develop makes changes to the specific movements of the robot, performance will not be affected.
+This design also ensures that should the user or developer makes changes to the specific movements of the robot, performance will not be affected.
 
 Overall, as the system is able to achieve all the tasks that were laid out in the Usability Evaluation Plan,
 the system can be considered a success and classified as straight-forward and intuitive,
