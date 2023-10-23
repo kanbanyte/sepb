@@ -318,6 +318,7 @@ The risks and contingencies associated with testing include the following:
 2. Time pressures may result in less time being allocated to testing.
 3. Not all possible scenarios are able to be tested.
 4. The scope of testing could end up going beyond the project's boundaries, resulting in time and resource overruns.
+5. Danger and risk is limited due to sensors in the cobots' joints that allow it to know when interacting with an impediment or obstacle.
 
 <!-- TOC ignore:true -->
 ### Contingencies
@@ -326,6 +327,7 @@ The risks and contingencies associated with testing include the following:
 if timelines become constrained, prioritise testing activities based on problem severity.
 3. Create comprehensive test plans that use techniques like equivalence partitioning.
 4. Clearly define the scope of testing in the test plan and establish a process to assess and approve any changes to the scope.
+5. Ensure clear call outs are made before making the robot move to allow team members time to clear themselves from the danger zone.
 
 ## Testing Tasks
 * Develop comprehensive unit test cases for individual components of the vision system,
