@@ -155,8 +155,8 @@ The processed images with bounding boxes and labels are displayed to the user fo
 Therefore, this test can be considered a success.
 
 **Model and Cobot Connection via PC**\
-Using ROS2, the ML model is able to provide the required information to the ROS2 service that controls the movements of the robot arm.
-Using this information, the service is able to plan the movements required for the robot arm to pick and place the correct items in the correct locations.
+Using ROS2, a camera server node is used to deliver information from the AI Models to the cobot action server controlling movements of the robot arm.
+Using this information, the action server is able to plan the trajectories required for the robot arm to pick and place the correct items in the correct locations.
 
 Therefore, this test can be considered a success.
 
