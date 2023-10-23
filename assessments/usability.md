@@ -85,7 +85,7 @@ so that the user is able to verify that the algorithms correctly detect the loca
 then verify that the robot picks up the correct object as well.
 
 Scalability was also a priority during development of the system.
-The way the code for the robot control has been design, the user will be able to easily record and add positions that may be required in the future, and
+The way the code for the robot control has been designed, the user will be able to easily record and add positions that may be required in the future, and
 new positions can easily be added to the movements that will be required of the robot.
 This design also ensures that should the user or develop makes changes to the specific movements of the robot, performance will not be affected.
 
