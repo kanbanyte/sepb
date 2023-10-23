@@ -46,8 +46,9 @@ def draw_bounding_box(image, bounding_box, name):
 
 	image_height, image_width, _ = image.shape
 
-	# font scale of 1 fits an image around 600px width so we scale it with the input image
-	font_scale = 1 * (image_width / 800)
+	# magic number that makes the font size legible within images of different sizes
+	# this number is obtained through trial-and-error, change it to suit your preference
+	font_scale = (image_width + image_height) / 1200
 	font = cv2.FONT_HERSHEY_DUPLEX
 
 	# position the text below the image but shift it up if the text goes out of view
