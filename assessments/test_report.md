@@ -252,10 +252,10 @@ As Testing has concluded we will review the criteria again and compare them to t
 This testing stage was primarily applied to the AI code; or more to the point, the intermediary code of turning AI outputs into a ROS usable format.
 So, going off the established requirements: the testing was sufficient, covering a good amount of code.\
 Alongside this, a few bugs were identified and promptly fixed; overall this testing stage passed.
-For the units testing we followed the format of having a few Null cases and invalid test cases,
+For the unit tests, we followed the format of having a few Null cases and invalid test cases,
 these included exceptionally large numbers, negatives and inverted coordinates.
 
-For cases and chips all 17 and 48 valid positions were tested.
+For cases and chips, all 17 and 48 valid positions were tested.
 As for the trays, movement commands were returned in all cases, defaulting to no_move where errors arise.
 
 <!-- TOC ignore:true -->
