@@ -1,71 +1,105 @@
-# Steps Produced
+# Cobot Package
+## Overview
+The cobot package contains ROS2 code that allows for the ZED camera and UR5e cobot to interact and perform the pick and place task.
+There are two ROS2 packages within: [`pick_place_package`](src\pick_place_package\README.md) which contains all of the nodes, the launch file, config files,
+and additional scripts, and [`pick_place_interfaces`](src\pick_place_interfaces\README.md) which contains ROS2 interfaces for communication between nodes.
+
+**Table of Contents**
+<!-- TOC -->
+
+* [Dependencies](#dependencies)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Common Issues](#common-issues)
+
+## Dependencies
+* [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
+* [Universal Robots ROS2 Driver](https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver/tree/humble#universal-robots-ros2-driver)
+
+## Installation
+<!-- Maybe add part here about cloning workspace from repo correctly so bash cobot.sh functions work correctly.  -->
+Navigate the the directory where the `cobot` workspace is located to build the workspace.
+
+Source the `cobot.sh` file for access to relevant functions:
 ```bash
-cobot@cobot:~/Documents/repos/sepb/cobot/src$ init_ros
-cobot@cobot:~/Documents/repos/sepb/cobot/src$ ros2 pkg create --build-type ament_python --node-name cobot_node pick_place_package
-# ...
-cobot@cobot:~/Documents/repos/sepb/cobot/src$ cd ..
-cobot@cobot:~/Documents/repos/sepb/cobot$ colcon build --packages-select pick_place_package
-Starting >>> pick_place_package
-# ...
-Finished <<< pick_place_package [0.80s]
-
-Summary: 1 package finished [0.95s]
-  1 package had stderr output: pick_place_package
-cobot@cobot:~/Documents/repos/sepb/cobot$ source install/local_setup.bash
-cobot@cobot:~/Documents/repos/sepb/cobot$ ros2 run pick_place_package cobot_node
-Hi from pick_place_package.
-cobot@cobot:~/Documents/repos/sepb/cobot$ rosdep install -i --from-path src --rosdistro humble -y
-#All required rosdeps installed successfully
-cobot@cobot:~/Documents/repos/sepb/cobot$ colcon build --packages-select pick_place_package
-Starting >>> pick_place_package
-# ...
-Finished <<< pick_place_package [0.81s]
-
-Summary: 1 package finished [0.97s]
-  1 package had stderr output: pick_place_package
-cobot@cobot:~/Documents/repos/sepb/cobot$ source install/setup.bash
-cobot@cobot:~/Documents/repos/sepb/cobot$ ros2 launch pick_place_package pick_place_launch.py
-# ...
-cobot@cobot:~/Documents/repos/sepb/cobot$
+source `cobot.sh`
 ```
 
-## Copy and Paste
+Source the ROS2 `setup.bash` file:
 ```bash
-cd ~/Documents/repos/sepb/cobot/src
+init_ros2
 ```
 
+Build the package with this simple command:
 ```bash
-init_ros
+rebuild_cobot
 ```
-
+This is equivalent to this:
 ```bash
-cd ..
-```
-
-```bash
-colcon build --packages-select pick_place_package
-```
-
-```bash
+rm -r $COBOT_BUILD_DIR
+rm -r $COBOT_INSTALL_DIR
+rm -r $COBOT_LOG_DIR
+cd $COBOT_PATH
+colcon build
 source install/local_setup.bash
-```
-
-```bash
-ros2 run pick_place_package cobot_node
-```
-
-```bash
 rosdep install -i --from-path src --rosdistro humble -y
 ```
 
+## Usage
+### Directory Structure
+The following list contains a concise explanation of the directory structure:
+* [pick_place_interfaces](src\pick_place_interfaces\README.md): contains any/all `.msg`, `.srv`, and `.action` files.
+* [pick_place_package](src\pick_place_package\README.md): contains launch files, config files, nodes, and additional scripts.
+
+The `cobot.sh` file provides many functions to do numerous things with regards to the robot.
+
+The [launch file](src\pick_place_package\launch\pick_place_launch.py) starts three nodes:
+* [`camera_node`](src\pick_place_package\pick_place_package\camera_node.py)
+* [`cobot_node`](src\pick_place_package\pick_place_package\cobot_node.py)
+* [`gripper_node`](src\pick_place_package\pick_place_package\gripper_node.py)
+
+The pick and place task is started from [`main_node`](src\pick_place_package\pick_place_package\main_node.py) which is run in a separate terminal.
+
+### Starting the Robot Driver
+Before performing the pick and place task, start the robot driver and connect to the robot:
 ```bash
-colcon build --packages-select pick_place_package
+connect_cobot
 ```
 
+You should see the following output, note the six similar messages at the bottom:
+<!-- INSERT DRIVER TERMINAL OUTPUT HERE  -->
+
+### Performing the Pick and Place Task
+If you have already built the package, run the following command to run the launch file:
 ```bash
-source install/setup.bash
+launch_cobot
 ```
 
+If you have modified the code and need to rebuild, you can run the following command to rebuild the package and immediately start the cobot:
 ```bash
-ros2 launch pick_place_package pick_place_launch.py
+start_cobot
 ```
+
+Wait until no more messages are outputted in the terminal, then in another terminal run the following command to run the main node:
+```bash
+run_main
+```
+
+## Common Issues
+### Trouble Starting Robot Driver
+#### Symptoms:
+* The terminal doesn't have six `finished with pid [xxxx]` messages at the end.
+* Continuous output of `configure gpio tf-prefix`.
+
+#### Solution:
+Ensure that the `ROS.urp` program is loaded on the controller.
+You may need to keep restarting the driver until you see the six messages as stated above.
+
+### Gripper Not Working During Task
+#### Symptoms:
+The gripper doesn't open or close during the task even if the terminal in which the launch file was run shows that it is calling the gripper service.
+
+#### Solution:
+Sometimes the `play` service isn't called due to an error in the driver so the `gripper_test.URP` program isn't called.
+Kill the terminals running the launch file and main node.
+Restart the robot driver then run the launch file and main node again.
