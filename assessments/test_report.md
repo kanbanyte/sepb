@@ -299,8 +299,8 @@ Although the team initially planned to develop the program in C++, the decision 
 since most online documentation for ROS2 and tools used in machine learning are based on Python.
 This decision however hindered progress later on when working on the functionality of the gripper,
 due to the fact that there was no documentation on this topic in Python.
-A future consideration is to switch the core language of the program to C++.
-This change should improve the overall efficiency of the system due to the compiled nature of C++ as opposed to the interpreted nature of Python.
+A future consideration is to switch the core language of the program to C++, which is a statically type language as opposed to Python which is dynamic.
+This will improve the developer's ability to detect errors or issues in the system.
 
 Another future consideration that will need to be taken into account is the camera.
 Currently, the images from the camera provide a low amount of detail for the CV algorithms, and
