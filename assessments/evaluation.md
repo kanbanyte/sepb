@@ -230,8 +230,9 @@ The software occasionally fails to detect an obstacle in the robotic arm's path,
 This is a high-severity problem because it directly threatens human safety and potentially cause damage in the working space.
 
 * System Freeze:\
-The system occasionally freezes during operation, rendering the robotic arm unresponsive.
-This is a high-severity issue because it halts production and may result in damage to equipment.
+The system might freeze fully or partially during operation.
+This is a high-severity issue because it halts production and may result in damage to equipment. 
+especially if gripper fails to release an item and the joints continue moving.
 
 * Inaccurate Object Detection:\
 The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target.
