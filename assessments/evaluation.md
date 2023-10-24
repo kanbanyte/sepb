@@ -298,17 +298,59 @@ These problems may only affect a small subset of users, but they are still worth
 Categorising usability issues by severity is important as it allows the team to prioritise problem-solving efforts,
 enabling the team to focus resources on addressing critical user experience problems first.
 
-#### High Severity
+<!-- TOC ignore:true -->
+### High Severity
 These issues have a severe negative impact on usability and heavily impact a user's ability to achieve their goals.\
-These issues often lead to task failure and user frustration.
+These issues often lead to task failure and user frustration.\
+High severity issues for this project include:
+* Safety Critical Error:\
+The software occasionally fails to detect an obstacle in the robotic arm's path, leading to a collision risk.
+This is a high-severity problem because it directly threatens human safety and potentially cause damage in the working space.
 
-#### Medium Severity
+* System Freeze:\
+The system might freeze fully or partially during operation.
+This is a high-severity issue because it halts production and may result in damage to equipment.
+especially if gripper fails to release an item and the joints continue moving.
+
+* Inaccurate Object Detection:\
+The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target.
+This high-severity problem impacts the system's efficiency.
+
+<!-- TOC ignore:true -->
+### Medium Severity
 These problems have a moderate impact on usability, causing inconvenience reduced speed in user task completion.\
-While not critical, these issues still need to be addressed to ensure a smoother user experience.
+While not critical, these issues still need to be addressed to ensure a smoother user experience.\
+Medium severity issues for this project include:
+* Inefficient Path Planning:\
+The software takes longer than expected to calculate the optimal path for the robotic arm, causing minor delays in task completion.
+While this does not affect safety, it impacts efficiency.
 
-#### Low Severity
+* Interface Confusion:\
+Some operators occasionally struggle to understand a specific feature of the user interface, leading to slower operation.
+This is a moderate-severity issue as it affects usability.
+
+* Intermittent Connectivity Issues:\
+The system experiences occasional communication problems between the depth camera, neural network, and robot operating software.
+While this can disrupt operation, it's not a constant or critical issue due to its rarity.
+
+<!-- TOC ignore:true -->
+### Low Severity
 These issues have minimal impact on usability and do not significantly hinder users from completing their tasks.\
-They may however reduce the quality of a user's experience and therefore should be addressed and fixed.
+They may however reduce the quality of a user's experience and therefore should be addressed and fixed.\
+Low severity issues for this project include:
+* Minor Interface Clutter:\
+The user interface has some non-essential elements that clutter the screen but do not impede the main operation.
+This occurs when the program is launched.
+Many different images pop up of what the camera is detecting which can be confusing for the user.
+This is a low-severity issue as it doesn't hinder usability significantly.
+
+* Occasional False Alarms:\
+The system occasionally triggers false alarms for object detection, but these are infrequent and easily dismissed by operators.
+They usually result in an error being thrown at the start of the program, however it is able to recover and continue as normal.
+While it may cause minor interruptions, it's low in severity.
+
+* Non-Critical Visual Glitch:\
+There are occasional minor visual glitches in the user interface, such as graphical artifacts, but they do not affect the system's core functionality or safety.
 
 # Reporting Results
 Upon conclusion of testing the Test results will be summarised in a clear and concise way with appropriate captions and information in a report.
