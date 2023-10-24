@@ -82,7 +82,7 @@ Finally, the pass and fail criteria will be expounded to demonstrate the process
 The purpose of the test plan is to clearly state the required features and functions of the system to test and the strategy by which they will be tested.
 The test plan will allow for a more efficient testing process to prepare the developed system for its final release by outlining test features,
 functional and non functional test cases, as well as the pass and fail criteria for these tests.
-The roles and responsibilities of each member will be established to facilitate the testing process, ensuring it is efficient and effective.  
+The roles and responsibilities of each member will be established to facilitate the testing process, ensuring it is efficient and effective.
 Additionally, the test plan will highlight the features that will not be tested to allow for a more efficient testing process.
 
 ## Scope
@@ -354,10 +354,13 @@ Unit tests are used to evaluate the accuracy of the code that converts bounding 
 The images below show the passing tests for chip position conversion, case position conversion, and tray position-to-cobot movement conversion.
 Note that the printed messages are used for diagnostic purposes, the results are printed on the final line.
 
+Chip Unit Test
 ![unit test 1](https://cdn.discordapp.com/attachments/760514738139955211/1166355595163615342/image1.png)
 
+Cases Unit Test
 ![unit test 2](https://cdn.discordapp.com/attachments/760514738139955211/1166355595423657994/image2.png)
 
+Tray Unit Test
 ![unit test 3](https://cdn.discordapp.com/attachments/760514738139955211/1166355595700477993/image3.png)
 
 Test Case Pass/Fail Criteria:
