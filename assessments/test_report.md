@@ -76,9 +76,24 @@ The cobot already possesses the ability to pick up objects from pre-defined posi
 The project's objective is to equip the cobot with an AI-based vision system that precisely guides the selection of objects,
 and replicate the existing movements via a new software implemented with ROS, collectively known as the movement controller.
 As a result, the focus of the tests will revolve around the new functionalities.
-The tested items will span from AI models used to detect the presence of various types of objects for pickup,
-the implementation of a cobot movement controller to the integration between the two.
-As the software operates autonomously, the user interface is primarily confined to the terminals, which displays log messages indicating the system's current state.
+
+The tested items span multiple components of the system:
+* Camera which captures images of the workspace, including:
+	* Mounting the camera on a T-slot bar of the working space using 3D-printed components.
+	* Apply camera settings (saturation levels, flip mode, brightness, etc.) to provide images that can be optimally processed by the AI models.
+	* Establish connection to the camera from the computer controlling the cobot.
+* AI models used to detect the presence of various types of objects for pickup
+This includes:
+	* Model to detect positions of chips
+	* Model to detect positions of cases
+	* Model to detect position of trays and classify them into 3 categories: Full, Empty and Partially Full
+* Cobot movement controller, which includes the following components:
+	* Action server to control the cobot by sending trajectories to the joints and gripper.
+	* Action client to send movement requests to the server and keep the cobot operating in a loop.
+* Integration between the AI models and movement controllers via a camera server.
+	* Camera server is a ROS service supplying positions of items to the movement controller.
+	The server relies on the AI models and the camera to retrieve bounding boxes of objects and
+	convert them to positions or commands to be used by the movement controller.
 
 ## Test Cases
 This section will cover the features that were tested as well as the functional test cases that were used to evaluate the features.
