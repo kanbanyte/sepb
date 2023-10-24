@@ -261,11 +261,11 @@ These issues have minimal impact on usability and do not significantly hinder us
 They may however reduce the quality of a user's experience and therefore should be addressed and fixed.\
 Low severity issues for this project include:
 * Minor Interface Clutter:\
-The user interface has some non-essential elements that clutter the screen but do not impede the main operation.
+The user interface has some non-essential elements that clutter the screen but do not impede the main operation. This occurs when the program is launched. Many different images pop up of what the camera is detecting which can be confusing for the user.
 This is a low-severity issue as it doesn't hinder usability significantly.
 
 * Occasional False Alarms:\
-The system occasionally triggers false alarms for object detection, but these are infrequent and easily dismissed by operators.
+The system occasionally triggers false alarms for object detection, but these are infrequent and easily dismissed by operators. They usually result in an error being thrown at the start of the program, however it is able to recorver and continue as normal.
 While it may cause minor interruptions, it's low in severity.
 
 * Non-Critical Visual Glitch:\
