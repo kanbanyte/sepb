@@ -343,8 +343,9 @@ The following criteria provide clear guidelines for assessing whether the system
 other relevant attributes whilst under testing conditions.
 
 ## Product Level
-The testing will occur on the functionality of the product.\
-Example of pass criteria:
+Unit tests are used to evaluate the accuracy of the code that converts bounding box coordinates to object positions.
+The images below show the passing tests for chip position conversion, case position conversion and tray position-to-cobot movement conversion.
+Note that the printed messages are used for diagnostic purposes, the results are printed on the final line.
 
 ![unit test 1](https://cdn.discordapp.com/attachments/760514738139955211/1164440984185229433/image.png)
 
