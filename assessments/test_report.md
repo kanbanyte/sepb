@@ -256,7 +256,8 @@ For the unit tests, we followed the format of having a few Null cases and invali
 these included exceptionally large numbers, negatives and inverted coordinates.
 
 For cases and chips, all 17 and 48 valid positions were tested.
-As for the trays, movement commands were returned in all cases, defaulting to no_move where errors arise.
+As for the trays, movement commands were returned in all cases,
+defaulting to "no move" when there is none could be made.
 
 <!-- TOC ignore:true -->
 ### Integration Testing
@@ -265,25 +266,25 @@ The integration is also made to ensure the AI and ROS code can interact and "tal
 As the criteria states, this section was well integrated and made solidly; therefore this would be a pass.
 Some proof of this was the successful results of the AI model as seen here:
 
-#### Chip Model:
-|Truth|Chip|Background|
-|---|---|---|
-|Chip|130|0|
-|Background|0|0|
+**Chip Model**
+|&emsp;|Chip/Truth|Background/Truth|
+|:-|:-:|:-:|
+|Chip/Predicted|130|0|
+|Background/Predicted|0|0|
 
-#### Tray model:
-|<div align="right">TRUTH</div> | EMPTY | FULL | PARTIAL | BCKGRND |
-|---|---|---|---|---|
-|EMPTY|11|0|0|0|
-|FULL|0|15|0|0|
-|PARTIAL|0|0|20|0|
-|BACKGROUND|0|0|0|0|
+**Tray Model**
+|&emsp;|Empty/Truth|Full/Truth|Paritial/Truth|Background/Truth|
+|:-|:-:|:-:|:-:|:-:|
+|Empty/Predicted|11|0|0|0|
+|Full/Predicted|0|15|0|0|
+|Paritial/Predicted|0|0|20|0|
+|Background/Predicted|0|0|0|0|
 
-#### Case Model:
-|Truth|Case|Background|
-|---|---|---|
-|Case|17|0|
-|Background|0|0|
+**Case Model**
+|&emsp;|Case/Truth|Background/Truth|
+|:-|:-:|:-:|
+|Case/Predicted|17|0|
+|Background/Predicted|0|0|
 
 <!-- TOC ignore:true -->
 ### System testing
