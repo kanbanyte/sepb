@@ -80,13 +80,14 @@ provide the correct locations of the respective chips and cases to the system fo
 The CV algorithms are also able to detect if all the required parts have been accumulated on the assembly tray and is ready to be provided to the assembly worker, and
 vice versa, the CV algorithm is also able to detect when the assembly tray has been emptied by the worker, and
 can instruct the system to return the empty assembly tray to its original position.
-All of these algorithms also present the images with the results of the detection algorithms,
-so that the user is able to verify that the algorithms correctly detect the locations of objects, and
-then verify that the robot picks up the correct object as well.
+
+Each of the CV algorithms are also able to present images with the results of the detection algorithms.
+This allows the user to be able to verify the results of the algorithms and ensure that the outputs are correct, and
+the actions implemented by the cobot achieve the required results.
 
 Scalability was also a priority during development of the system.
-The way the code for the robot control has been designed, the user will be able to easily record and add positions that may be required in the future, and
-new positions can easily be added to the movements that will be required of the robot.
+The way the code for the robot control has been designed, the user will be able to easily record and add positions should they be required in the future, and
+the new positions can easily be added to the procedures of the robot.
 This design also ensures that should the user or developer makes changes to the specific movements of the robot, performance will not be affected.
 
 Overall, as the system is able to achieve all the tasks that were laid out in the Usability Evaluation Plan,
