@@ -86,13 +86,13 @@ This allows the user to be able to verify the results of the algorithms and ensu
 the actions implemented by the cobot achieve the required results.
 
 Scalability was also a priority during development of the system.
-The way the code for the robot control has been designed, the user will be able to easily record and add positions should they be required in the future, and
+Should any new positions be needed in the future, the user or developer can easily record and add positions, and
 the new positions can easily be added to the procedures of the robot.
 This design also ensures that should the user or developer makes changes to the specific movements of the robot, performance will not be affected.
 
-Overall, as the system is able to achieve all the tasks that were laid out in the Usability Evaluation Plan,
+Overall, as the system is able to achieve all the tasks that were laid out in the [Usability Evaluation Plan](evaluation.md),
 the system can be considered a success and classified as straight-forward and intuitive,
-with future development and customization by the user a key priority in its design.
+with future development and customisation by the user a key priority in its design.
 
 # Usability Metrics
 Usability metrics serve as objective and data-driven tools for evaluating different parts of Project24;
