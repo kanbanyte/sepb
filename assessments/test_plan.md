@@ -354,11 +354,11 @@ Unit tests are used to evaluate the accuracy of the code that converts bounding 
 The images below show the passing tests for chip position conversion, case position conversion, and tray position-to-cobot movement conversion.
 Note that the printed messages are used for diagnostic purposes, the results are printed on the final line.
 
-![unit test 1](https://cdn.discordapp.com/attachments/760514738139955211/1164440984185229433/image.png)
+![unit test 1](https://cdn.discordapp.com/attachments/760514738139955211/1166355595163615342/image1.png)
 
-![unit test 2](https://cdn.discordapp.com/attachments/760514738139955211/1164441285080403978/image.png)
+![unit test 2](https://cdn.discordapp.com/attachments/760514738139955211/1166355595423657994/image2.png)
 
-![unit test 3](https://cdn.discordapp.com/attachments/760514738139955211/1164442066491809802/image.png)
+![unit test 3](https://cdn.discordapp.com/attachments/760514738139955211/1166355595700477993/image3.png)
 
 Test Case Pass/Fail Criteria:
 * Arm retrieves item

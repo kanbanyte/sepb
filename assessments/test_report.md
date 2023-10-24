@@ -57,8 +57,13 @@
 
 # Introduction
 This document is made to report on and cover the results of the tests outlined in the Test Plan, while discussing and evaluating their success.
+This document is the summary of the planned tests contained in the test plan and within the testing, many stages were removed.\
+These stages primarily being seen as either too difficult to test with our provided resources, not worth testing or just generally didn't fit the finalised product.
 This document will cover the items being tested, the appropriate test cases for them as well as the pass/fail criteria of said tests.\
 It is also going to justify the test choices and the validity of them in relation to the system.
+
+The tests were primarily conducted within the FOF, on integration between AI and ROS systems.
+Other tests were done in unit test format run from local machines and then recorded as needed.
 
 # Results
 The assessment centred on the AI-based vision system and cobot movement controller, testing various features outlined in the test cases.
