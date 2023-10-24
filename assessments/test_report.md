@@ -147,8 +147,8 @@ The code was also able to take and store pictures of what the camera was seeing.
 Therefore, this test can be considered a success.
 
 **Initialise Model**\
-The trained AI models was able to apply inference settings (confidence threshold, intersection over union threshold, etc.), retrieve images from the camera,
-correctly identify positions of objects and report them back.
+The trained AI models was able to apply inference settings (confidence threshold, intersection over union threshold, etc.),
+retrieve images from the camera, correctly identify positions of objects and report them back.
 The processed images with bounding boxes and labels are displayed to the user for visual verification.
 
 Therefore, this test can be considered a success.
