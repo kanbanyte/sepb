@@ -363,7 +363,7 @@ Test Case Pass/Fail Criteria:
 		* The Arm does nothing
 * Arm places item
 	* Pass Criteria
-		* A single item is picked up.
+		* A single item is picked up
 	* Fail criteria
 		* The arm places the item incorrectly or in the wrong location
 		* The arm drops an item after picking it up
