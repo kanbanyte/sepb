@@ -350,7 +350,15 @@ The following criteria provide clear guidelines for assessing whether the system
 other relevant attributes whilst under testing conditions.
 
 ## Product Level
-The testing will occur on the functionality of the product.
+Unit tests are used to evaluate the accuracy of the code that converts bounding box coordinates to object positions.
+The images below show the passing tests for chip position conversion, case position conversion, and tray position-to-cobot movement conversion.
+Note that the printed messages are used for diagnostic purposes, the results are printed on the final line.
+
+![unit test 1](https://cdn.discordapp.com/attachments/760514738139955211/1164440984185229433/image.png)
+
+![unit test 2](https://cdn.discordapp.com/attachments/760514738139955211/1164441285080403978/image.png)
+
+![unit test 3](https://cdn.discordapp.com/attachments/760514738139955211/1164442066491809802/image.png)
 
 Test Case Pass/Fail Criteria:
 * Arm retrieves item
@@ -362,11 +370,12 @@ Test Case Pass/Fail Criteria:
 		* The Arm does nothing
 * Arm places item
 	* Pass Criteria
-		* A grabbed item is placed
+		* A single item is picked up
 	* Fail criteria
-		* The arm places the item incorrectly
-		* The arm drops an item
-		* The Arm does nothing
+		* The arm places the item incorrectly or in the wrong location
+		* The arm drops an item after picking it up
+		* The arm fails to grab an item
+		* The arm is completely unresponsive
 * Computer vision identifies items
 	* Pass Criteria
 		* CV consistently labels items correct
