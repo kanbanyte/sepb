@@ -290,6 +290,9 @@ the project consistently met predefined criteria, affirming its readiness for de
 One of the biggest advantages to the way the project has been structured is its modular design philosophy.
 This design allows future users and developers to easily modify, add improvements, or add new features during future development,
 without affecting the functions of the rest of the project.
+For AI-related components, individual objects have their own models which can be substituted in the future.
+Modules in the AI package can also be tested independently of the cobot and the camera if needed.
+Similarly, the cobot movement controller is also divided into multiple services and nodes that are highly cohesive and uncoupled with each other.
 
 A significant weakness currently present in the system is the choice of programming language, as the project is currently based in Python.
 Although the team initially planned to develop the program in C++, the decision was made to switch to Python during develop,
