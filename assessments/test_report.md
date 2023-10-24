@@ -295,8 +295,8 @@ Modules in the AI package can also be tested independently of the cobot and the 
 Similarly, the cobot movement controller is also divided into multiple services and nodes that are highly cohesive and uncoupled with each other.
 
 A significant weakness currently present in the system is the choice of programming language, as the project is currently based in Python.
-Although the team initially planned to develop the program in C++, the decision was made to switch to Python during develop,
-since nearly all the documentation online for ROS2 is based in Python.
+Although the team initially planned to develop the program in C++, the decision was made to switch to Python during development,
+since most online documentation for ROS2 and tools used in machine learning are based on Python.
 This decision however hindered progress later on when working on the functionality of the gripper,
 due to the fact that there was no documentation on this topic in Python.
 A future consideration is to switch the core language of the program to C++.
