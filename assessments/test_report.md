@@ -230,7 +230,7 @@ where it is described that the criteria will help make sure that the project mee
 as well as, ensuring the project is at an acceptable standard of quality.
 The predefined criteria provides clear guidelines for assessing whether the system meets the desired level of functionality, performance, and
 other relevant attributes whilst under the testing conditions.
-The [Test Plan Document](test_plan.md) also outlines what is considered a critical failure in Suspension Criteria.
+The [Test Plan Document](test_plan.md) also outlines what is considered a critical failure in the Suspension Criteria.
 Whereas failures described in the Product Level and Testing Stages in the Test Plan Document will be catergorised as high or medium failures.
 
 ## Product Level
