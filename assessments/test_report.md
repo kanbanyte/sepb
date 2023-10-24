@@ -257,7 +257,7 @@ these included exceptionally large numbers, negatives and inverted coordinates.
 
 For cases and chips, all 17 and 48 valid positions were tested.
 As for the trays, movement commands were returned in all cases,
-defaulting to "no move" when there is none could be made.
+defaulting to "no move" when none could be made.
 
 <!-- TOC ignore:true -->
 ### Integration Testing
@@ -287,14 +287,14 @@ Some proof of this was the successful results of the AI model as seen here:
 |Background/Predicted|0|0|
 
 <!-- TOC ignore:true -->
-### System testing
+### System Testing
 This section was of testing the system as a whole, this referring to the arm making and executing appropriate movements.
 This stage was the longest as ensuring that the predicted outcomes were in fact working took a good degree of time;
 as mentioned in the prior section [Product Level](#product-level), the system was effective and worked as intended.\
 Judging off the established criteria, we get a confident pass.
 
 <!-- TOC ignore:true -->
-### Acceptance testing
+### Acceptance Testing
 A simple stage, asking the client if they approve.
 Currently this section is a pass, they are happy with progress and the integration; with only minor changes requested.
 Those particular changes being cosmetic/naming convention related rather than major issues with code or choices made around the project.
