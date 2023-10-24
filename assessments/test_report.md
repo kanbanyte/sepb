@@ -286,3 +286,21 @@ Clear pass/fail criteria provided transparent evaluation guidelines.
 At the product level, the system excelled in item handling and computer vision.
 Across testing stages, encompassing unit, integration, system, and acceptance testing;
 the project consistently met predefined criteria, affirming its readiness for deployment.
+
+One of the biggest advantages to the way the project has been structured is its modular design philosophy.
+This design allows future users and developers to easily modify, add improvements, or add new features during future development,
+without affecting the functions of the rest of the project.
+
+A significant weakness currently present in the system is the choice of programming language, as the project is currently based in Python.
+Although the team initially planned to develop the program in C++, the decision was made to switch to Python during develop,
+since nearly all the documentation online for ROS2 is based in Python.
+This decision however hindered progress later on when working on the functionality of the gripper,
+due to the fact that there was no documentation on this topic in Python.
+A future consideration is to switch the core language of the program to C++.
+This change should improve the overall efficiency of the system due to the compiled nature of C++ as opposed to the interpreted nature of Python.
+
+Another future consideration that will need to be taken into account is the camera.
+Currently, the images from the camera provide a low amount of detail for the CV algorithms, and
+while the results at the moment are consistent and correct, accuracy of the systems can be improved.
+A possible solution is to move the camera closer to the workstation, however this would create a risk of the cobot moving into the camera.
+The better solution would be to get a camera that is able record a higher resolution image, and thereby provide more detail in the images.
