@@ -73,6 +73,8 @@
 
 # Introduction
 This document will outline its purpose, the scope and objective of testing, as well as the specific features and cases that will be tested.
+The potential test items for the ROS component and AI component will be discussed,
+such as if the ML model can receive data from camera or if the cobot can move to the correct positions specified by the AI models.
 The strategy for testing will be explained including the responsibilities of each role, test deliverables, the schedule for testing, and risks and contingency plans.\
 Finally, the pass and fail criteria will be expounded to demonstrate the process for the final stages of testing.
 
@@ -80,11 +82,14 @@ Finally, the pass and fail criteria will be expounded to demonstrate the process
 The purpose of the test plan is to clearly state the required features and functions of the system to test and the strategy by which they will be tested.
 The test plan will allow for a more efficient testing process to prepare the developed system for its final release by outlining test features,
 functional and non functional test cases, as well as the pass and fail criteria for these tests.
+The roles and responsibilities of each member will be established to facilitate the testing process, ensuring it is efficient and effective.  
 Additionally, the test plan will highlight the features that will not be tested to allow for a more efficient testing process.
 
 ## Scope
 The scope of the test plan will encompass testing of the computer vision system and of the cobot's movement both individually and together to ensure optimal function.
 Development of the overall system is still in progress, so additional tests may be required and some may not be necessary in the future.
+Functional and non-functional test cases will be discussed and will include items such as establishing connection with robot arm, intialising the machine learning model,
+if the system is able to continue functioning autonomously, etc.
 
 <!-- TOC ignore:true -->
 ### Constraints
