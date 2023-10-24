@@ -52,8 +52,9 @@
 
 # Executive Summary
 This document is a reflective analysis of the methodology utilised to evaluate the usability of the system.\
-The evaluation is done through having a participant perform actions in the system in a controlled setting; as the product is autonomous,
+The evaluation is done through having a participant(s) perform actions in the system in a controlled setting; as the product is autonomous,
 much of these tasks are booting up and establishing the system and subsequent powering/shutting down of said system.\
+The participant in this is trained on how to use the system through written documentation and where confusion arises asks adn receives help from supervising team members.
 The incorporation of user feedback and performance metrics helped identify areas of improvement and enhanced the prototype.
 With the release of the end product on the horizon, the collected and used data from usability testing has been invaluable to the constant improvement to the system.
 
