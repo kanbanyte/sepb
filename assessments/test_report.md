@@ -133,10 +133,9 @@ In this section of the report, each of the test cases and the details of their s
 The system was able to achieve the expected results, with the Linux PC able send information to the robot arm across the network using ROS2, and
 the robot arm able to follow those instructions and move accordingly.
 
-Occasionally, the PC was not able to establish a connection with the cobot, but
-it was found that this was due to the PC switching to a different network, due to external factors.
-However, once this was discovered, and measures were taken to ensure that the instructions and documentation included a check for this issue,
-the occurrences of this issue were drastically reduced.
+At times, the PC faced connectivity issues with the cobot, these problems stemmed from the PC shifting to another network due to external factors.
+Upon identifying this issue, steps were promptly taken to incorporate a network check into the instructions and documentation.
+As a result, the occurrence of this problem significantly decreased.
 
 Therefore, this test can be considered a success.
 
