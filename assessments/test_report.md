@@ -40,12 +40,12 @@
 
 * [Introduction](#introduction)
 * [Results](#results)
+	* [Testing Tasks](#testing-tasks)
 	* [Test Items](#test-items)
 	* [Test Cases](#test-cases)
 		* [Tested Features](#tested-features)
 		* [Functional Test Cases](#functional-test-cases)
 		* [Non-functional Testing](#non-functional-testing)
-	* [Testing Tasks](#testing-tasks)
 * [Pass/Fail Criteria](#passfail-criteria)
 	* [Product Level](#product-level)
 	* [Testing Stages](#testing-stages)
@@ -71,8 +71,31 @@ Non-functional testing affirmed consistent task execution, client satisfaction, 
 The validation process including unit and integration testing, client acceptance tests, and
 documentation review; ensured functionality, documentation clarity plus accuracy for the intended application, and met client expectations.
 
+## Testing Tasks
+In the testing phase, HeeHooVision diligently tackled several essential tasks.
+To begin with, they developed comprehensive unit test cases for the various components of the vision system,
+encompassing object detection algorithms, position estimation, and robot control mechanisms.
+The results of these unit tests consistently fell within the predefined parameters, with no observed deviations from the expected behaviour.
+
+Following this, integration tests were conducted to ensure the seamless communication between the computer vision modules and the ROS2 framework.
+These tests convincingly verified the effective interaction of the vision system components with ROS2,
+confirming the smooth exchange of data, synchronization, and compatibility among the integrated modules.
+
+Additionally, HeeHooVision worked closely with the client to execute acceptance tests.
+During these assessments, they meticulously verified that the vision system met all specified requirements and objectives.
+The client actively participated in these evaluations and expressed approval of the system's performance and functionality,
+signifying alignment with their expectations.
+
+Finally, HeeHooVision thoroughly reviewed and validated the accuracy and comprehensiveness of the documentation.
+The primary objective was to ensure that it serves as a valuable guide for both end-users and developers.
+It can be confidently stated that the documentation, after this validation, provides clear and accurate guidance, making it an invaluable resource for the future.
+
+In summary, this testing phase was successful in verifying the functionality and performance of the vision system,
+meeting client expectations and establishing robust documentation for reference.
+
 ## Test Items
-The cobot already possesses the ability to pick up objects from pre-defined positions and place them on a tray to be transferred to a human operator via a PLC controller.
+The cobot already possesses the ability to pick up objects from pre-defined positions and
+place them on a tray to be transferred to a human operator via a PLC controller.
 The project's objective is to equip the cobot with an AI-based vision system that precisely guides the selection of objects,
 and replicate the existing movements via a new software implemented with ROS, collectively known as the movement controller.
 As a result, the focus of the tests will revolve around the new functionalities.
@@ -183,28 +206,6 @@ As planned, the location of all the objects were kept constant, such as the loca
 This ensured that the development of the system was targeted more towards the development of the movement and detection algorithms.
 
 Overall, considering the goals and aims that the tests targeted, the results were successfully achieved.
-
-## Testing Tasks
-In the testing phase, HeeHooVision diligently tackled several essential tasks.
-To begin with, they developed comprehensive unit test cases for the various components of the vision system,
-encompassing object detection algorithms, position estimation, and robot control mechanisms.
-The results of these unit tests consistently fell within the predefined parameters, with no observed deviations from the expected behaviour.
-
-Following this, integration tests were conducted to ensure the seamless communication between the computer vision modules and the ROS2 framework.
-These tests convincingly verified the effective interaction of the vision system components with ROS2,
-confirming the smooth exchange of data, synchronization, and compatibility among the integrated modules.
-
-Additionally, HeeHooVision worked closely with the client to execute acceptance tests.
-During these assessments, they meticulously verified that the vision system met all specified requirements and objectives.
-The client actively participated in these evaluations and expressed approval of the system's performance and functionality,
-signifying alignment with their expectations.
-
-Finally, HeeHooVision thoroughly reviewed and validated the accuracy and comprehensiveness of the documentation.
-The primary objective was to ensure that it serves as a valuable guide for both end-users and developers.
-It can be confidently stated that the documentation, after this validation, provides clear and accurate guidance, making it an invaluable resource for the future.
-
-In summary, this testing phase was successful in verifying the functionality and performance of the vision system,
-meeting client expectations and establishing robust documentation for reference.
 
 # Pass/Fail Criteria
 This section outlines the standards that the project must meet to be considered acceptable for deployment,
