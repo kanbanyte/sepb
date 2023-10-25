@@ -240,10 +240,16 @@ class CobotMovementActionServer(Node):
 		'''
 		Gets the chip position by sending a request to the chip service.
 		This function blocks until a valid position (1-48) is returned.
+
+		Args:
+			retry_limit (int): the retry limit when the first call fails.
+
+		Returns:
+			int: case position as an integer between 1 or 17 or -1 if retry limit is exceeded.
 		'''
 		retries = 0
 		chip_position = None
-		while retries < retry_limit:
+		while retries < retry_limit + 1:
 			self.get_logger().info('Waiting for valid chip signal to become available...')
 			future_chip = self.send_pick_place_request(self.chip_cli)
 			rclpy.spin_until_future_complete(self.subnode, future_chip)
@@ -260,21 +266,21 @@ class CobotMovementActionServer(Node):
 		This function blocks until a valid position (1-17) is returned.
 
 		Args:
-			retry_limit (int): retry count.
+			retry_limit (int): the retry limit when the first call fails.
 
 		Returns:
 			int: case position as an integer between 1 or 17 or -1 if retry limit is exceeded.
 		'''
 		retries = 0
 		case_position = None
-		while retries < retry_limit:
+		while retries < retry_limit + 1:
 			self.get_logger().info('Waiting for valid case signal to become available...')
 			future_case = self.send_pick_place_request(self.case_cli)
 			rclpy.spin_until_future_complete(self.subnode, future_case)
 			case_position = future_case.result().signal
 			retries = retries + 1
 
-			if case_position == -1:
+			if 1 <= case_position <= 17:
 				break
 
 		return case_position
@@ -285,7 +291,7 @@ class CobotMovementActionServer(Node):
 		This function blocks until a non-None signal is received.
 
 		Args:
-			retry_limit (int): retry count.
+			retry_limit (int): the retry limit when the first call fails.
 
 		Returns:
 			int: tray signal as an integer value of the enum CobotMovement or None if retry limit is exceeded.
@@ -293,7 +299,7 @@ class CobotMovementActionServer(Node):
 
 		tray_load_signal = None
 		retries = 0
-		while retries < retry_limit:
+		while retries < retry_limit + 1:
 			future_tray = self.send_pick_place_request(self.tray_cli)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
 			tray_load_signal = future_tray.result().signal
@@ -309,6 +315,15 @@ class CobotMovementActionServer(Node):
 		return tray_load_signal
 
 	def populate_tray_load_trajectories(self, tray_move):
+		'''
+		Get the trajectories to load items onto the specified tray.
+
+		Args:
+			tray_move (CobotMovement): tray load command.
+
+		Returns:
+			tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		'''
 		chip_position = self.get_chip_position()
 		case_position = self.get_case_position()
 
@@ -322,6 +337,15 @@ class CobotMovementActionServer(Node):
 			tray_move)
 
 	def populate_tray_movement_trajectories(self, tray_move):
+		'''
+		Get the trajectories to move the specified tray to assembly or vice versa.
+
+		Args:
+			tray_move (CobotMovement): tray move command.
+
+		Returns:
+			tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		'''
 		self.get_logger().info(f"Populating tray movement trajectories...")
 		return get_tray_movement_trajectories(
 			self.joints,

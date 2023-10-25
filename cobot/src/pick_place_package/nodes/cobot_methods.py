@@ -262,6 +262,12 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 	'''
 	Get trajectories to move trays to and from the human operator.
 
+	Args:
+		joints (list[str]): list of joint names.
+		goals (list[str]): list of goal names.
+		gripper_outputs (list[str]): list of gripper output names.
+		cobot_movement (int): integer value representing the tray load command. Must be either `CobotMovement.ASSEMBLY_TO_TRAY1.value`,  `CobotMovement.ASSEMBLY_TO_TRAY2.value`, `CobotMovement.TRAY1_TO_ASSEMBLY.value` or `CobotMovement.TRAY2_TO_ASSEMBLY.value`
+
 	Return:
 		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
 	'''
@@ -306,6 +312,14 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 def get_all_trajectories(joints, goals, gripper_outputs, chip_number, case_number, cobot_movement):
 	'''
 	Get trajectories to load items onto an empty tray.
+
+	Args:
+		joints (list[str]): list of joint names.
+		goals (list[str]): list of goal names.
+		gripper_outputs (list[str]): list of gripper output names.
+		chip_number (int): position of chip to transfer to the tray. Must be from 1 to 48.
+		case_number (int): position of case to transfer to the tray. Must be from 1 to 17.
+		cobot_movement (int): integer value representing the tray load command. Must be either `CobotMovement.START_TRAY1_LOAD.value` or `CobotMovement.START_TRAY2_LOAD.value`
 
 	Return:
 		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
