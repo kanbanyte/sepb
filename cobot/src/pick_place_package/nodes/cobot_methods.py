@@ -43,7 +43,8 @@ def __get_chip_move_trajectories(joints, goals, gripper_outputs, chip_number, tr
 	traj = JointTrajectory()
 	traj.joint_names = joints
 	chip_name = f"chip_{str(chip_number)}"
-	above_tray_name = f"above_tray_{str(tray_number)}"
+	# above_tray_name = f"above_tray_{str(tray_number)}"
+	chip_place_above_name = f"chip_place_above_{str(tray_number)}"
 	chip_place_name = f"chip_place_{str(tray_number)}"
 
 	'''
@@ -69,10 +70,10 @@ def __get_chip_move_trajectories(joints, goals, gripper_outputs, chip_number, tr
 		chip_name,
 		"gripper_close_chip",
 		chip_home_name,
-		above_tray_name,
+		chip_place_above_name,
 		chip_place_name,
 		"gripper_open_case",
-		above_tray_name
+		chip_place_above_name
 	]
 
 	for goal_name in goal_names:

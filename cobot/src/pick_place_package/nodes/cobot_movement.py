@@ -5,7 +5,7 @@ from trajectory_msgs.msg import JointTrajectory
 from sensor_msgs.msg import JointState
 from ur_msgs.srv import SetIO
 from nodes.cobot_methods import get_tray_movement_trajectories, get_all_trajectories
-from nodes.read_methods import ReadMethods
+from nodes.read_methods import read_positions_from_parameters, read_gripper_outputs_from_parameters
 from data_processing.tray_position import CobotMovement
 
 from pick_place_interfaces.srv import PickPlaceService
@@ -93,12 +93,12 @@ class CobotMovementActionServer(Node):
 
 		# Read all positions from parameters
 		# Dict of JointTrajectoryPoint
-		self.goals = ReadMethods.read_positions_from_parameters(self, goal_names)
+		self.goals = read_positions_from_parameters(self, goal_names)
 		self.goal_names = list(self.goals.keys())
 
 		# Read all gripper outputs from parameters
 		# Dict of int
-		self.gripper_outputs = ReadMethods.read_gripper_outputs_from_parameters(self, gripper_output_names)
+		self.gripper_outputs = read_gripper_outputs_from_parameters(self, gripper_output_names)
 		self.gripper_output_names = list(self.gripper_outputs.keys())
 
 		if len(self.goals) < 1:
@@ -108,17 +108,19 @@ class CobotMovementActionServer(Node):
 		# always move back to the home position when started
 		self.current_movement = "home"
 
-		'''
-		The clean state for a loop is that both trays 1 and 2 are present and empty.
-		We assume that this is not the case when the cobot first starts
-		'''
-		self.first_loop = True
-
 		self._publisher = self.create_publisher(JointTrajectory, publish_topic, 1)
 
 	def execute_test(self, goal_handle):
 		'''
-		Callback to test the server without moving the cobot
+		Callback to test the server without moving the cobot.
+
+		This function simulates a task execution without actually moving the cobot, providing a testing environment for the server and client.
+
+		Args:
+			goal_handle (actionlib.action_server.SimpleGoalHandle): the goal handle associated with the action request.
+
+		Returns:
+        	PickPlaceAction.Result: The result of the testing task.
 		'''
 		self.get_logger().info("")
 		self.get_logger().info("Executing testing task...")
@@ -142,7 +144,16 @@ class CobotMovementActionServer(Node):
 
 	def execute_pick_and_place(self, goal_handle):
 		'''
-		Callback to execute a pick and place task
+		Callback to execute a pick-and-place task.
+		This function either loads a tray or moves it, depending on the suggested move from the tray service.
+		Since only one action is performed by the callback, the client might need to send multiple requests to complete a cycle or
+		keep the cobot performing in a loop.
+
+		Args:
+			goal_handle (actionlib.action_server.SimpleGoalHandle): the goal handle associated with the action request.
+
+		Returns:
+        	PickPlaceAction.Result: The result of the testing task.
 		'''
 
 		self.get_logger().info("Executing pick and place task...")
@@ -159,19 +170,6 @@ class CobotMovementActionServer(Node):
 			goal_handle.abort()
 			result.task_successful = False
 			return result
-
-		# assumes the cobot is not in the clean state, we attempt to call a move on it but ignore the results
-		# if self.first_loop:
-		# 	self.get_logger().info("Executing first loop and assuming a dirty working space. Errors should be ignored.")
-		# 	_ = self.move_tray(goal_handle)
-		# 	self.first_loop = False
-
-		'''
-
-		tray signal get tray signal
-		if signal is move:
-			move
-		'''
 
 		cobot_move_signal = self.get_tray_signal()
 		if (cobot_move_signal == CobotMovement.ASSEMBLY_TO_TRAY1.value or
@@ -190,6 +188,12 @@ class CobotMovementActionServer(Node):
 			result.task_successful = move_succeeded
 			return result
 
+
+		'''
+		Since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
+		therefore the cobot should not load a tray unless it is empty,
+		in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
+		'''
 		if (cobot_move_signal == CobotMovement.START_TRAY1_LOAD.value or
   				cobot_move_signal == CobotMovement.START_TRAY2_LOAD.value):
 			move_succeeded = self.load_tray(goal_handle, cobot_move_signal)
@@ -209,33 +213,28 @@ class CobotMovementActionServer(Node):
 
 		return result
 
-		# if self.load_tray(goal_handle) and self.move_tray(goal_handle):
-		# 	goal_handle.succeed()
-		# 	result.task_successful = True
-		# 	self.get_logger().info("Pick and place task complete.")
-		# 	return result
+	def send_pick_place_request(self, service):
+		'''
+		Sends a request to one of the three services: Tray service, Case service, and Chip service.
 
-		# # if the cobot already made a move out of an invalid state but still fail to load or move the tray,
-		# # treat the request as a failure
-		# goal_handle.abort()
-		# result.task_successful = False
-		# self.get_logger().error('An error occurred when moving or loading trays...')
+		Args:
+			service (rclpy.service.Service): the service to which the request is sent.
 
-		# return result
+		Returns:
+			Future: object representing a task to be completed in the future.
+		'''
 
-	# TODO(H): why do we need self.??? Convert to local variable
-	def send_pick_place_request(self, service, detect):
-		self.pick_place_request.detect = detect
-		self.future = service.call_async(self.pick_place_request)
+		self.pick_place_request.detect = True
+		future = service.call_async(self.pick_place_request)
 
-		return self.future
+		return future
 
 	def send_gripper_request(self, output_pin):
 		self.get_logger().info("Sending request to gripper service")
 		self.gripper_request.pin = output_pin
-		self.future = self.gripper_cli.call_async(self.gripper_request)
+		future = self.gripper_cli.call_async(self.gripper_request)
 
-		return self.future
+		return future
 
 	def get_chip_position(self, retry_limit=1):
 		'''
@@ -246,7 +245,7 @@ class CobotMovementActionServer(Node):
 		chip_position = None
 		while retries < retry_limit:
 			self.get_logger().info('Waiting for valid chip signal to become available...')
-			future_chip = self.send_pick_place_request(self.chip_cli, True)
+			future_chip = self.send_pick_place_request(self.chip_cli)
 			rclpy.spin_until_future_complete(self.subnode, future_chip)
 			chip_position = future_chip.result().signal
 			retries = retries + 1
@@ -259,57 +258,43 @@ class CobotMovementActionServer(Node):
 		'''
 		Gets the tray position by sending a request to the chip service.
 		This function blocks until a valid position (1-17) is returned.
+
+		Args:
+			retry_limit (int): retry count.
+
+		Returns:
+			int: case position as an integer between 1 or 17 or -1 if retry limit is exceeded.
 		'''
 		retries = 0
 		case_position = None
 		while retries < retry_limit:
 			self.get_logger().info('Waiting for valid case signal to become available...')
-			future_case = self.send_pick_place_request(self.case_cli, True)
+			future_case = self.send_pick_place_request(self.case_cli)
 			rclpy.spin_until_future_complete(self.subnode, future_case)
 			case_position = future_case.result().signal
 			retries = retries + 1
 
-		return case_position
-
-	def get_tray_load_signal(self, retry_limit=1):
-		'''
-		Get a valid tray move signal.
-
-		Since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
-		therefore the cobot should not load a tray unless it is empty,
-		in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
-		'''
-
-		tray_load_signal = None
-		retries = 0
-		while retries < retry_limit:
-			future_tray = self.send_pick_place_request(self.tray_cli, True)
-			rclpy.spin_until_future_complete(self.subnode, future_tray)
-			tray_load_signal = future_tray.result().signal
-			self.get_logger().info(f"Tray signal is {CobotMovement(tray_load_signal).name}.")
-
-			if tray_load_signal == CobotMovement.START_TRAY1_LOAD.value or CobotMovement.START_TRAY2_LOAD.value:
+			if case_position == -1:
 				break
 
-			self.get_logger().info("Retrying in 5 seconds")
-			time.sleep(5)
-			retries = retries + 1
-
-		return tray_load_signal
+		return case_position
 
 	def get_tray_signal(self, retry_limit=1):
 		'''
-		Get a valid tray move signal.
+		Sends the request to get a suggested tray move command.
+		This function blocks until a non-None signal is received.
 
-		Since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
-		therefore the cobot should not load a tray unless it is empty,
-		in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
+		Args:
+			retry_limit (int): retry count.
+
+		Returns:
+			int: tray signal as an integer value of the enum CobotMovement or None if retry limit is exceeded.
 		'''
 
 		tray_load_signal = None
 		retries = 0
 		while retries < retry_limit:
-			future_tray = self.send_pick_place_request(self.tray_cli, True)
+			future_tray = self.send_pick_place_request(self.tray_cli)
 			rclpy.spin_until_future_complete(self.subnode, future_tray)
 			tray_load_signal = future_tray.result().signal
 			self.get_logger().info(f"Tray signal is {CobotMovement(tray_load_signal).name}.")
@@ -322,35 +307,6 @@ class CobotMovementActionServer(Node):
 			retries = retries + 1
 
 		return tray_load_signal
-
-	def get_tray_move_signal(self, retry_limit=1):
-		'''
-		Get a valid tray move signal.
-
-		Since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
-		therefore the cobot should not load a tray unless it is empty,
-		in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
-		'''
-
-		tray_move = None
-		retries = 0
-		while retries < retry_limit:
-			future_tray = self.send_pick_place_request(self.tray_cli, True)
-			rclpy.spin_until_future_complete(self.subnode, future_tray)
-			tray_move = future_tray.result().signal
-			self.get_logger().info(f"Tray signal is {CobotMovement(tray_move).name}.")
-
-			if (tray_move == CobotMovement.ASSEMBLY_TO_TRAY1.value or
-					tray_move == CobotMovement.ASSEMBLY_TO_TRAY2.value or
-					tray_move == CobotMovement.TRAY1_TO_ASSEMBLY.value or
-					tray_move == CobotMovement.TRAY2_TO_ASSEMBLY.value):
-				break
-
-			self.get_logger().info("Retrying in 5 seconds")
-			time.sleep(5)
-			retries = retries + 1
-
-		return tray_move
 
 	def populate_tray_load_trajectories(self, tray_move):
 		chip_position = self.get_chip_position()
