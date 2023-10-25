@@ -73,9 +73,16 @@ function launch_rviz() {
 #region Package
 # Rebuild cobot package
 function rebuild_cobot() {
-	rm -r $COBOT_BUILD_DIR
-	rm -r $COBOT_INSTALL_DIR
-	rm -r $COBOT_LOG_DIR
+	# Check if the directory exists
+	if [ -d $COBOT_BUILD_DIR ]; then
+		rm -r $COBOT_BUILD_DIR
+	fi
+	if [ -d $COBOT_INSTALL_DIR ]; then
+		rm -r $COBOT_INSTALL_DIR
+	fi
+	if [ -d $COBOT_LOG_DIR ]; then
+		rm -r $COBOT_LOG_DIR
+	fi
 	cd $COBOT_PATH
 	colcon build
 	source install/local_setup.bash
