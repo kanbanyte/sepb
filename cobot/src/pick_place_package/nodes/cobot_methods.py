@@ -43,7 +43,6 @@ def __get_chip_move_trajectories(joints, goals, gripper_outputs, chip_number, tr
 	traj = JointTrajectory()
 	traj.joint_names = joints
 	chip_name = f"chip_{str(chip_number)}"
-	# above_tray_name = f"above_tray_{str(tray_number)}"
 	chip_place_above_name = f"chip_place_above_{str(tray_number)}"
 	chip_place_name = f"chip_place_{str(tray_number)}"
 
@@ -154,7 +153,6 @@ def __get_battery_move_trajectories(joints, goals, gripper_outputs, tray_number)
 		"gripper_close_battery",
 		"battery_pick_home",
 		"safe_start",
-		above_tray_name,
 		battery_place_name,
 		"gripper_open_battery",
 		above_tray_name,
@@ -190,7 +188,7 @@ def __get_tray_move_trajectories(joints, goals, gripper_outputs, tray_number):
 	traj.joint_names = joints
 
 	# Define goal names for the tray movement.
-	above_tray_name = f"above_tray_{str(tray_number)}"
+	above_tray_name = f"tray_pick_{str(tray_number)}_above"
 	tray_pick_name = f"tray_pick_{str(tray_number)}"
 	goal_names = [
 		above_tray_name,
@@ -233,7 +231,7 @@ def __get_tray_replacement_trajectories(joints, goals, gripper_outputs, tray_num
 	traj.joint_names = joints
 
 	# Define goal names for the tray replacement.
-	above_tray_name = f"above_tray_{str(tray_number)}"
+	above_tray_name = f"tray_pick_{str(tray_number)}_above"
 	tray_pick_name = f"tray_pick_{str(tray_number)}"
 	goal_names = [
 		"tray_unload_above",

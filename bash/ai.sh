@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source $HOME/Documents/repos/sepb/bash/variables.sh
-
 # Remove build directory
 function rebuild_ai() {
 	# Check if the directory exists

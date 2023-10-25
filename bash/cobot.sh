@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source $HOME/Documents/repos/sepb/bash/variables.sh
-
 # Ping cobot twice
 function ping_cobot() {
 	ping -c 2 172.21.0.121

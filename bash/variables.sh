@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Path to Project
-REPO_PATH="$HOME/Documents/repos/sepb"
-
 # AI Variable(s)
 AI_PATH="$REPO_PATH/ai"
 AI_BUILD_DIR="$AI_PATH/build"
