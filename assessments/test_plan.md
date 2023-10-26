@@ -453,7 +453,7 @@ Testing level pass/fail criteria:
 Below are Criteria that will halt progress and the subsequent fix for those halts.
 
 ### Suspension Criteria
-The testing process will be halted if at least one of the below criterias is met:
+The testing process will be halted if at least one of the below criteria's is met:
 * The requirements have been changed.
 * A critical error affecting multiple test cases has been discovered.
 * The system design is found to be inappropriate.
