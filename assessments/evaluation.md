@@ -4,14 +4,9 @@
 # Robot Vision System For A Pick And Place Task
 <!--
 	Co-Author: @dau501
-	Editor(s):
+	Editor(s): @Huy-GV, @finnmcgearey, @vkach, @NickMcK14, @Slothman1
 	Year: 2023
 -->
-
-*[Note:*
-*This is a sample/template document for the Usability Evaluation Plan.*\
-*Please improve, adapt and adjust to your project needs.*\
-*In particular, the project-specific questionnaires need to be included.]*
 
 `Usability Evaluation Plan`
 
@@ -25,6 +20,8 @@
 |@vkach|Quality Manager/Developer|id@swin.student.edu.au|
 |@NickMcK14|Support Manager/Developer|id@swin.student.edu.au|
 |@Huy-GV|Quality Manager/Developer|id@swin.student.edu.au|
+
+<div class="page"/><!-- page break -->
 
 <!-- TOC ignore:true -->
 # Document Sign Off
@@ -54,7 +51,7 @@
 	* [Scenario Completion](#scenario-completion)
 	* [Errors](#errors)
 	* [Subjective Evaluations](#subjective-evaluations)
-	* [Time on Task](#time-on-task)
+	* [Time On Task](#time-on-task)
 * [Usability Goals](#usability-goals)
 * [Problem Severity](#problem-severity)
 	* [Impact Ranking](#impact-ranking)
@@ -63,6 +60,8 @@
 * [Reporting Results](#reporting-results)
 
 <!-- /TOC -->
+
+<div class="page"/><!-- page break -->
 
 # Executive Summary
 The document specifies the methodology by which usability is evaluated and explains how the results are interpreted.
@@ -96,6 +95,8 @@ Various metrics are employed to assess the performance of both AI models and cob
 Metrics for the AI models primarily center around the accuracy of predictions made by the models.
 Metrics for the cobot primarily focus item placement and time consumption.
 
+<div class="page"/><!-- page break -->
+
 For the AI Models, metrics are based on a confusion matrix,
 a table that visualizes the model's performance by classifying its predictions into 4 categories:
 True Positive (TP), False Positive (FP), True Negative (TN) and False Negative (FN).\
@@ -109,6 +110,9 @@ $$
 TP \over TP + FP
 $$
 ```
+
+<!-- ![latex01](https://cdn.discordapp.com/attachments/1140138038832402532/1166948922313412668/image.png) -->
+
 * Recall: also known sensitivity, calculated as the rate of actually positive cases that are actually identified.\
 Higher recall rates implies that the model can identify most of the correct cases at the expense of a higher false positive rate.\
 Recall can be calculated by:
@@ -117,12 +121,17 @@ $$
 TP \over TP + FN
 $$
 ```
+
+<!-- ![latex02](https://cdn.discordapp.com/attachments/1140138038832402532/1166949039867183135/image.png) -->
+
 * Accuracy: the rate of correct predictions, calculated as:
 ```math
 $$
 TP + TN \over TP + FP + TN + FN
 $$
 ```
+
+<!-- ![latex03](https://cdn.discordapp.com/attachments/1140138038832402532/1166949151645380709/image.png) -->
 
 For the cobot, metrics involved with the cobot's performance and movement are used:
 * Accuracy: the distance between the position where an item is placed to the ideal placement position.\
@@ -140,6 +149,8 @@ The average value is used to account for items that are further away from the co
 ### Satisfaction Assessment
 After the experiment, the participant would be asked to fill a form detailing their experience with the system.
 In particular, they will be prompted to comment on the safety, speed, and efficiency in the comparison with the original system.
+
+<div class="page"/><!-- page break -->
 
 # Participants
 The primary user of the system is an operator who undertakes the task of assembling items delivered by a robot.\
@@ -178,6 +189,8 @@ Additionally, they should be able to rectify any problems the cobot has in perfo
 ### Trainer
 The trainer will explain the evaluation test to the participant and answer any pre-emptive questions so that the participant understands what they need to do.
 
+<div class="page"/><!-- page break -->
+
 # Usability Tasks
 As the goal of this project is the automation of a pick and place task, the resultant system will require limited human interaction.\
 As such, what will be evaluated will be limited to the tasks that system completes and any activities that the user will need to complete to setup the system.
@@ -197,6 +210,8 @@ This allows the system to be evaluated and any shortcomings be identified and im
 
 The following sections will be used to identify and categories metrics, and define how they will be assessed.
 
+<div class="page"/><!-- page break -->
+
 ## Scenario Completion
 The completion of the scenario requires that the system is able to correctly identify:
 * The correct chip required, pick it up, and place it in the correct position on the assembly tray.
@@ -215,11 +230,13 @@ Subjective evaluations form a vital facet of the usability assessment for the Ro
 Analysing feedback trends will guide iterative improvements, seamlessly integrating user perspectives into the development process.
 This holistic approach drives continual enhancements to the system's usability.
 
-## Time on Task
+## Time On Task
 Measuring time on task is pivotal in assessing the usability of the Robot Vision System for the Pick and Place Task.\
 By observing participants as they complete representative task scenarios, valuable insights into user efficiency and system adaptation will be gained.
 Analysis of the collected time data will inform system enhancements, aligning with user proficiency and satisfaction.
 This data-driven approach ensures continual refinement and optimisation of the system's performance.
+
+<div class="page"/><!-- page break -->
 
 # Usability Goals
 Creating usability for the system will be determined by the success of movements of the robot arm.
@@ -233,6 +250,8 @@ Problems that are discovered during the  testing procedures will be classified b
 
 ## Impact Ranking
 Ranking problems helps prioritize which issues need immediate attention and which ones can be addressed later.
+
+<div class="page"/><!-- page break -->
 
 <!-- TOC ignore:true -->
 ### High
@@ -279,6 +298,8 @@ The system occasionally produces false positives in object detection; however, t
 * Minor Inefficiencies:\
 Some software processes take slightly longer than optimal, such as publishing the joint trajectories; however, the delay has no impact on the systems safety.
 
+<div class="page"/><!-- page break -->
+
 ## Frequency Ranking
 Ranking problem frequency is valuable for understanding whether an issue is an isolated incident or a recurring problem.
 
@@ -315,6 +336,8 @@ especially if gripper fails to release an item and the joints continue moving.
 * Inaccurate Object Detection:\
 The neural network consistently misidentifies the position of objects, causing the robotic arm to repeatedly miss its target.
 This high-severity problem impacts the system's efficiency.
+
+<div class="page"/><!-- page break -->
 
 <!-- TOC ignore:true -->
 ### Medium Severity
