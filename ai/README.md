@@ -62,6 +62,7 @@ See the `README.md` files within individual subdirectories for more details.
 These scripts are converted into executable files when the AI package is installed.
 They are also used to process training data, balancing the dataset splits, defining crop boxes, etc.
 * [training](src/training/README.md): contains notebooks and scripts that train a model and visualize its metrics.
+Trained models and their settings are also included.
 * [util](src/util/README.md): utility functions, mostly related to the file system.
 
 <!-- TOC ignore:true -->
