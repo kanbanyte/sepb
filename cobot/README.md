@@ -1,8 +1,8 @@
 # Cobot Package
 ## Overview
 The cobot package contains ROS2 code that allows for the ZED camera and UR5e cobot to interact and perform the pick and place task.
-There are two ROS2 packages within: [`pick_place_package`](src\pick_place_package\README.md) which contains all of the nodes, the launch file, config files,
-and additional scripts, and [`pick_place_interfaces`](src\pick_place_interfaces\README.md) which contains ROS2 interfaces for communication between nodes.
+There are two ROS2 packages within: [`pick_place_package`](src/pick_place_package/README.md) which contains all of the nodes, the launch file, config files,
+and additional scripts, and [`pick_place_interfaces`](src/pick_place_interfaces/README.md) which contains ROS2 interfaces for communication between nodes.
 
 **Table of Contents**
 <!-- TOC -->
@@ -48,17 +48,17 @@ rosdep install -i --from-path src --rosdistro humble -y
 ## Usage
 ### Directory Structure
 The following list contains a concise explanation of the directory structure:
-* [pick_place_interfaces](src\pick_place_interfaces\README.md): contains any/all `.msg`, `.srv`, and `.action` files.
-* [pick_place_package](src\pick_place_package\README.md): contains launch files, config files, nodes, and additional scripts.
+* [pick_place_interfaces](src/pick_place_interfaces/README.md): contains any/all `.msg`, `.srv`, and `.action` files.
+* [pick_place_package](src/pick_place_package/README.md): contains launch files, config files, nodes, and additional scripts.
 
 The `cobot.sh` file provides many functions to do numerous things with regards to the robot.
 
-The [launch file](src\pick_place_package\launch\pick_place_launch.py) starts three nodes:
-* [`camera_node`](src\pick_place_package\pick_place_package\camera_node.py)
-* [`cobot_node`](src\pick_place_package\pick_place_package\cobot_node.py)
-* [`gripper_node`](src\pick_place_package\pick_place_package\gripper_node.py)
+The [launch file](src/pick_place_package/launch/pick_place_launch.py) starts three nodes:
+* [`camera_node`](src/pick_place_package/pick_place_package/camera_node.py)
+* [`cobot_node`](src/pick_place_package/pick_place_package/cobot_node.py)
+* [`gripper_node`](src/pick_place_package/pick_place_package/gripper_node.py)
 
-The pick and place task is started from [`main_node`](src\pick_place_package\pick_place_package\main_node.py) which is run in a separate terminal.
+The pick and place task is started from [`main_node`](src/pick_place_package/pick_place_package/main_node.py) which is run in a separate terminal.
 
 ### Starting the Robot Driver
 Before performing the pick and place task, start the robot driver and connect to the robot:
