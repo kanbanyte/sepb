@@ -4,13 +4,9 @@
 # Robot Vision System For A Pick And Place Task
 <!--
 	Co-Author: @dau501
-	Editor(s):
+	Editor(s): @Huy-GV, @NickMcK14, @finnmcgearey, @vkach, @Slothman1
 	Year: 2023
 -->
-
-*[Note:*
-*This is a sample/template document for the Test Plan.*\
-*Please improve, adapt and adjust to your project needs.]*
 
 `TEST PLAN`
 
@@ -24,6 +20,8 @@
 |@vkach|Quality Manager/Developer|id@swin.student.edu.au|
 |@NickMcK14|Support Manager/Developer|id@swin.student.edu.au|
 |@Huy-GV|Quality Manager/Developer|id@swin.student.edu.au|
+
+<div class="page"/><!-- page break -->
 
 <!-- TOC ignore:true -->
 # Document Sign Off
@@ -53,7 +51,7 @@
 	* [Tested Features](#tested-features)
 	* [Test Cases](#test-cases)
 		* [Functional Test Cases](#functional-test-cases)
-		* [Non-functional Testing](#non-functional-testing)
+		* [Non-Functional Testing](#non-functional-testing)
 	* [Untested Features](#untested-features)
 * [Strategy](#strategy)
 	* [Roles and Responsibilities](#roles-and-responsibilities)
@@ -71,6 +69,8 @@
 
 <!-- /TOC -->
 
+<div class="page"/><!-- page break -->
+
 # Introduction
 This document will outline its purpose, the scope and objective of testing, as well as the specific features and cases that will be tested.
 The potential test items for the ROS component and AI component will be discussed,
@@ -82,19 +82,20 @@ Finally, the pass and fail criteria will be expounded to demonstrate the process
 The purpose of the test plan is to clearly state the required features and functions of the system to test and the strategy by which they will be tested.
 The test plan will allow for a more efficient testing process to prepare the developed system for its final release by outlining test features,
 functional and non functional test cases, as well as the pass and fail criteria for these tests.
-The roles and responsibilities of each member will be established to facilitate the testing process, ensuring it is efficient and effective.  
+The roles and responsibilities of each member will be established to facilitate the testing process, ensuring it is efficient and effective.
 Additionally, the test plan will highlight the features that will not be tested to allow for a more efficient testing process.
 
 ## Scope
 The scope of the test plan will encompass testing of the computer vision system and of the cobot's movement both individually and together to ensure optimal function.
 Development of the overall system is still in progress, so additional tests may be required and some may not be necessary in the future.
-Functional and non-functional test cases will be discussed and will include items such as establishing connection with robot arm, intialising the machine learning model,
-if the system is able to continue functioning autonomously, etc.
+Functional and non-functional test cases will be discussed and will include items such as establishing connection with robot arm,
+initialising the Machine Learning (ML) Model, if the system is able to continue functioning autonomously, etc.
 
 <!-- TOC ignore:true -->
 ### Constraints
 * Testing of the cobot's movement can be done in a simulated environment, however must ultimately be performed at the F.o.F.
-* Testing of the detection models can start with images captured for the training process, but it must be validated with images directly captured by the camera at the F.o.F.
+* Testing of the detection models can start with images captured for the training process,
+but it must be validated with images directly captured by the camera at the F.o.F.
 * Testing the integration of the vision system and the movement system will need to be done at the F.o.F.
 
 <!-- TOC ignore:true -->
@@ -113,6 +114,8 @@ These documents can provide further information if required:
 * Software Quality Assurance Plan
 * Software Requirements Specification
 * Detailed Design and Implementation Report
+
+<div class="page"/><!-- page break -->
 
 ## Objective
 The objective of the testing plan is to outline the tests required and the strategy for conducting and completing testing.\
@@ -138,6 +141,8 @@ The following equipment and items are required:
 * A battery stack.
 * A front shell stack.
 * A white tray on which the shells, battery and chip are delivered to the human operator.
+
+<div class="page"/><!-- page break -->
 
 # Test Items
 The product to be tested is the robot arm upgraded with object detection technology.
@@ -177,14 +182,10 @@ The following features of the integrated system are tested:
 The creation of well-structured test cases in important for evaluating software.\
 This section outlines the creation of both functional and non-functional test cases, designed to assess the system's ability to perform the specified requirements.
 
-### Functional Test Cases
-<!--
-1. Test Case(s)
-	1. Steps
-* Expected Results
--->
+<div class="page"/><!-- page break -->
 
-#### Establish connection with Robot Arm
+### Functional Test Cases
+#### Establish Cobot Connection
 1. Check if the connection between the PC and robot arm.\
 Steps:
 	1. Turn on robot arm.
@@ -192,23 +193,23 @@ Steps:
 	3. Run initialisation commands from PC to set up the robot arm.
 * The robot arm is able to receive instructions from the PC.
 
-#### Set up depth camera
+#### Setup Depth Camera
 1. Check the connection between the PC and the depth camera.\
 Steps:
 	1. Turn on the depth camera and connect it to the PC.
 	2. Start camera software to ensure that PC is receiving a signal from the camera.
 * The PC is able to receive image data from the depth camera.
 
-#### Intialise Machine Learning (ML) Model
+#### Initialise Model
 1. Check if the ML model can receive data from camera.\
 Preconditions:
 Connection between the PC and the depth camera has been established.\
 Steps:
-	1. Intialise ML model and ensure that it is receiving data from the depth camera.
+	1. Initialise ML model and ensure that it is receiving data from the depth camera.
 	2. Verify that the model is able to detect objects in the image data as required.
 * The ML model is able to recognise the required objects and provide locations for them.
 
-#### Connect ML model and Robot arm through PC
+#### Model and Cobot Connection via PC
 1. Check that the ML model is able to send locations to the robot arm.\
 Preconditions:
 The ML model is able to detect objects in the image data from the depth camera and the robot arm is able to receive location data from the PC.\
@@ -216,7 +217,9 @@ Steps:
 	1. Run commands to set up connection between the ML model and the robot arm controller on the PC
 * The robot arm is able to receive locations of parts to pick up from the ML model.
 
-#### The robot arm is able to moves on command
+<div class="page"/><!-- page break -->
+
+#### Cobot Movement via Command
 1. Check that the robot arm is able to move to the locations provided by the ML model and pick up parts as instructed.\
 Preconditions:
 The connection between the ML model and the robot arm has been made.\
@@ -224,7 +227,7 @@ Steps:
 	1. Instruct the system to pick up the next required part.
 * The robot arm is able to move to the correct location to pick up the part, move the to the unloading location and place the part in the assembly tray.
 
-#### The system is able to continue functioning autonomously
+#### System Continues Autonomous Functionality
 1. Verify that the robot is able to continue operation continuously.\
 Preconditions:
 The robot arm arm is able to move according to locations provided by the ML model.
@@ -233,7 +236,7 @@ The robot arm is then able to continue correctly picking up the part and placing
 Once the assembly tray is filled up with the required parts, the system is able to instruct the robot arm to move it to the ready position.
 When all parts have been taken by the participant, the system is able to instruct the robot arm to return the tray to the original location and repeat the process.
 
-### Non-functional Testing
+### Non-Functional Testing
 #### Testing Goal
 The goal of the above mentioned test case is the ensure that the system that has been developed is able to function correctly, repeatedly and consistently,
 thereby allowing the participant to speed up their rate of production.
@@ -242,8 +245,7 @@ thereby allowing the participant to speed up their rate of production.
 The test will be conducted in the presence of a participant. As the system completes its tasks and delivers the assembly tray of parts to the ready position,
 the participant will be requested to provide feedback as to whether or not the task was completed by the system in a satisfactory manner.
 
-#### Pass/Fail Criteria
-
+#### Testing Criteria
 The task of delivering and assembly tray of parts to the user must be completed in a smooth manner,
 ensuring that all the correct parts remain on the tray while in motion, and none of the parts are damaged during the pick and place task.
 
@@ -254,6 +256,8 @@ The locations of the parts are constant. The system will not need to search for 
 There are currently no features that won't be tested.\
 This is because all features are being introduced for the first time.\
 All introduced features can be tested and therefore will be tested.
+
+<div class="page"/><!-- page break -->
 
 # Strategy
 To ensure the successful implementation of the Robot Vision System for the Pick and Place Task, a comprehensive testing strategy will be employed.
@@ -298,6 +302,8 @@ Various object positions will be tested to validate pick and place accuracy.
 Collaborate with the client to conduct acceptance tests.\
 Ensure that the vision system meets client requirements and expectations.
 
+<div class="page"/><!-- page break -->
+
 ## Test Deliverables
 The following key deliverables will be produced as part of the testing process:
 * Test Plan
@@ -313,6 +319,8 @@ The schedule for testing will be as follows:
 * Test integration of the movement and vision systems
 * Test the overall system's performance in completing the pick and place task
 * Fine tune system to perform its tasks within an acceptable threshold
+
+<div class="page"/><!-- page break -->
 
 ## Risk and Contingency
 The risks and contingencies associated with testing include the following:
@@ -343,6 +351,8 @@ including object detection algorithms, position estimation, and robot control me
 * Work closely with the client to conduct acceptance tests, verifying that the vision system meets the specified requirements and objectives.
 * Obtain client approval on the system's performance and functionality.
 * Review and validate the accuracy and comprehensiveness of documentation, ensuring that it effectively guides users and developers.
+
+<div class="page"/><!-- page break -->
 
 # Pass/Fail Criteria
 These criteria help make sure that the project meets the necessary requirements as well as ensuring the project is at an acceptable standard of quality.
@@ -391,6 +401,8 @@ Test Case Pass/Fail Criteria:
 		* Camera feed is in a different format than expected
 		* Camera feed isn't outputting
 
+<div class="page"/><!-- page break -->
+
 ## Testing Stages
 During each development testing stage, success will be judged in the passing of the below criteria.
 
@@ -428,6 +440,8 @@ Testing level pass/fail criteria:
 		* Requirements not met.
 		* Major issues identified by client.
 		* Client is not satisfied.
+
+<div class="page"/><!-- page break -->
 
 ## Criteria Requirements
 Below are Criteria that will halt progress and the subsequent fix for those halts.
