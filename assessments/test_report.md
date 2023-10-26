@@ -57,8 +57,8 @@
 
 # Introduction
 This document is made to report on and cover the results of the tests outlined in the Test Plan, while discussing and evaluating their success.
-This document is the summary of the planned tests contained in the test plan and within the testing, many stages were removed.\
-These stages primarily being seen as either too difficult to test with our provided resources, not worth testing or just generally didn't fit the finalised product.
+Throughout testing, many of the proposed and planned tests were removed;
+these stages primarily being seen as either too difficult to test with our provided resources, not worth testing or just generally didn't fit the finalised product.
 This document will cover the items being tested, the appropriate test cases for them as well as the pass/fail criteria of said tests.\
 It is also going to justify the test choices and the validity of them in relation to the system.
 
