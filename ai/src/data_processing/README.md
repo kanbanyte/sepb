@@ -1,70 +1,54 @@
 
 <!-- TOC ignore:true -->
-# Data Processing Scripts
+# Data Processing APIs
 **Table of Contents**
 <!-- TOC -->
 
-* [calculate_training_ratio_roboflow.py](#calculate_training_ratio_roboflowpy)
 * [case_position.py](#case_positionpy)
-* [copy-by-interval.ps1](#copy-by-intervalps1)
-* [crop.py](#croppy)
 * [image_processing.py](#image_processingpy)
-* [random_crop.py](#random_croppy)
-* [rename.ps1](#renameps1)
-* [slice.py](#slicepy)
 * [tray_position.py](#tray_positionpy)
 * [chip_position.py](#chip_positionpy)
 
 <!-- /TOC -->
 
-## calculate_training_ratio_roboflow.py
-Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
-This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
-
 ## case_position.py
-Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.\
-This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar and
-the height of the image is around 514px.
+Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.
 
-## copy-by-interval.ps1
-Copy files from a folder with a user-defined interval.\
-Since the exported photos contain a lot of duplicates, copying them in an interval somewhat removes duplicate images.\
-The user can specify the input and output folders.
-
-## crop.py
-Defines a crop box and applies it to all selected files.\
-The following options are supported:
-1. Select an image to define a crop box, then apply it to a set of selected images and save them to a folder.
-2. Enter the crop box coordinates into the console, apply it to a set of images and save them to a folder.
-3. Capture an image from the ZED camera and use it to define a crop box, then apply it to a set of images and save them to a folder.
-
-> **Note**:\
-> The crop box is printed to the terminal, use it to manually change the program to use that crop box and apply it to images by batches.
+**Important**
+* This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar.
+The height of the image is around 514px and this limit is not flexible.
+* Before attempting to pick the case with the cobot, it is important to test the model and this code on every position on the rack.
+The sample programs found in [src/samples/](../samples/README.md) can be helpful in this regard.
 
 ## image_processing.py
-Contains functions that processes images.\
-Functionalities involve cropping, tiling and drawing rectangular crop boxes on images.
-
-## random_crop.py
-Creates a specified number of random crops from an image with the specified size.\
-Primarily used to generates background images to diversify dataset for models that rely on static cropping.\
-Without these images, the model can make many false positive predictions when used outside the cropped area within an image.
-
-## rename.ps1
-Rename all files in a folder into the format `<index>`.`<extension>`, with `<index>` being user defined.\
-Since the output of the ZED Export program are images in the format `<left>/<right><index>.<extension>`, renaming them helps prevent duplicate names.
-The renamed images will be copied into an output folder selected by the user.
-
-## slice.py
-Slice the images into a grid of 4 columns and 6 rows, corresponding to the structure of the 2 chip trays.\
-This is to check how tight the crop box is so we can translate the concrete coordinates of bounding boxes into the position matrix easily.
-
+Contains functions that modifies images. Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
 
 ## tray_position.py
-Used regularly by sample programs to translate tray bounding boxes into readable formats.
-It is also used to determine what the next robot arm action, in relation to trays should be.
-Generally this application should be called from code rather than ran independently.
+Translate bounding boxes of tray into a cobot move.
+Supported cobot moves include:
+* Move tray 1 to assembly
+* Move tray 2 to assembly
+* Move tray 1 from assembly
+* Move tray 2 from assembly
+* Start loading items on tray 1
+* Start loading items on tray 2
+* Continue loading items on partially loaded tray 1
+* Continue loading items on partially loaded tray 2
+
+**Important**:
+* The Tray Detection model does not detect individual items on a tray, it simply classifies trays into 3 categories: empty, partially full, and full.
+The "Continue Loading Trays" move is intended to signal that the tray is partially full, which may or not may not be an error depending on the state of the cobot.
+* The position conversion code assumes the following:
+    * There are only 2 trays in 3 possible positions: Assembly, Tray 1 and Tray 2, with Assembly being on the left, Tray 1 and Tray 2 being on the right.
+    * The image containing the tray should be roughly 600px in height and 700px in width,
+    with Assembly tray on the left half, and Trays 1 and 2 vertically aligned in the right half.
 
 ## chip_position.py
-Used regularly by sample programs to translate chip bounding boxes into usable numerical data.
-Generally not recommended to be calling this alone outside of testing applications
+Translate bounding boxes of chips into positions defined by the cobot.
+These positions are numbered from 1 to 48, with 1 being the top left and 48 being the bottom right.
+The positions increase by columns than rows.
+
+**Important**
+* The code requires the prediction to be made on a image with a height of around 230px and width of around 320px.
+* The position is calculated using the center point of individual bounding boxes and checking them against a range of valid values.
+The center point is used instead of the entire bounding box as the box can appear to be horizontally shifted when viewing a chip from an angle.

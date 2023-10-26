@@ -1,0 +1,8 @@
+# Goal
+bool goal
+---
+# Result
+bool task_successful
+---
+# Feedback
+string current_movement

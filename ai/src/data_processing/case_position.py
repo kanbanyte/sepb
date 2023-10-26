@@ -3,6 +3,7 @@ __TOP_Y_COORDINATE = 148
 __POSITION_COUNT = 17
 __POSITION_GAP = (__BOTTOM_Y_COORDINATE - __TOP_Y_COORDINATE) / (__POSITION_COUNT - 1)
 
+
 def convert_case_bounding_boxes(detected_case):
 	'''
 	Convert the bounding boxes of cases into its position.
@@ -15,7 +16,7 @@ def convert_case_bounding_boxes(detected_case):
 	the height of the image is around 514px.
 
 	Args:
-		detected_object: detected case.
+		detected_case (DetectedObject): detected case.
 
 	Returns:
 		int|None: Case position in the rack which ranges from 1 to 17 or None if the input cannot be converted to a valid position.
@@ -28,6 +29,7 @@ def convert_case_bounding_boxes(detected_case):
 	# without subtracting the value from __POSITION_COUNT, the function would return a position in reverse order.
 	position = __POSITION_COUNT - round((detected_case_bottom_y - __TOP_Y_COORDINATE)/ __POSITION_GAP)
 	if position < 1 or position > __POSITION_COUNT:
+		print(f"Case Position Conversion Error: {position} is invalid.")
 		return None
 
 	return position

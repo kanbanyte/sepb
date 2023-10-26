@@ -3,7 +3,8 @@ from collections import defaultdict
 from ultralytics import YOLO
 
 from .detected_object import DetectedObject
-from data_processing.image_processing import draw_bounding_box, show_image_non_block
+from data_processing.image_processing import draw_bounding_box, show_image as image_show
+
 
 class ObjectDetectionModel:
 	def __init__(self, model_config):
@@ -20,16 +21,16 @@ class ObjectDetectionModel:
 	def __calculate_next_multiple(self, factor, number):
 		'''
 		Calculates the multiple of `factor` and is closest to `number` in the positive direction.
-		YOLO models requires the image length to be a multiple of `factor` so it
-		automatically converts the image size to that value and produce a warning message.
+		YOLO models requires the image length to be a multiple of `factor` so,
+		it automatically converts the image size to that value and produce a warning message.
 		We calculate that value to prevent this situation from the start.
 
 		Args:
-			factor (integer): Factor value.
-			number (integer): Input value.
+			factor (int): Factor value.
+			number (int): Input value.
 
 		Returns:
-			Integer: multiple of `factor` closest to `number`
+			Integer: multiple of `factor` closest to `number`.
 		'''
 		remainder = number % factor
 		if remainder > 0:
@@ -44,7 +45,7 @@ class ObjectDetectionModel:
 		Gets a dictionary containing indices and names of classes detected by the model.
 
 		Returns:
-			dict: dictionary mapping class index to class name.
+			dict[int, str]: dictionary mapping class index to class name.
 		'''
 		return self.__classes
 
@@ -58,8 +59,7 @@ class ObjectDetectionModel:
 			show_image(boolean): optionally display the image wih bounding boxes of all detections.
 
 		Returns:
-			defaultdict(list): Dictionary where the keys are the indices of the classes and
-			the values are list[DetectedObjects]
+			defaultdict(list): Dictionary where the keys are the indices of the classes and the values are list[DetectedObjects]
 		'''
 
 		if image.size == 0:
@@ -79,7 +79,8 @@ class ObjectDetectionModel:
 				cv2.imwrite(result_img_path, image)
 
 			if show_image:
-				show_image_non_block(image, f"Showing image '{result_img_path}'")
+				# show_image_non_block(image, f"Showing image '{result_img_path}'")
+				image_show(image, f"Showing image '{result_img_path}'. No detections.")
 
 			return detected_objects
 
@@ -88,19 +89,21 @@ class ObjectDetectionModel:
 		x2_tensor = result.boxes.xyxy[:, 2]
 		y2_tensor = result.boxes.xyxy[:, 3]
 
-		for (object_class, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
+		for (class_index, conf, x1, y1, x2, y2) in zip(result.boxes.cls, result.boxes.conf, x1_tensor, y1_tensor, x2_tensor, y2_tensor):
 			# these values are still 1D tensors and need to be converted to scalar values
-			object_class_index = int(object_class)
+			class_index_int = int(class_index)
 			bounding_box = (int(x1), int(y1), int(x2), int(y2))
 			confidence = float(conf)
 			detected_object = DetectedObject(bounding_box=bounding_box, confidence=confidence)
 
-			detected_objects[object_class_index].append(detected_object)
-			if result_img_path:
-				draw_bounding_box(image, bounding_box)
-				cv2.imwrite(result_img_path, image)
+			detected_objects[class_index_int].append(detected_object)
+			draw_bounding_box(image, bounding_box, self.__classes[class_index_int])
+
+		if result_img_path:
+			cv2.imwrite(result_img_path, image)
 
 		if show_image:
-			show_image_non_block(image, f"Showing image '{result_img_path}'")
+			# show_image_non_block(image, f"Showing image '{result_img_path}'")
+			image_show(image, f"Showing image '{result_img_path}'")
 
 		return detected_objects
