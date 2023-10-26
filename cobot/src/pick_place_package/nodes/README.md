@@ -23,7 +23,7 @@ The returned integer signal can be interpreted differently based on the called s
 * Tray service: returned signal is the value from the enum `CobotMovement` from the AI package.
 
 The services use the models and camera settings specified in a configuration YAML file.
-Change the paths in the constructor of the class (`__init__()`, line 23) if you like to use your own.
+Change the paths in the constructor of the class ([CameraServer](camera_server.py)) if you like to use your own.
 Refer to the samples provided by the AI package for more information about camera and model configurations.
 
 ## cobot_methods.py
