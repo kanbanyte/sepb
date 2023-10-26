@@ -312,11 +312,11 @@ Some proof of this was the successful results of the AI model as seen here:
 |**Background/Predicted**|0|0|
 
 **Tray Model**
-|&emsp;|Empty/Truth|Full/Truth|Partial/Truth|Background/Truth|
+|&emsp;|Empty/Truth|Full/Truth|Partially Full/Truth|Background/Truth|
 |:-|:-:|:-:|:-:|:-:|
 |**Empty/Predicted**|11|0|0|0|
 |**Full/Predicted**|0|15|0|0|
-|**Partial/Predicted**|0|0|20|0|
+|**Partially Full/Predicted**|0|0|20|0|
 |**Background/Predicted**|0|0|0|0|
 
 **Case Model**
