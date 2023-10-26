@@ -6,7 +6,7 @@
 
 * [object_detection_training.ipynb](#object_detection_trainingipynb)
 * [plot_ultralytics_result.py](#plot_ultralytics_resultspy)
-* [Trained Directory](#trained-directory)
+* [trained](#trained)
 
 <!-- /TOC -->
 
@@ -28,7 +28,7 @@ This script is created to address this issue by plotting them based on the data 
 The user can select a `results.csv` file generated after a YOLO model is trained by Ultralytics.
 If the `object_detection_training.ipynb` is used to train the model, the `results.csv` file is included in the output.
 
-## Trained Directory
+## `trained` Directory
 ### Purpose
 This directory contains trained models in the form of PyTorch files.
 Full path to these files must be included in the configuration YAML so the model can be found and used to run inference.
@@ -41,7 +41,7 @@ This setting converts a rectangular image into a square image with the size bein
 In inference, rectangular mode is turned on by default.
 See [GitHub comment 1 ](https://github.com/ultralytics/yolov5/issues/2009#issuecomment-766147324) and [GitHub comment 2](https://github.com/ultralytics/yolov5/issues/2009#issuecomment-765557040) for more details.
 
-The following section includes the settings used to train these models and recommended settings when running inference with them.
+The following section includes the settings used to train these models on Roboflow and recommended settings when running inference with them.
 
 **detect_chip.pt:**
 * Purpose: detect blue chips in red slots and yellow chips in white slots

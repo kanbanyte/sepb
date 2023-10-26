@@ -93,6 +93,7 @@ Training on images at larger sizes (above 800px) or training larger models (Larg
 The Jupyter notebook used for training relies on the dataset stored in Roboflow.
 After a successful training session, the resulting model (.pt files) and its metrics can be downloaded to your local machine.
 The model files (.pt files) are required by all code that uses the model so they must be saved if you intend to use the model for inference.
+The Chip Detection model, Tray Detection model, and Case Detection model are included, see [this README](./src/training/README.md) for more information about dataset and training settings as well as recommended inference settings.
 
 The training process involves the following steps:
 1. Ensure you have the Roboflow private API key to download the dataset and know the project name.
