@@ -15,7 +15,8 @@
 
 ## camera_server.py
 This class is a node acting as a server that provides positions of items upon request.
-Object positions or tray movements can be requested via three different services: tray service, case service, and chip service, all of which share the same service interface.
+Object positions or tray movements can be requested via three different services:
+tray service, case service, and chip service, all of which share the same service interface.
 The returned integer signal can be interpreted differently based on the called service:
 * Chip service: returned signal is a number from 1 to 48 if a chip is detected in these positions or -1 if none is detected.
 * Case service: returned signal is a number from 1 to 17 if a case is detected in these positions or -1 if none is detected.
@@ -42,7 +43,7 @@ The class also supports a dummy action callback (`execute_test`) which does not 
 ## gripper_server.py
 This class is a server for the gripper service that allows the cobot node to control the gripper.
 
-It workds by using four main functions:\
+It works by using four main functions:
 1. `load_file(file_name)`: Loads the specified file on the PLC.
 2. `play_program()`: Plays the currently loaded file on the PLC.
 3. `switch_pin_io(request)`: Sends a pin number as a request to the `io_and_status_controller/set_io` service.

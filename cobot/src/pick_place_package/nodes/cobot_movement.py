@@ -146,8 +146,8 @@ class CobotMovementActionServer(Node):
 		'''
 		Callback to execute a pick-and-place task.
 		This function either loads a tray or moves it, depending on the suggested move from the tray service.
-		Since only one action is performed by the callback, the client might need to send multiple requests to complete a cycle or
-		keep the cobot performing in a loop.
+		Since only one action is performed by the callback,
+		the client might need to send multiple requests to complete a cycle or keep the cobot performing in a loop.
 
 		Args:
 			goal_handle (actionlib.action_server.SimpleGoalHandle): the goal handle associated with the action request.
@@ -191,8 +191,7 @@ class CobotMovementActionServer(Node):
 
 		'''
 		Since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
-		therefore the cobot should not load a tray unless it is empty,
-		in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD
+		therefore the cobot should not load a tray unless it is empty, in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD.
 		'''
 		if (cobot_move_signal == CobotMovement.START_TRAY1_LOAD.value or
   				cobot_move_signal == CobotMovement.START_TRAY2_LOAD.value):
@@ -322,7 +321,8 @@ class CobotMovementActionServer(Node):
 			tray_move (CobotMovement): tray load command.
 
 		Returns:
-			tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+			tuple(list,list): tuple containing 2 lists.
+			The first list contains trajectories, the second contains their names.
 		'''
 		chip_position = self.get_chip_position()
 		case_position = self.get_case_position()
@@ -344,7 +344,8 @@ class CobotMovementActionServer(Node):
 			tray_move (CobotMovement): tray move command.
 
 		Returns:
-			tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+			tuple(list,list): tuple containing 2 lists.
+			The first list contains trajectories, the second contains their names.
 		'''
 		self.get_logger().info(f"Populating tray movement trajectories...")
 		return get_tray_movement_trajectories(

@@ -2,6 +2,7 @@ import os
 import shutil
 from util.file_dialog import select_folder_from_dialog
 
+
 def main():
 	# select source and destination folders
 	src_dir = select_folder_from_dialog("Enter the name of the source folder: ")
@@ -25,6 +26,7 @@ def main():
 		print(f"Copied: {file_to_copy} to {destination_path}")
 
 	print("Copy complete.")
+
 
 if __name__ == "__main__":
 	main()

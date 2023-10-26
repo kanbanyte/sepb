@@ -5,6 +5,7 @@ import numpy as np
 from .camera_lens import LogicalLens
 from data_processing.image_processing import crop_image
 
+
 def open_camera(camera_config):
 	'''
 	Open the ZED camera and applies settings specified in the yaml configuration file.
@@ -48,6 +49,7 @@ def open_camera(camera_config):
 
 	return camera
 
+
 def __logical_lens_to_zed_lens(logical_lens):
 	'''
 	Converts logical lens enum value to enum used by the ZED SDK.
@@ -64,6 +66,7 @@ def __logical_lens_to_zed_lens(logical_lens):
 		return sl.VIEW.LEFT
 	else:
 		raise ValueError(f"Unknown logical lens value: {logical_lens}")
+
 
 def capture_image(camera, lens=LogicalLens.RIGHT):
 	'''
@@ -88,6 +91,7 @@ def capture_image(camera, lens=LogicalLens.RIGHT):
 	else:
 		raise ValueError(f"Failed to capture image: {error_code}")
 
+
 def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
 	'''
 	Takes a photo with the camera and applies a crop box to it.
@@ -108,6 +112,7 @@ def get_rgb_cropped_image(camera, crop_box, lens=LogicalLens.RIGHT):
 
 	return np.ascontiguousarray(cropped_image, dtype=np.uint8)
 
+
 def read_crop_box(crop_box_config):
 	'''
 	Get the crop box in the xyxy format as specified in the yaml configuration file.
@@ -116,7 +121,7 @@ def read_crop_box(crop_box_config):
 		crop_box_config (dict): dictionary containing crop box xyxy coordinates.
 
 	Returns:
-		int, int, int, int: Coordinates of the crop box in the (left, top, right, bottom) format
+		int, int, int, int: Coordinates of the crop box in the (left, top, right, bottom) format.
 	'''
 	x1 = crop_box_config.get('x1')
 	x2 = crop_box_config.get('x2')

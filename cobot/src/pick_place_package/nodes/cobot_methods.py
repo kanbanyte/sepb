@@ -4,13 +4,15 @@ from data_processing.tray_position import CobotMovement
 
 def __get_home_trajectories(joints, goals, gripper_outputs):
 	'''
-	Get trajectories to move back to the Home position
+	Get trajectories to move back to the Home position.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 	trajectories = []
 	trajectory_names = []
+
 	# Create a JointTrajectory object for moving to the home position.
 	traj = JointTrajectory()
 	traj.joint_names = joints
@@ -32,10 +34,11 @@ def __get_home_trajectories(joints, goals, gripper_outputs):
 
 def __get_chip_move_trajectories(joints, goals, gripper_outputs, chip_number, tray_number):
 	'''
-	Get trajectories to move the chip to the tray specified by `tray_number`
+	Get trajectories to move the chip to the tray specified by `tray_number`.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 	trajectories = []
 	trajectory_names = []
@@ -63,7 +66,7 @@ def __get_chip_move_trajectories(joints, goals, gripper_outputs, chip_number, tr
 	else:
 		chip_home_name = "chip_home_4"
 
-	# Sequence of goals to move the cobot to
+	# Sequence of goals to move the cobot to.
 	goal_names = [
 		chip_home_name,
 		chip_name,
@@ -89,10 +92,11 @@ def __get_chip_move_trajectories(joints, goals, gripper_outputs, chip_number, tr
 
 def __get_case_move_trajectories(joints, goals, gripper_outputs, case_number, tray_number):
 	'''
-	Get trajectories to move the case to the tray specified by `tray_number`
+	Get trajectories to move the case to the tray specified by `tray_number`.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 	trajectories = []
 	trajectory_names = []
@@ -131,10 +135,11 @@ def __get_case_move_trajectories(joints, goals, gripper_outputs, case_number, tr
 
 def __get_battery_move_trajectories(joints, goals, gripper_outputs, tray_number):
 	'''
-	Get trajectories to move the battery to the tray specified by `tray_number`
+	Get trajectories to move the battery to the tray specified by `tray_number`.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 	trajectories = []
 	trajectory_names = []
@@ -174,10 +179,11 @@ def __get_battery_move_trajectories(joints, goals, gripper_outputs, tray_number)
 
 def __get_tray_move_trajectories(joints, goals, gripper_outputs, tray_number):
 	'''
-	Get the trajectories used to move the tray in the position specified by `tray_number` to assembly
+	Get the trajectories used to move the tray in the position specified by `tray_number` to assembly.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 
 	trajectories = []
@@ -217,10 +223,11 @@ def __get_tray_move_trajectories(joints, goals, gripper_outputs, tray_number):
 
 def __get_tray_replacement_trajectories(joints, goals, gripper_outputs, tray_number):
 	'''
-	Get the trajectories used to move the assembly tray back to the position specified by `tray_number`
+	Get the trajectories used to move the assembly tray back to the position specified by `tray_number`.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 
 	trajectories = []
@@ -260,10 +267,11 @@ def __get_tray_replacement_trajectories(joints, goals, gripper_outputs, tray_num
 
 def __get_pcb_move_trajectories(joints, goals, gripper_outputs, tray_number):
 	'''
-	Get the trajectories used to move the red PCBs in grey cases to the position specified by `tray_number`
+	Get the trajectories used to move the red PCBs in grey cases to the position specified by `tray_number`.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 
 	trajectories = []
@@ -314,10 +322,13 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 		joints (list[str]): list of joint names.
 		goals (list[str]): list of goal names.
 		gripper_outputs (list[str]): list of gripper output names.
-		cobot_movement (int): integer value representing the tray load command. Must be either `CobotMovement.ASSEMBLY_TO_TRAY1.value`,  `CobotMovement.ASSEMBLY_TO_TRAY2.value`, `CobotMovement.TRAY1_TO_ASSEMBLY.value` or `CobotMovement.TRAY2_TO_ASSEMBLY.value`
+		cobot_movement (int): integer value representing the tray load command.
+		Must be either `CobotMovement.ASSEMBLY_TO_TRAY1.value`,  `CobotMovement.ASSEMBLY_TO_TRAY2.value`,
+		`CobotMovement.TRAY1_TO_ASSEMBLY.value` or `CobotMovement.TRAY2_TO_ASSEMBLY.value`.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 	if cobot_movement == CobotMovement.ASSEMBLY_TO_TRAY1.value:
 		tray_number = 1
@@ -326,7 +337,8 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 
 		return (
 			move_home_trajectories[0] + replace_tray_trajectories[0],
-			move_home_trajectories[1] + replace_tray_trajectories[1])
+			move_home_trajectories[1] + replace_tray_trajectories[1]
+		)
 
 	if cobot_movement == CobotMovement.ASSEMBLY_TO_TRAY2.value:
 		tray_number = 2
@@ -335,7 +347,8 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 
 		return (
 			move_home_trajectories[0] + replace_tray_trajectories[0],
-			move_home_trajectories[1] + replace_tray_trajectories[1])
+			move_home_trajectories[1] + replace_tray_trajectories[1]
+		)
 
 	if cobot_movement == CobotMovement.TRAY1_TO_ASSEMBLY.value:
 		tray_number = 1
@@ -344,7 +357,8 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 
 		return (
 			move_home_trajectories[0] + replace_tray_trajectories[0],
-			move_home_trajectories[1] + replace_tray_trajectories[1])
+			move_home_trajectories[1] + replace_tray_trajectories[1]
+		)
 
 	if cobot_movement == CobotMovement.TRAY2_TO_ASSEMBLY.value:
 		tray_number = 2
@@ -353,7 +367,8 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 
 		return (
 			move_home_trajectories[0] + replace_tray_trajectories[0],
-			move_home_trajectories[1] + replace_tray_trajectories[1])
+			move_home_trajectories[1] + replace_tray_trajectories[1]
+		)
 
 	return ([], [])
 
@@ -365,12 +380,14 @@ def get_all_trajectories(joints, goals, gripper_outputs, chip_number, case_numbe
 		joints (list[str]): list of joint names.
 		goals (list[str]): list of goal names.
 		gripper_outputs (list[str]): list of gripper output names.
-		chip_number (int): position of chip to transfer to the tray. Must be from 1 to 48.
-		case_number (int): position of case to transfer to the tray. Must be from 1 to 17.
-		cobot_movement (int): integer value representing the tray load command. Must be either `CobotMovement.START_TRAY1_LOAD.value` or `CobotMovement.START_TRAY2_LOAD.value`
+		chip_number (int): position of chip to transfer to the tray; must be from 1 to 48.
+		case_number (int): position of case to transfer to the tray; must be from 1 to 17.
+		cobot_movement (int): integer value representing the tray load command.
+		Must be either `CobotMovement.START_TRAY1_LOAD.value` or `CobotMovement.START_TRAY2_LOAD.value`.
 
 	Return:
-		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+		tuple(list,list): tuple containing 2 lists.
+		The first list contains trajectories, the second contains their names.
 	'''
 
 	tray_number = None

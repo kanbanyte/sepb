@@ -1,69 +1,82 @@
 # SAMPLE CONFIGURATION YAML FILE
 camera:
-  brightness: 5
-  contrast: 4
-  hue: 0
-  saturation: 8
-  sharpness: 4
-  gamma: 4
-  white_balance: -1 # -1 indicates that an automatic setting is applied
-  gain: -1
-  exposure: -1
-chip_slot_crop_box: # should be adjusted as needed
-  left: # crop box coordinates for images captured by the logical left lens.
-    x1: 805 # left coordinate
-    y1: 212 # top coordinate
-    x2: 1196 # right coordinate
-    y2: 451 # bottom coordinate
-  right: # crop box coordinates for images captured by the logical right lens
-    x1: 656
-    y1: 208
-    x2: 1055
-    y2: 449
+    brightness: 5
+    contrast: 4
+    hue: 0
+    saturation: 8
+    sharpness: 4
+    gamma: 4
+    # -1 indicates that an automatic setting is applied
+    white_balance: -1
+    gain: -1
+    exposure: -1
+# should be adjusted as needed
+chip_slot_crop_box:
+    # crop box coordinates for images captured by the logical left lens.
+    left:
+        # left coordinate
+        x1: 805
+        # top coordinate
+        y1: 212
+        # right coordinate
+        x2: 1196
+        # bottom coordinate
+        y2: 451
+    # crop box coordinates for images captured by the logical right lens
+    right:
+        x1: 656
+        y1: 208
+        x2: 1055
+        y2: 449
 tray_crop_box:
-  left:
-    x1: 638
-    y1: 645
-    x2: 1326
-    y2: 1221
-  right:
-    x1: 566
-    y1: 658
-    x2: 1227
-    y2: 1226
+    left:
+        x1: 638
+        y1: 645
+        x2: 1326
+        y2: 1221
+    right:
+        x1: 566
+        y1: 658
+        x2: 1227
+        y2: 1226
 case_crop_box:
-  left:
-    x1: 1276
-    y1: 2
-    x2: 1402
-    y2: 516
-  right:
-    x1: 1118
-    y1: 2
-    x2: 1235
-    y2: 516
+    left:
+        x1: 1276
+        y1: 2
+        x2: 1402
+        y2: 516
+    right:
+        x1: 1118
+        y1: 2
+        x2: 1235
+        y2: 516
 model:
-  detect_chip:
-    file: "/path/to/model" # full path to the .pt model file
-    image_size: # input image size. Should be of similar size as images used in training
-      width: 640
-      height: 640
-    iou: 0.7 # Intersection over Union threshold
-    confidence: 0.25 # confidence level
-    detection_limit: 48 # maximum detection count
-  detect_tray:
-    file: "/path/to/model"
-    detection_limit: 3
-    image_size:
-      width: 640
-      height: 640
-    iou: 0.7
-    confidence: 0.25
-  detect_case:
-    file: "/path/to/model"
-    image_size:
-      width: 640
-      height: 640
-    iou: 0.7
-    confidence: 0.25
-    detection_limit: 100
+    detect_chip:
+        # full path to the .pt model file
+        file: "/path/to/model"
+        # input image size. Should be of similar size as images used in training
+        image_size:
+            width: 640
+            height: 640
+        # Intersection over Union threshold
+        iou: 0.7
+        # confidence level
+        confidence: 0.25
+        # maximum detection count
+        detection_limit: 48
+    detect_tray:
+        file: "/path/to/model"
+        detection_limit: 3
+        image_size:
+            width: 640
+            height: 640
+        iou: 0.7
+        confidence: 0.25
+    detect_case:
+        file: "/path/to/model"
+        image_size:
+            width: 640
+            height: 640
+        iou: 0.7
+        confidence: 0.25
+        detection_limit: 100

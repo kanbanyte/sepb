@@ -12,12 +12,14 @@ BOX_THICKNESS = 2
 GREEN_RGB = (0, 255, 0)
 FONT_THICKNESS = 2
 
+
 def select_image():
 	image_file = select_file_from_dialog("Select image file", ["png", "jpg", "jpeg"])
 	if not image_file:
 		raise ValueError("No image file selected")
 
 	return cv2.imread(image_file)
+
 
 def run_with_ultralytics_api():
 	while True:
@@ -40,7 +42,7 @@ def run_with_ultralytics_api():
 
 				`result.plot()` is a convenient way to get an image with bounding boxes, labels and confidence level,
 				but the color red, which is ineligible when used on the red chip slots, cannot be adjusted.
-				The recommended alternative is `data_processing.image_processing.show_image`
+				The recommended alternative is `data_processing.image_processing.show_image`.
 				'''
 				cv2.imshow(f"Close window to continue", result.plot())
 				cv2.waitKey(0)
@@ -109,6 +111,7 @@ def run_with_custom_api():
 		except Exception as error:
 			print(f"Error: {error}")
 
+
 def main():
 	print(
 '''\n
@@ -121,6 +124,7 @@ Select option to run.
 		run_with_ultralytics_api()
 	elif option == 1:
 		run_with_custom_api()
+
 
 if __name__ == "__main__":
 	main()

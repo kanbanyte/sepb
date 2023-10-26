@@ -2,6 +2,7 @@ import cv2
 from PIL import Image
 import tkinter as tk
 
+
 def crop_image(image, crop_box):
 	'''
 	Crops an image based on the specified crop box.
@@ -11,7 +12,7 @@ def crop_image(image, crop_box):
 		crop_box (x1, y1, x2, y2): Tuple containing crop box coordinates (left, top, right, bottom).
 
 	Returns:
-		np.array: cropped image
+		np.array: cropped image.
 	'''
 	if image.size == 0:
 		raise ValueError(f"Input image size must not be 0")
@@ -37,7 +38,7 @@ def draw_bounding_box(image, bounding_box, name):
 		name (str): name of the class of the bounding box.
 
 	Returns:
-		None
+		None.
 	'''
 	x1, y1, x2, y2 = bounding_box
 	image_top_left = (round(x1), round(y1))
@@ -54,15 +55,7 @@ def draw_bounding_box(image, bounding_box, name):
 	# position the text below the image but shift it up if the text goes out of view
 	(_, text_height), _ = cv2.getTextSize(name, font, font_scale, thickness=1)
 	text_bottom_left = (round(image_top_left[0]), round(min(image_bottom_right[1] + text_height + 2, image_height - text_height)))
-	cv2.putText(
-		image,
-		name.upper(),
-		text_bottom_left,
-		font,
-		font_scale,
-		green,
-		thickness=1,
-		lineType=cv2.LINE_AA)
+	cv2.putText(image, name.upper(), text_bottom_left, font, font_scale, green, thickness=1, lineType=cv2.LINE_AA)
 
 	cv2.rectangle(image, image_top_left, image_bottom_right, color=green, thickness=2)
 
@@ -82,7 +75,7 @@ def show_image(image, name='Image'):
 		name (str): window name.
 
 	Returns:
-		None
+		None.
 	'''
 
 	# resize the image to make its height 3/4 of the screen height whilst maintaining aspect ratio

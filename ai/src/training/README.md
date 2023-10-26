@@ -5,41 +5,48 @@
 <!-- TOC -->
 
 * [object_detection_training.ipynb](#object_detection_trainingipynb)
-* [plot_ultralytics_result.py](#plot_ultralytics_resultspy)
+* [plot_ultralytics_results.py](#plot_ultralytics_resultspy)
 * [trained](#trained)
 
 <!-- /TOC -->
 
 ## object_detection_training.ipynb
-### Purpose:
+<!-- TOC ignore:true -->
+### Purpose
 Notebook that downloads the dataset from Roboflow and train the YOLO model.
 
+<!-- TOC ignore:true -->
 ### Usage
 The user is allowed to input various parameters such as epochs, image size, batch size, frozen layers, etc.
 If the notebook is run on Google Collab, the result folder of every training session can be downloaded as a zip file.
 
 ## plot_ultralytics_results.py
-### Purpose:
+<!-- TOC ignore:true -->
+### Purpose
 Training the YOLO model from Ultralytics will produce several images showing the model's metrics.\
 However, YOLO does not support displaying overlays of different metrics, such as showing the training curve and validation curve in the same graph.\
 This script is created to address this issue by plotting them based on the data retrieved from the `results.csv` file produced after every training session.
 
+<!-- TOC ignore:true -->
 ### Usage
 The user can select a `results.csv` file generated after a YOLO model is trained by Ultralytics.
 If the `object_detection_training.ipynb` is used to train the model, the `results.csv` file is included in the output.
 
-## `trained` Directory
+## trained
+<!-- TOC ignore:true -->
 ### Purpose
 This directory contains trained models in the form of PyTorch files.
 Full path to these files must be included in the configuration YAML so the model can be found and used to run inference.
 
+<!-- TOC ignore:true -->
 ### Usage
 This section contains details of how these models are trained.
 For best results, the size of images used in training should not be significantly different from those used in inference.
 In training, the rectangular mode should be turned ON.
 This setting converts a rectangular image into a square image with the size being the longer dimension by filling out the space with a solid color.
 In inference, rectangular mode is turned on by default.
-See [GitHub comment 1 ](https://github.com/ultralytics/yolov5/issues/2009#issuecomment-766147324) and [GitHub comment 2](https://github.com/ultralytics/yolov5/issues/2009#issuecomment-765557040) for more details.
+See [GitHub comment 1](https://github.com/ultralytics/yolov5/issues/2009#issuecomment-766147324) and
+[GitHub comment 2](https://github.com/ultralytics/yolov5/issues/2009#issuecomment-765557040) for more details.
 
 The following section includes the settings used to train these models on Roboflow and recommended settings when running inference with them.
 
@@ -56,8 +63,8 @@ The following section includes the settings used to train these models on Robofl
 			* Auto-Orient: Applied
 		* Augmentation:
 			* Flip: Horizontal, Vertical
-			* Rotation: Between -30° and +30°
-			* Shear: ±15° Horizontal, ±15° Vertical
+			* Rotation: Between -30&deg; and +30&deg;
+			* Shear: &plusmn;15&deg; Horizontal, &plusmn;15&deg; Vertical
 			* Saturation: Between -10% and +10%
 			* Brightness: Between -5% and +5%
 			* Mosaic: Applied
@@ -100,10 +107,10 @@ The following section includes the settings used to train these models on Robofl
 			* Auto-orient: applied
 		* Augmentation:
 			* Flip: Horizontal, Vertical
-			* Hue: Between -74° and +74°
+			* Hue: Between -74&deg; and +74&deg;
 			* Saturation: Between -25% and +25%
 			* Exposure: Between -25% and +25%
-			* Bounding Box: 90° Rotate: Clockwise, Counter-Clockwise, Upside Down
+			* Bounding Box: 90&deg; Rotate: Clockwise, Counter-Clockwise, Upside Down
 			* Bounding Box: Brightness: Between -15% and +15%
 * Recommended inference settings:
 	* Image sizes: around 661px (W) x 568px (H)

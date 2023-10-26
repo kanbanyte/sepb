@@ -1,7 +1,7 @@
 from enum import Enum
 
 '''
-Enum of each Tray positions possible states
+Enum of each Tray positions possible states.
 '''
 class TrayState(Enum):
 	ABSENT = 0
@@ -60,14 +60,14 @@ def __convert_class_to_state(class_name):
 
 def __convert_bounding_boxes_to_states(detections, model):
 	'''
-	Returns a dictionary of the tray states
+	Returns a dictionary of the tray states.
 
 	Args:
-		detections (dict): dictionary of detected objects
-		model (ObjectDetectionModel): model used to get the detections
+		detections (dict): dictionary of detected objects.
+		model (ObjectDetectionModel): model used to get the detections.
 
 	Returns:
-		dict[int, list[DetectedObjects]]: dictionary of tray states
+		dict[int, list[DetectedObjects]]: dictionary of tray states.
 	'''
 
 	tray_states = {
@@ -106,13 +106,13 @@ def __convert_bounding_boxes_to_states(detections, model):
 
 def __get_best_move(tray_states):
 	'''
-	Returns the movement of the tray by taking in a dictionary of states
+	Returns the movement of the tray by taking in a dictionary of states.
 
 	Args:
-		tray_states (dict): dictionary of tray states
+		tray_states (dict): dictionary of tray states.
 
 	Returns:
-		TrayMovement: movement of the tray
+		TrayMovement: movement of the tray.
 	'''
 
 	# if assembly tray is empty, we move it back for future loading
@@ -153,14 +153,14 @@ def __get_best_move(tray_states):
 
 def determine_move(detections, model):
 	'''
-	Returns the movement of the tray by taking in a dictionary of detected objects and a model
+	Returns the movement of the tray by taking in a dictionary of detected objects and a model.
 
 	Args:
-		detections (dict): dictionary of detected objects
-		model (ObjectDetectionModel): model used to detect objects
-		
+		detections (dict): dictionary of detected objects.
+		model (ObjectDetectionModel): model used to detect objects.
+
 	Returns:
-		TrayMovement: movement of the tray
+		TrayMovement: movement of the tray.
 	'''
 	tray_states = __convert_bounding_boxes_to_states(detections, model)
 	print(f"Tray States: {tray_states}")

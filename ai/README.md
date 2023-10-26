@@ -1,5 +1,7 @@
-# AI Package
 
+<!-- TOC ignore:true -->
+# AI Package
+<!-- TOC ignore:true -->
 ## Overview
 The AI Package contains scripts and modules developed to interact with the ZED camera, run inference using detection models as well as process training data.
 Image labelling is done in a web application known as Roboflow whereas training is done in a GPU-supported Google Collab session.
@@ -11,6 +13,8 @@ Image labelling is done in a web application known as Roboflow whereas training 
 * [Installation](#installation)
 * [Usage](#usage)
 * [Common Issues](#common-issues)
+
+<!-- /TOC -->
 
 ## Dependencies
 <!-- TOC ignore:true -->
@@ -49,7 +53,6 @@ This command should be run every time the package code is modified:
 	```
 
 ## Usage
-
 <!-- TOC ignore:true -->
 ### Directory Structure
 The below list provides an overview of the directory structure.
@@ -69,7 +72,7 @@ Trained models and their settings are also included.
 ### Image Labelling
 Training images are labelled and stored in a web application known as [Roboflow](https://app.roboflow.com/sepb).
 Roboflow supports image labelling, image augmentation, image reprocessing,  dataset generation, and dataset balancing.
-The dataset can be downloaded manually to your local machine or installed programmatically via Roboflow's APIs.
+The dataset can be downloaded manually to your local machine or installed programmatically via Roboflow APIs.
 
 Generally, creating a dataset for a model involves the following steps:
 1. Create a new project in your workspace and choose the model's purpose.
@@ -93,11 +96,13 @@ Training on images at larger sizes (above 800px) or training larger models (Larg
 The Jupyter notebook used for training relies on the dataset stored in Roboflow.
 After a successful training session, the resulting model (.pt files) and its metrics can be downloaded to your local machine.
 The model files (.pt files) are required by all code that uses the model so they must be saved if you intend to use the model for inference.
-The Chip Detection model, Tray Detection model, and Case Detection model are included, see [this README](./src/training/README.md) for more information about dataset and training settings as well as recommended inference settings.
+The Chip Detection model, Tray Detection model, and Case Detection model are included,
+see [this README](./src/training/README.md) for more information about dataset and training settings as well as recommended inference settings.
 
 The training process involves the following steps:
 1. Ensure you have the Roboflow private API key to download the dataset and know the project name.
-	* Both can be accessed by selecting the dataset to be used, then click "Export", choose "Show download code", and copy the API key and the project name somewhere secure.
+	* Both can be accessed by selecting the dataset to be used, then click "Export",
+	choose "Show download code", and copy the API key and the project name somewhere secure.
 	* Robowflow may append random strings to the project name so it is important that you use the project name shown in the snippet.
 	* The API key can also be accessed at [the workspace API settings](https://app.roboflow.com/sepb/settings/api).
 2. Connect to a Google Collab session running on a T4 runtime.
@@ -120,7 +125,8 @@ The code in the AI package has been modified but the effects do not take place.
 
 **Solution:**\
 Ensure that the package with changed code has been reinstalled.
-Keep in mind that any existing `build` folder must be deleted before reinstalling, otherwise the newly updated package is not installed, despite saying so in the terminal.
+Keep in mind that any existing `build` folder must be deleted before reinstalling,
+otherwise the newly updated package is not installed, despite saying so in the terminal.
 
 <!-- TOC ignore:true -->
 ### Camera Connection Failure:
@@ -129,7 +135,7 @@ The code that opens the camera fails with any error code.
 
 **Solution:**\
 Ensure that the camera cable is connected and no other application is using the camera.
-Unplug the camera USB cable, wait for a few seconds and replug it.
+Unplug the camera USB cable, wait for a few seconds and re-plug it.
 If the above solutions do not work, try a different USB port on the machine.
 
 <!-- TOC ignore:true -->
@@ -137,7 +143,7 @@ If the above solutions do not work, try a different USB port on the machine.
 **Symptoms:**\
 Detection models return correct bounding boxes but the numeric positions used by the cobot is not.
 This can occur when the crop boxes are not sufficiently "tight" or correctly aligned.
-The bounding box - to - position code has different criteria for different types of models and should be adhered to.
+The bounding box-to-position code has different criteria for different types of models and should be adhered to.
 These requirements can be found in the [data_processing](src/data_processing/README.md) module.
 
 **Solution:**\
@@ -174,12 +180,13 @@ The following solutions can be used:
 * Run the code in an external terminal.
 
 Note that even when the images are successfully displayed, warning messages might appear in the terminal but can be ignored.
-For more information, see [this StackOverflow thread](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error).
+For more information,
+see [this StackOverflow thread](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error).
 
 <!-- TOC ignore:true -->
 ### pyzed.sl Import Failure
 **Symptoms:**\
-Running code that uses the camera fails with the error
+Running code that uses the camera fails with the error:
 ```bash
 	import pyzed.sl as sl
 ImportError: DLL load failed while importing sl: The specified module could not be found.
@@ -194,7 +201,7 @@ See the [Dependencies](#dependencies) section for more details.
 
 If all of the above steps fail, refer to these online threads or raise an issue with the ZED SDK maintainers themselves.
 Note that none of these issues have been encountered during development after following the above steps:
-* [GitHub Issue #1](https://github.com/stereolabs/zed-tensorflow/issues/10)
-* [GitHub Issue #2](https://github.com/stereolabs/zed-python-api/issues/78)
-* [GitHub Issue #3](https://github.com/stereolabs/zed-sdk/issues/358)
+* [GitHub Issue: \[ImportError: No module named 'pyzed.sl'\]](https://github.com/stereolabs/zed-tensorflow/issues/10)
+* [GitHub Issue: \[cannot import pyzed.sl\]](https://github.com/stereolabs/zed-python-api/issues/78)
+* [GitHub Issue: \[Error: import pyzed.sl as sl\]](https://github.com/stereolabs/zed-sdk/issues/358)
 * [Stereo Labs Community Thread](https://community.stereolabs.com/t/importerror-no-module-named-pyzed-sl-as-sl/2467)

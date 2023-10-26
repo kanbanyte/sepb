@@ -3,6 +3,7 @@ __TOP_Y_COORDINATE = 148
 __POSITION_COUNT = 17
 __POSITION_GAP = (__BOTTOM_Y_COORDINATE - __TOP_Y_COORDINATE) / (__POSITION_COUNT - 1)
 
+
 def convert_case_bounding_boxes(detected_case):
 	'''
 	Convert the bounding boxes of cases into its position.

@@ -28,7 +28,7 @@ User can choose from the 2 options:
 
 ## camera_sample.py
 <!-- TOC ignore:true -->
-### Purpose:
+### Purpose
 Runs inference using a trained model and an image captured by the ZED camera.
 All configurations for the model, crop box, and camera settings are specified in the YAML file, which is selected via file dialogue.
 

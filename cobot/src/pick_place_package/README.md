@@ -224,12 +224,12 @@ ros2 action send_goal /perform_pick_place pick_place_interfaces/action/PickPlace
 ```txt
 Waiting for an action server to become available...
 Sending goal:
-     perform_pick_place: true
+	perform_pick_place: true
 
 Goal accepted with ID: aede4df792b24a0a9c195e60c6dff389
 
 Result:
-    task_successful: false
+	task_successful: false
 
 Goal finished with status: SUCCEEDED
 ```

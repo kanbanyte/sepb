@@ -1,16 +1,18 @@
 __ROW_COUNT = 6
 
+
 def __get_chip_col(x1, x2):
 	'''
 	This method translated x coordinates into the appropriate chip column number.
-	We start from 0 and go to 7. This is to be the correct format for the equation later
+	We start from 0 and go to 7.
+	This is to be the correct format for the equation later.
 
 	Args:
-		x1 (int) : the x coordinate of the top left corner of the bounding box
-		x2 (int) : the x coordinate of the bottom right corner of the bounding box
+		x1 (int) : the x coordinate of the top left corner of the bounding box.
+		x2 (int) : the x coordinate of the bottom right corner of the bounding box.
 
 	Returns:
-		int : the column number of the chip, or -1 for invalid column
+		int : the column number of the chip, or -1 for invalid column.
 	'''
 	if x1 < x2 and x1 >=0 and x2 >= 0:
 		x_center = (x1 + x2) / 2
@@ -37,17 +39,19 @@ def __get_chip_col(x1, x2):
 		print("Chip Position Conversion Error: Invalid X-coordinates")
 		return -1
 
+
 def __get_chip_row(y1, y2):
 	'''
 	This method translated y coordinates into the appropriate chip row number.
-	We start from 0 and go to 5. This is to be the correct format for the equation later
+	We start from 0 and go to 5.
+	This is to be the correct format for the equation later.
 
 	Args:
-		y1 (int) : the y coordinate of the top left corner of the bounding box
-		y2 (int) : the y coordinate of the bottom right corner of the bounding box
+		y1 (int) : the y coordinate of the top left corner of the bounding box.
+		y2 (int) : the y coordinate of the bottom right corner of the bounding box.
 
 	Returns:
-		int : the row number of the chip, or -1 for invalid row
+		int : the row number of the chip, or -1 for invalid row.
 	'''
 	if y1 < y2 and y1 >=0 and y2 >= 0:
 		y_center = (y1 + y2) / 2
@@ -70,12 +74,13 @@ def __get_chip_row(y1, y2):
 		print("Chip Position Conversion Error:  Invalid Y-coordinates")
 		return -1
 
+
 def get_chip_slot_number(bounding_box):
 	'''
 	This method takes in the bounding box of a chip and returns the chip number defined by the cobot code.
 
 	Args:
-		bounding_box (list[tuple]) : the bounding box of the chip
+		bounding_box (list[tuple]) : the bounding box of the chip.
 
 	Returns:
 		int : the chip number, or None for invalid chip position.

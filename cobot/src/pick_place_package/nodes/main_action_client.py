@@ -15,7 +15,7 @@ class MainActionClient(Node):
 
 	def send_pick_place_request(self):
 		'''
-		Send a request that completes a pick and place cycle to the server
+		Send a request that completes a pick and place cycle to the server.
 		'''
 
 		self.get_logger().info("Sending request to server...")

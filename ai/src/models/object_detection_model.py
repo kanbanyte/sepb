@@ -5,6 +5,7 @@ from ultralytics import YOLO
 from .detected_object import DetectedObject
 from data_processing.image_processing import draw_bounding_box, show_image as image_show
 
+
 class ObjectDetectionModel:
 	def __init__(self, model_config):
 		self.__model = YOLO(model_config.get('file'))
@@ -20,8 +21,8 @@ class ObjectDetectionModel:
 	def __calculate_next_multiple(self, factor, number):
 		'''
 		Calculates the multiple of `factor` and is closest to `number` in the positive direction.
-		YOLO models requires the image length to be a multiple of `factor` so it
-		automatically converts the image size to that value and produce a warning message.
+		YOLO models requires the image length to be a multiple of `factor` so,
+		it automatically converts the image size to that value and produce a warning message.
 		We calculate that value to prevent this situation from the start.
 
 		Args:
@@ -29,7 +30,7 @@ class ObjectDetectionModel:
 			number (int): Input value.
 
 		Returns:
-			Integer: multiple of `factor` closest to `number`
+			Integer: multiple of `factor` closest to `number`.
 		'''
 		remainder = number % factor
 		if remainder > 0:
@@ -58,8 +59,7 @@ class ObjectDetectionModel:
 			show_image(boolean): optionally display the image wih bounding boxes of all detections.
 
 		Returns:
-			defaultdict(list): Dictionary where the keys are the indices of the classes and
-			the values are list[DetectedObjects]
+			defaultdict(list): Dictionary where the keys are the indices of the classes and the values are list[DetectedObjects]
 		'''
 
 		if image.size == 0:
@@ -68,13 +68,7 @@ class ObjectDetectionModel:
 		# YOLO model class uses the (h,w) order
 		image_dimension = (self.__image_height, self.__image_width)
 
-		results = self.__model.predict(
-			image,
-			verbose=False,
-			conf=self.__confidence,
-			iou=self.__iou,
-			imgsz=image_dimension,
-			max_det=self.__max_det)
+		results = self.__model.predict(image, verbose=False, conf=self.__confidence, iou=self.__iou, imgsz=image_dimension, max_det=self.__max_det)
 
 		# defaultdict supports specifying a default for missing values
 		detected_objects = defaultdict(list)
