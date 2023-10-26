@@ -22,6 +22,10 @@ The returned integer signal can be interpreted differently based on the called s
 * Case service: returned signal is a number from 1 to 17 if a case is detected in these positions or -1 if none is detected.
 * Tray service: returned signal is the value from the enum `CobotMovement` from the AI package.
 
+The services use the models and camera settings specified in a configuration YAML file.
+Change the paths in the constructor of the class (`__init__()`, line 23) if you like to use your own.
+Refer to the samples provided by the AI package for more information about camera and model configurations.
+
 ## cobot_methods.py
 This module contains functions that populate the trajectories of the cobot.
 There are 2 main types of trajectories:

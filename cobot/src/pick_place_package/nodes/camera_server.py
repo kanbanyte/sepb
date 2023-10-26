@@ -19,9 +19,11 @@ class CameraServer(Node):
 		self.tray_srv = self.create_service(PickPlaceService, 'tray', self.get_tray_movement)
 
 		# Define the path to the configuration file
-		# TODO: move this path to the startup argument list
+		# Change this path to point to your preferred configuration YAML file
 		config_file_path = "/home/cobot/Documents/models/config.yaml"
 
+		# Define the path to the output folder
+		# Change this path to point to your preferred output folder
 		self.__init_output_dirs( "/home/cobot/Documents/detections_outputs")
 
 		self.get_logger().info(f"Reading configuration file '{config_file_path}'")
