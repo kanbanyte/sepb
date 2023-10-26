@@ -90,13 +90,6 @@ def read_positions_from_parameters(action_server, goal_names: list):
 				point.time_from_start = Duration(sec=4)
 				goals[name] = point
 
-				# Base, Shoulder, Elbow, Wrist 1, Wrist 2, Wrist 3
-				pos = f'[Base: {point.positions[0]}, Shoulder: {point.positions[1]}, Elbow: {point.positions[2]}, ' +\
-				f'Wrist 1: {point.positions[3]}, Wrist 2: {point.positions[4]}, Wrist 3: {point.positions[5]}]'
-
-				# Display the goal's positions in the terminal.
-				# pjt.get_logger().info(f'\n\tGoal "{name}":\n\t\t{pos}\n')
-
 			else:
 				# Display a warning message for incorrectly defined goals.
 				action_server.get_logger().warn(

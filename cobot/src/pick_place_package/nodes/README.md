@@ -22,7 +22,7 @@ The returned integer signal can be interpreted differently based on the called s
 * Tray service: returned signal is the value from the enum `CobotMovement` from the AI package.
 
 ## cobot_methods.py
-This modules contains functions that populates the trajectories of the cobot.
+This module contains functions that populate the trajectories of the cobot.
 There are 2 main types of trajectories:
 * Tray load: loads the chip, case, and PCB shell on to the tray.
 * Tray move: move the trays, including moving trays and 2 to assembly and vice versa.
@@ -40,7 +40,19 @@ To keep the cobot performing the pick-and-place task in an infinite loop, the cl
 The class also supports a dummy action callback (`execute_test`) which does not involve the cobot or the camera server, primarily used to test action clients.
 
 ## gripper_server.py
+This class is a server for the gripper service that allows the cobot node to control the gripper.
 
+It workds by using four main functions:\
+1. `load_file(file_name)`: Loads the specified file on the PLC.
+2. `play_program()`: Plays the currently loaded file on the PLC.
+3. `switch_pin_io(request)`: Sends a pin number as a request to the `io_and_status_controller/set_io` service.
+4. `load_and_play_program(file_name)`: Loads a file then plays it.
+
+On the PLC, a program called 'gripper_test.urp' has been created that runs a loop to check which digital output pins are active.
+When the `gripper_service` service is called, it runs the `gripper_callback` function which sets the pin number and activates it.
+Once the pin has been activated, the gripper will open or close as defined in 'gripper_test.urp'.
+
+Once the pin number and state has been sent, the 'ROS.urp' program is loaded played, giving control back to the PC to move the cobot.
 
 ## main_action_client.py
 This class acts as an action client node which sends pick-and-place request to the Cobot Movement Action Server and waits until that request is complete.
@@ -48,3 +60,10 @@ The result and status of the request are printed to the terminal once the reques
 Feedback detailing the cobot movements during the process are also provided.
 
 ## read_methods.py
+This file contains functions that read information from `cobot_config.yaml`.
+The two functions defined are:
+* `read_positions_from_parameters(action_server, goal_names)`: Reads the joint positions for each goal name.
+* `read_gripper_outputs_from_parameters(action_server, output_names)`: Reads the gripper outputs for each goal name.
+
+These functions allow the cobot node to use the goals and gripper information defined in the config file to move to specific positions and
+move the gripper certain distances.
