@@ -4,7 +4,7 @@
 # Robot Vision System For A Pick And Place Task
 <!--
 	Co-Author: @dau501
-	Editor(s):
+	Editor(s): @vkach, @Slothman1, @Huy-GV, @NickMcK14, @finnmcgearey
 	Year: 2023
 -->
 
@@ -21,6 +21,8 @@
 |@NickMcK14|Support Manager/Developer|id@swin.student.edu.au|
 |@Huy-GV|Quality Manager/Developer|id@swin.student.edu.au|
 
+<div class="page"/><!-- page break -->
+
 <!-- TOC ignore:true -->
 # Document Sign Off
 |Name|Position|Signature|Date|
@@ -31,8 +33,6 @@
 |@vkach|Quality Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
 |@NickMcK14|Support Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
 |@Huy-GV|Quality Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
-
-<div class="page"/><!-- page break -->
 
 <!-- TOC ignore:true -->
 # Table of Contents
@@ -45,7 +45,7 @@
 	* [Test Cases](#test-cases)
 		* [Tested Features](#tested-features)
 		* [Functional Test Cases](#functional-test-cases)
-		* [Non-functional Testing](#non-functional-testing)
+		* [Non-Functional Testing](#non-functional-testing)
 * [Pass/Fail Criteria](#passfail-criteria)
 	* [Product Level](#product-level)
 	* [Testing Stages](#testing-stages)
@@ -98,6 +98,8 @@ It can be confidently stated that the documentation, after this validation, prov
 In summary, this testing phase was successful in verifying the functionality and performance of the vision system,
 meeting client expectations and establishing robust documentation for reference.
 
+<div class="page"/><!-- page break -->
+
 ## Test Items
 The cobot already possesses the ability to pick up objects from pre-defined positions and
 place them on a tray to be transferred to a human operator via a PLC controller.
@@ -121,6 +123,8 @@ The tested items span multiple components of the system:
 	* Camera server is a ROS service supplying positions of items to the movement controller.
 	The server relies on the AI models and the camera to retrieve bounding boxes of objects and
 	convert them to positions or commands to be used by the movement controller.
+
+<div class="page"/><!-- page break -->
 
 ## Test Cases
 This section will cover the features that were tested as well as the functional test cases that were used to evaluate the features.
@@ -164,6 +168,8 @@ For integration-related features, the following items are tested:
 * Bounding boxes from case detection model correctly converted to case positions defined by the cobot.
 * Bounding boxes from tray detection model correctly converted to best tray movement for the cobot.
 * Signal containing item position or tray movement communicated to the cobot motion controller, which acts upon that information.
+
+<div class="page"/><!-- page break -->
 
 ### Functional Test Cases
 Based on the features listed in the previous section, and they're specific criteria,
@@ -213,7 +219,9 @@ transmitting the data of the locations, planning the paths required of the robot
 
 Therefore, this test can be considered a success.
 
-### Non-functional Testing
+<div class="page"/><!-- page break -->
+
+### Non-Functional Testing
 Following the requirements that were listed in the Test Plan,
 the system was able to repeatedly complete its tasks correctly and consistently while carrying out its movements in a smooth manner.
 This was especially important when moving the assembly tray filled with parts, ensuring that nothing was damaged in the process.
@@ -230,7 +238,7 @@ Overall, considering the goals and aims that the tests targeted, the results wer
 This section outlines the standards that the project must meet to be considered acceptable for deployment,
 by looking at the product level along with the testing stages.
 
-The [Pass/Fail Criteria](test_plan.md#passfail-criteria-1) used is outlined in the [Test Plan Document](test_plan.md),
+The [Pass/Fail Criteria](test_plan.md#passfail-criteria) used is outlined in the [Test Plan Document](test_plan.md),
 where it is described that the criteria will help make sure that the project meets the necessary requirements;
 as well as, ensuring the project is at an acceptable standard of quality.
 The predefined criteria provides clear guidelines for assessing whether the system meets the desired level of functionality, performance, and
@@ -238,6 +246,8 @@ other relevant attributes whilst under the testing conditions.
 The [Test Plan Document](test_plan.md) also outlines what is considered a critical failure in the [Suspension Criteria](test_plan.md#suspension-criteria).
 Whereas failures described in the [Product Level](test_plan.md#product-level) and
 [Testing Stages](test_plan.md#testing-stages) in the [Test Plan Document](test_plan.md) will be categorised as high or medium failures.
+
+<div class="page"/><!-- page break -->
 
 ## Product Level
 As discussed in the test plan, a long list of appropriate and relevant pass/fail criteria for the product level were established.
@@ -266,9 +276,11 @@ The model contained instance of human arms within the training set; therefore, i
 Overall, the CV passed in all requested use cases.
 
 <!-- TOC ignore:true -->
-### Camera Outputs a Feed
+### Camera Outputs A Feed
 With the way the model was programmed, it was established early to allow this functionality to be provided; as such, this was done early on and handled well.
 As a result, this system is very solidly passing.
+
+<div class="page"/><!-- page break -->
 
 ## Testing Stages
 Referring to our test plan, relevant pass/fail criteria were established.
@@ -296,22 +308,24 @@ Some proof of this was the successful results of the AI model as seen here:
 **Chip Model**
 |&emsp;|Chip/Truth|Background/Truth|
 |:-|:-:|:-:|
-|Chip/Predicted|130|0|
-|Background/Predicted|0|0|
+|**Chip/Predicted**|130|0|
+|**Background/Predicted**|0|0|
 
 **Tray Model**
-|&emsp;|Empty/Truth|Full/Truth|Paritial/Truth|Background/Truth|
+|&emsp;|Empty/Truth|Full/Truth|Partially Full/Truth|Background/Truth|
 |:-|:-:|:-:|:-:|:-:|
-|Empty/Predicted|11|0|0|0|
-|Full/Predicted|0|15|0|0|
-|Paritial/Predicted|0|0|20|0|
-|Background/Predicted|0|0|0|0|
+|**Empty/Predicted**|11|0|0|0|
+|**Full/Predicted**|0|15|0|0|
+|**Partially Full/Predicted**|0|0|20|0|
+|**Background/Predicted**|0|0|0|0|
 
 **Case Model**
 |&emsp;|Case/Truth|Background/Truth|
 |:-|:-:|:-:|
-|Case/Predicted|17|0|
-|Background/Predicted|0|0|
+|**Case/Predicted**|17|0|
+|**Background/Predicted**|0|0|
+
+<div class="page"/><!-- page break -->
 
 <!-- TOC ignore:true -->
 ### System Testing
