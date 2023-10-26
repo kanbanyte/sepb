@@ -107,6 +107,8 @@ These include:
 * System Testing
 * Acceptance Testing
 
+<div class="page"/><!-- page break -->
+
 ## References Material
 Previously produced documents have been referenced to ensure that the testing that is conducted satisfies the requirements in these documents.
 These documents can provide further information if required:
@@ -114,8 +116,6 @@ These documents can provide further information if required:
 * Software Quality Assurance Plan
 * Software Requirements Specification
 * Detailed Design and Implementation Report
-
-<div class="page"/><!-- page break -->
 
 ## Objective
 The objective of the testing plan is to outline the tests required and the strategy for conducting and completing testing.\
@@ -178,11 +178,11 @@ The following features of the integrated system are tested:
 * The camera server responds to requests from the cobot controller with positions of requested items or best tray movement to execute.
 * The cobot controller performs no movement if directed by the camera server or if the returned position is invalid.
 
+<div class="page"/><!-- page break -->
+
 ## Test Cases
 The creation of well-structured test cases in important for evaluating software.\
 This section outlines the creation of both functional and non-functional test cases, designed to assess the system's ability to perform the specified requirements.
-
-<div class="page"/><!-- page break -->
 
 ### Functional Test Cases
 #### Establish Cobot Connection
@@ -375,6 +375,8 @@ Cases Unit Test
 Tray Unit Test
 
 ![unit test 3](https://cdn.discordapp.com/attachments/760514738139955211/1166355595700477993/image3.png)
+
+<div class="page"/><!-- page break -->
 
 Test Case Pass/Fail Criteria:
 * Arm retrieves item
