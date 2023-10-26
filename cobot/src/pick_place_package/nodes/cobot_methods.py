@@ -260,7 +260,7 @@ def __get_tray_replacement_trajectories(joints, goals, gripper_outputs, tray_num
 
 def __get_pcb_move_trajectories(joints, goals, gripper_outputs, tray_number):
 	'''
-	Get the trajectories used to move the red pcbs in grey cases to the position specified by `tray_number`
+	Get the trajectories used to move the red PCBs in grey cases to the position specified by `tray_number`
 
 	Return:
 		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
@@ -278,14 +278,15 @@ def __get_pcb_move_trajectories(joints, goals, gripper_outputs, tray_number):
 	pcb_place_name = f"pcb_place_{str(tray_number)}"
 
 	goal_names = [
+		"safe_start",
 		"pcb_pick_above",
 		"pcb_pick",
-		"gripper_close_tray",
+		"gripper_close_case",
 		"pcb_pick_above",
 		"safe_start",
 		pcb_place_above_name,
 		pcb_place_name,
-		"gripper_open_tray",
+		"gripper_open_case",
 		pcb_place_above_name,
 	]
 

@@ -255,7 +255,7 @@ class CobotMovementActionServer(Node):
 			rclpy.spin_until_future_complete(self.subnode, future_chip)
 			chip_position = future_chip.result().signal
 			retries = retries + 1
-			if 1 <= chip_position <=48:
+			if 1 <= chip_position <= 48:
 				break
 
 		return chip_position
