@@ -355,12 +355,15 @@ The images below show the passing tests for chip position conversion, case posit
 Note that the printed messages are used for diagnostic purposes, the results are printed on the final line.
 
 Chip Unit Test
+
 ![unit test 1](https://cdn.discordapp.com/attachments/760514738139955211/1166355595163615342/image1.png)
 
 Cases Unit Test
+
 ![unit test 2](https://cdn.discordapp.com/attachments/760514738139955211/1166355595423657994/image2.png)
 
 Tray Unit Test
+
 ![unit test 3](https://cdn.discordapp.com/attachments/760514738139955211/1166355595700477993/image3.png)
 
 Test Case Pass/Fail Criteria:
