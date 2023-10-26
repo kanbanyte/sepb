@@ -33,7 +33,6 @@ class GripperServer(Node):
 
 		self.get_logger().info(f"Started gripper service...")
 
-	# TODO: Not working figure out how to make program play
 	def play_program(self):
 		play_request = Trigger.Request()
 

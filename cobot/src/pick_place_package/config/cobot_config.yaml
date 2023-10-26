@@ -97,6 +97,12 @@ cobot_node:
       "tray_pick_2_above",
       "tray_unload",
       "tray_unload_above",
+      "pcb_pick_above",
+      "pcb_pick",
+      "pcb_place_above_1",
+      "pcb_place_1",
+      "pcb_place_above_2",
+      "pcb_place_2",
     ]
 
     home:
@@ -293,6 +299,19 @@ cobot_node:
       positions: [-0.311715804,-0.992568746,1.541998394,-2.147802178,-1.566607537,-3.451912195]
     tray_unload_above:
       positions: [-0.311715804,-1.049291946,1.488416786,-2.037497369,-1.566607537,-3.451912195]
+
+    pcb_pick_above:
+      positions: [-4.107632395,-0.971101196,0.959232957,-1.576032315,-1.576032315,-5.700594403]
+    pcb_pick:
+      positions: []
+    pcb_place_above_1:
+      positions: []
+    pcb_place_1:
+      positions: []
+    pcb_place_above_2:
+      positions: []
+    pcb_place_2:
+      positions: []
 
     joints:
       - shoulder_pan_joint

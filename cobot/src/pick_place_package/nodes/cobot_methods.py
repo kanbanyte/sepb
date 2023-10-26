@@ -258,6 +258,50 @@ def __get_tray_replacement_trajectories(joints, goals, gripper_outputs, tray_num
 
 	return (trajectories, trajectory_names)
 
+def __get_pcb_move_trajectories(joints, goals, gripper_outputs, tray_number):
+	'''
+	Get the trajectories used to move the red pcbs in grey cases to the position specified by `tray_number`
+
+	Return:
+		tuple(list,list): tuple containing 2 lists. The first list contains trajectories, the second contains their names
+	'''
+
+	trajectories = []
+	trajectory_names = []
+
+	# Create a JointTrajectory object for picking and placing a PCB.
+	traj = JointTrajectory()
+	traj.joint_names = joints
+
+	# Define goal names for the tray replacement.
+	pcb_place_above_name = f"pcb_place_above_{str(tray_number)}"
+	pcb_place_name = f"pcb_place_{str(tray_number)}"
+
+	goal_names = [
+		"pcb_pick_above",
+		"pcb_pick",
+		"gripper_close_tray",
+		"pcb_pick_above",
+		"safe_start",
+		pcb_place_above_name,
+		pcb_place_name,
+		"gripper_open_tray",
+		pcb_place_above_name,
+	]
+
+	# Append each goal to the trajectory, copy to lists, and clear the trajectory.
+	for goal_name in goal_names:
+		if goal_name.startswith("gripper"):
+			trajectories.append(gripper_outputs[goal_name])
+			trajectory_names.append(goal_name)
+		else:
+			traj.points.append(goals[goal_name])
+			trajectories.append(copy.deepcopy(traj))
+			trajectory_names.append(goal_name)
+			traj.points.clear()
+
+	return (trajectories, trajectory_names)
+
 def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movement):
 	'''
 	Get trajectories to move trays to and from the human operator.
@@ -334,11 +378,12 @@ def get_all_trajectories(joints, goals, gripper_outputs, chip_number, case_numbe
 		return ([], [])
 
 	move_home_trajectories = __get_home_trajectories(joints, goals, gripper_outputs)
+	move_pcb_trajectories = __get_pcb_move_trajectories(joints, goals, gripper_outputs, tray_number)
 	move_chip_trajectories = __get_chip_move_trajectories(joints, goals, gripper_outputs, chip_number, tray_number)
 	move_case_trajectories = __get_case_move_trajectories(joints, goals, gripper_outputs, case_number, tray_number)
 	move_battery_trajectories = __get_battery_move_trajectories(joints, goals, gripper_outputs, tray_number)
 
 	return (
-		move_home_trajectories[0] + move_chip_trajectories[0] + move_case_trajectories[0] + move_battery_trajectories[0],
-		move_home_trajectories[1] + move_chip_trajectories[1] + move_case_trajectories[1] + move_battery_trajectories[1]
+		move_home_trajectories[0] + move_pcb_trajectories[0] + move_chip_trajectories[0] + move_case_trajectories[0] + move_battery_trajectories[0],
+		move_home_trajectories[1] + move_pcb_trajectories[1] + move_chip_trajectories[1] + move_case_trajectories[1] + move_battery_trajectories[1]
 	)
