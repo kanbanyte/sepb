@@ -4,7 +4,7 @@
 # Robot Vision System For A Pick And Place Task
 <!--
 	Co-Author: @dau501
-	Editor(s):
+	Editor(s): @vkach, @Slothman1, @Huy-GV, @NickMcK14, @finnmcgearey
 	Year: 2023
 -->
 
@@ -21,6 +21,8 @@
 |@NickMcK14|Support Manager/Developer|id@swin.student.edu.au|
 |@Huy-GV|Quality Manager/Developer|id@swin.student.edu.au|
 
+<div class="page"/><!-- page break -->
+
 <!-- TOC ignore:true -->
 # Document Sign Off
 |Name|Position|Signature|Date|
@@ -31,8 +33,6 @@
 |@vkach|Quality Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
 |@NickMcK14|Support Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
 |@Huy-GV|Quality Manager/Developer|student\_signature(&emsp;)|DD/MM/2023|
-
-<div class="page"/><!-- page break -->
 
 <!-- TOC ignore:true -->
 # Table of Contents
@@ -96,6 +96,8 @@ Overall, as the system is able to achieve all the tasks that were laid out in th
 the system can be considered a success and classified as straight-forward and intuitive,
 with future development and customisation by the user a key priority in its design.
 
+<div class="page"/><!-- page break -->
+
 # Usability Metrics
 Usability metrics serve as objective and data-driven tools for evaluating different parts of Project24;
 providing insight into the system's performance, efficiency, and client satisfaction.
@@ -119,6 +121,8 @@ The following usability scenarios have been evaluated:
 	* The trays to be delivered has not been filled with correct items.
 	* The trays are missing/not represent.
 * The cobot stops immediately when the emergency button is pressed.
+
+<div class="page"/><!-- page break -->
 
 ## Errors
 In the evaluation of Project24, several critical aspects of usability came to light, with a particular focus on the examination of errors.
