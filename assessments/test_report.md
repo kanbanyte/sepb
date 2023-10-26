@@ -59,7 +59,7 @@
 This document is made to report on and cover the results of the tests outlined in the Test Plan, while discussing and evaluating their success.
 Throughout testing, many of the proposed and planned tests were removed;
 these stages primarily being seen as either too difficult to test with our provided resources, not worth testing or just generally didn't fit the finalised product.
-This document will cover the items being tested, the appropriate test cases for them as well as the pass/fail criteria of said tests.\
+Below will cover the items being tested, the appropriate test cases for them as well as the pass/fail criteria of said tests.\
 It is also going to justify the test choices and the validity of them in relation to the system.
 
 The tests were primarily conducted within the FOF, on integration between AI and ROS systems.
