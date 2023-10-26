@@ -230,11 +230,14 @@ Overall, considering the goals and aims that the tests targeted, the results wer
 This section outlines the standards that the project must meet to be considered acceptable for deployment,
 by looking at the product level along with the testing stages.
 
-The pass/fail criteria used is outlined in the [Test Plan](test_plan.md),
+The [Pass/Fail Criteria](test_plan.md#passfail-criteria-1) used is outlined in the [Test Plan Document](test_plan.md),
 where it is described that the criteria will help make sure that the project meets the necessary requirements;
 as well as, ensuring the project is at an acceptable standard of quality.
 The predefined criteria provides clear guidelines for assessing whether the system meets the desired level of functionality, performance, and
 other relevant attributes whilst under the testing conditions.
+The [Test Plan Document](test_plan.md) also outlines what is considered a critical failure in the [Suspension Criteria](test_plan.md#suspension-criteria).
+Whereas failures described in the [Product Level](test_plan.md#product-level) and
+[Testing Stages](test_plan.md#testing-stages) in the [Test Plan Document](test_plan.md) will be categorised as high or medium failures.
 
 ## Product Level
 As discussed in the test plan, a long list of appropriate and relevant pass/fail criteria for the product level were established.
