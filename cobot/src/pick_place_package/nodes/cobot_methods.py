@@ -152,7 +152,7 @@ def __get_battery_move_trajectories(joints, goals, gripper_outputs, tray_number)
 		"battery_pick",
 		"gripper_close_battery",
 		"battery_pick_home",
-		"safe_start",
+		"safe_start_1",
 		battery_place_name,
 		"gripper_open_battery",
 		above_tray_name,
@@ -278,16 +278,19 @@ def __get_pcb_move_trajectories(joints, goals, gripper_outputs, tray_number):
 	pcb_place_name = f"pcb_place_{str(tray_number)}"
 
 	goal_names = [
-		"safe_start",
+		"gripper_open_case",
+		"pcb_pick_start",
 		"pcb_pick_above",
 		"pcb_pick",
 		"gripper_close_case",
 		"pcb_pick_above",
-		"safe_start",
+		"pcb_pick_start",
+		"home",
 		pcb_place_above_name,
 		pcb_place_name,
 		"gripper_open_case",
 		pcb_place_above_name,
+		"home"
 	]
 
 	# Append each goal to the trajectory, copy to lists, and clear the trajectory.

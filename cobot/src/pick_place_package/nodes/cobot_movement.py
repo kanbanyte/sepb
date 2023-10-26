@@ -462,9 +462,15 @@ class CobotMovementActionServer(Node):
 				temp.joint_names = self.joints
 				temp_traj = []
 
-				temp.points.append(self.goals["safe_start"])
-				temp_traj.append(copy.deepcopy(temp))
-				temp.points.clear()
+				# Check shoulder_pan_joint to determine safe start position
+				if -4.75 < msg.position[-1] < -3.14:
+					temp.points.append(self.goals["safe_start_2"])
+					temp_traj.append(copy.deepcopy(temp))
+					temp.points.clear()
+				else:
+					temp.points.append(self.goals["safe_start_1"])
+					temp_traj.append(copy.deepcopy(temp))
+					temp.points.clear()
 
 				temp.points.append(self.goals["home"])
 				temp_traj.append(copy.deepcopy(temp))
