@@ -237,7 +237,6 @@ the system will need modifications to accommodate said components.
 ## System Architecture
 This section explores the chosen architectural design, client-server, in greater detail by representing components, their sub-components and
 explains their responsibilities and relationships with each other.
-The section also discusses how the pub-sub mechanism is achieved at a high level in the established development environment (ROS2 running on Ubuntu).
 At a high level, the major components in the perception system are the **Camera Server**, the **Cobot Action Server**, the **Gripper Server** and the **Join Trajectory Topic**.
 
 A core component that was omitted earlier is the **Join Trajectory Topic**, which allows the cobot to retrieve trajectories from the action server,
@@ -381,13 +380,14 @@ stateDiagram
 <!-- ![queue](https://cdn.discordapp.com/attachments/1094987833174925416/1104591857696120872/image.png) -->
 
 The client can read the published data at any time and can send a response at any time.\
-This is known as decoupling where two or more systems work together without being directly connected.\
-This means that changes can be made to one program without effecting the workings of other programs.\
+This is known as decoupling where two or more systems work together without being directly connected,
+enabling a program to be changed or developed without affecting existing programs.\
 However, the project requires multiple programs to send requests and replies to other programs.\
 This would require many queues as to implement request and reply functionality between 2 programs requires a separate queue for both the request and the reply.
 The large number of queues would reduce the speed and efficiency of the project, hence why this architecture was not chosen.
 Message queues are also a one-one model and have no mechanism to subscribe to a particular topic or type of message,
-whereas the chosen pub-sub architecture has a message broker system (either content-based or topic-based) and can support multiple subscribers for every publisher.
+whereas the chosen client-service architecture use well-defined interfaces to facilitate communication,
+with components allowed to freely request data as needed.
 These drawbacks are the reason the message queue architecture was disregarded.
 
 <div class="page"/><!-- page break -->
