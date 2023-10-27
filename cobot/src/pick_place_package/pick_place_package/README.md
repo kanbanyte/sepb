@@ -1,6 +1,6 @@
 
 <!-- TOC ignore:true -->
-# Pick and Place Package
+# Pick and Place Packages
 **Table of Contents**
 <!-- TOC -->
 

@@ -3,7 +3,7 @@
 # Pick and Place Interfaces
 <!-- TOC ignore:true -->
 ## Overview
-The pick and place interfaces package contains custom interfaces for use within [`pick_place_package`](/cobot/src/pick_place_package/README.md)
+The pick and place interfaces package contains custom interfaces for use within [`pick_place_package`](/cobot/src/pick_place_package/README.md);
 that allows each node to communicate with each other appropriately.
 The package contains two directories:
 * `action` which contains the action file for communicating between [`main_node`](/cobot/src/pick_place_package/pick_place_package/main_node.py) and
@@ -14,8 +14,8 @@ The package contains two directories:
 **Table of Contents**
 <!-- TOC -->
 
-* [PickPlaceAction.action](#PickPlaceActionaction)
-* [PickPlaceService.srv](#PickPlaceServicesrv)
+* [PickPlaceAction.action](#pickplaceactionaction)
+* [PickPlaceService.srv](#pickplaceservicesrv)
 
 <!-- /TOC -->
 
@@ -23,8 +23,8 @@ The package contains two directories:
 <!-- TOC ignore:true -->
 ### Purpose
 `PickPlaceAction.action` is an action file that allows `main_node` to initiate the pick and place task.
-It sends a boolean as a goal that is used to start the task, it returns the name of the current movement as feedback,
-and returns a boolean for whether the task was successful or not.
+It sends a boolean as a goal that is used to start the task, it returns the name of the current movement as feedback, and
+returns a boolean for whether the task was successful or not.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -34,10 +34,10 @@ It is used in both `main_node` and `cobot_node`.
 ## PickPlaceService.srv
 <!-- TOC ignore:true -->
 ### Purpose
-`PickPlaceService.srv` is a service file for use with the `chip`, `case`, and `tray` services as defined in
-[`camera_server.py`](/cobot/src/pick_place_package/nodes/camera_server.py).
-It uses a boolean to request the camera node to detect the relevant objects,
-and returns an `int64` as a response corresponding to a chip position, case position, or tray movement.
+`PickPlaceService.srv` is a service file for use with the `chip`, `case`, and
+`tray` services as defined in [`camera_server.py`](/cobot/src/pick_place_package/nodes/camera_server.py).
+It uses a boolean to request the camera node to detect the relevant objects, and
+returns an `int64` as a response corresponding to a chip position, case position, or tray movement.
 
 <!-- TOC ignore:true -->
 ### Usage

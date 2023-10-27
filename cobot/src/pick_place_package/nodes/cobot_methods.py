@@ -323,7 +323,7 @@ def get_tray_movement_trajectories(joints, goals, gripper_outputs, cobot_movemen
 		goals (list[str]): list of goal names.
 		gripper_outputs (list[str]): list of gripper output names.
 		cobot_movement (int): integer value representing the tray load command.
-		Must be either `CobotMovement.ASSEMBLY_TO_TRAY1.value`,  `CobotMovement.ASSEMBLY_TO_TRAY2.value`,
+		Must be either `CobotMovement.ASSEMBLY_TO_TRAY1.value`, `CobotMovement.ASSEMBLY_TO_TRAY2.value`,
 		`CobotMovement.TRAY1_TO_ASSEMBLY.value` or `CobotMovement.TRAY2_TO_ASSEMBLY.value`.
 
 	Return:

@@ -14,7 +14,8 @@
 ## dataset_balancer.py
 <!-- TOC ignore:true -->
 ### Purpose
-Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor (2 or 3 when using a free tier).
+Robowflow asks for training/test/validation ratio,
+which is invalid after the augmentation process because the training set size is increased by a factor (2 or 3 when using a free tier).
 This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
 
 <!-- TOC ignore:true -->

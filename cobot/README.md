@@ -77,7 +77,7 @@ connect_cobot
 ```
 
 You should see the following output, note the six similar messages at the bottom:
-<!-- INSERT DRIVER TERMINAL OUTPUT HERE  -->
+<!-- INSERT DRIVER TERMINAL OUTPUT HERE -->
 
 <!-- TOC ignore:true -->
 ### Performing the Pick and Place Task

@@ -246,7 +246,7 @@ to effectively test this we evaluate the expected results as users and then comp
 These two testing methods will result in being able to effectively measure the usability of the arm and by extension the whole system.
 
 # Problem Severity
-Problems that are discovered during the  testing procedures will be classified based on severity, of which are influenced by impact and frequency.
+Problems that are discovered during the testing procedures will be classified based on severity, of which are influenced by impact and frequency.
 
 ## Impact Ranking
 Ranking problems helps prioritize which issues need immediate attention and which ones can be addressed later.

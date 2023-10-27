@@ -71,7 +71,7 @@ Trained models and their settings are also included.
 <!-- TOC ignore:true -->
 ### Image Labelling
 Training images are labelled and stored in a web application known as [Roboflow](https://app.roboflow.com/sepb).
-Roboflow supports image labelling, image augmentation, image reprocessing,  dataset generation, and dataset balancing.
+Roboflow supports image labelling, image augmentation, image reprocessing, dataset generation, and dataset balancing.
 The dataset can be downloaded manually to your local machine or installed programmatically via Roboflow APIs.
 
 Generally, creating a dataset for a model involves the following steps:
@@ -173,9 +173,9 @@ This is most likely caused by the `GTK_PATH` environment variable in VSCode's in
 The following solutions can be used:
 * Unset that variable, either by calling `unset GTK_PATH` or pasting this to the `settings.json` file of VSCode:
 	```json
-		"terminal.integrated.env.linux": {
-			"GTK_PATH": ""
-		}
+	"terminal.integrated.env.linux": {
+		"GTK_PATH": ""
+	}
 	```
 * Run the code in an external terminal.
 

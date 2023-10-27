@@ -120,7 +120,7 @@ class CobotMovementActionServer(Node):
 			goal_handle (actionlib.action_server.SimpleGoalHandle): the goal handle associated with the action request.
 
 		Returns:
-        	PickPlaceAction.Result: The result of the testing task.
+			PickPlaceAction.Result: The result of the testing task.
 		'''
 		self.get_logger().info("")
 		self.get_logger().info("Executing testing task...")
@@ -153,7 +153,7 @@ class CobotMovementActionServer(Node):
 			goal_handle (actionlib.action_server.SimpleGoalHandle): the goal handle associated with the action request.
 
 		Returns:
-        	PickPlaceAction.Result: The result of the testing task.
+			PickPlaceAction.Result: The result of the testing task.
 		'''
 
 		self.get_logger().info("Executing pick and place task...")
@@ -173,7 +173,7 @@ class CobotMovementActionServer(Node):
 
 		cobot_move_signal = self.get_tray_signal()
 		if (cobot_move_signal == CobotMovement.ASSEMBLY_TO_TRAY1.value or
-	   		cobot_move_signal == CobotMovement.ASSEMBLY_TO_TRAY2.value or
+			cobot_move_signal == CobotMovement.ASSEMBLY_TO_TRAY2.value or
 			cobot_move_signal == CobotMovement.TRAY1_TO_ASSEMBLY.value or
 			cobot_move_signal == CobotMovement.TRAY2_TO_ASSEMBLY.value):
 
@@ -188,13 +188,11 @@ class CobotMovementActionServer(Node):
 			result.task_successful = move_succeeded
 			return result
 
-
 		'''
 		Since the model does not detect individual item on the tray, it cannot tell the cobot to pick up a missing item, and
 		therefore the cobot should not load a tray unless it is empty, in which case the signal is START_TRAY1_LOAD or START_TRAY2_LOAD.
 		'''
-		if (cobot_move_signal == CobotMovement.START_TRAY1_LOAD.value or
-  				cobot_move_signal == CobotMovement.START_TRAY2_LOAD.value):
+		if (cobot_move_signal == CobotMovement.START_TRAY1_LOAD.value or cobot_move_signal == CobotMovement.START_TRAY2_LOAD.value):
 			move_succeeded = self.load_tray(goal_handle, cobot_move_signal)
 			if move_succeeded:
 				goal_handle.succeed()

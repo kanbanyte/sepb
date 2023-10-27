@@ -1,5 +1,95 @@
+<link rel="stylesheet" href="../styles/styles.css" type="text/css">
 
 <!-- TOC ignore:true -->
+# Robot Vision System For A Pick And Place Task
+<!--
+	Author: @finnmcgearey
+	Editor(s): @dau501
+	Year: 2023
+-->
+
+`Technical Documentations`
+
+<!-- TOC ignore:true -->
+## Industry Project 24
+|Name|Position|Email|
+|:-|:-|:-|
+|@Slothman1|Team Leader/Client Liaison|id@swin.student.edu.au|
+|@dau501|Development Manager/Planning Manager|id@swin.student.edu.au|
+|@finnmcgearey|Support Manager/Developer|id@swin.student.edu.au|
+|@vkach|Quality Manager/Developer|id@swin.student.edu.au|
+|@NickMcK14|Support Manager/Developer|id@swin.student.edu.au|
+|@Huy-GV|Quality Manager/Developer|id@swin.student.edu.au|
+
+<div class="page"/><!-- page break -->
+
+<!-- TOC ignore:true -->
+# Table of Contents
+<!-- TOC -->
+
+* [Cobot Package](#cobot-package)
+	* [Dependencies](#dependencies)
+	* [Installation](#installation)
+	* [Usage](#usage)
+	* [Common Issues](#common-issues)
+* [Pick and Place Interfaces](#pick-and-place-interfaces)
+	* [PickPlaceAction.action](#pickplaceactionaction)
+	* [PickPlaceService.srv](#pickplaceservicesrv)
+* [Pick and Place Package](#pick-and-place-package)
+	* [Config](#config)
+	* [Launch](#launch)
+	* [Nodes](#nodes)
+	* [pick_place_package](#pick_place_package)
+	* [Related Terminal Commands](#related-terminal-commands)
+* [Node APIs](#node-apis)
+	* [camera_server.py](#camera_serverpy)
+	* [cobot_methods.py](#cobot_methodspy)
+	* [cobot_movement.py](#cobot_movementpy)
+	* [gripper_server.py](#gripper_serverpy)
+	* [main_action_client.py](#main_action_clientpy)
+	* [read_methods.py](#read_methodspy)
+* [Pick and Place Packages](#pick-and-place-packages)
+	* [camera_node.py](#camera_nodepy)
+	* [cobot_node.py](#cobot_nodepy)
+	* [gripper_node.py](#gripper_nodepy)
+	* [main_node.py](#main_nodepy)
+* [AI Package](#ai-package)
+	* [Dependencies](#dependencies)
+	* [Installation](#installation)
+	* [Usage](#usage)
+	* [Common Issues](#common-issues)
+* [Camera APIs](#camera-apis)
+	* [camera_capture.py](#camera_capturepy)
+	* [Capturing Images via Terminal](#capturing-images-via-terminal)
+* [Data Processing APIs](#data-processing-apis)
+	* [case_position.py](#case_positionpy)
+	* [image_processing.py](#image_processingpy)
+	* [tray_position.py](#tray_positionpy)
+	* [chip_position.py](#chip_positionpy)
+* [Model APIs](#model-apis)
+	* [detected_object.py](#detected_objectpy)
+	* [object_detection_model.py](#object_detection_modelpy)
+* [Sample object detection programs](#sample-object-detection-programs)
+	* [basic_sample.py](#basic_samplepy)
+	* [camera_sample.py](#camera_samplepy)
+	* [sample_config.yaml](#sample_configyaml)
+* [Training Data Processing Scripts](#training-data-processing-scripts)
+	* [dataset_balancer.py](#dataset_balancerpy)
+	* [copy_interval.py](#copy_intervalpy)
+	* [define_crop.py](#define_croppy)
+	* [random_crop.py](#random_croppy)
+* [Training](#training)
+	* [object_detection_training.ipynb](#object_detection_trainingipynb)
+	* [plot_ultralytics_results.py](#plot_ultralytics_resultspy)
+	* [trained](#trained)
+* [Util APIs](#util-apis)
+	* [file_dialog.py](#file_dialogpy)
+	* [file_reader.py](#file_readerpy)
+
+<!-- /TOC -->
+
+<div class="page"/><!-- page break -->
+
 # Cobot Package
 <!-- TOC ignore:true -->
 ## Overview
@@ -7,16 +97,6 @@ The cobot package contains ROS2 code that allows for the ZED camera and UR5e cob
 There are two ROS2 packages within:
 [`pick_place_package`](src/pick_place_package/README.md) which contains all of the nodes, the launch file, config files, and additional scripts, and
 [`pick_place_interfaces`](src/pick_place_interfaces/README.md) which contains ROS2 interfaces for communication between nodes.
-
-**Table of Contents**
-<!-- TOC -->
-
-* [Dependencies](#dependencies)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Common Issues](#common-issues)
-
-<!-- /TOC -->
 
 ## Dependencies
 * [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
@@ -77,7 +157,7 @@ connect_cobot
 ```
 
 You should see the following output, note the six similar messages at the bottom:
-<!-- INSERT DRIVER TERMINAL OUTPUT HERE  -->
+<!-- INSERT DRIVER TERMINAL OUTPUT HERE -->
 
 <!-- TOC ignore:true -->
 ### Performing the Pick and Place Task
@@ -117,12 +197,12 @@ Sometimes the `play` service isn't called due to an error in the driver so the `
 Kill the terminals running the launch file and main node.
 Restart the robot driver then run the launch file and main node again.
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Pick and Place Interfaces
 <!-- TOC ignore:true -->
 ## Overview
-The pick and place interfaces package contains custom interfaces for use within [`pick_place_package`](/cobot/src/pick_place_package/README.md)
+The pick and place interfaces package contains custom interfaces for use within [`pick_place_package`](/cobot/src/pick_place_package/README.md);
 that allows each node to communicate with each other appropriately.
 The package contains two directories:
 * `action` which contains the action file for communicating between [`main_node`](/cobot/src/pick_place_package/pick_place_package/main_node.py) and
@@ -130,20 +210,12 @@ The package contains two directories:
 * `srv` which contains the service file for communicating between [`cobot_node`](/cobot/src/pick_place_package/pick_place_package/cobot_node.py) and
 [`camera_node`](/cobot/src/pick_place_package/pick_place_package/camera_node.py).
 
-**Table of Contents**
-<!-- TOC -->
-
-* [PickPlaceAction.action](#PickPlaceActionaction)
-* [PickPlaceService.srv](#PickPlaceServicesrv)
-
-<!-- /TOC -->
-
 ## PickPlaceAction.action
 <!-- TOC ignore:true -->
 ### Purpose
 `PickPlaceAction.action` is an action file that allows `main_node` to initiate the pick and place task.
-It sends a boolean as a goal that is used to start the task, it returns the name of the current movement as feedback,
-and returns a boolean for whether the task was successful or not.
+It sends a boolean as a goal that is used to start the task, it returns the name of the current movement as feedback, and
+returns a boolean for whether the task was successful or not.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -153,40 +225,30 @@ It is used in both `main_node` and `cobot_node`.
 ## PickPlaceService.srv
 <!-- TOC ignore:true -->
 ### Purpose
-`PickPlaceService.srv` is a service file for use with the `chip`, `case`, and `tray` services as defined in
-[`camera_server.py`](/cobot/src/pick_place_package/nodes/camera_server.py).
-It uses a boolean to request the camera node to detect the relevant objects,
-and returns an `int64` as a response corresponding to a chip position, case position, or tray movement.
+`PickPlaceService.srv` is a service file for use with the `chip`, `case`, and
+`tray` services as defined in [`camera_server.py`](/cobot/src/pick_place_package/nodes/camera_server.py).
+It uses a boolean to request the camera node to detect the relevant objects, and
+returns an `int64` as a response corresponding to a chip position, case position, or tray movement.
 
 <!-- TOC ignore:true -->
 ### Usage
 It is used in both `camera_node` and `cobot_node`.
 `cobot_node` requests a case, chip, or tray position from `camera_node` which then returns the signal as a response.
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Pick and Place Package
 <!-- TOC ignore:true -->
 ## Overview
-The pick and place package contains all config files, launch files, nodes,
-and additional files related to ROS2 to allow the cobot to move and communicate with the ZED camera.
-
-**Table of Contents**
-<!-- TOC -->
-
-* [config](#config)
-* [launch](#launch)
-* [nodes](#nodes)
-* [pick_place_package](#pick_place_package)
-
-<!-- /TOC -->
+The pick and place package contains all config files, launch files, nodes, and
+additional files related to ROS2 to allow the cobot to move and communicate with the ZED camera.
 
 ## Config
 <!-- TOC ignore:true -->
 ### Purpose
 The config directory contains any config files that will be used within the package.
-The only config file used currently is `cobot_config.yaml`, which contains all joint positions and gripper pin outputs to move the cobot and
-control the gripper respectively.
+The only config file used currently is `cobot_config.yaml`,
+which contains all joint positions and gripper pin outputs to move the cobot and control the gripper respectively.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -226,19 +288,20 @@ Whenever a new node is defined, place the `main` method that spins the node in t
 Make sure you include the entry point within `setup.py` as shown below:
 ```py
 entry_points={
-		'console_scripts': [
-			'cobot_node = pick_place_package.cobot_node:main',
-			'camera_node = pick_place_package.camera_node:main',
-			'gripper_node = pick_place_package.gripper_node:main',
-			'main_node = pick_place_package.main_node:main'
-		],
-	},
+	'console_scripts': [
+		'cobot_node = pick_place_package.cobot_node:main',
+		'camera_node = pick_place_package.camera_node:main',
+		'gripper_node = pick_place_package.gripper_node:main',
+		'main_node = pick_place_package.main_node:main'
+	],
+},
 ```
 
 ## Related Terminal Commands
 The following demonstrates terminal commands and their outputs so far.\
 Note that a few might still be WIP.
 
+<!-- TOC ignore:true -->
 ### Case Service Call
 ```bash
 ros2 service call /case pick_place_interfaces/srv/PickPlaceService "{detect: True}"
@@ -254,6 +317,7 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=11)
 ```
 
+<!-- TOC ignore:true -->
 ### Chip Service Call
 ```bash
 ros2 service call /chip pick_place_interfaces/srv/PickPlaceService "{detect: True}"
@@ -268,6 +332,7 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=7)
 ```
 
+<!-- TOC ignore:true -->
 ### Tray Service Call
 ```bash
 ros2 service call /tray pick_place_interfaces/srv/PickPlaceService "{detect: True}"
@@ -283,6 +348,7 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=5)
 ```
 
+<!-- TOC ignore:true -->
 ### List All Services
 ```bash
 ros2 service list
@@ -416,6 +482,7 @@ ros2 service list
 /ur_tool_comm/set_parameters_atomically
 ```
 
+<!-- TOC ignore:true -->
 ### List All Nodes
 ```bash
 ros2 node list
@@ -439,6 +506,7 @@ ros2 node list
 /ur_tool_comm
 ```
 
+<!-- TOC ignore:true -->
 ### List All Actions
 ```bash
 ros2 action list
@@ -451,6 +519,7 @@ ros2 action list
 /scaled_joint_trajectory_controller/follow_joint_trajectory
 ```
 
+<!-- TOC ignore:true -->
 ### Send a Goal to Perform Pick Place Action
 ```bash
 ros2 action send_goal /perform_pick_place pick_place_interfaces/action/PickPlaceAction "{perform_pick_place: True}"
@@ -471,22 +540,9 @@ Result:
 Goal finished with status: SUCCEEDED
 ```
 
+<div class="page"/><!-- page break -->
 
-
-<!-- TOC ignore:true -->
 # Node APIs
-**Table of Contents**
-<!-- TOC -->
-
-* [camera_server.py](#camera_serverpy)
-* [cobot_methods.py](#cobot_methodspy)
-* [cobot_movement.py](#cobot_movementpy)
-* [gripper_server.py](#gripper_serverpy)
-* [main_action_client.py](#main_action_clientpy)
-* [read_methods.py](#read_methodspy)
-
-<!-- /TOC -->
-
 ## camera_server.py
 This class is a node acting as a server that provides positions of items upon request.
 Object positions or tray movements can be requested via three different services:
@@ -547,19 +603,9 @@ The two functions defined are:
 These functions allow the cobot node to use the goals and gripper information defined in the config file to move to specific positions and
 move the gripper certain distances.
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
-# Pick and Place Package
-**Table of Contents**
-<!-- TOC -->
-
-* [camera_node.py](#camera_nodepy)
-* [cobot_node.py](#cobot_nodepy)
-* [gripper_node.py](#gripper_nodepy)
-* [main_node.py](#main_nodepy)
-
-<!-- /TOC -->
-
+# Pick and Place Packages
 ## camera_node.py
 <!-- TOC ignore:true -->
 ### Purpose
@@ -600,23 +646,13 @@ It sends requests to the action server in an infinite loop to keep the cobot run
 The client node is rebuilt and started via the command `run_main`.\
 If a request fails, the user will be asked whether to continue the loop in the terminal.
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # AI Package
 <!-- TOC ignore:true -->
 ## Overview
 The AI Package contains scripts and modules developed to interact with the ZED camera, run inference using detection models as well as process training data.
 Image labelling is done in a web application known as Roboflow whereas training is done in a GPU-supported Google Collab session.
-
-**Table of Contents**
-<!-- TOC -->
-
-* [Dependencies](#dependencies)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Common Issues](#common-issues)
-
-<!-- /TOC -->
 
 ## Dependencies
 <!-- TOC ignore:true -->
@@ -673,7 +709,7 @@ Trained models and their settings are also included.
 <!-- TOC ignore:true -->
 ### Image Labelling
 Training images are labelled and stored in a web application known as [Roboflow](https://app.roboflow.com/sepb).
-Roboflow supports image labelling, image augmentation, image reprocessing,  dataset generation, and dataset balancing.
+Roboflow supports image labelling, image augmentation, image reprocessing, dataset generation, and dataset balancing.
 The dataset can be downloaded manually to your local machine or installed programmatically via Roboflow APIs.
 
 Generally, creating a dataset for a model involves the following steps:
@@ -775,9 +811,9 @@ This is most likely caused by the `GTK_PATH` environment variable in VSCode's in
 The following solutions can be used:
 * Unset that variable, either by calling `unset GTK_PATH` or pasting this to the `settings.json` file of VSCode:
 	```json
-		"terminal.integrated.env.linux": {
-			"GTK_PATH": ""
-		}
+	"terminal.integrated.env.linux": {
+		"GTK_PATH": ""
+	}
 	```
 * Run the code in an external terminal.
 
@@ -808,17 +844,9 @@ Note that none of these issues have been encountered during development after fo
 * [GitHub Issue: \[Error: import pyzed.sl as sl\]](https://github.com/stereolabs/zed-sdk/issues/358)
 * [Stereo Labs Community Thread](https://community.stereolabs.com/t/importerror-no-module-named-pyzed-sl-as-sl/2467)
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Camera APIs
-**Table of Contents**
-<!-- TOC -->
-
-* [camera_capture.py](#camera_capturepy)
-* [Capturing Images via Terminal](#capturing-images-via-terminal)
-
-<!-- /TOC -->
-
 ## camera_capture.py
 Contains functions that controls the ZED camera programmatically.\
 Functionalities range from opening the camera, applying configured settings and taking images.
@@ -863,19 +891,9 @@ Get `.png` images:
 Zed_SVO_Export.py --mode 2 --input_svo_path $PATH_TO_DATA/$SCENE_NUMBER/ZED/$SCENE_NUMBER-ZED-$TIME_STAMP.svo --output_dir_path $PATH_TO_DATA/$SCENE_NUMBER/ZED/
 ```
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Data Processing APIs
-**Table of Contents**
-<!-- TOC -->
-
-* [case_position.py](#case_positionpy)
-* [image_processing.py](#image_processingpy)
-* [tray_position.py](#tray_positionpy)
-* [chip_position.py](#chip_positionpy)
-
-<!-- /TOC -->
-
 ## case_position.py
 Contains function that converts the bounding boxes of cases to position from 1 to 17, with 1 being at the bottom of the case rack.
 
@@ -904,9 +922,9 @@ Supported cobot moves include:
 * The Tray Detection model does not detect individual items on a tray, it simply classifies trays into 3 categories: empty, partially full, and full.
 The "Continue Loading Trays" move is intended to signal that the tray is partially full, which may or not may not be an error depending on the state of the cobot.
 * The position conversion code assumes the following:
-    * There are only 2 trays in 3 possible positions: Assembly, Tray 1 and Tray 2, with Assembly being on the left, Tray 1 and Tray 2 being on the right.
-    * The image containing the tray should be roughly 600px in height and 700px in width,
-    with Assembly tray on the left half, and Trays 1 and 2 vertically aligned in the right half.
+	* There are only 2 trays in 3 possible positions: Assembly, Tray 1 and Tray 2, with Assembly being on the left, Tray 1 and Tray 2 being on the right.
+	* The image containing the tray should be roughly 600px in height and 700px in width,
+	with Assembly tray on the left half, and Trays 1 and 2 vertically aligned in the right half.
 
 ## chip_position.py
 Translate bounding boxes of chips into positions defined by the cobot.
@@ -918,17 +936,9 @@ The positions increase by columns than rows.
 * The position is calculated using the center point of individual bounding boxes and checking them against a range of valid values.
 The center point is used instead of the entire bounding box as the box can appear to be horizontally shifted when viewing a chip from an angle.
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Model APIs
-**Table of Contents**
-<!-- TOC -->
-
-* [detected_object.py](#detected_objectpy)
-* [object_detection_model.py](#object_detection_modelpy)
-
-<!-- /TOC -->
-
 ## detected_object.py
 Dataclass that holds the class index, confidence and crop box of detected objects.
 The class name can be retrieved using the index and `ObjectDetectionModel.classes`.
@@ -939,18 +949,9 @@ Requires a YAML configuration file to initialise the model and its parameters.
 This class supports an option to save the image output and/or display it in a window.
 To find more details about the configuration YAML file, see [samples/README.md](../samples/README.md)
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Sample object detection programs
-**Table of Contents**
-<!-- TOC -->
-
-* [basic_sample.py](#basic_samplepy)
-* [camera_sample.py](#camera_samplepy)
-* [sample_config.yaml](#sample_configyaml)
-
-<!-- /TOC -->
-
 ## basic_sample.py
 <!-- TOC ignore:true -->
 ### Purpose
@@ -1000,23 +1001,14 @@ To find more information about default values for the model configuration and ca
 * If the file selection window does not appear, check if it opens in the background.
 * User prompts for file dialogues are provided in the file selection window name.
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Training Data Processing Scripts
-**Table of Contents**
-<!-- TOC -->
-
-* [dataset_balancer.py](#dataset_balancerpy)
-* [copy_interval.py](#copy_intervalpy)
-* [define_crop.py](#define_croppy)
-* [random_crop.py](#random_croppy)
-
-<!-- /TOC -->
-
 ## dataset_balancer.py
 <!-- TOC ignore:true -->
 ### Purpose
-Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor (2 or 3 when using a free tier).
+Robowflow asks for training/test/validation ratio,
+which is invalid after the augmentation process because the training set size is increased by a factor (2 or 3 when using a free tier).
 This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
 
 <!-- TOC ignore:true -->
@@ -1069,18 +1061,9 @@ The user will be asked to supply the source image, enter the coordinates of the 
 * If the file selection window does not appear, check if it opens in the background.
 * User prompts for file dialogues are provided in the file selection window name.
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Training
-**Table of Contents**
-<!-- TOC -->
-
-* [object_detection_training.ipynb](#object_detection_trainingipynb)
-* [plot_ultralytics_results.py](#plot_ultralytics_resultspy)
-* [trained](#trained)
-
-<!-- /TOC -->
-
 ## object_detection_training.ipynb
 <!-- TOC ignore:true -->
 ### Purpose
@@ -1188,17 +1171,9 @@ The following section includes the settings used to train these models on Robofl
 	* IoU threshold: 0.7
 	* Confidence threshold: 0.5
 
+<div class="page"/><!-- page break -->
 
-<!-- TOC ignore:true -->
 # Util APIs
-**Table of Contents**
-<!-- TOC -->
-
-* [file_dialog.py](#file_dialogpy)
-* [file_reader.py](#file_readerpy)
-
-<!-- /TOC -->
-
 ## file_dialog.py
 Provides functions to interact with the file dialogues.
 Instructions for the user are typically placed in the file window name.

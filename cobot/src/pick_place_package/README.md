@@ -3,16 +3,17 @@
 # Pick and Place Package
 <!-- TOC ignore:true -->
 ## Overview
-The pick and place package contains all config files, launch files, nodes,
-and additional files related to ROS2 to allow the cobot to move and communicate with the ZED camera.
+The pick and place package contains all config files, launch files, nodes, and
+additional files related to ROS2 to allow the cobot to move and communicate with the ZED camera.
 
 **Table of Contents**
 <!-- TOC -->
 
-* [config](#config)
-* [launch](#launch)
-* [nodes](#nodes)
+* [Config](#config)
+* [Launch](#launch)
+* [Nodes](#nodes)
 * [pick_place_package](#pick_place_package)
+* [Related Terminal Commands](#related-terminal-commands)
 
 <!-- /TOC -->
 
@@ -20,8 +21,8 @@ and additional files related to ROS2 to allow the cobot to move and communicate 
 <!-- TOC ignore:true -->
 ### Purpose
 The config directory contains any config files that will be used within the package.
-The only config file used currently is `cobot_config.yaml`, which contains all joint positions and gripper pin outputs to move the cobot and
-control the gripper respectively.
+The only config file used currently is `cobot_config.yaml`,
+which contains all joint positions and gripper pin outputs to move the cobot and control the gripper respectively.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -61,19 +62,20 @@ Whenever a new node is defined, place the `main` method that spins the node in t
 Make sure you include the entry point within `setup.py` as shown below:
 ```py
 entry_points={
-		'console_scripts': [
-			'cobot_node = pick_place_package.cobot_node:main',
-			'camera_node = pick_place_package.camera_node:main',
-			'gripper_node = pick_place_package.gripper_node:main',
-			'main_node = pick_place_package.main_node:main'
-		],
-	},
+	'console_scripts': [
+		'cobot_node = pick_place_package.cobot_node:main',
+		'camera_node = pick_place_package.camera_node:main',
+		'gripper_node = pick_place_package.gripper_node:main',
+		'main_node = pick_place_package.main_node:main'
+	],
+},
 ```
 
 ## Related Terminal Commands
 The following demonstrates terminal commands and their outputs so far.\
 Note that a few might still be WIP.
 
+<!-- TOC ignore:true -->
 ### Case Service Call
 ```bash
 ros2 service call /case pick_place_interfaces/srv/PickPlaceService "{detect: True}"
@@ -89,6 +91,7 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=11)
 ```
 
+<!-- TOC ignore:true -->
 ### Chip Service Call
 ```bash
 ros2 service call /chip pick_place_interfaces/srv/PickPlaceService "{detect: True}"
@@ -103,6 +106,7 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=7)
 ```
 
+<!-- TOC ignore:true -->
 ### Tray Service Call
 ```bash
 ros2 service call /tray pick_place_interfaces/srv/PickPlaceService "{detect: True}"
@@ -118,6 +122,7 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=5)
 ```
 
+<!-- TOC ignore:true -->
 ### List All Services
 ```bash
 ros2 service list
@@ -251,6 +256,7 @@ ros2 service list
 /ur_tool_comm/set_parameters_atomically
 ```
 
+<!-- TOC ignore:true -->
 ### List All Nodes
 ```bash
 ros2 node list
@@ -274,6 +280,7 @@ ros2 node list
 /ur_tool_comm
 ```
 
+<!-- TOC ignore:true -->
 ### List All Actions
 ```bash
 ros2 action list
@@ -286,6 +293,7 @@ ros2 action list
 /scaled_joint_trajectory_controller/follow_joint_trajectory
 ```
 
+<!-- TOC ignore:true -->
 ### Send a Goal to Perform Pick Place Action
 ```bash
 ros2 action send_goal /perform_pick_place pick_place_interfaces/action/PickPlaceAction "{perform_pick_place: True}"
