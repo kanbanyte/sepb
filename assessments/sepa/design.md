@@ -200,51 +200,42 @@ Despite this difference, joints and gripper actions are performed together to en
 ```mermaid
 stateDiagram-v2
 	direction TB
-    state camera_fork <<fork>>
-
-	state "ZED Camera" as Camera1
-	state "ZED Camera" as Camera2
-	state "ZED Camera" as Camera3
-
-	state "Chip Service" as ChipService {
-		[*] --> Camera1
-		Camera1 --> ChipDetectionModel
-		ChipDetectionModel --> ChipPositionConvertor
-		ChipPositionConvertor --> [*]
-	}
-
-	state "Case Service" as CaseService {
-		[*] --> Camera2
-		Camera2 --> CaseDetectionModel
-		CaseDetectionModel --> CasePositionConvertor
-		CasePositionConvertor --> [*]
-	}
-
-	state "Tray Service" as TrayService {
-		[*] --> Camera3
-		Camera3 --> TrayDetectionModel
-		TrayDetectionModel --> TrayStateConvertor
-		TrayStateConvertor --> CobotMovementConvertor
-		CobotMovementConvertor --> [*]
-	}
-
-	state "Camera Server Node" as CameraServer {
-		[*] --> camera_fork
-		camera_fork --> ChipService
-		camera_fork --> CaseService
-		camera_fork --> TrayService
-	}
-
+	state cobot_fork <<fork>>
+	state cobot_join <<join>>
+	state "ZED Camera" as Camera
+	state "Chip" as ChipService
+	state "Case" as CaseService
+	state "Tray" as TrayService
 	state "Cobot Action Server" as CobotActionServer1
 	state "Cobot Action Server" as CobotActionServer2
 	state "Cobot Action Server" as CobotActionServer3
-
-	state cobot_fork <<fork>>
-	state cobot_join <<join>>
-
 	state "Cobot Joint Trajectory Topic" as CobotTopic
+	state "Gripper Server" as GripperServer
 
-	[*] --> CobotActionServer1: PickPlaceRequest
+	state "Detection Models" as Detection {
+		Chip
+		--
+		Case
+		--
+		Tray
+	}
+
+	state "Position Convertors" as Convertor {
+		ChipService
+		--
+		CaseService
+		--
+		TrayService
+	}
+
+	state "Camera Server Node" as CameraServer {
+		[*] --> Camera
+		Camera --> Detection
+		Detection --> Convertor
+		Convertor --> [*]
+	}
+
+	[*] --> CobotActionServer1 : Pick Place Request
 	CobotActionServer1 --> CameraServer : Object Position Request
 	CameraServer --> CobotActionServer2 : Object Positions
 	CobotActionServer2 --> cobot_fork
