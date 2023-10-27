@@ -253,24 +253,23 @@ It shows the interactions between main components and the continuous flow of ope
 sequenceDiagram
 	participant Client as Action Client
 	participant Action as Cobot Action Server
+	participant Camera as Camera Server
+	participant Cobot as Joint Trajectory Topic
+	participant Gripper as Gripper
 
 	loop Action Loop
 		Client ->>+ Action : Perform Pick and Place Task
-		create participant Camera as Camera Server
-		Action ->> Camera : Object Position Request
+		Action ->>+ Camera : Object Position Request
 		alt Detection Failed
 			Camera -->> Action : Invalid Positions/Movement
 		else Detection Successful
-			destroy Camera
-			Camera -->> Action : Valid Positions/Movement
+			Camera -->>- Action : Valid Positions/Movement
 			Action ->> Action : Populate Trajectories
 			loop Trajectory List
 				alt Is Joint Trajectory
-					create participant Cobot as Joint Trajectory Topic
 					Action ->>+ Cobot : Joint Trajectories
 					Cobot -->>- Action : Cobot Move Complete
 				else Is Gripper Trajectory
-					create participant Gripper as Gripper
 					Action ->>+ Gripper : Gripper Pin Numbers
 					Gripper -->>- Action : Gripper Action Complete
 				end
