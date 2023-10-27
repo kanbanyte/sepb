@@ -258,21 +258,20 @@ The diagram below demonstrates the core components of the system, their interact
 The cobot is designed to perform pick-and-place task in a loop which is achieved by having a client node sending requests to the action server continuously.
 Note that components or subcomponents that share the same name reference the same entity,
 the repetition is deliberate and intended to capture the flow of a request through the system.
-
 ```mermaid
 stateDiagram-v2
 	direction TB
-	state cobot_fork <<fork>>
-	state cobot_join <<join>>
-	state "ZED Camera" as Camera
+	state fork <<fork>>
+	state join <<join>>
 	state "Chip" as ChipService
 	state "Case" as CaseService
 	state "Tray" as TrayService
-	state "Cobot Action Server" as CobotActionServer1
-	state "Cobot Action Server" as CobotActionServer2
-	state "Cobot Action Server" as CobotActionServer3
-	state "Cobot Joint Trajectory Topic" as CobotTopic
-	state "Gripper Server" as GripperServer
+	state "ZED Camera" as ZED
+	state "Cobot Action Server" as Action1
+	state "Cobot Action Server" as Action2
+	state "Cobot Action Server" as Action3
+	state "Cobot Joint Trajectory Topic" as Topic
+	state "Gripper Server" as Gripper
 
 	state "Detection Models" as Detection {
 		Chip
@@ -290,23 +289,23 @@ stateDiagram-v2
 		TrayService
 	}
 
-	state "Camera Server Node" as CameraServer {
-		[*] --> Camera
-		Camera --> Detection
+	state "Camera Server Node" as Camera {
+		[*] --> ZED
+		ZED --> Detection
 		Detection --> Convertor
 		Convertor --> [*]
 	}
 
-	[*] --> CobotActionServer1 : Pick Place Request
-	CobotActionServer1 --> CameraServer : Object Position Request
-	CameraServer --> CobotActionServer2 : Object Positions
-	CobotActionServer2 --> cobot_fork
-	cobot_fork --> CobotTopic : Joint Trajectories
-	cobot_fork --> GripperServer : Gripper Trajectories
-	GripperServer --> cobot_join
-	CobotTopic --> cobot_join
-	cobot_join --> CobotActionServer3
-	CobotActionServer3 --> [*] : Pick Place Response
+	[*] --> Action1 : Pick Place Request
+	Action1 --> Camera : Object Position Request
+	Camera --> Action2 : Object Positions
+	Action2 --> fork
+	fork --> Gripper : Gripper Trajectories
+	fork --> Topic : Joint Trajectories
+	Gripper --> join
+	Topic --> join
+	join --> Action3
+	Action3 --> [*] : Pick Place Response
 ```
 
 ### Components

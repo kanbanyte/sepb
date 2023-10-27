@@ -187,30 +187,29 @@ stateDiagram-v2
 ## Architecture
 The high level architecture is captured in the below diagram, depicting the flow of a pick-and-place request through the core components.
 Note that components with the same name reference the same entity, the duplication is intended to maintain a clear direction of a request through these components.
-As the cobot is intended to perform indefinitely in a loop, a client node continuously sends a request to the action server,
-but for brevity it is omitted from this diagram.
+As the cobot is intended to perform indefinitely in a loop, a client node continuously sends a request to the action server;
+however, it is omitted from this diagram for brevity.
 
 Every request to perform a pick-and-place action will trigger an image capture on the ZED camera,
 the result of which will be used as an input to the relevant AI model to retrieve positions of objects.
 These positions are then used to build a list joint trajectories or gripper trajectories, each of which control different parts of the cobot.
-The communication protocol between the joints that control the cobot movements and the gripper differs in that
-the joints trajectories are published to a topic whilst the gripper action is controlled by a separate node.
+The communication protocol between the joints that control the cobot movements and
+the gripper differs in that the joints trajectories are published to a topic whilst the gripper action is controlled by a separate node.
 Despite this difference, joints and gripper actions are performed together to ensure a smooth cobot operation.
-
 ```mermaid
 stateDiagram-v2
 	direction TB
-	state cobot_fork <<fork>>
-	state cobot_join <<join>>
-	state "ZED Camera" as Camera
+	state fork <<fork>>
+	state join <<join>>
 	state "Chip" as ChipService
 	state "Case" as CaseService
 	state "Tray" as TrayService
-	state "Cobot Action Server" as CobotActionServer1
-	state "Cobot Action Server" as CobotActionServer2
-	state "Cobot Action Server" as CobotActionServer3
-	state "Cobot Joint Trajectory Topic" as CobotTopic
-	state "Gripper Server" as GripperServer
+	state "ZED Camera" as ZED
+	state "Cobot Action Server" as Action1
+	state "Cobot Action Server" as Action2
+	state "Cobot Action Server" as Action3
+	state "Cobot Joint Trajectory Topic" as Topic
+	state "Gripper Server" as Gripper
 
 	state "Detection Models" as Detection {
 		Chip
@@ -228,68 +227,66 @@ stateDiagram-v2
 		TrayService
 	}
 
-	state "Camera Server Node" as CameraServer {
-		[*] --> Camera
-		Camera --> Detection
+	state "Camera Server Node" as Camera {
+		[*] --> ZED
+		ZED --> Detection
 		Detection --> Convertor
 		Convertor --> [*]
 	}
 
-	[*] --> CobotActionServer1 : Pick Place Request
-	CobotActionServer1 --> CameraServer : Object Position Request
-	CameraServer --> CobotActionServer2 : Object Positions
-	CobotActionServer2 --> cobot_fork
-	cobot_fork --> CobotTopic : Joint Trajectories
-	cobot_fork --> GripperServer : Gripper Trajectories
-	GripperServer --> cobot_join
-	CobotTopic --> cobot_join
-	cobot_join --> CobotActionServer3
-	CobotActionServer3 --> [*] : Pick Place Response
+	[*] --> Action1 : Pick Place Request
+	Action1 --> Camera : Object Position Request
+	Camera --> Action2 : Object Positions
+	Action2 --> fork
+	fork --> Gripper : Gripper Trajectories
+	fork --> Topic : Joint Trajectories
+	Gripper --> join
+	Topic --> join
+	join --> Action3
+	Action3 --> [*] : Pick Place Response
 ```
 
 ## Design Verification
 The following sequence diagram offers a visual representation of how the implemented system complies with the project requirements.
 It shows the interactions between main components and the continuous flow of operations between them, including branched paths where relevant.
-
 ```mermaid
 sequenceDiagram
 	participant Client as Action Client
-	participant Camera as Depth Camera
-	participant CobotActionServer as Cobot Action Server
-	participant CameraServer as Camera Server
-	participant Cobot as Joint Trajectory Topic
-    participant Gripper as Gripper
+	participant Action as Cobot Action Server
 
 	loop Action Loop
-	    Client->>CobotActionServer: Perform Pick & Place Task
-		CobotActionServer->>+CameraServer: Object Position Request
+		Client ->>+ Action : Perform Pick and Place Task
+		create participant Camera as Camera Server
+		Action ->> Camera : Object Position Request
 		alt Detection Failed
-			CameraServer->>CobotActionServer: Invalid Positions/Movement
-			CobotActionServer->>Client: Pick & Place Task Complete
+			Camera -->> Action : Invalid Positions/Movement
 		else Detection Successful
-			CameraServer->>CobotActionServer: Valid Positions/Movement
-            CobotActionServer->>CobotActionServer: Populate Trajectories
-            loop Trajectory List
-                alt Is Joint Trajectory
-                    CobotActionServer->>+Cobot: Joint Trajectories
-                    Cobot->>CobotActionServer: Cobot Move Complete
-                else Is Gripper Trajectory
-                    CobotActionServer->>+Gripper: Gripper Pin Numbers
-                    Gripper->>CobotActionServer: Gripper Action Complete
-                end
-            end
-			CobotActionServer->>Client: Pick & Place Task Complete
+			destroy Camera
+			Camera -->> Action : Valid Positions/Movement
+			Action ->> Action : Populate Trajectories
+			loop Trajectory List
+				alt Is Joint Trajectory
+					create participant Cobot as Joint Trajectory Topic
+					Action ->>+ Cobot : Joint Trajectories
+					Cobot -->>- Action : Cobot Move Complete
+				else Is Gripper Trajectory
+					create participant Gripper as Gripper
+					Action ->>+ Gripper : Gripper Pin Numbers
+					Gripper -->>- Action : Gripper Action Complete
+				end
+			end
 		end
+		Action -->>- Client : Pick and Place Task Complete
 	end
 ```
 
 The diagram depicts the sequence of requests made between components.
-The outer loop represents an infinite request loop made by the client, where it initiates a pick-and-place task with the server,
-waits until the server completes and respond, then sends a request again.
+The outer loop represents an infinite request loop made by the client,
+where it initiates a pick-and-place task with the server, waits until the server completes and respond, then sends a request again.
 The 'alt' block represent alternative sequences based on a condition.
 If the request to the Camera Server fails, the Cobot Action Server stops and responds to the client.
-Conversely, if successful, it starts populating a list of trajectories, loop over that list and either publish them to the Joint Trajectory Topic or
-sends a request to the Gripper Server.
+Conversely, if successful, it starts populating a list of trajectories,
+loop over that list and either publish them to the Joint Trajectory Topic or sends a request to the Gripper Server.
 Services within the Camera Server are omitted for brevity, certain return paths where the server fails due to various reasons are also excluded.
 
 ### Real-time Object Detection
@@ -305,7 +302,7 @@ This verifies that the system exhibits communication between the AI models and t
 ### Autonomous Systems
 The sequence diagram shows the continuous operation of the system without the need for human intervention.
 The robotic arm moves to the detected object positions automatically based on requests from an action client which runs in an infinite loop.
-By minimising human involvement, the system fulfills the requirement of an autonomous system.
+By minimising human involvement, the system fulfils the requirement of an autonomous system.
 
 <div class="page"/><!-- page break -->
 
