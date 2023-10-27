@@ -184,161 +184,169 @@ stateDiagram-v2
 <div class="page"/><!-- page break -->
 
 # Detailed System Design
-The system design will follow the diagram shown below, which displays a modular design to allow for effective development and implementation.
-ROS2 graph components including nodes, topics, actions, and bags will be used to maintain modularity and a clear data flow.
+## Architecture
+The below diagram demonstrates the architecture of the software system.
+The cobot is designed to perform pick-and-place task in a loop which is achieved by having a client node sending requests to the Cobot Action Server continuously.
+The Cobot Action Server collaborates with the Camera Server, the Gripper Server and build a list of joint trajectories that dictate the cobot movements.
 
-Visual data from the depth camera will pass to image topics which will then be aggregated in the `Visual Data Aggregator` node.
-After passing through the `Container Detector` node, the data is then placed in the `Visual Data Logger` bag which will be used to perform testing and for debugging.
+The diagram below demonstrates the core components of the system, their interactions and relationships within a single request loop.
+Note that components or subcomponents that share the same name reference the same entity, the repetition is deliberate and intended to capture the flow of a request through the system.
 
-The image processing system then validates the input data and places the data in the `Perception Data Logger` and
-passes the data into the `Computer Vision Network` node which will perform the object detection.
-This will return the object position which can then be used by the motion controller to perform movement actions, thus completing the pick and place task.
 ```mermaid
 stateDiagram-v2
 	direction TB
-	state fork1 <<fork>>
-	state fork2 <<fork>>
+    state camera_fork <<fork>>
 
-	%% Topics
-	state "Image Topic 1" as Img1
-	state "Image Topic 2" as Img2
-	state "Image Topic n" as ImgN
-	state "Visual Data Topic" as VisualData
-	state "Item Position Topic" as Item
+	state "ZED Camera" as Camera1
+	state "ZED Camera" as Camera2
+	state "ZED Camera" as Camera3
 
-	%% Sub-components in the Depth Camera
-	state "Visual Data Aggregator" as Aggregator
-	state "Container Detector" as Detector
-	state "Visual Data Logger" as CameraLog
-
-	%% Sub-components in the Image Processing System
-	state "Input Data Validator" as Validator
-	state "Computer Vision Network" as Network
-	state "Perception Data Logger" as SystemLog
-	state "Position Data Formatter" as Formatter
-
-	%% Sub-components in the Motion Controller
-	state "Some Robot Axis Controller" as AxisCtrl
-	state "Some Robot Joint Controller" as JointCtrl
-
-	%% Components and relationships within them
-	state "Depth Camera" as Camera {
-		[*] --> Images
-		Images --> Aggregator
-		Aggregator --> Detector
-		Detector --> [*]
+	state "Chip Service" as ChipService {
+		[*] --> Camera1
+		Camera1 --> ChipDetectionModel
+		ChipDetectionModel --> ChipPositionConvertor
+		ChipPositionConvertor --> [*]
 	}
 
-	state "Image Processor" as ImgProcessor {
-		[*] --> Validator
-		Validator --> fork1
-		fork1 --> Network
-		fork1 --> SystemLog
-		Network --> Formatter
-		Formatter --> [*]
+	state "Case Service" as CaseService {
+		[*] --> Camera2
+		Camera2 --> CaseDetectionModel
+		CaseDetectionModel --> CasePositionConvertor
+		CasePositionConvertor --> [*]
 	}
 
-	state "Motion Controller" as Controller {
-		AxisCtrl
-		--
-		JointCtrl
+	state "Tray Service" as TrayService {
+		[*] --> Camera3
+		Camera3 --> TrayDetectionModel
+		TrayDetectionModel --> TrayStateConvertor
+		TrayStateConvertor --> CobotMovementConvertor
+		CobotMovementConvertor --> [*]
 	}
 
-	%% Further Implemented Concurrency
-	state Images {
-		Img1
-		--
-		Img2
-		--
-		ImgN
+	state "Camera Server Node" as CameraServer {
+		[*] --> camera_fork
+		camera_fork --> ChipService
+		camera_fork --> CaseService
+		camera_fork --> TrayService
 	}
 
-	[*] --> Camera
-	Camera --> fork2
-	fork2 --> VisualData
-	fork2 --> CameraLog
-	VisualData --> ImgProcessor
-	ImgProcessor --> Item
-	Item --> Controller
-	Controller --> [*]
+	state "Cobot Action Server" as CobotActionServer1
+	state "Cobot Action Server" as CobotActionServer2
+	state "Cobot Action Server" as CobotActionServer3
+
+	state cobot_fork <<fork>>
+	state cobot_join <<join>>
+
+	state "Cobot Joint Trajectory Topic" as CobotTopic
+
+	[*] --> CobotActionServer1: PickPlaceRequest
+	CobotActionServer1 --> CameraServer : Object Position Request
+	CameraServer --> CobotActionServer2 : Object Positions
+	CobotActionServer2 --> cobot_fork
+	cobot_fork --> CobotTopic : Joint Trajectories
+	cobot_fork --> GripperServer : Gripper Trajectories
+	GripperServer --> cobot_join
+	CobotTopic --> cobot_join
+	cobot_join --> CobotActionServer3
+	CobotActionServer3 --> [*] : Pick Place Response
 ```
 
-<!-- <img src="https://cdn.discordapp.com/attachments/1111191287325007944/1111192632224395264/image.png" style="width: 75%; height: 75%"/>​ -->
+## Components
+### Cobot Action Server
+The Cobot Action Server is a ROS2 node that acts as a server that performs a pick-and-place task upon a request from an action client.
+The action server is responsible for coordinating different nodes and services to obtain the positions of chips, cases, and tray movements,
+build a list of trajectories, and publish them to a topic that the robot arm is subscribed to or sends a request to the Gripper Server.
+The interaction between the server and the Camera Server and Gripper Server are synchronous,
+with the server stopping until a satisfactory response from these service is received
 
-<div class="page"/><!-- page break -->
+### Camera Server
+The Camera Server is a ROS2 node that provides the position of chips and cases as well as suggested cobot move when requested.
+Detection requests are separated by 3 different services supported by the node: tray service, chip service, and case service.
+All three service capture an image with the ZED camera and feed it to the relevant AI model to retrieve bounding boxes of objects.
+The chip and tray service convert these bounding boxes into numbered positions of chips (1 to 48) and trays (1 to 17), respectively.
+The tray service is different, instead of returning the position and classes of trays (full, empty or partially full),
+it returns a suggested command related to the trays based on their current state.
+The command follows the below set of logic:
+* If assembly tray is empty, move it to the empty position of either tray 1 and tray 2.
+* If the assembly tray is absent, a fully loaded tray 1 or 2 is moved to the assembly position.
+* If tray 1 or 2 is empty, start loading that tray.
+* If tray 1 or 2 is partially loaded, continue loading that tray.
 
-## Design Justification
-The design of this system leverages multiple technologies like CV, Depth Cameras, and robotics.\
-As a result much of the structure of this project will be breaking the larger task down into these technologies for both efficiency and effectiveness.
+This set of moves is encoded into an enumeration with 8 values and passed as an integer in the response.
+Since all three services return a single integer, they share the same service interface and
+the client is expected to interpret the returned signal based on the service invoked.
 
-The Depth Camera acts as an encapsulation of the ZED 2 Camera as well as the data logging it performs.\
-It then outputs visual data to the system which, as seen, is placed into topics.\
-Topics in this instance are like classifications that sort the data for use later on.
+### Gripper Server and Join Trajectory Topic
+These two components are responsible for moving the cobot, including its joints and the gripper.
+Each movement of the cobot is encoded into a list of joint trajectories i.e., coordinates indicating where each joint should be in 3D space.
+Movements to pick up and move all required objects are included and can be invoked by supplying a "goal" name which represent an individual move.
 
-Throughout the system exist Loggers, these are like checkpoints for testing.\
-Seeing the flow of data through the system is incredibly important, especially in a system working with data analysis.
-
-The Image Processor is our CV system, it encapsulates the importing, cleaning and formatting of image data.\
-This is a crucial step as raw image data means nothing to the system, as such, the Image Processor turns it from a mess into workable data.\
-In the context of this system this will take the form of positional data or lack of available items.
-
-The final system is the Motion Controller, a crucial step of the system leveraging the manipulated data into robotic actions.\
-The entire system is built around the movement of the cobot and as a result the systems that manoeuvre it from data are some of the most important.
-
-<div class="page"/><!-- page break -->
+The gripper is controlled via a separate ROS2 node known as the Gripper Server.
+The node requires connection to the PLC that controls the cobot.
+On the PLC, a program called 'gripper_test.urp' has been created that runs a loop to check which digital output pins are active.
+When the gripper service is called, a callback which sets the pin number and activates the gripper itself is invoked.
+Once the pin has been activated, the gripper will open or close as defined in 'gripper_test.urp'.
+After the pin number and state has been sent, the 'ROS.urp' program is loaded played, giving control back to the PC (i.e., the Cobot Action Server).
 
 ## Design Verification
-The following sequence diagram offers a visual representation of how the proposed system complies with the project requirements.
-It shows the interactions between components and the continuous flow of operations.
-It depicts the real-time object detection and communication of object positions which enables autonomous operation and ongoing learning and adaptation.
+The following sequence diagram offers a visual representation of how the implemented system complies with the project requirements.
+It shows the interactions between main components and the continuous flow of operations between them, including branched paths where relevant.
+
 ```mermaid
 sequenceDiagram
-	participant UI as Interface
+	participant Client as Action Client
 	participant Camera as Depth Camera
-	participant Network as Neural Network
-	participant ROS as Robot Operating Software
-	participant Arm as Robotic Arm
+	participant CobotActionServer as Cobot Action Server
+	participant CameraServer as Camera Server
+	participant Cobot as Joint Trajectory Topic
+    participant Gripper as Gripper
 
-	UI->>Camera: Capture image
-	loop Continuous Operation
-		Camera->>+Network: Image data
-		alt Object Detection Failed
-			Network-->>UI: No object positions
-		else Object Detection Successful
-			Network->>Network: Process image data
-			Network->>+ROS: Detected object positions
-			ROS->>+Arm: Move arm to object positions
-			Arm-->>-ROS: Component retrieval status
-			ROS-->>-Network: Update Status
-			Network-->>-UI: Task Complete
+	loop Action Loop
+	    Client->>CobotActionServer: Perform Pick & Place Task
+		CobotActionServer->>+CameraServer: Object Position Request
+		alt Detection Failed
+			CameraServer->>CobotActionServer: Invalid Positions/Movement
+			CobotActionServer->>Client: Pick & Place Task Complete
+		else Detection Successful
+			CameraServer->>CobotActionServer: Valid Positions/Movement
+            CobotActionServer->>CobotActionServer: Populate Trajectories
+            loop Trajectory List
+                alt Is Joint Trajectory
+                    CobotActionServer->>+Cobot: Joint Trajectories
+                    Cobot->>CobotActionServer: Cobot Move Complete
+                else Is Gripper Trajectory
+                    CobotActionServer->>+Gripper: Gripper Pin Numbers
+                    Gripper->>CobotActionServer: Gripper Action Complete
+                end
+            end
+			CobotActionServer->>Client: Pick & Place Task Complete
 		end
 	end
 ```
 
-<!-- ![verification](https://cdn.discordapp.com/attachments/1111191287325007944/1111192115859427368/image.png) -->
+The diagram depicts the sequence of requests made between components.
+The outer loop represents an infinite request loop made by the client, where it initiates a pick-and-place task with the server,
+waits until the server completes and respond, then sends a request again.
+The 'alt' block represent alternative sequences based on a condition.
+If the request to the Camera Server fails, the Cobot Action Server stops and responds to the client.
+Conversely, if successful, it starts populating a list of trajectories, loop over that list and either publish them to the Joint Trajectory Topic or
+sends a request to the Gripper Server.
+Services within the Camera Server are omitted for brevity, certain return paths where the server fails due to various reasons are also excluded.
 
-<div class="page"/><!-- page break -->
-
-### Real-time Object Detection, Processing, and Analysis
-The depth camera continuously captures images, and the neural network processes the image data in real-time.
-The object positions detected by the neural network are sent to the robot operating software promptly.
-This verifies that the system enables real-time object detection, processing, and analysis, ensuring accuracy and speed.
+### Real-time Object Detection
+The depth camera stay open and capture images immediately upon a request, and the resulting picture is processed by the relevant detection model.
+The result is then converted to a single number representing the position of an object as defined by the Cobot, or the suggested tray move.
+This verifies that the system enables real-time object detection and analysis, ensuring accuracy, speed and ease of communication between various components.
 
 ### Object Location Data Communication
-The object positions detected by the neural network are communicated from the depth camera to the robot operating software.
-The robot operating software then uses this data to control the robotic arm's movements.
-This verifies that the system successfully communicates the object location data to the robot operating software, facilitating the pick and place task.
-
-### Continuous Learning and Adaptation
-It is not explicitly depicted in the sequence diagram but,
-the neural network module is designed to continuously learn and adapt to new configurations of the chips in their stands once implemented.
-Through training and updating the neural network with new data, it can improve its object recognition and location detection capabilities over time.
-This verifies that the system has the potential to continuously learn and adapt to different chip layouts, without the need for user input.
+The object positions detected by the neural network are communicated from the Camera Server to the Cobot Action Server which controls the cobot movement.
+The Action Server utilizes this information and builds a list of joint/gripper trajectories that moves the cobot to pick a specified item.
+This verifies that the system exhibits communication between the AI models and the cobot, enabling a highly accurate and precise pick-and-place cycle.
 
 ### Autonomous Systems
 The sequence diagram shows the continuous operation of the system without the need for human intervention.
-The robotic arm moves to the detected object positions automatically based on the commands from the robot operating software.
-The system operates independently, minimising human involvement and fulfilling the requirement of an autonomous system.
+The robotic arm moves to the detected object positions automatically based on requests from an action client which runs in an infinite loop.
+By minimising human involvement, the system fulfills the requirement of an autonomous system.
 
 <div class="page"/><!-- page break -->
 
