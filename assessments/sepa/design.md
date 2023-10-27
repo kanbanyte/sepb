@@ -289,7 +289,7 @@ loop over that list and either publish them to the Joint Trajectory Topic or sen
 Services within the Camera Server are omitted for brevity, certain return paths where the server fails due to various reasons are also excluded.
 
 ### Real-time Object Detection
-The depth camera stay open and capture images immediately upon a request, and the resulting picture is processed by the relevant detection model.
+The depth camera stays open and capture images immediately upon a request, and the resulting picture is processed by the relevant detection model.
 The result is then converted to a single number representing the position of an object as defined by the Cobot, or the suggested tray move.
 This verifies that the system enables real-time object detection and analysis, ensuring accuracy, speed and ease of communication between various components.
 

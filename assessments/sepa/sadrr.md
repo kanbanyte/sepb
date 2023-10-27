@@ -320,7 +320,7 @@ With regards to the **Joint Trajectory Topic**, the action server also dictates 
 #### Camera Server
 The **Camera Server** is a ROS2 node that provides the position of chips and cases as well as suggested cobot move when requested.
 Detection requests are separated by 3 different services supported by the node: tray service, chip service, and case service.
-All three service capture an image with the ZED camera and feed it to the relevant AI model to retrieve bounding boxes of objects.
+All three services capture an image with the ZED camera and feed it to the relevant AI model to retrieve bounding boxes of objects.
 The chip and tray service convert these bounding boxes into numbered positions of chips (1 to 48) and trays (1 to 17), respectively.
 The tray service is different, instead of returning the position and classes of trays (full, empty or partially full),
 it returns a suggested command related to the trays based on their current state.
