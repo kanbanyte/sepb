@@ -185,12 +185,17 @@ stateDiagram-v2
 
 # Detailed System Design
 ## Architecture
-The below diagram demonstrates the architecture of the software system.
-The cobot is designed to perform pick-and-place task in a loop which is achieved by having a client node sending requests to the Cobot Action Server continuously.
-The Cobot Action Server collaborates with the Camera Server, the Gripper Server and build a list of joint trajectories that dictate the cobot movements.
+The high level architecture is captured in the below diagram, depicting the flow of a pick-and-place request through the core components.
+Note that components with the same name reference the same entity, the duplication is intended to maintain a clear direction of a request through these components.
+As the cobot is intended to perform indefinitely in a loop, a client node continuously sends a request to the action server,
+but for brevity it is omitted from this diagram.
 
-The diagram below demonstrates the core components of the system, their interactions and relationships within a single request loop.
-Note that components or subcomponents that share the same name reference the same entity, the repetition is deliberate and intended to capture the flow of a request through the system.
+Every request to perform a pick-and-place action will trigger an image capture on the ZED camera,
+the result of which will be used as an input to the relevant AI model to retrieve positions of objects.
+These positions are then used to build a list joint trajectories or gripper trajectories, each of which control different parts of the cobot.
+The communication protocol between the joints that control the cobot movements and the gripper differs in that
+the joints trajectories are published to a topic whilst the gripper action is controlled by a separate node.
+Despite this difference, joints and gripper actions are performed together to ensure a smooth cobot operation.
 
 ```mermaid
 stateDiagram-v2
@@ -250,43 +255,6 @@ stateDiagram-v2
 	cobot_join --> CobotActionServer3
 	CobotActionServer3 --> [*] : Pick Place Response
 ```
-
-## Components
-### Cobot Action Server
-The Cobot Action Server is a ROS2 node that acts as a server that performs a pick-and-place task upon a request from an action client.
-The action server is responsible for coordinating different nodes and services to obtain the positions of chips, cases, and tray movements,
-build a list of trajectories, and publish them to a topic that the robot arm is subscribed to or sends a request to the Gripper Server.
-The interaction between the server and the Camera Server and Gripper Server are synchronous,
-with the server stopping until a satisfactory response from these service is received
-
-### Camera Server
-The Camera Server is a ROS2 node that provides the position of chips and cases as well as suggested cobot move when requested.
-Detection requests are separated by 3 different services supported by the node: tray service, chip service, and case service.
-All three service capture an image with the ZED camera and feed it to the relevant AI model to retrieve bounding boxes of objects.
-The chip and tray service convert these bounding boxes into numbered positions of chips (1 to 48) and trays (1 to 17), respectively.
-The tray service is different, instead of returning the position and classes of trays (full, empty or partially full),
-it returns a suggested command related to the trays based on their current state.
-The command follows the below set of logic:
-* If assembly tray is empty, move it to the empty position of either tray 1 and tray 2.
-* If the assembly tray is absent, a fully loaded tray 1 or 2 is moved to the assembly position.
-* If tray 1 or 2 is empty, start loading that tray.
-* If tray 1 or 2 is partially loaded, continue loading that tray.
-
-This set of moves is encoded into an enumeration with 8 values and passed as an integer in the response.
-Since all three services return a single integer, they share the same service interface and
-the client is expected to interpret the returned signal based on the service invoked.
-
-### Gripper Server and Join Trajectory Topic
-These two components are responsible for moving the cobot, including its joints and the gripper.
-Each movement of the cobot is encoded into a list of joint trajectories i.e., coordinates indicating where each joint should be in 3D space.
-Movements to pick up and move all required objects are included and can be invoked by supplying a "goal" name which represent an individual move.
-
-The gripper is controlled via a separate ROS2 node known as the Gripper Server.
-The node requires connection to the PLC that controls the cobot.
-On the PLC, a program called 'gripper_test.urp' has been created that runs a loop to check which digital output pins are active.
-When the gripper service is called, a callback which sets the pin number and activates the gripper itself is invoked.
-Once the pin has been activated, the gripper will open or close as defined in 'gripper_test.urp'.
-After the pin number and state has been sent, the 'ROS.urp' program is loaded played, giving control back to the PC (i.e., the Cobot Action Server).
 
 ## Design Verification
 The following sequence diagram offers a visual representation of how the implemented system complies with the project requirements.
