@@ -199,7 +199,7 @@ flowchart TD
 	Joint -->|Joint Trajectories| CobotAction
 ```
 
-<!-- ![hlv](https://cdn.discordapp.com/attachments/1094987833174925416/1104591857163456522/image.png) -->
+<!-- ![hlv](https://cdn.discordapp.com/attachments/.../.../image.png) -->
 
 This design ensures modularity by encapsulating the entire computer vision system into a single component known as the Camera Node,
 enabling independent development of other components, such as the robot arm control system or the Camera node.
@@ -237,73 +237,67 @@ the system will need modifications to accommodate said components.
 ## System Architecture
 This section explores the chosen architectural design, client-server, in greater detail by representing components, their sub-components and
 explains their responsibilities and relationships with each other.
-At a high level, the major components in the perception system are the **Camera Server**, the **Cobot Action Server**, the **Gripper Server** and the **Join Trajectory Topic**.
+At a high level, the major components in the perception system are the **Camera Server**,
+the **Cobot Action Server**, the **Gripper Server** and the **Join Trajectory Topic**.
 
-A core component that was omitted earlier is the **Join Trajectory Topic**, which allows the cobot to retrieve trajectories from the action server,
-and the **Gripper Server**, which controls the gripper of the cobot as a separate unit from the arm.
-This **Join Trajectory Topic** follows the publisher-subscriber model and requires a message broker to facilitate communication between the physical robot arm and
-the action server.
+A core component that was omitted earlier is the **Join Trajectory Topic**, which allows the cobot to retrieve trajectories from the action server, and
+the **Gripper Server**, which controls the gripper of the cobot as a separate unit from the arm.
+This **Join Trajectory Topic** follows the publisher-subscriber model and
+requires a message broker to facilitate communication between the physical robot arm and the action server.
 There are two main types of message brokers:
 * Content-based: subscribers declare the properties of the type of messages they are interested in,
 which is then used by the broker to filter matching messages from the publisher.
 * Topic-based (**preferred**): subscribers communicates their intentions by subscribing themselves to *topics*, which represent isolated logical channels.
 Each topic concentrates on a distinct type of information, enabling publishers to categorize shared data without knowing which subscribers are listening to that topic.\
-This is chosen as the broker mechanism for the joint trajectories because of its support in ROS2 and suitability with the trajectories stream from the **Cobot Action Server**.
+This is chosen as the broker mechanism for the joint trajectories because of its support in ROS2 and
+suitability with the trajectories stream from the **Cobot Action Server**.
 
 <div class="page"/><!-- page break -->
 
 The diagram below demonstrates the core components of the system, their interactions and relationships within a single request loop.
 The cobot is designed to perform pick-and-place task in a loop which is achieved by having a client node sending requests to the action server continuously.
-Note that components or subcomponents that share the same name reference the same entity, the repetition is deliberate and intended to capture the flow of a request through the system.
+Note that components or subcomponents that share the same name reference the same entity,
+the repetition is deliberate and intended to capture the flow of a request through the system.
 
 ```mermaid
 stateDiagram-v2
 	direction TB
-    state camera_fork <<fork>>
-
-	state "ZED Camera" as Camera1
-	state "ZED Camera" as Camera2
-	state "ZED Camera" as Camera3
-
-	state "Chip Service" as ChipService {
-		[*] --> Camera1
-		Camera1 --> ChipDetectionModel
-		ChipDetectionModel --> ChipPositionConvertor
-		ChipPositionConvertor --> [*]
-	}
-
-	state "Case Service" as CaseService {
-		[*] --> Camera2
-		Camera2 --> CaseDetectionModel
-		CaseDetectionModel --> CasePositionConvertor
-		CasePositionConvertor --> [*]
-	}
-
-	state "Tray Service" as TrayService {
-		[*] --> Camera3
-		Camera3 --> TrayDetectionModel
-		TrayDetectionModel --> TrayStateConvertor
-		TrayStateConvertor --> CobotMovementConvertor
-		CobotMovementConvertor --> [*]
-	}
-
-	state "Camera Server Node" as CameraServer {
-		[*] --> camera_fork
-		camera_fork --> ChipService
-		camera_fork --> CaseService
-		camera_fork --> TrayService
-	}
-
+	state cobot_fork <<fork>>
+	state cobot_join <<join>>
+	state "ZED Camera" as Camera
+	state "Chip" as ChipService
+	state "Case" as CaseService
+	state "Tray" as TrayService
 	state "Cobot Action Server" as CobotActionServer1
 	state "Cobot Action Server" as CobotActionServer2
 	state "Cobot Action Server" as CobotActionServer3
-
-	state cobot_fork <<fork>>
-	state cobot_join <<join>>
-
 	state "Cobot Joint Trajectory Topic" as CobotTopic
+	state "Gripper Server" as GripperServer
 
-	[*] --> CobotActionServer1: PickPlaceRequest
+	state "Detection Models" as Detection {
+		Chip
+		--
+		Case
+		--
+		Tray
+	}
+
+	state "Position Convertors" as Convertor {
+		ChipService
+		--
+		CaseService
+		--
+		TrayService
+	}
+
+	state "Camera Server Node" as CameraServer {
+		[*] --> Camera
+		Camera --> Detection
+		Detection --> Convertor
+		Convertor --> [*]
+	}
+
+	[*] --> CobotActionServer1 : Pick Place Request
 	CobotActionServer1 --> CameraServer : Object Position Request
 	CameraServer --> CobotActionServer2 : Object Positions
 	CobotActionServer2 --> cobot_fork
@@ -386,8 +380,7 @@ However, the project requires multiple programs to send requests and replies to 
 This would require many queues as to implement request and reply functionality between 2 programs requires a separate queue for both the request and the reply.
 The large number of queues would reduce the speed and efficiency of the project, hence why this architecture was not chosen.
 Message queues are also a one-one model and have no mechanism to subscribe to a particular topic or type of message,
-whereas the chosen client-service architecture use well-defined interfaces to facilitate communication,
-with components allowed to freely request data as needed.
+whereas the chosen client-service architecture use well-defined interfaces to facilitate communication, with components allowed to freely request data as needed.
 These drawbacks are the reason the message queue architecture was disregarded.
 
 <div class="page"/><!-- page break -->
