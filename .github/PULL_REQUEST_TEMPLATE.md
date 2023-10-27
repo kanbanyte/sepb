@@ -2,7 +2,7 @@
 
 * **Author**: @dau501
 * **Issue**: #0
-* **Board**: Please see [SEPB Board](https://github.com/orgs/kanbanyte/projects/9).
+* **Board**: Please see [SEPB Project](https://github.com/orgs/kanbanyte/projects/12).
 * **Discussion**: #0
 * **Role**: @kanbanyte/sepbgroup
 > ^^^Template Description^^^<!-- Delete this line when done. -->
