@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="../styles/styles.css" type="text/css">
 
 <!-- TOC ignore:true -->
-# Robot Vision System For A Pick And Place Task
+# Robot Vision System for a Pick and Place Task
 <!--
 	Author: @finnmcgearey
 	Editor(s): @dau501
@@ -93,6 +93,13 @@
 	* [file_reader.py](#file_readerpy)
 
 <!-- /TOC -->
+
+<div class="page"/><!-- page break -->
+
+# Introduction
+This technical document contains all information regarding the project: *Robot Vision System for a Pick and Place Task*.
+It acts as both a user manual and installation manual, providing information about each file and directory to help with setting up the packages and using them.
+Each important file and any functions have been explained to ensure the best possible usage.  
 
 <div class="page"/><!-- page break -->
 
