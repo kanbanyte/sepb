@@ -184,161 +184,125 @@ stateDiagram-v2
 <div class="page"/><!-- page break -->
 
 # Detailed System Design
-The system design will follow the diagram shown below, which displays a modular design to allow for effective development and implementation.
-ROS2 graph components including nodes, topics, actions, and bags will be used to maintain modularity and a clear data flow.
+## Architecture
+The high level architecture is captured in the below diagram, depicting the flow of a pick-and-place request through the core components.
+Note that components with the same name reference the same entity, the duplication is intended to maintain a clear direction of a request through these components.
+As the cobot is intended to perform indefinitely in a loop, a client node continuously sends a request to the action server;
+however, it is omitted from this diagram for brevity.
 
-Visual data from the depth camera will pass to image topics which will then be aggregated in the `Visual Data Aggregator` node.
-After passing through the `Container Detector` node, the data is then placed in the `Visual Data Logger` bag which will be used to perform testing and for debugging.
-
-The image processing system then validates the input data and places the data in the `Perception Data Logger` and
-passes the data into the `Computer Vision Network` node which will perform the object detection.
-This will return the object position which can then be used by the motion controller to perform movement actions, thus completing the pick and place task.
+Every request to perform a pick-and-place action will trigger an image capture on the ZED camera,
+the result of which will be used as an input to the relevant AI model to retrieve positions of objects.
+These positions are then used to build a list joint trajectories or gripper trajectories, each of which control different parts of the cobot.
+The communication protocol between the joints that control the cobot movements and
+the gripper differs in that the joints trajectories are published to a topic whilst the gripper action is controlled by a separate node.
+Despite this difference, joints and gripper actions are performed together to ensure a smooth cobot operation.
 ```mermaid
 stateDiagram-v2
 	direction TB
-	state fork1 <<fork>>
-	state fork2 <<fork>>
+	state fork <<fork>>
+	state join <<join>>
+	state "Chip" as ChipService
+	state "Case" as CaseService
+	state "Tray" as TrayService
+	state "ZED Camera" as ZED
+	state "Cobot Action Server" as Action1
+	state "Cobot Action Server" as Action2
+	state "Cobot Action Server" as Action3
+	state "Cobot Joint Trajectory Topic" as Topic
+	state "Gripper Server" as Gripper
 
-	%% Topics
-	state "Image Topic 1" as Img1
-	state "Image Topic 2" as Img2
-	state "Image Topic n" as ImgN
-	state "Visual Data Topic" as VisualData
-	state "Item Position Topic" as Item
-
-	%% Sub-components in the Depth Camera
-	state "Visual Data Aggregator" as Aggregator
-	state "Container Detector" as Detector
-	state "Visual Data Logger" as CameraLog
-
-	%% Sub-components in the Image Processing System
-	state "Input Data Validator" as Validator
-	state "Computer Vision Network" as Network
-	state "Perception Data Logger" as SystemLog
-	state "Position Data Formatter" as Formatter
-
-	%% Sub-components in the Motion Controller
-	state "Some Robot Axis Controller" as AxisCtrl
-	state "Some Robot Joint Controller" as JointCtrl
-
-	%% Components and relationships within them
-	state "Depth Camera" as Camera {
-		[*] --> Images
-		Images --> Aggregator
-		Aggregator --> Detector
-		Detector --> [*]
-	}
-
-	state "Image Processor" as ImgProcessor {
-		[*] --> Validator
-		Validator --> fork1
-		fork1 --> Network
-		fork1 --> SystemLog
-		Network --> Formatter
-		Formatter --> [*]
-	}
-
-	state "Motion Controller" as Controller {
-		AxisCtrl
+	state "Detection Models" as Detection {
+		Chip
 		--
-		JointCtrl
+		Case
+		--
+		Tray
 	}
 
-	%% Further Implemented Concurrency
-	state Images {
-		Img1
+	state "Position Convertors" as Convertor {
+		ChipService
 		--
-		Img2
+		CaseService
 		--
-		ImgN
+		TrayService
 	}
 
-	[*] --> Camera
-	Camera --> fork2
-	fork2 --> VisualData
-	fork2 --> CameraLog
-	VisualData --> ImgProcessor
-	ImgProcessor --> Item
-	Item --> Controller
-	Controller --> [*]
+	state "Camera Server Node" as Camera {
+		[*] --> ZED
+		ZED --> Detection
+		Detection --> Convertor
+		Convertor --> [*]
+	}
+
+	[*] --> Action1 : Pick Place Request
+	Action1 --> Camera : Object Position Request
+	Camera --> Action2 : Object Positions
+	Action2 --> fork
+	fork --> Gripper : Gripper Trajectories
+	fork --> Topic : Joint Trajectories
+	Gripper --> join
+	Topic --> join
+	join --> Action3
+	Action3 --> [*] : Pick Place Response
 ```
 
-<!-- <img src="https://cdn.discordapp.com/attachments/1111191287325007944/1111192632224395264/image.png" style="width: 75%; height: 75%"/>​ -->
-
-<div class="page"/><!-- page break -->
-
-## Design Justification
-The design of this system leverages multiple technologies like CV, Depth Cameras, and robotics.\
-As a result much of the structure of this project will be breaking the larger task down into these technologies for both efficiency and effectiveness.
-
-The Depth Camera acts as an encapsulation of the ZED 2 Camera as well as the data logging it performs.\
-It then outputs visual data to the system which, as seen, is placed into topics.\
-Topics in this instance are like classifications that sort the data for use later on.
-
-Throughout the system exist Loggers, these are like checkpoints for testing.\
-Seeing the flow of data through the system is incredibly important, especially in a system working with data analysis.
-
-The Image Processor is our CV system, it encapsulates the importing, cleaning and formatting of image data.\
-This is a crucial step as raw image data means nothing to the system, as such, the Image Processor turns it from a mess into workable data.\
-In the context of this system this will take the form of positional data or lack of available items.
-
-The final system is the Motion Controller, a crucial step of the system leveraging the manipulated data into robotic actions.\
-The entire system is built around the movement of the cobot and as a result the systems that manoeuvre it from data are some of the most important.
-
-<div class="page"/><!-- page break -->
-
 ## Design Verification
-The following sequence diagram offers a visual representation of how the proposed system complies with the project requirements.
-It shows the interactions between components and the continuous flow of operations.
-It depicts the real-time object detection and communication of object positions which enables autonomous operation and ongoing learning and adaptation.
+The following sequence diagram offers a visual representation of how the implemented system complies with the project requirements.
+It shows the interactions between main components and the continuous flow of operations between them, including branched paths where relevant.
 ```mermaid
 sequenceDiagram
-	participant UI as Interface
-	participant Camera as Depth Camera
-	participant Network as Neural Network
-	participant ROS as Robot Operating Software
-	participant Arm as Robotic Arm
+	participant Client as Action Client
+	participant Action as Cobot Action Server
+	participant Camera as Camera Server
+	participant Cobot as Joint Trajectory Topic
+	participant Gripper as Gripper
 
-	UI->>Camera: Capture image
-	loop Continuous Operation
-		Camera->>+Network: Image data
-		alt Object Detection Failed
-			Network-->>UI: No object positions
-		else Object Detection Successful
-			Network->>Network: Process image data
-			Network->>+ROS: Detected object positions
-			ROS->>+Arm: Move arm to object positions
-			Arm-->>-ROS: Component retrieval status
-			ROS-->>-Network: Update Status
-			Network-->>-UI: Task Complete
+	loop Action Loop
+		Client ->>+ Action : Perform Pick and Place Task
+		Action ->>+ Camera : Object Position Request
+		alt Detection Failed
+			Camera -->> Action : Invalid Positions/Movement
+		else Detection Successful
+			Camera -->>- Action : Valid Positions/Movement
+			Action ->> Action : Populate Trajectories
+			loop Trajectory List
+				alt Is Joint Trajectory
+					Action ->>+ Cobot : Joint Trajectories
+					Cobot -->>- Action : Cobot Move Complete
+				else Is Gripper Trajectory
+					Action ->>+ Gripper : Gripper Pin Numbers
+					Gripper -->>- Action : Gripper Action Complete
+				end
+			end
 		end
+		Action -->>- Client : Pick and Place Task Complete
 	end
 ```
 
-<!-- ![verification](https://cdn.discordapp.com/attachments/1111191287325007944/1111192115859427368/image.png) -->
+The diagram depicts the sequence of requests made between components.
+The outer loop represents an infinite request loop made by the client,
+where it initiates a pick-and-place task with the server, waits until the server completes and respond, then sends a request again.
+The 'alt' block represent alternative sequences based on a condition.
+If the request to the Camera Server fails, the Cobot Action Server stops and responds to the client.
+Conversely, if successful, it starts populating a list of trajectories,
+loop over that list and either publish them to the Joint Trajectory Topic or sends a request to the Gripper Server.
+Services within the Camera Server are omitted for brevity, certain return paths where the server fails due to various reasons are also excluded.
 
-<div class="page"/><!-- page break -->
-
-### Real-time Object Detection, Processing, and Analysis
-The depth camera continuously captures images, and the neural network processes the image data in real-time.
-The object positions detected by the neural network are sent to the robot operating software promptly.
-This verifies that the system enables real-time object detection, processing, and analysis, ensuring accuracy and speed.
+### Real-time Object Detection
+The depth camera stays open and capture images immediately upon a request, and the resulting picture is processed by the relevant detection model.
+The result is then converted to a single number representing the position of an object as defined by the Cobot, or the suggested tray move.
+This verifies that the system enables real-time object detection and analysis, ensuring accuracy, speed and ease of communication between various components.
 
 ### Object Location Data Communication
-The object positions detected by the neural network are communicated from the depth camera to the robot operating software.
-The robot operating software then uses this data to control the robotic arm's movements.
-This verifies that the system successfully communicates the object location data to the robot operating software, facilitating the pick and place task.
-
-### Continuous Learning and Adaptation
-It is not explicitly depicted in the sequence diagram but,
-the neural network module is designed to continuously learn and adapt to new configurations of the chips in their stands once implemented.
-Through training and updating the neural network with new data, it can improve its object recognition and location detection capabilities over time.
-This verifies that the system has the potential to continuously learn and adapt to different chip layouts, without the need for user input.
+The object positions detected by the neural network are communicated from the Camera Server to the Cobot Action Server which controls the cobot movement.
+The Action Server utilizes this information and builds a list of joint/gripper trajectories that moves the cobot to pick a specified item.
+This verifies that the system exhibits communication between the AI models and the cobot, enabling a highly accurate and precise pick-and-place cycle.
 
 ### Autonomous Systems
 The sequence diagram shows the continuous operation of the system without the need for human intervention.
-The robotic arm moves to the detected object positions automatically based on the commands from the robot operating software.
-The system operates independently, minimising human involvement and fulfilling the requirement of an autonomous system.
+The robotic arm moves to the detected object positions automatically based on requests from an action client which runs in an infinite loop.
+By minimising human involvement, the system fulfils the requirement of an autonomous system.
+
 
 <div class="page"/><!-- page break -->
 

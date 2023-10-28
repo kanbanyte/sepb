@@ -176,40 +176,40 @@ ensuring that the Depth Camera will be able to effectively differentiate between
 
 # High-Level System Architecture and Alternatives
 Among the software requirements of Project 24, is the integration with the existing robot control system which uses ROS2.
-Said system uses a publisher-subscriber (pub-sub) model and divides components into individual "nodes",
-each of which can subscribe to or publish messages to another node in the network.
 The architecture for the additional perception software system must be compatible with the existing ROS2 design whilst maintaining modularity and
 loose-coupling between individual components.
-Although the project has established that the Depth Camera is the main tool that retrieves image inputs,
+Although the project has established that the depth camera is the main tool that retrieves image inputs,
 the new perception system should ideally encapsulate this detail and communicates visual data via an abstracted format.
 
 ### Preferred Architecture
-The addition of the perception system is envisioned to be encapsulated in one software module and used a by a single node in a pub-sub architecture.
-The diagram below captures the high-level view of the system.
+The addition of the perception system is envisioned to be encapsulated in one software module and used a by a single node in a client-server architecture.
+The diagram below captures the high-level view of the system by depicting core components.
 ```mermaid
 flowchart TD
-	Camera[/Depth Camera/]
-	Perception{Perception Node}
-	Sub1{{Subscriber Node 1}}
-	Sub2{{Subscriber Node 2}}
-	SubN{{Subscriber Node n}}
+	CobotActionClient[/Cobot Action Client/]
+	Camera[/Camera Server/]
+	Joint[/Cobot Movement Controller/]
+	CobotAction{Cobot Action Server}
 
-	Camera -->|image data| Perception
-	Perception -->|periodical query| Camera
-	Perception -->|item state| Sub1
-	Perception -->|item state| Sub2
-	Perception -->|item state| SubN
+	CobotActionClient -->|pick-place-task request| CobotAction
+	CobotAction -->|pick-place-task response| CobotActionClient
+	Camera -->|image data| CobotAction
+	CobotAction -->|object position request| Camera
+	CobotAction -->|Joint Trajectories| Joint
+	Joint -->|Joint Trajectories| CobotAction
 ```
 
-<!-- ![hlv](https://cdn.discordapp.com/attachments/1094987833174925416/1104591857163456522/image.png) -->
+<!-- ![hlv](https://cdn.discordapp.com/attachments/.../.../image.png) -->
 
-This design ensures modularity by encapsulating the entire computer vision system into its own module,
-enabling independent development of other components, such as the robot arm control system.
+This design ensures modularity by encapsulating the entire computer vision system into a single component known as the Camera Node,
+enabling independent development of other components, such as the robot arm control system or the Camera node.
+Additionally, individual nodes in the system can assume the server and client role interchangeably,
+depending on their relationships as one server might request data from another.
 
-The pub-sub architecture promotes a loosely-coupled relationship between the perception system and other related components.
-By using an asynchronous messaging model, the pub-sub architecture facilitates real-time communication between multiple components,
-which demand that the sender is not blocked waiting for the response or blocked only for a very limited duration.
+The client-server architecture promotes a loosely-coupled relationship between the perception system and other related components.
 This design is also consistent with the primary architecture used by ROS2, and will be further explored in the [System Architecture](#system-architecture) section.
+By encapsulating features into nodes and have them interact loosely via requests and responses, we ensure any runtime fault is isolated and
+does not propagate through the entire system.
 
 If the client wishes to extend the capabilities of the robot arm beyond the scope defined in this project,
 they can easily register new components to the perception node and retrieve visual data without changes to the rest of the system.
@@ -220,8 +220,7 @@ they can easily register new components to the perception node and retrieve visu
 #### Messaging Queue
 An alternative architecture considered for this project is the messaging queue system.
 In this system, visual data is pushed into a message queue and clients can asynchronously retrieve and process that data.
-
-Similar to the pub-sub model, the message queue decouples consumers from producers and facilitates asynchronous data transfers.
+The message queue decouples consumers from producers and facilitates asynchronous data transfers.
 However, a single queue is limited to only one consumer hence multiple queues are needed, adding overhead that can harm performance.
 
 #### Multiple Layers
@@ -235,148 +234,117 @@ A significant drawback of this model is the lack of flexibility as newly added c
 the system will need modifications to accommodate said components.
 
 ## System Architecture
-This section explores the chosen architectural design, pub-sub, in greater detail by representing components, their sub-components and
+This section explores the chosen architectural design, client-server, in greater detail by representing components, their sub-components and
 explains their responsibilities and relationships with each other.
-The section also discusses how the pub-sub mechanism is achieved at a high level in the established development environment (ROS2 running on Ubuntu).
-At a high level, the major components in the perception system are the **Depth Camera**, the **Image Processing System** and its subscribers,
-which are collectively known as the **Motion Controller**.
+At a high level, the major components in the perception system are the **Camera Server**,
+the **Cobot Action Server**, the **Gripper Server** and the **Join Trajectory Topic**.
 
-A core component that was omitted earlier is the message broker, which allows subscribers to selectively receive published data.
+A core component that was omitted earlier is the **Join Trajectory Topic**, which allows the cobot to retrieve trajectories from the action server, and
+the **Gripper Server**, which controls the gripper of the cobot as a separate unit from the arm.
+This **Join Trajectory Topic** follows the publisher-subscriber model and
+requires a message broker to facilitate communication between the physical robot arm and the action server.
 There are two main types of message brokers:
 * Content-based: subscribers declare the properties of the type of messages they are interested in,
 which is then used by the broker to filter matching messages from the publisher.
 * Topic-based (**preferred**): subscribers communicates their intentions by subscribing themselves to *topics*, which represent isolated logical channels.
 Each topic concentrates on a distinct type of information, enabling publishers to categorize shared data without knowing which subscribers are listening to that topic.\
-This is chosen as the broker mechanism for the system because of its support in ROS2 and suitability with the sensory data stream from the Depth Camera.
-In this system, topics are the main medium through which the three primary components communicate, enabling asynchronous messaging and keeping components decoupled.
+This is chosen as the broker mechanism for the joint trajectories because of its support in ROS2 and
+suitability with the trajectories stream from the **Cobot Action Server**.
 
 <div class="page"/><!-- page break -->
 
-The below diagrams provides a detailed view of the components within the system.
-The flow of the diagram represents the body of the main control loop, starting with the depth camera and ending with the robot movement.
+The diagram below demonstrates the core components of the system, their interactions and relationships within a single request loop.
+The cobot is designed to perform pick-and-place task in a loop which is achieved by having a client node sending requests to the action server continuously.
+Note that components or subcomponents that share the same name reference the same entity,
+the repetition is deliberate and intended to capture the flow of a request through the system.
 ```mermaid
 stateDiagram-v2
 	direction TB
-	state fork1 <<fork>>
-	state fork2 <<fork>>
+	state fork <<fork>>
+	state join <<join>>
+	state "Chip" as ChipService
+	state "Case" as CaseService
+	state "Tray" as TrayService
+	state "ZED Camera" as ZED
+	state "Cobot Action Server" as Action1
+	state "Cobot Action Server" as Action2
+	state "Cobot Action Server" as Action3
+	state "Cobot Joint Trajectory Topic" as Topic
+	state "Gripper Server" as Gripper
 
-	%% Topics
-	state "Image Topic 1" as Img1
-	state "Image Topic 2" as Img2
-	state "Image Topic n" as ImgN
-	state "Visual Data Topic" as VisualData
-	state "Item Position Topic" as Item
-
-	%% Sub-components in the Depth Camera
-	state "Visual Data Aggregator" as Aggregator
-	state "Container Detector" as Detector
-	state "Visual Data Logger" as CameraLog
-
-	%% Sub-components in the Image Processing System
-	state "Input Data Validator" as Validator
-	state "Computer Vision Network" as Network
-	state "Perception Data Logger" as SystemLog
-	state "Position Data Formatter" as Formatter
-
-	%% Sub-components in the Motion Controller
-	state "Some Robot Axis Controller" as AxisCtrl
-	state "Some Robot Joint Controller" as JointCtrl
-
-	%% Components and relationships within them
-	state "Depth Camera" as Camera {
-		[*] --> Images
-		Images --> Aggregator
-		Aggregator --> Detector
-		Detector --> [*]
-	}
-
-	state "Image Processor" as ImgProcessor {
-		[*] --> Validator
-		Validator --> fork1
-		fork1 --> Network
-		fork1 --> SystemLog
-		Network --> Formatter
-		Formatter --> [*]
-	}
-
-	state "Motion Controller" as Controller {
-		AxisCtrl
+	state "Detection Models" as Detection {
+		Chip
 		--
-		JointCtrl
+		Case
+		--
+		Tray
 	}
 
-	%% Further Implemented Concurrency
-	state Images {
-		Img1
+	state "Position Convertors" as Convertor {
+		ChipService
 		--
-		Img2
+		CaseService
 		--
-		ImgN
+		TrayService
 	}
 
-	[*] --> Camera
-	Camera --> fork2
-	fork2 --> VisualData
-	fork2 --> CameraLog
-	VisualData --> ImgProcessor
-	ImgProcessor --> Item
-	Item --> Controller
-	Controller --> [*]
+	state "Camera Server Node" as Camera {
+		[*] --> ZED
+		ZED --> Detection
+		Detection --> Convertor
+		Convertor --> [*]
+	}
+
+	[*] --> Action1 : Pick Place Request
+	Action1 --> Camera : Object Position Request
+	Camera --> Action2 : Object Positions
+	Action2 --> fork
+	fork --> Gripper : Gripper Trajectories
+	fork --> Topic : Joint Trajectories
+	Gripper --> join
+	Topic --> join
+	join --> Action3
+	Action3 --> [*] : Pick Place Response
 ```
 
-<!-- <img src="https://cdn.discordapp.com/attachments/1094987833174925416/1104593566778544168/image.png" style="width: 85%; height: 85%"/>​ -->
+### Components
+#### Cobot Action Server
+The **Cobot Action Server** (or action server) is a ROS2 node that acts as a server that performs a pick-and-place task upon a request from an action client.
+The action server is responsible for coordinating different nodes and services to obtain the positions of chips, cases, and tray movements,
+build a list of trajectories, and publish them to a topic that the robot arm is subscribed to or sends a request to the **Gripper Server**.
+Its interaction with the **Camera Server** and **Gripper Server** are synchronous,
+with the action server stopping until satisfactory responses from these nodes are received.
+With regards to the **Joint Trajectory Topic**, the action server also dictates the amount of time the cobot takes to perform a move based on the trajectories.
 
-<div class="page"/><!-- page break -->
+#### Camera Server
+The **Camera Server** is a ROS2 node that provides the position of chips and cases as well as suggested cobot move when requested.
+Detection requests are separated by 3 different services supported by the node: tray service, chip service, and case service.
+All three services capture an image with the ZED camera and feed it to the relevant AI model to retrieve bounding boxes of objects.
+The chip and tray service convert these bounding boxes into numbered positions of chips (1 to 48) and trays (1 to 17), respectively.
+The tray service is different, instead of returning the position and classes of trays (full, empty or partially full),
+it returns a suggested command related to the trays based on their current state.
+The command follows the below set of logic:
+* If assembly tray is empty, move it to the empty position of either tray 1 and tray 2.
+* If the assembly tray is absent, a fully loaded tray 1 or 2 is moved to the assembly position.
+* If tray 1 or 2 is empty, start loading that tray.
+* If tray 1 or 2 is partially loaded, continue loading that tray.
 
-### Depth Camera
-The Depth Camera provides the rest of the system with visual data and consists of sub-components described below:
-* **Visual Data Logger**\
-The Data Logger component logs captured data to a specified location, be it a file or the console.
-Logging data enables developers to diagnose runtime errors, identify abnormal behaviors and keep track of the system activity.
-It is important that this component is started early and remains fault-tolerant during the operations of the robot,
-so it can provide comprehensive insights into any occurring error.
-* **Visual Data Aggregator**\
-As the name suggests, this components directly interact with the APIs supported by the camera and return captured data.
-The ZED 2 Depth Camera supports a wrapper for ROS2 that publishes various types of captured data to several topics.
-However, it would be impractical for other components to subscribe to multiple topics so they will receive aggregated data from this component instead.
-* **Container Detector**\
-Items to be assembled by the robot arm are positioned on different types of containers.
-These include the battery holder, the PCB chip holder, the assembly tray and the shell delivered by the conveyor belt.
-This component is responsible for identifying the locations of these container, and return isolated image data for each location,
-narrowing the scope of data that the computer vision system needs to process.
-It takes the aggregated visual data from the **Visual Data Aggregator** and separates them into multiple frames, each depicting only one type of container.
+This set of moves is encoded into an enumeration with 8 values and passed as an integer in the response.
+Since all three services return a single integer, they share the same service interface and
+the client is expected to interpret the returned signal based on the service invoked.
+In this system, the primary client of the **Camera Server** is the **Cobot Action Server**.
 
-### Image Processor
-The role of the Perception system is to determine the presence of items-to-be-assembled at their designated positions.
-This system subscribes to the **Visual Data Topic** published by the Depth Camera and outputs a data structure that specifies which items are present.
-This information is then published to **Item Position Topic**.
+#### Gripper Server and Join Trajectory Topic
+These two components are responsible for moving the cobot, including its joints and the gripper.
+Each movement of the cobot is encoded into a list of joint trajectories i.e., coordinates indicating where each joint should be in 3D space.
+Movements to pick up and move all required objects are included and can be invoked by supplying a "goal" name which represent an individual move.
 
-This system is composed of the following items:
-* **Input Data Validator**\
-The visual data published by the Depth Camera is likely to be complex and potentially unprocessable.
-To maintain high accuracy, data must be passed to this sub-component to determine whether they are formatted correctly.
-* **Perception Data Logger**\
-The perception system needs to retains information about the data it retrieved, its outputs, confidence level and other metadata.
-This data is useful for telemetry, debugging and computer vision model training.
-* **Computer Vision Network**\
-This is the core of the **Image Processing System**, which detects the presence of items to be assembled based on validated input data.
-This sub-component represents the machine-learning network trained to detect the presence of objects at their designated position.
-* **Position Data Formatter**\
-The raw output of **Computer Vision Network** is not public to other components since it is most likely not useful to them.
-The results of the data prediction model should only include boolean data representing the presence/absence of an item.
-This data is then published to the **Item Position Topic**, subscribed to by nodes pertaining to the motion control of the robot.
-
-<div class="page"/><!-- page break -->
-
-### Motion Controller
-This component represents the system that controls the movement of the robot arm.
-At the present stage, the robot is already capable of performing pick-and-place tasks accurately.
-With the addition of the computer vision system, the Motion Controller should make decisions based on visual data received through the **Item Position Topic**.
-Since the control system already exists, it will simply be represented by 2 hypothetical components:
-* **Some Robot Axis Controller**\
-This hypothetical component controls motion of the axes of the robot arm.
-* **Some Robot Joint Controller**\
-This hypothetical component controls motion of the joints of the robot arm.
+The gripper is controlled via a separate ROS2 node known as the **Gripper Server**.
+The node requires connection to the PLC that controls the cobot.
+On the PLC, a program called 'gripper_test.urp' has been created that runs a loop to check which digital output pins are active.
+When the gripper service is called, a callback which sets the pin number and activates the gripper itself is invoked.
+Once the pin has been activated, the gripper will open or close as defined in 'gripper_test.urp'.
+After the pin number and state has been sent, the 'ROS.urp' program is loaded played, giving control back to the PC (i.e., the **Cobot Action Server**).
 
 ## Other Alternative Architectures Explored
 ### Messaging Queue
@@ -404,13 +372,13 @@ stateDiagram
 <!-- ![queue](https://cdn.discordapp.com/attachments/1094987833174925416/1104591857696120872/image.png) -->
 
 The client can read the published data at any time and can send a response at any time.\
-This is known as decoupling where two or more systems work together without being directly connected.\
-This means that changes can be made to one program without effecting the workings of other programs.\
+This is known as decoupling where two or more systems work together without being directly connected,
+enabling a program to be changed or developed without affecting existing programs.\
 However, the project requires multiple programs to send requests and replies to other programs.\
 This would require many queues as to implement request and reply functionality between 2 programs requires a separate queue for both the request and the reply.
 The large number of queues would reduce the speed and efficiency of the project, hence why this architecture was not chosen.
 Message queues are also a one-one model and have no mechanism to subscribe to a particular topic or type of message,
-whereas the chosen pub-sub architecture has a message broker system (either content-based or topic-based) and can support multiple subscribers for every publisher.
+whereas the chosen client-service architecture use well-defined interfaces to facilitate communication, with components allowed to freely request data as needed.
 These drawbacks are the reason the message queue architecture was disregarded.
 
 <div class="page"/><!-- page break -->

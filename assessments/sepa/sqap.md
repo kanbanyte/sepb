@@ -734,7 +734,7 @@ Some examples of these milestones are as follows:
 * Mounting the camera and the information from the camera being processed.
 * System is integrated with ROS correctly.
 * Initial test build uploaded to provided hardware and tests pass.
-* Machine learning model built and has a correct analysis of area at least 65% of the time.
+* Machine learning model built and has a correct analysis of area at least 85% of the time.
 
 The milestones should align with the Kanban board and consider all phases of the project lifecycle while factoring in possible risks and contingencies.
 GitHub's issues, pull requests, and discussions can help in tracking progress,
