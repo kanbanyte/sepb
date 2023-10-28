@@ -81,6 +81,6 @@ is:pr is:closed sort:created-asc milestone:"Project Plan" reviewed-by:Huy-GV -as
 Please see [Kanban Board][board] and [Milestones][assessments] in the [Repository][repo] on GitHub.
 
 <!-- Other URLs -->
-[board]: <https://github.com/orgs/kanbanyte/projects/12>
+[board]: <https://github.com/orgs/kanbanyte/projects/9>
 [assessments]: <https://github.com/kanbanyte/sepb/milestones?direction=asc&sort=due_date&state=open>
 [repo]: <https://github.com/kanbanyte/sepb>

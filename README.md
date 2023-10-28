@@ -1,5 +1,5 @@
 # Software Engineering Project B Unit Outline
-> Kanban board to organise and manage repo: [SEPB Project](https://github.com/orgs/kanbanyte/projects/12).\
+> Kanban board to organise and manage repo: [SEPB Board](https://github.com/orgs/kanbanyte/projects/9).\
 > Milestones to track repo development: [SEPB Milestones](https://github.com/kanbanyte/sepb/milestones).\
 > Semester 1 repo (Software Engineering Project A): [SEPA Repo](https://github.com/kanbanyte/sepa).
 
