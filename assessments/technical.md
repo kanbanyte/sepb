@@ -137,17 +137,17 @@ rosdep install -i --from-path src --rosdistro humble -y
 <!-- TOC ignore:true -->
 ### Directory Structure
 The following list contains a concise explanation of the directory structure:
-* [pick_place_interfaces](src/pick_place_interfaces/README.md): contains any/all `.msg`, `.srv`, and `.action` files.
-* [pick_place_package](src/pick_place_package/README.md): contains launch files, config files, nodes, and additional scripts.
+* [pick_place_interfaces](/cobot/src/pick_place_interfaces/README.md): contains any/all `.msg`, `.srv`, and `.action` files.
+* [pick_place_package](/cobot/src/pick_place_package/README.md): contains launch files, config files, nodes, and additional scripts.
 
 The `cobot.sh` file provides many functions to do numerous things with regards to the robot.
 
-The [launch file](src/pick_place_package/launch/pick_place_launch.py) starts three nodes:
-* [`camera_node`](src/pick_place_package/pick_place_package/camera_node.py)
-* [`cobot_node`](src/pick_place_package/pick_place_package/cobot_node.py)
-* [`gripper_node`](src/pick_place_package/pick_place_package/gripper_node.py)
+The [launch file](/cobot/src/pick_place_package/launch/pick_place_launch.py) starts three nodes:
+* [`camera_node`](/cobot/src/pick_place_package/pick_place_package/camera_node.py)
+* [`cobot_node`](/cobot/src/pick_place_package/pick_place_package/cobot_node.py)
+* [`gripper_node`](/cobot/src/pick_place_package/pick_place_package/gripper_node.py)
 
-The pick and place task is started from [`main_node`](src/pick_place_package/pick_place_package/main_node.py) which is run in a separate terminal.
+The pick and place task is started from [`main_node`](/cobot/src/pick_place_package/pick_place_package/main_node.py) which is run in a separate terminal.
 
 <!-- TOC ignore:true -->
 ### Starting the Robot Driver
@@ -156,8 +156,16 @@ Before performing the pick and place task, start the robot driver and connect to
 connect_cobot
 ```
 
-You should see the following output, note the six similar messages at the bottom:
-<!-- INSERT DRIVER TERMINAL OUTPUT HERE -->
+You should see six messages similar to the following at the bottom of the terminal.
+If there are six messages, there shouldn't be a problem controlling the robot.
+```bash
+[INFO] [spawner-11]: process has finished cleanly [pid 31924]
+[INFO] [spawner-9]: process has finished cleanly [pid 31881]
+[INFO] [spawner-8]: process has finished cleanly [pid 31920]
+[INFO] [spawner-10]: process has finished cleanly [pid 31877]
+[INFO] [spawner-6]: process has finished cleanly [pid 31879]
+[INFO] [spawner-7]: process has finished cleanly [pid 31856]
+```
 
 <!-- TOC ignore:true -->
 ### Performing the Pick and Place Task
@@ -553,7 +561,7 @@ The returned integer signal can be interpreted differently based on the called s
 * Tray service: returned signal is the value from the enum `CobotMovement` from the AI package.
 
 The services use the models and camera settings specified in a configuration YAML file.
-Change the paths in the constructor of the class ([CameraServer](camera_server.py)) if you like to use your own.
+Change the paths in the constructor of the class ([CameraServer](/cobot/src/pick_place_package/nodes/camera_server.py)) if you like to use your own.
 Refer to the samples provided by the AI package for more information about camera and model configurations.
 
 ## cobot_methods.py
@@ -610,7 +618,7 @@ move the gripper certain distances.
 <!-- TOC ignore:true -->
 ### Purpose
 Camera node is a ROS2 Node that supplies the position of objects when requested.\
-This node is built upon the class [CameraServer](../nodes/camera_server.py) and must be running before the Cobot Action Server receives a request.
+This node is built upon the class [CameraServer](/cobot/src/pick_place_package/nodes/camera_server.py) and must be running before the Cobot Action Server receives a request.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -619,7 +627,7 @@ The camera node is rebuilt and started along with the Cobot Action Server if the
 ## cobot_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [CobotActionServer](../nodes/cobot_movement.py) class to act as an action server retrieving requests to perform a pick-and-place task.
+This node runs the [CobotActionServer](/cobot/src/pick_place_package/nodes/cobot_movement.py) class to act as an action server retrieving requests to perform a pick-and-place task.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -628,7 +636,7 @@ This node is rebuilt and started with all its dependencies if the system is star
 ## gripper_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [GripperServer](../nodes/gripper_server.py) class to act as a server that opens or closes the gripper upon a request.\
+This node runs the [GripperServer](/cobot/src/pick_place_package/nodes/gripper_server.py) class to act as a server that opens or closes the gripper upon a request.\
 This node is used by the Cobot Action Server to grab items before moving them.
 
 <!-- TOC ignore:true -->
@@ -638,7 +646,7 @@ The gripper node is rebuilt and started along with the Cobot Action Server if th
 ## main_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [MainActionClient](../nodes/main_action_client.py) class to act as a client to the Cobot Movement Action Server.\
+This node runs the [MainActionClient](/cobot/src/pick_place_package/nodes/main_action_client.py) class to act as a client to the Cobot Movement Action Server.\
 It sends requests to the action server in an infinite loop to keep the cobot running constantly.
 
 <!-- TOC ignore:true -->
@@ -695,16 +703,16 @@ This command should be run every time the package code is modified:
 ### Directory Structure
 The below list provides an overview of the directory structure.
 See the `README.md` files within individual subdirectories for more details.
-* [camera](src/camera/README.md): contains modules interacting with the ZED SDK Python API.
-* [data_processing](src/data_processing/README.md): contains modules that process images and interact with the ZED2i camera.
-* [models](src/models/README.md): contains modules related to a Python class representing a trained model.
-* [samples](src/samples/README.md): contains sample programs that use trained models to detect objects and demonstrate usage of supported APIs.
-* [scripts](src/scripts/README.md): containing runnable scripts that process training data.
+* [camera](/ai/src/camera/README.md): contains modules interacting with the ZED SDK Python API.
+* [data_processing](/ai/src/data_processing/README.md): contains modules that process images and interact with the ZED2i camera.
+* [models](/ai/src/models/README.md): contains modules related to a Python class representing a trained model.
+* [samples](/ai/src/samples/README.md): contains sample programs that use trained models to detect objects and demonstrate usage of supported APIs.
+* [scripts](/ai/src/scripts/README.md): containing runnable scripts that process training data.
 These scripts are converted into executable files when the AI package is installed.
 They are also used to process training data, balancing the dataset splits, defining crop boxes, etc.
-* [training](src/training/README.md): contains notebooks and scripts that train a model and visualize its metrics.
+* [training](/ai/src/training/README.md): contains notebooks and scripts that train a model and visualize its metrics.
 Trained models and their settings are also included.
-* [util](src/util/README.md): utility functions, mostly related to the file system.
+* [util](/ai/src/util/README.md): utility functions, mostly related to the file system.
 
 <!-- TOC ignore:true -->
 ### Image Labelling
@@ -735,7 +743,7 @@ The Jupyter notebook used for training relies on the dataset stored in Roboflow.
 After a successful training session, the resulting model (.pt files) and its metrics can be downloaded to your local machine.
 The model files (.pt files) are required by all code that uses the model so they must be saved if you intend to use the model for inference.
 The Chip Detection model, Tray Detection model, and Case Detection model are included,
-see [this README](./src/training/README.md) for more information about dataset and training settings as well as recommended inference settings.
+see [this README](/ai/src/training/README.md) for more information about dataset and training settings as well as recommended inference settings.
 
 The training process involves the following steps:
 1. Ensure you have the Roboflow private API key to download the dataset and know the project name.
@@ -782,12 +790,12 @@ If the above solutions do not work, try a different USB port on the machine.
 Detection models return correct bounding boxes but the numeric positions used by the cobot is not.
 This can occur when the crop boxes are not sufficiently "tight" or correctly aligned.
 The bounding box-to-position code has different criteria for different types of models and should be adhered to.
-These requirements can be found in the [data_processing](src/data_processing/README.md) module.
+These requirements can be found in the [data_processing](/ai/src/data_processing/README.md) module.
 
 **Solution:**\
 Verify that the crop boxes are correctly aligned.
 Keep in mind that any physical adjustments to the camera may alter its angle, leading to inaccuracies in existing crop boxes.
-It is strongly recommended to assess the model's performance using sample scripts found in [samples](src/samples/README.md) before using it to guide the cobot.
+It is strongly recommended to assess the model's performance using sample scripts found in [samples](/ai/src/samples/README.md) before using it to guide the cobot.
 
 <!-- TOC ignore:true -->
 ### Google Collab Connection Failure
@@ -802,7 +810,7 @@ The solution is to either use the paid version, or limit your usage time as much
 <!-- TOC ignore:true -->
 ### Images Not Displayed
 **Symptoms:**\
-The function `show_image()` in the [image_processing.py](src/data_processing/image_processing.py) module does not display images when called.
+The function `show_image()` in the [image_processing.py](/ai/src/data_processing/image_processing.py) module does not display images when called.
 This is accompanied by warning messages that look like below in the terminal:\
 `eog: symbol lookup error: /snap/core20/current/lib/x86_64-linux-gnu/libpthread.so.0: undefined symbol: __libc_pthread_init, version GLIBC_PRIVATE`
 
@@ -901,7 +909,7 @@ Contains function that converts the bounding boxes of cases to position from 1 t
 * This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar.
 The height of the image is around 514px and this limit is not flexible.
 * Before attempting to pick the case with the cobot, it is important to test the model and this code on every position on the rack.
-The sample programs found in [src/samples/](../samples/README.md) can be helpful in this regard.
+The sample programs found in [src/samples/](/ai/src/samples/README.md) can be helpful in this regard.
 
 ## image_processing.py
 Contains functions that modifies images. Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
@@ -947,7 +955,7 @@ The class name can be retrieved using the index and `ObjectDetectionModel.classe
 Wrapper around the YOLO class from Ultralytics, created to narrow the functionalities and interface to fit this project.\
 Requires a YAML configuration file to initialise the model and its parameters.
 This class supports an option to save the image output and/or display it in a window.
-To find more details about the configuration YAML file, see [samples/README.md](../samples/README.md)
+To find more details about the configuration YAML file, see [samples/README.md](/ai/src/samples/README.md)
 
 <div class="page"/><!-- page break -->
 

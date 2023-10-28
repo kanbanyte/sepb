@@ -76,8 +76,16 @@ Before performing the pick and place task, start the robot driver and connect to
 connect_cobot
 ```
 
-You should see the following output, note the six similar messages at the bottom:
-<!-- INSERT DRIVER TERMINAL OUTPUT HERE -->
+You should see six messages similar to the following at the bottom of the terminal.
+If there are six messages, there shouldn't be a problem controlling the robot.
+```bash
+[INFO] [spawner-11]: process has finished cleanly [pid 31924]
+[INFO] [spawner-9]: process has finished cleanly [pid 31881]
+[INFO] [spawner-8]: process has finished cleanly [pid 31920]
+[INFO] [spawner-10]: process has finished cleanly [pid 31877]
+[INFO] [spawner-6]: process has finished cleanly [pid 31879]
+[INFO] [spawner-7]: process has finished cleanly [pid 31856]
+```
 
 <!-- TOC ignore:true -->
 ### Performing the Pick and Place Task
