@@ -175,8 +175,8 @@ It then sources path.sh in ~/.bashrc to access the bash functions in any termina
 ## Overview
 The cobot package contains ROS2 code that allows for the ZED camera and UR5e cobot to interact and perform the pick and place task.
 There are two ROS2 packages within:
-[`pick_place_package`](src/pick_place_package/README.md) which contains all of the nodes, the launch file, config files, and additional scripts, and
-[`pick_place_interfaces`](src/pick_place_interfaces/README.md) which contains ROS2 interfaces for communication between nodes.
+[`pick_place_package`](/cobot/src/pick_place_package/README.md) which contains all of the nodes, the launch file, config files, and additional scripts, and
+[`pick_place_interfaces`](/cobot/src/pick_place_interfaces/README.md) which contains ROS2 interfaces for communication between nodes.
 
 ## Dependencies
 * [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
@@ -989,7 +989,7 @@ Contains function that converts the bounding boxes of cases to position from 1 t
 * This function requires the case image to be cropped such that the image bottom aligns with the bottom of the horizontal T-slot bar.
 The height of the image is around 514px and this limit is not flexible.
 * Before attempting to pick the case with the cobot, it is important to test the model and this code on every position on the rack.
-The sample programs found in [src/samples/](/ai/src/samples/README.md) can be helpful in this regard.
+The sample programs found in [/ai/src/samples/](/ai/src/samples/README.md) can be helpful in this regard.
 
 ## image_processing.py
 Contains functions that modifies images. Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
