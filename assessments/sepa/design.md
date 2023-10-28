@@ -303,6 +303,7 @@ The sequence diagram shows the continuous operation of the system without the ne
 The robotic arm moves to the detected object positions automatically based on requests from an action client which runs in an infinite loop.
 By minimising human involvement, the system fulfils the requirement of an autonomous system.
 
+
 <div class="page"/><!-- page break -->
 
 # Implementation

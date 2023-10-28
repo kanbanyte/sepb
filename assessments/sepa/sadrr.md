@@ -220,7 +220,6 @@ they can easily register new components to the perception node and retrieve visu
 #### Messaging Queue
 An alternative architecture considered for this project is the messaging queue system.
 In this system, visual data is pushed into a message queue and clients can asynchronously retrieve and process that data.
-
 The message queue decouples consumers from producers and facilitates asynchronous data transfers.
 However, a single queue is limited to only one consumer hence multiple queues are needed, adding overhead that can harm performance.
 
