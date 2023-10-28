@@ -925,7 +925,7 @@ Ensure that the ZED SDK is installed correctly by checking the following steps:
 * Your machine has CUDA which requires a NVIDIA GPU.
 * The ZED SDK is installed.
 * The Python API is installed via the script `get_python_api.py`.
-See the [Dependencies](#dependencies) section for more details.
+See the [Dependencies](#dependencies-1) section for more details.
 
 If all of the above steps fail, refer to these online threads or raise an issue with the ZED SDK maintainers themselves.
 Note that none of these issues have been encountered during development after following the above steps:
