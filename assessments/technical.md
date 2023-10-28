@@ -27,6 +27,7 @@
 # Table of Contents
 <!-- TOC -->
 
+* [Introduction](#introduction)
 * [Bash Files](#bash-files)
 	* [ai.sh](#aish)
 	* [cobot.sh](#cobotsh)
@@ -60,10 +61,10 @@
 	* [gripper_node.py](#gripper_nodepy)
 	* [main_node.py](#main_nodepy)
 * [AI Package](#ai-package)
-	* [Dependencies](#dependencies)
-	* [Installation](#installation)
-	* [Usage](#usage)
-	* [Common Issues](#common-issues)
+	* [Dependencies](#dependencies-1)
+	* [Installation](#installation-1)
+	* [Usage](#usage-11)
+	* [Common Issues](#common-issues-1)
 * [Camera APIs](#camera-apis)
 	* [camera_capture.py](#camera_capturepy)
 	* [Capturing Images via Terminal](#capturing-images-via-terminal)
@@ -84,7 +85,7 @@
 	* [copy_interval.py](#copy_intervalpy)
 	* [define_crop.py](#define_croppy)
 	* [random_crop.py](#random_croppy)
-* [Training](#training)
+* [Training](#training-1)
 	* [object_detection_training.ipynb](#object_detection_trainingipynb)
 	* [plot_ultralytics_results.py](#plot_ultralytics_resultspy)
 	* [trained](#trained)
@@ -99,7 +100,7 @@
 # Introduction
 This technical document contains all information regarding the project: *Robot Vision System for a Pick and Place Task*.
 It acts as both a user manual and installation manual, providing information about each file and directory to help with setting up the packages and using them.
-Each important file and any functions have been explained to ensure the best possible usage.  
+Each important file and any functions have been explained to ensure the best possible usage.
 
 <div class="page"/><!-- page break -->
 
@@ -119,8 +120,6 @@ Use this function after making changes to the AI package.
 ## cobot.sh
 [cobot.sh](/bash/cobot.sh) contains many functions concerning the cobot and ROS2.
 Many of these functions call services to save time when testing or starting the cobot.
-#!/bin/bash
-
 * `ping_cobot()`: Ping cobot twice.
 * `init_ros2()`: Initialise ROS2.
 * `launch_driver()`: Launch cobot driver.
@@ -134,7 +133,7 @@ If done via command line makes the driver crash, so restart the robot driver.
 **IMPORTANT:** Stop and start the program if it is already running.
 This was causing the robot not moving for no reason.
 Make sure you stop and start the program if you are restarting the driver.
-* `stop_cobot()`: Pauses the current program.	
+* `stop_cobot()`: Pauses the current program.
 * `switch_controllers()`: Switches controller to `scaled_joint_trajectory_controller`.
 * `launch_rviz()`: Launch MoveIt with Rviz.
 **IMPORTANT:** If the Rviz robot position is not like the real robot, something has gone wrong.
@@ -147,8 +146,8 @@ So, restart the driver, stop, play, switch controller, MoveIt.
 * `run_gripper()`: Run the gripper node.
 * `run_main()`: Run the main node.
 * `service_call_case()`: Case service call.
-* `service_call_chip()`: Chip service call.	
-* `service_call_tray()`: Tray service call.	
+* `service_call_chip()`: Chip service call.
+* `service_call_tray()`: Tray service call.
 * `send_goal_action()`: Send a goal to perform pick place action.
 * `load_gripper_file()`: Load gripper file for tests.
 * `close_fully()`: Completely close gripper.
@@ -161,9 +160,9 @@ So, restart the driver, stop, play, switch controller, MoveIt.
 [path.sh](/bash/path.sh) contains the path to where the repository is stored and sources the other bash files in the bash directory.
 
 ## setup.sh
-[setup.sh](/bash/setup.sh) finds the location of [cobot.sh](/bash/cobot.sh), traverses up the directory structure to the repository directory,
-and overrides the `REPO_PATH` variable in [path.sh](/bash/path.sh).
-It then sources path.sh in ~/.bashrc to access the bash functions in any terminal.
+[setup.sh](/bash/setup.sh) finds the location of [cobot.sh](/bash/cobot.sh),
+traverses up the directory structure to the repository directory, and overrides the `REPO_PATH` variable in [path.sh](/bash/path.sh).
+It then sources `path.sh` in `~/.bashrc` to access the bash functions in any terminal.
 
 ## variables.sh
 [variables.sh](/bash/variables.sh) contains path variables for use in the other bash files.
@@ -845,7 +844,7 @@ This section lists common issues observed during the development of the package 
 Some of these solutions are merely suggestions and are not guaranteed to work.
 
 <!-- TOC ignore:true -->
-### AI Packages Not Updated:
+### AI Packages Not Updated
 **Symptoms:**\
 The code in the AI package has been modified but the effects do not take place.
 
@@ -855,7 +854,7 @@ Keep in mind that any existing `build` folder must be deleted before reinstallin
 otherwise the newly updated package is not installed, despite saying so in the terminal.
 
 <!-- TOC ignore:true -->
-### Camera Connection Failure:
+### Camera Connection Failure
 **Symptoms:**\
 The code that opens the camera fails with any error code.
 
@@ -865,7 +864,7 @@ Unplug the camera USB cable, wait for a few seconds and re-plug it.
 If the above solutions do not work, try a different USB port on the machine.
 
 <!-- TOC ignore:true -->
-### Correct Detections But Incorrect Positions:
+### Correct Detections But Incorrect Positions
 **Symptoms:**\
 Detection models return correct bounding boxes but the numeric positions used by the cobot is not.
 This can occur when the crop boxes are not sufficiently "tight" or correctly aligned.
@@ -992,7 +991,8 @@ The height of the image is around 514px and this limit is not flexible.
 The sample programs found in [/ai/src/samples/](/ai/src/samples/README.md) can be helpful in this regard.
 
 ## image_processing.py
-Contains functions that modifies images. Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
+Contains functions that modifies images.
+Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
 
 ## tray_position.py
 Translate bounding boxes of tray into a cobot move.

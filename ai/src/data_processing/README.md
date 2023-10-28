@@ -21,7 +21,8 @@ The height of the image is around 514px and this limit is not flexible.
 The sample programs found in [src/samples/](../samples/README.md) can be helpful in this regard.
 
 ## image_processing.py
-Contains functions that modifies images. Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
+Contains functions that modifies images.
+Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
 
 ## tray_position.py
 Translate bounding boxes of tray into a cobot move.
