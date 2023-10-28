@@ -24,7 +24,7 @@ The camera node is rebuilt and started along with the Cobot Action Server if the
 ## cobot_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [CobotActionServer](../nodes/cobot_movement.py) class to act as an action server retrieving requests to perform a pick-and-place task.
+This node runs the [CobotActionServer](../nodes/cobot_movement.py) class, to act as an action server retrieving requests to perform a pick-and-place task.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -33,7 +33,7 @@ This node is rebuilt and started with all its dependencies if the system is star
 ## gripper_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [GripperServer](../nodes/gripper_server.py) class to act as a server that opens or closes the gripper upon a request.\
+This node runs the [GripperServer](../nodes/gripper_server.py) class, to act as a server that opens or closes the gripper upon a request.\
 This node is used by the Cobot Action Server to grab items before moving them.
 
 <!-- TOC ignore:true -->
@@ -43,7 +43,7 @@ The gripper node is rebuilt and started along with the Cobot Action Server if th
 ## main_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [MainActionClient](../nodes/main_action_client.py) class to act as a client to the Cobot Movement Action Server.\
+This node runs the [MainActionClient](../nodes/main_action_client.py) class, to act as a client to the Cobot Movement Action Server.\
 It sends requests to the action server in an infinite loop to keep the cobot running constantly.
 
 <!-- TOC ignore:true -->

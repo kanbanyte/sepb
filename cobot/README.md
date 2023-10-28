@@ -67,7 +67,7 @@ The [launch file](src/pick_place_package/launch/pick_place_launch.py) starts thr
 * [`cobot_node`](src/pick_place_package/pick_place_package/cobot_node.py)
 * [`gripper_node`](src/pick_place_package/pick_place_package/gripper_node.py)
 
-The pick and place task is started from [`main_node`](src/pick_place_package/pick_place_package/main_node.py) which is run in a separate terminal.
+The pick and place task is started from [`main_node`](src/pick_place_package/pick_place_package/main_node.py), which is run in a separate terminal.
 
 <!-- TOC ignore:true -->
 ### Starting the Robot Driver

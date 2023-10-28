@@ -226,7 +226,8 @@ The [launch file](/cobot/src/pick_place_package/launch/pick_place_launch.py) sta
 * [`cobot_node`](/cobot/src/pick_place_package/pick_place_package/cobot_node.py)
 * [`gripper_node`](/cobot/src/pick_place_package/pick_place_package/gripper_node.py)
 
-The pick and place task is started from [`main_node`](/cobot/src/pick_place_package/pick_place_package/main_node.py) which is an action client running in a separate terminal.
+The pick and place task is started from [`main_node`](/cobot/src/pick_place_package/pick_place_package/main_node.py),
+which is an action client running in a separate terminal.
 
 <!-- TOC ignore:true -->
 ### Starting the Robot Driver
@@ -697,7 +698,8 @@ move the gripper certain distances.
 <!-- TOC ignore:true -->
 ### Purpose
 Camera node is a ROS2 Node that supplies the position of objects when requested.\
-This node is built upon the class [CameraServer](/cobot/src/pick_place_package/nodes/camera_server.py) and must be running before the Cobot Action Server receives a request.
+This node is built upon the class [CameraServer](/cobot/src/pick_place_package/nodes/camera_server.py) and
+must be running before the Cobot Action Server receives a request.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -706,7 +708,8 @@ The camera node is rebuilt and started along with the Cobot Action Server if the
 ## cobot_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [CobotActionServer](/cobot/src/pick_place_package/nodes/cobot_movement.py) class to act as an action server retrieving requests to perform a pick-and-place task.
+This node runs the [CobotActionServer](/cobot/src/pick_place_package/nodes/cobot_movement.py) class,
+to act as an action server retrieving requests to perform a pick-and-place task.
 
 <!-- TOC ignore:true -->
 ### Usage
@@ -715,7 +718,7 @@ This node is rebuilt and started with all its dependencies if the system is star
 ## gripper_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [GripperServer](/cobot/src/pick_place_package/nodes/gripper_server.py) class to act as a server that opens or closes the gripper upon a request.\
+This node runs the [GripperServer](/cobot/src/pick_place_package/nodes/gripper_server.py) class, to act as a server that opens or closes the gripper upon a request.\
 This node is used by the Cobot Action Server to grab items before moving them.
 
 <!-- TOC ignore:true -->
@@ -725,7 +728,7 @@ The gripper node is rebuilt and started along with the Cobot Action Server if th
 ## main_node.py
 <!-- TOC ignore:true -->
 ### Purpose
-This node runs the [MainActionClient](/cobot/src/pick_place_package/nodes/main_action_client.py) class to act as a client to the Cobot Movement Action Server.\
+This node runs the [MainActionClient](/cobot/src/pick_place_package/nodes/main_action_client.py) class, to act as a client to the Cobot Movement Action Server.\
 It sends requests to the action server in an infinite loop to keep the cobot running constantly.
 
 <!-- TOC ignore:true -->
