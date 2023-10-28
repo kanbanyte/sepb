@@ -113,7 +113,7 @@ The bash directory contains files defining any bash functions that help with the
 Three functions are defined:
 * `rebuild_ai()`: Deletes the AI build directory to avoid problems when installing the AI package.
 * `install_ai()`: Installs the AI package using `pip install .`.
-* `start_ai()`: First calls `rebuild_ai()` then `install_ai()`; deletes the build directory then installs again.
+* `start_ai()`: First calls `rebuild_ai()` then `install_ai()` which deletes the build directory then installs again.
 Use this function after making changes to the AI package.
 
 ## cobot.sh
@@ -129,7 +129,7 @@ Many of these functions call services to save time when testing or starting the 
 This can be done manually, or via command line.
 If done via command line makes the driver crash, so restart the robot driver.
 * `power_on_cobot()`: Power on the robot motors.
-* `release_brake()`: Release break.
+* `release_brake()`: Release brake.
 * `play_cobot()`: Plays the current program.
 **IMPORTANT:** Stop and start the program if it is already running.
 This was causing the robot not moving for no reason.
@@ -174,7 +174,7 @@ It then sources path.sh in ~/.bashrc to access the bash functions in any termina
 <!-- TOC ignore:true -->
 ## Overview
 The cobot package contains ROS2 code that allows for the ZED camera and UR5e cobot to interact and perform the pick and place task.
-There are two ROS2 packages within:
+There are two ROS2 subpackages within:
 [`pick_place_package`](/cobot/src/pick_place_package/README.md) which contains all of the nodes, the launch file, config files, and additional scripts, and
 [`pick_place_interfaces`](/cobot/src/pick_place_interfaces/README.md) which contains ROS2 interfaces for communication between nodes.
 
@@ -227,7 +227,7 @@ The [launch file](/cobot/src/pick_place_package/launch/pick_place_launch.py) sta
 * [`cobot_node`](/cobot/src/pick_place_package/pick_place_package/cobot_node.py)
 * [`gripper_node`](/cobot/src/pick_place_package/pick_place_package/gripper_node.py)
 
-The pick and place task is started from [`main_node`](/cobot/src/pick_place_package/pick_place_package/main_node.py) which is run in a separate terminal.
+The pick and place task is started from [`main_node`](/cobot/src/pick_place_package/pick_place_package/main_node.py) which is an action client running in a separate terminal.
 
 <!-- TOC ignore:true -->
 ### Starting the Robot Driver
@@ -386,8 +386,8 @@ entry_points={
 ```
 
 ## Related Terminal Commands
-The following demonstrates terminal commands and their outputs so far.\
-Note that a few might still be WIP.
+The following demonstrates terminal commands and their outputs.\
+These services assists in testing the Camera Server without having to start the Cobot Action Server.
 
 <!-- TOC ignore:true -->
 ### Case Service Call
