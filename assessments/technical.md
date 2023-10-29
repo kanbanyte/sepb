@@ -267,7 +267,7 @@ run_main
 ## Common Issues
 <!-- TOC ignore:true -->
 ### Trouble Starting Robot Driver
-**Symptoms:**\
+**Symptoms:**
 * The terminal doesn't have six `finished with pid [xxxx]` messages at the end.
 * Continuous output of `configure gpio tf-prefix`.
 
