@@ -87,7 +87,7 @@ The working space, which includes the robotic arm, the item trays and and the hu
 ### Tools
 The ZED 2i camera is mounted on top of the working space, aiming down to the item tray to guide the movement of the robot arm.
 The camera must be aligned such that the trays, chips, and cases can be captured effectively.
-Other tools include the items to be assembled, a conveyor belt that delivers a shell, and the robot arm, all of which already exist.
+Other tools include the items to be assembled, a conveyor belt where a shell is located, and the robot arm, all of which already exist.
 
 <!-- TOC ignore:true -->
 ### Measures
