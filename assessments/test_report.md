@@ -156,7 +156,7 @@ For the cobot, movements accuracy and speed are tested on all possible positions
 These include:
 * Movement to pick up chips from 48 possible slots and place them on the lower right compartment of the tray.
 * Movement to pick up cases from 17 possible positions and place them on the lower left compartment of the tray.
-* Movement to pick up PCB shells delivered to a specific location by the conveyor belt to the upper left compartment of the tray.
+* Movement to pick up PCB shells positioned on the conveyor belt to the upper left compartment of the tray.
 * Movement to pick up batteries from the battery rack and place them on the upper left compartment of the tray.
 * Movement to pick up trays and deliver them to and from the human operator, including:
 	* Movement to pick up a fully filled tray on the upper left to the human operator.

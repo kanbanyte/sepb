@@ -331,7 +331,7 @@ The command follows the below set of logic:
 
 This set of moves is encoded into an enumeration with 8 values and passed as an integer in the response.
 Since all three services return a single integer, they share the same service interface and
-the client is expected to interpret the returned signal based on the service invoked.
+the client is expected to interpret the returned signal based on the invoked service.
 In this system, the primary client of the **Camera Server** is the **Cobot Action Server**.
 
 #### Gripper Server and Join Trajectory Topic

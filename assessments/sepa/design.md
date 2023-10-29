@@ -282,7 +282,7 @@ sequenceDiagram
 The diagram depicts the sequence of requests made between components.
 The outer loop represents an infinite request loop made by the client,
 where it initiates a pick-and-place task with the server, waits until the server completes and respond, then sends a request again.
-The 'alt' block represent alternative sequences based on a condition.
+The 'alt' blocks represent alternative sequences based on a condition.
 If the request to the Camera Server fails, the Cobot Action Server stops and responds to the client.
 Conversely, if successful, it starts populating a list of trajectories,
 loop over that list and either publish them to the Joint Trajectory Topic or sends a request to the Gripper Server.
@@ -323,8 +323,8 @@ Nodes have parameters that can be set or changed via CLI or in code.
 
 Topics are used to connect nodes.
 Nodes can subscribe to topics and receive data or publish to them by sending data.
-For example; a vision camera publishes object positions to a topic, relevant nodes subscribe to receive the position data and
-then use it to move the arm to that position.
+For example; the cobot action server publishes joint trajectories to a topic, relevant nodes subscribe to receive this data and
+then use it to move the arm to specified coordinates.
 
 ### Services and Actions
 Services are another way to connect nodes.
@@ -394,25 +394,28 @@ Its 120-degree field of view and depth range of 0.2 to 20 metres give it a large
 
 The Depth Camera can record video at a variety of frame rates and resolutions,
 including 2.2K at 15 fps, 1080p at 30 fps or 15 fps, and 720p at 60, 30 or 15 fps.
-Higher frame rates would enable better position tracking, while higher resolutions would improve object detection.
+Since the system runs inference on individual frames rather than a video stream, higher resolution is prioritised to ensure maximum detection accuracy and precision.
 
 With this in mind he project will require a system that is composed of the following items:
 
-### Input Data Validator
-The Depth Camera will likely output complex and possibly unprocessable visual data.
-Data must be passed to this sub-component to check for proper formatting in order to maintain high accuracy.
+### Image Data Processor
+The Depth Camera will likely output complex and possibly un-processable visual data.
+The camera settings, including saturation level, brightness, resolution, and so on; should be appropriately configured to ensure the best possible images for the model.
+Additionally, static crop boxes are applied on raw images to focus the model on the areas where the relevant items are located.
+This technique helps improve the model accuracy and reduce processing time.
 
-### Perception Data Logger
+### Inference Data Logger
 The perception system must keep track of metadata pertaining to the data it retrieved, its results, confidence level, and other attributes.
 This information is helpful for telemetry, bug fixing, and training computer vision models.
+The logged data can be either terminal outputs or images annotated with bounding boxes and labels of detected objects.
 
-### Computer Vision Network
+### Computer Vision Model
 This is the central component of the image processing system, which uses validated input data to identify the presence of components that need to be assembled.
 The machine-learning network that has been trained to find objects at their designated locations is represented by this sub-component.
 
-### Position Data Formatter
+### Position Data Convertor
 The Computer Vision Network's raw output is not accessible to other components because it is improbable that they will find it useful.
-Only boolean data indicating an item's presence or absence should be included in the data prediction model's output.
+Only integer data indicating the positions of present items should be included in the detection model's output.
 The robot's motion control is then updated with the position data.
 
 <div class="page"/><!-- page break -->
