@@ -394,20 +394,20 @@ Its 120-degree field of view and depth range of 0.2 to 20 metres give it a large
 
 The Depth Camera can record video at a variety of frame rates and resolutions,
 including 2.2K at 15 fps, 1080p at 30 fps or 15 fps, and 720p at 60, 30 or 15 fps.
-Since the system run inference on individual frames rather than a video stream, higher resolution is prioritized to ensure maximum detection accuracy and precision.
+Since the system runs inference on individual frames rather than a video stream, higher resolution is prioritised to ensure maximum detection accuracy and precision.
 
 With this in mind he project will require a system that is composed of the following items:
 
 ### Image Data Processor
-The ZED camera will likely output complex and possibly unprocessable visual data.
-The camera settings, including saturation level, brightness, resolution, etc. should be appropriately configured to ensure the best possible images for the model.
-Additionally, static crop boxes may be applied on raw images to focus the model on the area where the relevant items are located.
-This technique help improve the model accuracy and reduce processing time.
+The Depth Camera will likely output complex and possibly un-processable visual data.
+The camera settings, including saturation level, brightness, resolution, and so on; should be appropriately configured to ensure the best possible images for the model.
+Additionally, static crop boxes are applied on raw images to focus the model on the areas where the relevant items are located.
+This technique helps improve the model accuracy and reduce processing time.
 
 ### Inference Data Logger
 The perception system must keep track of metadata pertaining to the data it retrieved, its results, confidence level, and other attributes.
 This information is helpful for telemetry, bug fixing, and training computer vision models.
-The logged data might come in the form of text outputs in the terminal or images annotated with bounding boxes of detected objects and their labels.
+The logged data can be either terminal outputs or images annotated with bounding boxes and labels of detected objects.
 
 ### Computer Vision Model
 This is the central component of the image processing system, which uses validated input data to identify the presence of components that need to be assembled.

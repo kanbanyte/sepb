@@ -137,7 +137,7 @@ The following equipment and items are required:
 * Adequate illumination for optimal depth camera performance.
 * URe5 robot arm.
 * x2 chip trays.
-* A conveyor belt on which the PCB shell is located.
+* A conveyor belt which the PCB shell is located on.
 * A battery stack.
 * A front shell stack.
 * A white tray on which the shells, battery and chip are delivered to the human operator.
