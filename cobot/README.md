@@ -107,20 +107,20 @@ run_main
 ## Common Issues
 <!-- TOC ignore:true -->
 ### Trouble Starting Robot Driver
-#### Symptoms
+**Symptoms:**\
 * The terminal doesn't have six `finished with pid [xxxx]` messages at the end.
 * Continuous output of `configure gpio tf-prefix`.
 
-#### Solution
+**Solution:**\
 Ensure that the `ROS.urp` program is loaded on the controller.
 You may need to keep restarting the driver until you see the six messages as stated above.
 
 <!-- TOC ignore:true -->
 ### Gripper Not Working During Task
-#### Symptoms
+**Symptoms:**\
 The gripper doesn't open or close during the task even if the terminal in which the launch file was run shows that it is calling the gripper service.
 
-#### Solution
+**Solution:**\
 Sometimes the `play` service isn't called due to an error in the driver so the `gripper_test.URP` program isn't called.
 Kill the terminals running the launch file and main node.
 Restart the robot driver then run the launch file and main node again.
