@@ -182,4 +182,4 @@ class TestChipPosition(unittest.TestCase):
 			self.assertEqual(get_chip_slot_number(bounding_box), None, f"Position of chip {bounding_box} should be None")
 
 if __name__ == '__main__':
-    unittest.main()
+	unittest.main()

@@ -67,7 +67,7 @@ The [launch file](src/pick_place_package/launch/pick_place_launch.py) starts thr
 * [`cobot_node`](src/pick_place_package/pick_place_package/cobot_node.py)
 * [`gripper_node`](src/pick_place_package/pick_place_package/gripper_node.py)
 
-The pick and place task is started from [`main_node`](src/pick_place_package/pick_place_package/main_node.py) which is run in a separate terminal.
+The pick and place task is started from [`main_node`](src/pick_place_package/pick_place_package/main_node.py), which is run in a separate terminal.
 
 <!-- TOC ignore:true -->
 ### Starting the Robot Driver
@@ -76,8 +76,16 @@ Before performing the pick and place task, start the robot driver and connect to
 connect_cobot
 ```
 
-You should see the following output, note the six similar messages at the bottom:
-<!-- INSERT DRIVER TERMINAL OUTPUT HERE  -->
+You should see six messages similar to the following at the bottom of the terminal.
+If there are six messages, there shouldn't be a problem controlling the robot.
+```bash
+[INFO] [spawner-11]: process has finished cleanly [pid 31924]
+[INFO] [spawner-9]: process has finished cleanly [pid 31881]
+[INFO] [spawner-8]: process has finished cleanly [pid 31920]
+[INFO] [spawner-10]: process has finished cleanly [pid 31877]
+[INFO] [spawner-6]: process has finished cleanly [pid 31879]
+[INFO] [spawner-7]: process has finished cleanly [pid 31856]
+```
 
 <!-- TOC ignore:true -->
 ### Performing the Pick and Place Task
@@ -99,20 +107,20 @@ run_main
 ## Common Issues
 <!-- TOC ignore:true -->
 ### Trouble Starting Robot Driver
-#### Symptoms
+**Symptoms:**
 * The terminal doesn't have six `finished with pid [xxxx]` messages at the end.
 * Continuous output of `configure gpio tf-prefix`.
 
-#### Solution
+**Solution:**\
 Ensure that the `ROS.urp` program is loaded on the controller.
 You may need to keep restarting the driver until you see the six messages as stated above.
 
 <!-- TOC ignore:true -->
 ### Gripper Not Working During Task
-#### Symptoms
+**Symptoms:**\
 The gripper doesn't open or close during the task even if the terminal in which the launch file was run shows that it is calling the gripper service.
 
-#### Solution
+**Solution:**\
 Sometimes the `play` service isn't called due to an error in the driver so the `gripper_test.URP` program isn't called.
 Kill the terminals running the launch file and main node.
 Restart the robot driver then run the launch file and main node again.

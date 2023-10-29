@@ -21,7 +21,8 @@ The height of the image is around 514px and this limit is not flexible.
 The sample programs found in [src/samples/](../samples/README.md) can be helpful in this regard.
 
 ## image_processing.py
-Contains functions that modifies images. Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
+Contains functions that modifies images.
+Functionalities involve cropping, drawing rectangular crop boxes on images with labels and displaying them.
 
 ## tray_position.py
 Translate bounding boxes of tray into a cobot move.
@@ -39,9 +40,9 @@ Supported cobot moves include:
 * The Tray Detection model does not detect individual items on a tray, it simply classifies trays into 3 categories: empty, partially full, and full.
 The "Continue Loading Trays" move is intended to signal that the tray is partially full, which may or not may not be an error depending on the state of the cobot.
 * The position conversion code assumes the following:
-    * There are only 2 trays in 3 possible positions: Assembly, Tray 1 and Tray 2, with Assembly being on the left, Tray 1 and Tray 2 being on the right.
-    * The image containing the tray should be roughly 600px in height and 700px in width,
-    with Assembly tray on the left half, and Trays 1 and 2 vertically aligned in the right half.
+	* There are only 2 trays in 3 possible positions: Assembly, Tray 1 and Tray 2, with Assembly being on the left, Tray 1 and Tray 2 being on the right.
+	* The image containing the tray should be roughly 600px in height and 700px in width,
+	with Assembly tray on the left half, and Trays 1 and 2 vertically aligned in the right half.
 
 ## chip_position.py
 Translate bounding boxes of chips into positions defined by the cobot.

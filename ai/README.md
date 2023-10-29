@@ -71,7 +71,7 @@ Trained models and their settings are also included.
 <!-- TOC ignore:true -->
 ### Image Labelling
 Training images are labelled and stored in a web application known as [Roboflow](https://app.roboflow.com/sepb).
-Roboflow supports image labelling, image augmentation, image reprocessing,  dataset generation, and dataset balancing.
+Roboflow supports image labelling, image augmentation, image reprocessing, dataset generation, and dataset balancing.
 The dataset can be downloaded manually to your local machine or installed programmatically via Roboflow APIs.
 
 Generally, creating a dataset for a model involves the following steps:
@@ -119,7 +119,7 @@ This section lists common issues observed during the development of the package 
 Some of these solutions are merely suggestions and are not guaranteed to work.
 
 <!-- TOC ignore:true -->
-### AI Packages Not Updated:
+### AI Packages Not Updated
 **Symptoms:**\
 The code in the AI package has been modified but the effects do not take place.
 
@@ -129,7 +129,7 @@ Keep in mind that any existing `build` folder must be deleted before reinstallin
 otherwise the newly updated package is not installed, despite saying so in the terminal.
 
 <!-- TOC ignore:true -->
-### Camera Connection Failure:
+### Camera Connection Failure
 **Symptoms:**\
 The code that opens the camera fails with any error code.
 
@@ -139,7 +139,7 @@ Unplug the camera USB cable, wait for a few seconds and re-plug it.
 If the above solutions do not work, try a different USB port on the machine.
 
 <!-- TOC ignore:true -->
-### Correct Detections But Incorrect Positions:
+### Correct Detections But Incorrect Positions
 **Symptoms:**\
 Detection models return correct bounding boxes but the numeric positions used by the cobot is not.
 This can occur when the crop boxes are not sufficiently "tight" or correctly aligned.
@@ -173,9 +173,9 @@ This is most likely caused by the `GTK_PATH` environment variable in VSCode's in
 The following solutions can be used:
 * Unset that variable, either by calling `unset GTK_PATH` or pasting this to the `settings.json` file of VSCode:
 	```json
-		"terminal.integrated.env.linux": {
-			"GTK_PATH": ""
-		}
+	"terminal.integrated.env.linux": {
+		"GTK_PATH": ""
+	}
 	```
 * Run the code in an external terminal.
 

@@ -111,7 +111,7 @@ The analysis also identifies where refinements and improvements can be made.
 ## Completed Scenarios
 The following usability scenarios have been evaluated:
 * The vision system detects and guides the cobot to move the chips to the correct compartment in the white tray.
-* The vision system  detects and guides the cobot to move the case to the correct compartment in the white tray.
+* The vision system detects and guides the cobot to move the case to the correct compartment in the white tray.
 * The cobot moves the battery to the correct compartment in the white tray.
 * The cobot moves the PCB shell to the correct compartment in the white tray.
 * The vision system detects a correctly filled tray and guides the cobot to move it to the human operator working space.

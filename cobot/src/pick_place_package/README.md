@@ -1,8 +1,82 @@
-# Steps To Produce
+
+<!-- TOC ignore:true -->
+# Pick and Place Package
+<!-- TOC ignore:true -->
+## Overview
+The pick and place package contains all config files, launch files, nodes, and
+additional files related to ROS2 to allow the cobot to move and communicate with the ZED camera.
+
+**Table of Contents**
+<!-- TOC -->
+
+* [Config](#config)
+* [Launch](#launch)
+* [Nodes](#nodes)
+* [pick_place_package](#pick_place_package)
+* [Related Terminal Commands](#related-terminal-commands)
+
+<!-- /TOC -->
+
+## Config
+<!-- TOC ignore:true -->
+### Purpose
+The config directory contains any config files that will be used within the package.
+The only config file used currently is `cobot_config.yaml`,
+which contains all joint positions and gripper pin outputs to move the cobot and control the gripper respectively.
+
+<!-- TOC ignore:true -->
+### Usage
+Place any config files such as `.yaml` files in this directory.
+The path to the config directory is already included in [`setup.py`](/cobot/src/pick_place_package/setup.py).
+
+## Launch
+<!-- TOC ignore:true -->
+### Purpose
+The launch directory contains any launch files.
+`pick_place_launch.py` launches the gripper, camera, and cobot nodes in that order and also passes the config file as a parameter into the relevant nodes.
+
+<!-- TOC ignore:true -->
+### Usage
+Place any launch files in this directory.
+Ensure they are named in this format: `[file_name]_launch.py` or `[file_name].launch.py`.
+The path to the launch directory is already included in [`setup.py`](/cobot/src/pick_place_package/setup.py).
+
+## Nodes
+<!-- TOC ignore:true -->
+### Purpose
+The nodes directory contains the classes for each custom node as well as additional files used by these nodes.
+The nodes are spun in files contained within the [`pick_place_package`](/cobot/src/pick_place_package/pick_place_package/README.md) directory.
+
+<!-- TOC ignore:true -->
+### Usage
+Place any node class definitions within this directory.
+
+## pick_place_package
+<!-- TOC ignore:true -->
+### Purpose
+The pick_place_package directory contains the `main` methods that spin the nodes defined in the nodes directory.
+
+<!-- TOC ignore:true -->
+### Usage
+Whenever a new node is defined, place the `main` method that spins the node in this directory.
+Make sure you include the entry point within `setup.py` as shown below:
+```py
+entry_points={
+	'console_scripts': [
+		'cobot_node = pick_place_package.cobot_node:main',
+		'camera_node = pick_place_package.camera_node:main',
+		'gripper_node = pick_place_package.gripper_node:main',
+		'main_node = pick_place_package.main_node:main'
+	],
+},
+```
+
+## Related Terminal Commands
 The following demonstrates terminal commands and their outputs so far.\
 Note that a few might still be WIP.
 
-## Case Service Call
+<!-- TOC ignore:true -->
+### Case Service Call
 ```bash
 ros2 service call /case pick_place_interfaces/srv/PickPlaceService "{detect: True}"
 ```
@@ -17,7 +91,8 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=11)
 ```
 
-## Chip Service Call
+<!-- TOC ignore:true -->
+### Chip Service Call
 ```bash
 ros2 service call /chip pick_place_interfaces/srv/PickPlaceService "{detect: True}"
 ```
@@ -31,7 +106,8 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=7)
 ```
 
-## Tray Service Call
+<!-- TOC ignore:true -->
+### Tray Service Call
 ```bash
 ros2 service call /tray pick_place_interfaces/srv/PickPlaceService "{detect: True}"
 ```
@@ -46,7 +122,8 @@ response:
 pick_place_interfaces.srv.PickPlaceService_Response(signal=5)
 ```
 
-## List All Services
+<!-- TOC ignore:true -->
+### List All Services
 ```bash
 ros2 service list
 ```
@@ -179,7 +256,8 @@ ros2 service list
 /ur_tool_comm/set_parameters_atomically
 ```
 
-## List All Nodes
+<!-- TOC ignore:true -->
+### List All Nodes
 ```bash
 ros2 node list
 ```
@@ -202,7 +280,8 @@ ros2 node list
 /ur_tool_comm
 ```
 
-## List All Actions
+<!-- TOC ignore:true -->
+### List All Actions
 ```bash
 ros2 action list
 ```
@@ -214,7 +293,8 @@ ros2 action list
 /scaled_joint_trajectory_controller/follow_joint_trajectory
 ```
 
-## Send a Goal to Perform Pick Place Action
+<!-- TOC ignore:true -->
+### Send a Goal to Perform Pick Place Action
 ```bash
 ros2 action send_goal /perform_pick_place pick_place_interfaces/action/PickPlaceAction "{perform_pick_place: True}"
 ```

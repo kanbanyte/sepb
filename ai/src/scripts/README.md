@@ -14,24 +14,26 @@
 ## dataset_balancer.py
 <!-- TOC ignore:true -->
 ### Purpose
-Robowflow asks for training/test/validation ratio which is invalid after the augmentation process because the training set size is increased by a factor.
+Robowflow asks for training/test/validation ratio,
+which is invalid after the augmentation process because the training set size is increased by a factor (2 or 3 when using a free tier).
 This script calculates the amount of images used for training, testing and validation accounting for extra images from the augmentation process.
 
 <!-- TOC ignore:true -->
 ### Usage
 The user is asked to enter the dataset size, desired training set ratio after augmentation and
 the factor by which the training set will be multiplied by the augmentation process in the terminal.
+The program prints the recommended size for the train set, test set, and validation set to meet the desired ratio.
 
 ## copy_interval.py
 <!-- TOC ignore:true -->
 ### Purpose
 Copy files from a folder with a user-defined interval.\
-When collecting data for image, if you record a video and covert them into images, they will contain a lot of duplicates.
-Copying them in an interval somewhat removes duplicate images.
+This script is useful if you collect data by taking a video and export images (frames) from it.
+The resulting image set contains many duplicates which can be trimmed down by selecting images at an interval.
 
 <!-- TOC ignore:true -->
 ### Usage
-The user is asked to select the source folder, destination folder and the interval.
+The user is asked to select the source folder, destination folder and the interval by which an image from the source folder is copied to the destination one.
 
 ## define_crop.py
 <!-- TOC ignore:true -->
