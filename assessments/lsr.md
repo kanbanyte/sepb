@@ -659,6 +659,16 @@ Total and summarise your involvement in the table below.
 |Number of Hours Spent at FOF + Completing Tasks||
 |Percentage of Contribution|%|
 
+<!--
+Contribution: {
+	{
+		((SEPA Issues Assigned + SEPA PRs Assigned) + (SEPB Issues Assigned + SEPB PRs Assigned)) + (SEPA PRs Reviewed + SEPB PRs Reviewed)
+	} / {
+		((All SEPA Issues + All SEPA PRs) + (All SEPB Issues + All SEPB PRs)) + (All SEPA Reviews + All SEPB Reviews)
+	}
+} = %
+-->
+
 <div class="page"/><!-- page break -->
 
 ## Reflection
