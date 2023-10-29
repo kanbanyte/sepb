@@ -493,7 +493,7 @@
 |Portfolio|[#326][326b] Technical Documentations|finnmcgearey|dau501, Huy-GV, NickMcK14, Slothman1|
 |Portfolio|[#328][328b] SADRR and Detailed System Design [Revision]|Huy-GV|dau501, finnmcgearey, Slothman1, vkach|
 |Portfolio|[#286][286b] Preliminary Video Transcript Draft|vkach|dau501, finnmcgearey, Huy-GV, NickMcK14, Slothman1|
-|Portfolio|[#318][318b] Individual Self-Assessment Report [Contributions]|dau501|finnmcgearey, NickMcK14, Slothman1|
+|Portfolio|[#318][318b] Individual Self-Assessment Report [Contributions]|dau501|finnmcgearey, NickMcK14, Slothman1, vkach|
 
 |Assessment Milestone|Issue Title|Assignees|Linked Pull Requests|
 |:-|:-|:-|:-|
@@ -639,135 +639,17 @@
 ### Product
 In the product area, the following are general criteria expected for each grade level.
 
-#### Pass
-*"Contributed adequately to the product.*\
-*Overall, the team must have produced at least a semi-functional product that meets part of the client requirements".*
-
-#### Credit
-*"Contributed strongly and consistently to the product over the duration of the project.*\
-*Overall, the team must have produced a solid functional product that meets significant client requirements, using good design standards and practices".*
-
-#### Distinction
-*"Contributed significantly, consistently and of a high standard, to the product over the duration of the project".*
-
-<!--
-List your evidence here.
-Expand details of your best evidence pieces.
--->
-
-<!--
-You may use the sample table format below.
-Expand details of your best evidence pieces.
-
-|Contribution|Description|Estimated % of the total product|Which client requirements does each address?|
-|:-|:-|:-|:-|
-|Code||||
-|Other Assets||||
--->
-
 > In order to demonstrate that *you have contributed code to a final deliverable* (or multiple deliverables),
 > evidence must show contribution of a reasonable portion of code towards each of the listed deliverables.
-
-<!--
-To show a credit level outcome, you might want to consider the following type of table to capture the "strong and consistent" contribution.
-
-|Contribution|Which software design does each address?|Estimated % completion against the design|Period of activity|
-|:-|:-|:-|:-|
-|Code||||
-|Other Assets||||
--->
-
-<!--
-For Distinction or High Distinction you'll want to clearly show your contribution is "significant", of a "high standard", and
-that it occurred over the duration of the entire project.
-
-|Contribution beyond what's assigned|What phases of the SDLC were you involved in?|Describe the effect of the software if the component's replaced with a stub?|
-|:-|:-|:-|
-|Code|||
-|Other Assets|||
--->
 
 ### Process
 In the process area, the following are general criteria expected for each grade level.
 
-#### Pass
-*"Demonstrated ability to follow (mostly) the process documented by the team".*
-
-#### Credit
-*"Demonstrated ability to accurately follow the process documented by the team".*
-
-#### Distinction
-*"Demonstrated contribution to the definition and ongoing improvement of good process used by the team".*
-
-<!--
-List your evidence here.
-Expand details of your best evidence pieces.
--->
-
-<!--
-You may use the sample table format below.
-Expand details of your best evidence pieces.
-
-|Demonstration|Description|Estimated % of the total assignment|Which section of SQAP does each address?|
-|:-|:-|:-|:-|
-|SVN||||
-|Tasks Assigned||||
--->
-
-> Evidence must show completion of most of assigned tasks (say 80% or more), supported with evidence such as meeting minutes, task tracking and/or repository logs.
-
-<!--
-If you are trying to show Credit level outcomes (accurately following process), you might want to use this type of table.
-
-|Demonstration|deadline as set in meeting|Date started|Date Completed|
-|:-|:-|:-|:-|
-|Tasks Assigned||||
--->
-
-<!--
-If you are trying to show you have helped to define and improve process (D or HD) grade.
-
-|Section(s) in SQAP/Project Plan documenting improvement against the version submitted in Semester 1|Date included (if documented)|Problems addressed by the improvement|
-|:-|:-|:-|
-|Section No.|||
--->
-
+> Evidence must show completion of most of assigned tasks (say 80% or more), supported with evidence such as meeting minutes, task tracking and/or repository logs.\
 > For distinction, you might look for at least two contributions that address problems affecting at least half the members of your team.
 
 ### Involvement
 In the involvement area, the following are general criteria expected for each grade level.
-
-#### Pass
-*"Acceptable level of attendance and engagement with respect to both internal (team) and external (client) related activities".*
-
-#### Credit
-*"An active level of engagement (internal and external), including organisation and leadership responsibilities".*
-
-#### Distinction
-*"An active level of contribution across multiple areas or responsibilities of the project, including significant input to important decisions (documented)".*
-
-#### High Distinction
-*"Active leadership/ownership of key responsibilities resulting in high quality outcomes for the project.*\
-*Key indicators of this would include personal contribution across multiple areas of the project, as well as providing support and leadership to members of the team".*
-
-<!--
-List your evidence here.
-Expand details of your best evidence pieces.
--->
-
-<!--
-|Activities|Description|Type (Internal/External)|What is your role in the activity?|
-|:-|:-|:-|:-|
-|Activity 1||||
--->
-
-<!--
-For credit, consider in more detail the specific area of active engagement.
-
-|Activities|Role (Chair/Lead/Contributor)|Type (Internal/External)|What was your contribution?|
-|:-|:-|:-|:-|
-|Activity 1||||
--->
 
 Total and summarise your involvement in the table below.
 |Summary|Total|
@@ -776,14 +658,6 @@ Total and summarise your involvement in the table below.
 |Number of Issues + PRs 'Done'||
 |Number of Hours Spent at FOF + Completing Tasks||
 |Percentage of Contribution|%|
-
-<!--
-For Distinction, consider in multiple area evidence and "significant input to important decisions.
-
-|Areas of involvement|Activities (from above) associated with the area|
-|:-|:-|
-|Area 1||
--->
 
 <div class="page"/><!-- page break -->
 
